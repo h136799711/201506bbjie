@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>首页</title>
+		<link rel="stylesheet" href="__PUBLIC__/Home/css/amazeui.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Home/css/list.css" />
+		<script type="text/javascript" src="__PUBLIC__/Home/js/jquery.min.js"></script>
+		
+	</head>
+	<body>
+		<div class="main">
+			<div class="menu">
+				<div class="menu_cen">
+					<div class="top_lf">
+						 	<a href="#">评测系统</a>&nbsp;&nbsp;&nbsp;&nbsp;
+				   		 <a href="{:U('Home/Index/index')}">
+				   		 	<span class="am-icon-home am-icon-md"></span>
+				   		 	首页</a>&nbsp;&nbsp;&nbsp;&nbsp;
+				   		 	<volist name="cates" id="vo">
+								<a href="{:U('Home/Index/cate',array('cateid'=>$vo['id']))}">
+										{$vo.name}&nbsp;&nbsp;&nbsp;&nbsp;
+								</a>
+							</volist>
+				  	</div>
+				    <div class="top_r">
+				      <a href="{:U('Home/Index/login')}">登录</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				      <a href="">注册</></a>
+				    </div>
+				 </div>
+			</div>
+			<div class="logo">
+				<div class="logo_cen">
+					<div class="logo_img">
+						<img src="__PUBLIC__/Home/imgs/logo.png">			
+					</div>
+					
+					<div class="sele">
+						<form action="{:U('Home/Index/search')}" method="post">
+							<div class="field" id="searchform">
+								  <input type="text"  name="text" id="searchterm" placeholder="请输入.." />
+								  <button type="submit" id="search">Find!</button>
+							</div>
+							</form>
+					</div>
+					
+				</div>
+			</div>
+			<div class="b_main">
+				
+				
+				<volist name="cates" id="vo">
+					<if condition="$vo['id'] eq $cateid">
+				<span class="dh"><a href="">首页</a>&nbsp;>&nbsp;<a href="javascript:void(0)">{$vo.name}</a></span>
+				<div >
+					<div class="list_main" > 
+						
+						<img src="__PUBLIC__/Home/imgs/B.png" /><a style="padding:20px;">{$vo.name}</a>
+					</if>
+					</volist>
+					
+						
+						<volist name="list" id="vo">
+							<div class="r1">
+									<div class="r1_text">
+										<span class="r1_t1"><a href="{:U('Home/Index/view',array('id'=>$vo['id']))}">{$vo.post_title}</a></span><br>
+										<span class="r1_t2">{$vo.post_date|date='Y-m-d H:i:s',###}作者： <volist name="users" id="user"><if condition="$vo['post_author'] eq $user['uid']">{$user.realname}</if></volist></span><br>
+										<span class="r1_t3">{$vo.post_excerpt}</span><a class="qw" href="{:U('Home/Index/view',array('id'=>$vo['id'],'cateid'=>$cateid))}">【全文】</a><br>	
+									</div>
+							</div>
+						</volist>
+						<div class="list_page">{$show}</div>
+					</div>
+				</div>
+				
+		</div>
+		<div class="bt">
+						{__RUNTIME__}
+						&copy;<a href="http://www.itboye.com/">杭州博也网络科技有限公司版权所有</a>
+				</div>
+</div>		
+<script type="text/javascript">
+			$(function(){
+				$('.active').css('background-color','brown');
+			})
+		</script>
+	</body>
+</html>

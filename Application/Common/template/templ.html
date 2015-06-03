@@ -1,0 +1,80 @@
+<?php
+// .-----------------------------------------------------------------------------------
+// | WE TRY THE BEST WAY 杭州博也网络科技有限公司
+// |-----------------------------------------------------------------------------------
+// | Author: 贝贝 <hebiduhebi@163.com>
+// | Copyright (c) 2013-2016, http://www.itboye.com. All Rights Reserved.
+// |-----------------------------------------------------------------------------------
+namespace Admin\Controller;
+
+class EvaluationController extends AdminController{
+	
+	
+	
+	/**
+	 * 首页-管理
+	 */
+	public function index(){
+		
+		$this->display();
+	}
+	
+	/**
+	 * 添加
+	 */
+	public function add(){
+		if(IS_GET){
+			
+			$this->display();
+		}else{
+			
+			$title = I('post.title','');
+			$desc = I('post.desc','');
+			$entity = array(
+				'title'=>$title,
+				'desc'=>$desc,
+				'type'=>I('post.type',0),
+				'user_id'=>UID,
+				
+			);
+			
+			$result = apiCall("Admin/Evaluation/add", array($entity));
+			
+			if(!$result['status']){
+				$this->error($result['info']);
+			}
+			
+			$this->success("添加成功!");
+		}
+	}
+	
+	/**
+	 * 编辑
+	 */
+	public function edit(){
+		if(IS_GET){
+			$this->display();
+		}else{
+			
+			
+		}
+	}
+	
+	/**
+	 * 删除
+	 */
+	public function delete(){
+			
+		if(IS_GET){
+			$this->display();
+		}else{
+			
+			
+		}
+	}
+	
+	
+	
+	
+}
+

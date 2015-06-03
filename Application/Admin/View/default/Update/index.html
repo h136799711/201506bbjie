@@ -1,0 +1,82 @@
+<extend name="template/base_index" />
+
+<block name="area_header">
+	
+</block>
+<block name="area_body">
+	{:W('Menus/topbar')}
+	<div class="admin-main container-fluid">
+		{:W('Menus/left')}
+		<div class="admin-main-content">
+			{:W('Menus/breadcrumb')}
+			<div>
+				当前版本号: {:C('UPGRADE_APP_VERSION')}
+			</div>
+			<div id="show-list" class="update-version">
+				<empty name="pkglist">
+					<notempty name="msg">
+					升级信息获取失败，<span class="text-danger">{$msg}</span>
+					<else/>
+					您的程序已经是最新版了！
+					</notempty>
+				<else/>
+				<div class="alert alert-danger">  
+					注意:若有多个更新包，请按更新包版本从小到大进行更新!
+				</div>
+				<table class="table table-bordered table-condensed">
+					<tr>
+						<th>更新包版本</th>
+						<th>更新包概要</th>
+						<th>详细介绍</th>
+						<th>发布时间</th>
+						<th>操作</th>
+					</tr>
+					<tbody>
+				<volist name="pkglist" id="vo">
+						<tr>
+							<td>
+								{$vo->version}
+							</td>
+							<td>
+								{$vo->name}
+							</td>
+							<td>
+								<div class="well">{:htmlspecialchars_decode($vo->desc)}
+									</div>
+							</td>
+							<td>
+								{:date("Y-m-d",$vo->create_time)}
+							</td>
+							<td>
+								<a href="{$vo->upgrade_pkg_url}" target="_blank" class="btn btn-sm btn-primary" title="下载后，按照说明文件手动按照更新包!"><i class="fa fa-download"></i>下载更新包</a>
+								<eq name="key" value="0">
+								<a href="{:U('Admin/Update/view',array('version'=>$vo->version,'pkg_url'=>urlencode($vo->upgrade_pkg_url)))}" target="_blank" class="btn btn-sm btn-primary" title="自动更新,请先备份!"><i class="fa fa-refresh"></i>自动更新<span class="text-danger">(请先备份)</span></a>
+								</eq>
+							</td>
+							
+						</tr>
+					
+					
+				</volist>
+					</tbody>
+				</table>
+				</empty>
+			</div>
+	
+		</div>
+		<!-- END admin-main-content -->
+	</div>
+</block>
+
+<block name="area_footer">
+<script type="text/javascript">
+	var list   = document.getElementById('show-list');
+	function showmsg(msg, classname){
+	    var li = document.createElement('p');
+	    li.innerHTML = msg;
+	    classname && li.setAttribute('class', classname);
+	    list.appendChild(li);
+	    document.scrollTop += 30;
+	}
+</script>
+</block>

@@ -1,0 +1,49 @@
+<extend name="template/base_index" />
+
+
+<block name="area_header">
+<script type="text/javascript" src="__CDN__/jquery-validation/1.13.1/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="__CDN__/jquery-validation/1.13.1/localization/messages_zh.min.js"></script>
+	
+
+</block>
+
+<block name="area_body">
+	{:W('Menus/topbar')}
+	<div class="admin-main container-fluid">
+		{:W('Menus/left')}
+		<div class="admin-main-content">
+			{:W('Menus/breadcrumb')}
+			
+			<!-- 带验证 form -->
+			<form class="form-horizontal  validateForm" method="post" action="{:U('Admin/Update/view',array('pkg_url'=>$pkg_url,'version'=>$version))}" >
+				<fieldset>
+					<legend>自动更新程序
+						</legend>
+					<div class="form-group">
+						<label for="btns" class="col-md-2 col-lg-2 control-label">&nbsp;</label>
+						<div class="col-lg-10 col-md-10">
+							<button class=" btn btn-primary"  autofocus="autofocus" type="submit">开始更新</button>
+						</div>
+					</div>
+					<div class="status">
+						
+					</div>
+				</fieldset>
+			</form>
+			<!-- form -->
+
+		</div>
+		<!-- END admin-main-content -->
+	</div>
+		<!-- END admin-main-->
+</block>
+
+<block name="area_footer">
+
+<script>
+function showmsg(text){
+	$(".status").html($(".status").html()+"<br/>"+text);
+}
+</script>
+</block>

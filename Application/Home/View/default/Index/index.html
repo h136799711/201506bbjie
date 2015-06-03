@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>首页</title>
+		<link rel="stylesheet" href="__PUBLIC__/Home/css/amazeui.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/Home/css/main.css" />
+		<script type="text/javascript" src="__PUBLIC__/Home/js/jquery.min.js"></script>
+		<script type="text/javascript" src="__PUBLIC__/Home/js/main.js"></script>
+	</head>
+	<body >
+		<div class="main">
+			
+		<div class="down">
+			
+			<div class="logo">
+				<div class="top_sc">
+					<div class="top_sc_cen">
+						<div class="top_sc_lf">
+							<a href=""  onclick="">设为首页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href=""  onclick="">收藏本站</a>
+						</div>
+					    <div class="top_r">
+					      <a href="{:U('Home/Index/login')}">登录</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					      <a href="">注册</>
+					    </div>
+				    </div>
+				</div>
+					
+			</div>
+			<div class="menu">
+				<div class="menu_cen">
+					
+						
+						 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#">评测系统</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						 	<div class="logo_img">
+								<img src="__PUBLIC__/Home/imgs/logo.png">			
+							</div>
+				   		 <a href="#">
+				   		 	首页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				   		 	<volist name="cates" id="vo">
+								<a href="{:U('Home/Index/cate',array('cateid'=>$vo['id']))}">
+										{$vo.name}
+								</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								
+							</volist>
+				  	
+					<div class="sele">
+						<form action="{:U('Home/Index/search')}" method="post">
+							<div class="field" id="searchform">
+								  <input type="text" name="text" id="searchterm" placeholder="请输入.." />
+								  <button type="submit" id="search">Find!</button>
+							</div>
+						</form>
+					</div>
+				  <!--<button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#doc-topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>-->
+				</div>
+				
+				    
+				  
+				
+			
+			</div>
+			<div class="show" >
+				<div class="show_cent">
+					<div class="show_centl"> <img src="__PUBLIC__/Home/imgs/1.jpg"><div class="c1">学习好不好,一测便知道</div></div>
+					<div class="show_r">
+						<div class="show_cent2"><img src="__PUBLIC__/Home/imgs/2.jpg"><a href=""><div class="c2">学习好不好,一测便知道 </div></a></div>
+						<div class="show_cent3"><img src="__PUBLIC__/Home/imgs/3.jpg"><a href=""><div class="c3">学习好不好,一测便知道</div></a></div>
+						<div class="show_cent4"><img src="__PUBLIC__/Home/imgs/4.jpg"><a href=""><div class="c4">学习好不好,一测便知道</div></a></div>
+						<div class="show_cent5"><img src="__PUBLIC__/Home/imgs/5.jpg"><a href=""><div class="c5">学习好不好,一测便知道</div></a></div>
+					</div>
+				</div>
+				
+			</div>
+			<div class="bo">
+		<volist name="cates" id="vo2" offset='0'  length='2' >
+			<div class="bottom">
+				<div class="bottom_news">
+					<img src="__PUBLIC__/Home/imgs/wzlb.png" />{$vo2.name}
+				</div>
+				<div class="bottom_news_tx">
+					<img src="__PUBLIC__/Home/imgs/stu.jpg">
+					<div class="bottom_ct_tx_tx">
+						<img src="__PUBLIC__/Home/imgs/zxlg.png" />
+						<div class="bottom_tx_right">
+							<p><a href="">MBTI职业性格测试</a></p>
+							
+						</div>
+						<div class="bottom_bt">
+							
+						MBTI职业性格测试作为一种对个性的判断和分析，是一个理论模型，从纷繁复杂的个性特征中，归纳提炼出4个关键要素——动力、信息收集、决策方式、生活方式，进行分析判断，从而把不同个性的人区别开来。
+						
+						</div>
+					</div>
+				</div>
+				<div class="bottom_right" >
+					
+					<volist name="list" id="vo" >
+						<if condition="$vo2['id'] eq $vo['post_category'] ">  
+						<div class="r1">
+								<div class="r1_tx" >
+								 <img src="{$vo.main_img}"/>
+								<div>
+									<span class="r1_t1"><a href="{:U('Home/Index/view',array('id'=>$vo['id']))}">{$vo.post_title}</a></span><br>
+									<span class="r1_t2">{$vo.post_date|date='Y-m-d H:i:s',###} 作者：<volist name="users" id="user"><if condition="$vo['post_author'] eq $user['uid']">{$user.realname}</if></volist></span><br>
+									<span class="r1_t3">{$vo.post_excerpt}</span><br>
+									</div>
+								</div>
+						</div>
+					</if>
+				</volist>
+				
+				</div>
+				
+			</div>
+		</volist>
+			<div class="tt">
+				
+					<a href="http://www.itboye.com/">&copy;杭州博也网络科技有限公司版权所有</a><br>
+					{__RUNTIME__}
+				</div>
+			
+			</div>
+		</div>
+	</body>
+</html>

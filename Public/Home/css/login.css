@@ -1,0 +1,27 @@
+/**
+ * 登录样式
+ */
+.login{
+	width:360px;
+  border: 1px solid #E4CECE;
+  border-radius: 10px;
+  margin-top: 3rem;
+  box-shadow: 2px 2px 3px 3px #E9E1F9;
+  padding: 10px;
+  margin-bottom: 3rem;
+}
+.login .am-form-group>div{
+	position:relative;
+}
+.login input.username,
+.login input.password,
+.login input.verify{
+	padding-left:3rem;
+}
+.login i{
+	position:absolute;
+  left: 2rem;
+  line-height: 35px;
+  z-index: 10;
+  width: 3rem;
+}

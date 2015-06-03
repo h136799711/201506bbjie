@@ -1,0 +1,177 @@
+<extend name="template/base_index" />
+
+
+<block name="area_header">
+	<link type="text/css" rel="stylesheet" href="__CDN__/select2/4.0.0/css/select2.min.css" />	
+	<script type="text/javascript" src="__CDN__/select2/4.0.0/js/select2.full.js"></script>
+	<script type="text/javascript" src="__CDN__/select2/4.0.0/js/i18n/zh-CN.js"></script>
+	<style type="text/css">
+		.select-member .item{
+			float: left;
+			margin: 10px;
+			position: relative;
+  background: #fff;
+  padding: 10px;
+			
+		}
+		.fa-times-circle{
+			cursor: pointer;
+		  position: absolute;
+		  top: 0px;
+		  color: #f40;
+		}
+	</style>
+</block>
+
+<block name="area_body">
+	{:W('Menus/topbar')}
+	<div class="admin-main container-fluid">
+		{:W('Menus/left')}
+		<div class="admin-main-content">
+			{:W('Menus/breadcrumb')}
+			
+			<!-- 带验证 form -->
+			<form class="form-horizontal well validateForm">
+				<input type="hidden" value="" name="memberids" id="memberids" />
+				<fieldset>
+					<legend >添加用户到［<span class="text-danger">{$orginfo.orgname}</span>］
+						</legend>
+						<div class="form-group">
+							<label for="btns" class="col-md-2 col-lg-2 control-label">&nbsp;</label>
+							<div class="col-lg-10 col-md-10">
+								<a target-form="validateForm" class="ajax-post btn btn-sm btn-primary" href="{:U('Admin/OrgMember/add',array('orgid'=>$orgid,'orgparent'=>$orgparent))}" autofocus="autofocus"><i class="fa fa-save"></i> {:L('BTN_SAVE')}</a>
+								<a class="btn btn-default  btn-sm" href="{:U('Admin/OrgMember/index',array('orgid'=>$vo['orgid'],'orgparent'=>$orgparent))}"><i class="fa fa-reply"></i>返回</a>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label  class="col-md-2 col-lg-2 control-label">请选择用户</label>
+							<div class="col-md-10 col-lg-10">
+							<select  class=" form-control" id="user_select2" >
+								
+							</select>
+								
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="btns" class="col-md-2 col-lg-2 control-label"></label>
+							<div class="col-md-10 col-lg-10">
+							<div class="select-member">
+								
+							</div>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label for="btns" class="col-md-2 col-lg-2 control-label">&nbsp;</label>
+							<div class="col-lg-10 col-md-10">
+								<a target-form="validateForm" onclick="getData();" class="ajax-post btn btn-sm btn-primary" href="{:U('Admin/OrgMember/add',array('orgid'=>$orgid,'orgparent'=>$orgparent))}" autofocus="autofocus"><i class="fa fa-save"></i> {:L('BTN_SAVE')}</a>
+								<a class="btn btn-default  btn-sm" href="{:U('Admin/OrgMember/index',array('orgid'=>$vo['orgid'],'orgparent'=>$orgparent))}"><i class="fa fa-reply"></i>返回</a>
+							</div>
+						</div>
+				</fieldset>
+			</form>
+			<!-- form -->
+
+		</div>
+		<!-- END admin-main-content -->
+	</div>
+		<!-- END admin-main-->
+</block>
+
+<block name="area_footer">
+
+<script>
+
+function getData(){
+	$(".select-member .item").each(function(index,item){
+//		if(index == 0){
+//			$("#memberids").val($(item).data("repoid"));
+//		}else{
+			$("#memberids").val($("#memberids").val() + $(item).data("repoid")+",");
+//		}
+	});
+
+}
+
+function appendItem(repo){
+	
+	if(window.appended[repo.id]){
+		console.log("appended");
+		return ;
+	}
+	if(!repo.id){
+		console.log("空id");
+		return ;
+	}
+	
+	window.appended[repo.id] = 1;
+	var item = $("<div class='item'></div>").data("repoid",repo.id).text(repo.nickname).append("<i class='fa fa-times-circle'></i>").addClass("item"+repo.id);
+	$(".select-member").append(item);
+	console.log(repo);
+	
+}
+
+function delItem(repoid){
+	window.appended[repoid] = 0;
+	$(".select-member .item"+repoid).remove();
+}
+
+$(function() {
+	window.appended = [];
+	$(".select-member").click(function(ev){
+		var clickitem = $(ev.target);
+		if(clickitem.hasClass("fa-times-circle")){
+			var repoid = $(ev.target).parent().data("repoid");
+			delItem(repoid);
+			console.log(repoid);
+		}
+
+	});//
+	
+	$("#user_select2").select2({
+			placeholder: "输入用户uid或昵称查询",
+			language: "zh-CN",
+			ajax: {
+			    url: "{:U('Admin/Member/select')}",
+			    dataType: 'json',
+			    delay: 250,
+			    data: function (params) {
+			    	var queryParameters = {
+				      q: params.term
+				    }
+
+    				return queryParameters;
+			      
+			    },
+			    processResults: function (data, page) {
+			    	if(!data.info){
+			    		data.info = new Array();
+			    		data.info['nodata']="无相关数据";
+			    	}
+			      	// parse the results into the format expected by Select2.
+			      	// since we are using custom formatting functions we do not need to
+			      	// alter the remote JSON data
+			      	return {
+			        	results: data.info
+			      	};
+			    },
+			    cache: true
+		  	}, 
+			
+			minimumInputLength: 0,
+			templateSelection: function (repo) {	
+					appendItem(repo);
+	  				return repo.member_nickname || repo.text;
+			},
+			templateResult: function (repo) {
+      				if (repo.loading) return repo.text;
+					if(repo.nodata) return repo.nodata;
+      				var markup = '<div>[id:'+repo.id+'] '+repo.nickname+'</div>';
+      				return markup;
+    			},
+		});
+		
+		}); //end ready
+	</script>
+</block>
