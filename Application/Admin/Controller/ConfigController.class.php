@@ -46,13 +46,14 @@ class ConfigController extends AdminController {
 			$this->configVars();
 			$this->display();	
 		}else{
+			
 			$config = I('config');
 			$order = 'sort desc';
  			$result = apiCall("Admin/Config/set",array($config,$order));
 			if($result['status']){
 				//清除缓存
-        		S("config_" . session_id() . '_' . session("uid"),null);
-        		$this->success(L('RESULT_SUCCESS'),U('Admin/Config/set'));
+        			S("config_" . session_id() . '_' . session("uid"),null);
+        			$this->success(L('RESULT_SUCCESS'),U('Admin/Config/set'));
 			}else{
 				LogRecord($result['info'], '[INFO]'.__FILE.__LINE__);
 				$this -> error($result['info']);
@@ -60,13 +61,16 @@ class ConfigController extends AdminController {
 		}
 	}
 	
-		/**
+	/**
 	 * 更新保存，根据主键默认id
 	 * 示列url:
 	 * /Admin/Menu/save/id/33
 	 * id必须以get方式传入
 	 */
 	public function save(){
+		$id = I("get.id",0,'intval');
+        //记录行为
+        action_log(\Admin\Model\ActionModel::UpdateConfig,'config',$id,UID);
 		parent::save();	
 	}
 

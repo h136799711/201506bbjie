@@ -142,4 +142,31 @@ function getWxAccountID(){
 function getWxaccount(){
 	return session("user_"+UID+"_wxaccount");
 }
+ 
+ 
+ /**
+ * 获取行为类型
+ * @param intger $type 类型
+ * @param bool $all 是否返回全部类型
+ * @author huajie <banhuajie@163.com>
+ */
+function get_action_type($type, $all = false){
+    $list = array(
+        1=>'系统',
+        2=>'用户',
+    );
+    if($all){
+        return $list;
+    }
+    return $list[$type];
+}
 
+// 获取数据的状态操作
+function show_status_op($status) {
+    switch ($status){
+        case 0  : return    '启用';     break;
+        case 1  : return    '禁用';     break;
+        case 2  : return    '审核';       break;
+        default : return    false;      break;
+    }
+}

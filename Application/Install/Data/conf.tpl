@@ -6,7 +6,7 @@
 
 return array(
 
-	'LOAD_EXT_CONFIG' => 'datatree,auth', 
+	'LOAD_EXT_CONFIG' => 'datatree,appmeta', 
 	
 	//在线升级配置 APP_KEY,APP_ID,AUTH_DOMAIN
 	'UPGRADE_AUTH_KEY'=>'[APP_KEY]',//授权码，用于在线升级
@@ -54,7 +54,7 @@ return array(
 	),
 	
     // Session 配置
-    'SESSION_PREFIX' => 'oauth_',
+    'SESSION_PREFIX' => 'common_',
     
     //权限配置
     'AUTH_CONFIG'=>array(

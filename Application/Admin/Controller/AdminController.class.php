@@ -59,6 +59,12 @@ class AdminController extends CheckLoginController {
 
 	//===================权限相关START=======================
 	
+	protected function exitIfError($result){
+		if(!$result['status']){
+			$this->error($result['info']);
+		}
+	}
+	
 	/**
 	 * 获取公众号信息
 	 */
