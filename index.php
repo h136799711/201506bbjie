@@ -31,6 +31,6 @@ define('HTML_PATH',      './Html/'); // 应用静态目录
 define("RUNTIME_PATH","../../Runtime/".PROJECT_NAME."/");
 
 // 框架目录
-define("THINK_PATH",realpath("../../thinkphp/3.2.3beta_modify/").'/');
+define("THINK_PATH",realpath("../../thinkphp/thinkphp_clone/").'/');
 // 加载
-require "../../thinkphp/3.2.3beta_modify/ThinkPHP.php";
+require "../../thinkphp/thinkphp_clone/ThinkPHP.php";
