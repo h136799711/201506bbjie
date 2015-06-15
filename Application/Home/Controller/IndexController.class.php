@@ -22,6 +22,13 @@ class IndexController extends HomeController {
 		$this->success("退出成功!",U("Home/Index/index"));
 	}
 	
+	public function register(){
+		$this->display();
+	}
+	
+	public function index(){
+		$this->display();
+	}
 	/**
 	 * 登录地址
 	 */
