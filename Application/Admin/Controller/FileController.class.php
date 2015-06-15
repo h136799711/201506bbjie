@@ -7,6 +7,7 @@
 // |-----------------------------------------------------------------------------------
 
 namespace Admin\Controller;
+use Admin\Api\AdminPublicApi;
 
 class FileController extends AdminController{
 	

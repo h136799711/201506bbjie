@@ -51,13 +51,13 @@ rel="stylesheet">     <!--[if lt IE 9]>
 			</DIV>
 			<DIV class="control-group"><LABEL class="control-label"for="confirm_password"><I class="required">*</I>确认密码：</LABEL>
 				<DIV class="controls"><INPUT name= "confirm_password" class="input-large" id="confirm_password" type="password" autocomplete="off">
-					 
+					  <span></span>
 				</DIV>
 			</DIV>
 			<DIV class="control-group"><LABEL class="control-label" for="phone_tel">
 				<I class="required">*</I>手机号码：</LABEL>
 				<DIV class="controls"><INPUT name="phone_tel" class="input-large" id="phone_tel" type="text" placeholder="请输入要绑定的号码" value="" autocomplete="off">
-					 
+					 <span></span>
 				</DIV>
 			</DIV>
 		
@@ -114,7 +114,7 @@ rel="stylesheet">     <!--[if lt IE 9]>
 			<DIV class="control-group"><LABEL class="control-label" for="phone_tel">
 				<I class="required">*</I>手机号码：</LABEL>
 				<DIV class="controls"><INPUT name="phone_tel" class="input-large" id="phone_tel" type="text" placeholder="请输入要绑定的号码" value="" autocomplete="off">
-					 
+					 <span></span>
 				</DIV>
 			</DIV>
 		
@@ -183,7 +183,30 @@ rel="stylesheet">     <!--[if lt IE 9]>
   				$('.bbj_sm .ls3').removeClass('current');
   			}
   			if($(this).val().length>12){
-  				$(this).append("<span style='color:red; font-size: 11px;'></span>")
+  				$(this).append("<span style='color:red; font-size: 11px;'>aaaa</span>")
+  			}
+  		})
+  		var isMobile=/^(?:13\d|15\d|18\d)\d{5}(\d{3}|\*{3})$/;
+  		$('#phone_tel').keyup(function(){
+  				if(!isMobile.test($(this).val())){
+  					//$(this).parent().remove($font);
+  					$(this).parent().find("span").html("<font size='-2' color='red'>手机号码格式不正确！请重新输入！</font>");
+  					
+				}else{
+					$(this).parent().find("span").html("<font size='-2' color='green'>正确！</font>");
+					//$(this).parent().remove($font);
+					
+					
+				}
+  			
+			
+  		})
+  		$('#confirm_password').blur(function(){
+  			var a=$('#password').val();
+  			if($(this).val()==a){
+  				$(this).parent().find("span").html("<font size='-2' color='green'>正确！</font>");
+  			}else{
+  				$(this).parent().find("span").html("<font size='-2' color='red'>不一致！</font>");
   			}
   		})
   		
