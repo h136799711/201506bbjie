@@ -1,0 +1,25 @@
+.div_all{ width: 100%; background:#f8f1f4; height:1500px;}
+.div_top1{ width: 100%; background: #363636; height: 34px; position: fixed;}
+	.div_top1 .div_gonggao{color:#FFF; float:left; background: url(../img/gonggao.png) no-repeat 0 9px;padding-left:  25px; margin-left: 200px; line-height: 34px; font-size: 12px;}
+	.div_top1 .div_zhongxin{color:#FFF;float:right; margin-right: 200px;  line-height: 34px; font-size: 12px;}
+	.div_top1 .div_zhongxin a{color: white;}
+	.div_top1  a:link {text-decoration: none;}		/* 未访问的链接 */
+	.div_top1  a:visited {text-decoration:underline; }	/* 已访问的链接 */
+	.div_top1  a:hover { text-decoration: underline;}	/* 鼠标移动到链接上 */
+	.div_top1  a:active {text-decoration: underline;}	/* 选定的链接 */
+.div_top2{ width: 100%; background: #e94770; height:72px; position: fixed;  margin-top: 34px;}
+	.div_top2 a{ text-decoration: none;color: #d9e1ec; width: 100%; height: 100%;}
+.div_left{ width:200px; border-right: 1px solid #f4ccdc; height:850px; float: left; position: fixed; margin-top: 106px; background: #f9eff3;}
+	
+	.div_left  a{color:#333;font-family: "Microsoft YaHei",Arial,Verdana,Helvetica,sans-serif; text-decoration: none;}		/* 未访问的链接 */
+	.div_left  a:hover {color:#f92d5e;}	/* 鼠标移动到链接上 */
+	
+	.div_left .div_znxx{width: 100%; text-align: center; height: 30px; margin-top: 5px; line-height: 30px; font-weight: 300;}
+	
+	.div_left .dl_menu{ width: 100%;}
+	.div_left .dl_menu .dt_menu{ background:#fd5e85; text-align:  center; padding: 5px; color: white;}
+	.div_left .dl_menu .dd_menu{ margin-left:0;text-align: center;font-size:14px ;}
+.div_right{ height:1000px;float: left; width:84%; margin-left: 200px; margin-top: 106px;}
+
+
+.selected{background: #CA4756; cursor: pointer;}

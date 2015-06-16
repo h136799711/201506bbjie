@@ -1,27 +1,473 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8">
-		<title>首页</title>
-	
-	</head>
-	<body >
-	
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<script type="text/javascript" src="__PUBLIC__/Home/js/jquery-1.8.1.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Home/js/index.js"></script>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/index.css"/>
+</head>
+
+<body  >
+<div id="div_all">
+    <div id="div_top">
+    	<div class="div_info">
+        	<div style="color:#FFF; float:left; background: url(__PUBLIC__/Home/img/gonggao.png) no-repeat 0 9px;padding-left:  25px;">试福街美食频道下线通知</div>
+            <div style="color:#FFF;float:right" >您好，欢迎来到试福街！请[<a href="{:U('Home/Index/login')}">登录</a>][<a href="{:U('Home/Index/register')}">免费注册</a>]|帮助中心</div>
+        </div>
+    </div>
+    <div id="div_top2">
+    	<div class="div_info">
+        	<div align="right" style=" padding:10px; padding-top:30px;">
+        		
+        		<input style="padding: 4px 6px;background: #fff;
+				  height: 24px;line-height: 24px;border-radius: 4px; outline: none;border: none;color: #ccc;" />
+        		<!--
+        		 padding: 4px 6px;
+				  display: block;
+				  background: #fff;
+				  height: 24px;
+				  line-height: 24px;
+				  color: #ccc;
+				  border: 1px solid #000000;
+				  outline: none;
+				  width: 182px;
+				  -webkit-border-radius: 0;
+				  -moz-border-radius: 0;
+				  border-radius: 4px;
+				  margin: 0;
+				-->
+				
+			<input type="button" value="  " style="background: url('../../../Public/Home/img/search.png');
+			  width: 32px;
+			  height: 32px;
+			  background-size: 100% 100%;
+			  border: none;
+			  cursor: pointer;
+			  margin-left: -5px;" />
 			
-			<div class="logo">
-				<div class="top_sc">
-					<div class="top_sc_cen">
-						<div class="top_sc_lf">
-							<a href=""  onclick="">设为首页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href=""  onclick="">收藏本站</a>
-						</div>
-					    <div class="top_r">
-					      <a href="{:U('Home/Index/login')}">登录</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					      <a href="{:U('Home/Index/register')}">注册</>
-					    </div>
-				    </div>
-				</div>
-					
-			</div>
-		
-	</body>
+			<!--
+            	
+            
+			display: block;
+  
+			 background: url('__PUBLIC__/Home/img/search.png');
+			  width: 26px;
+			  height: 26px;
+			  border: 1px solid #000000;
+			  cursor: pointer;"
+			  
+        	-->	
+        		
+        	</div>
+        </div>
+    </div>
+    <div id="div_title">
+    	<div class="div_info">
+         	<ul>
+            	<li>试福广场</li>
+                <li class="li_fenge">|</li>
+                <li>福利专场</li>
+                <li class="li_fenge">|</li>
+                <li>幸福一点</li>
+                <li class="li_fenge">|</li>
+                <li>试江湖</li>
+                <li class="li_fenge">|</li>
+                <li>茶话馆</li>
+                <li class="li_fenge">|</li>
+                <li>帮助中心</li>
+            </ul>
+        </div>
+    </div>
+    <div id="div_lunbo">
+    	<div class="div_info">
+       		 <div class="div_info1">
+       		 	<ul>
+       		 		<li>
+       		 			<h3><a href="#">日用百货</a></h3>
+       		 			<div>
+       		 				<a href="">居家必备</a>
+       		 				<a href="">家纺</a>
+       		 				<a href="">厨房必备</a>
+       		 				<a href="">美妆必备</a>
+       		 				<a href="">洗护用品</a>
+       		 				<a href="">配饰</a>
+       		 			</div>
+       		 		</li>
+       		 		<li><h3><a href="#">鞋子箱包</a></h3>
+       		 			
+       		 			<div>
+       		 				<a href="">居家必备</a>
+       		 				<a href="">家纺</a>
+       		 				<a href="">厨房必备</a>
+       		 				<a href="">美妆必备</a>
+       		 				<a href="">洗护用品</a>
+       		 				<a href="">配饰</a>
+       		 			</div>
+       		 		</li>
+       		 		<li><h3><a href="#">母婴用品</a></h3>
+       		 			<div>
+       		 				<a href="">居家必备</a>
+       		 				<a href="">家纺</a>
+       		 				<a href="">厨房必备</a>
+       		 				<a href="">美妆必备</a>
+       		 				<a href="">洗护用品</a>
+       		 				<a href="">配饰</a>
+       		 			</div>
+       		 		</li>
+       		 		<li><h3><a href="#">数码家电</a></h3>
+       		 			<div>
+       		 				<a href="">居家必备</a>
+       		 				<a href="">家纺</a>
+       		 				<a href="">厨房必备</a>
+       		 				<a href="">美妆必备</a>
+       		 				<a href="">洗护用品</a>
+       		 				<a href="">配饰</a>
+       		 			</div>
+       		 		</li>
+       		 		<li><h3><a href="#">办公问题</a></h3>
+       		 			<div>
+       		 				<a href="">居家必备</a>
+       		 				<a href="">家纺</a>
+       		 				<a href="">厨房必备</a>
+       		 				<a href="">美妆必备</a>
+       		 				<a href="">洗护用品</a>
+       		 				<a href="">配饰</a>
+       		 			</div>
+       		 		</li>
+       		 	</ul>
+       		 	
+       		 </div>
+       		 <div class="div_image">
+       		 			<div class="div_minlunbo" style="background: url(../../../Public/Home/img/lunbo1.jpg);width: 100%; height: 100%;">
+       		 			
+       		 			</div>
+       		 		
+       		 			<div class="div_minlunbo" style="background: url(../../../Public/Home/img/lunbo2.jpg);width: 100%; height: 100%; display: none;">
+       		 			
+       		 			</div>	
+       		 			<div class="div_minlunbo" style="background: url(../../../Public/Home/img/lunbo3.jpg);width: 100%; height: 100%;display: none;">
+       		 			
+       		 			</div>
+       		 		
+       		 			<div class="div_minlunbo" style="background: url(../../../Public/Home/img/lunbo4.jpg);width: 100%; height: 100%;display: none;">
+       		 				
+       		 			</div>
+       		 		
+	       		 		
+       		 </div>
+       		 <ul class="ul_lunbo">
+	       		 			<li class="lunboli current" ></li>	
+	       		 			<li class="lunboli"></li>
+	       		 			<li class="lunboli"></li>
+	       		 			<li class="lunboli"></li>
+	       				</ul>
+         	 <div class="div_info2">
+         	 	<ul class="ul_image">
+         	 		<li><a href=""><img src="__PUBLIC__/Home/img/tu1.jpg" height="139"/></a></li>
+         	 		<li><a href=""><img src="__PUBLIC__/Home/img/tu2.jpg" height="139"/></a></li>
+         	 		<li><a href=""><img src="__PUBLIC__/Home/img/tu3.jpg" height="139"/></a></li>
+         	 	</ul>
+         	 	
+         	 </div>
+        </div>
+    </div>
+    <div id="div_main">
+    	<div class="div_info" >
+    			<div class="div_minInfo">
+	    			<div class="div_minTitle">
+	    				<h3>上新预告</h3>
+	    				<a href="">&nbsp;</a>
+	    			</div>
+		        	<dl class="dl_info">
+		            	<dt>
+		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="218" />
+		                </dt>
+		                <dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+		                <dd>XXX XXXXX</dd>
+		            </dl>
+	           
+	            
+		        	<dl class="dl_info">
+		            	<dt>
+		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="218" />
+		                </dt>
+		                <dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+		                <dd>XXX XXXXX</dd>
+		            </dl>
+	           
+	          		<dl class="dl_info">
+		            	<dt>
+		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="218" />
+		                </dt>
+		                <dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+		                <dd>XXX XXXXX</dd>
+		            </dl>
+		            
+		            <dl class="dl_info">
+		            	<dt>
+		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="218" />
+		                </dt>
+		                <dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+		                <dd>XXX XXXXX</dd>
+		            </dl>
+		            
+		            <dl class="dl_info">
+		            	<dt>
+		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="218" />
+		                </dt>
+		                <dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+		                <dd>XXX XXXXX</dd>
+		            </dl>
+		            
+		            
+		            <dl class="dl_info">
+		            	<dt>
+		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="218" />
+		                </dt>
+		                <dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+		                <dd>XXX XXXXX</dd>
+		            </dl>
+		            
+		            <dl class="dl_info">
+		            	<dt>
+		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="218" />
+		                </dt>
+		                <dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+		                <dd>XXX XXXXX</dd>
+		            </dl>
+		            
+		            <dl class="dl_info">
+		            	<dt>
+		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="218" />
+		                </dt>
+		                <dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+		                <dd>XXX XXXXX</dd>
+		            </dl>
+		            <dl class="dl_info">
+		            	<dt>
+		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="218" />
+		                </dt>
+		                <dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+		                <dd>XXX XXXXX</dd>
+		            </dl>
+		            <dl class="dl_info">
+		            	<dt>
+		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="218" />
+		                </dt>
+		                <dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+		                <dd>XXX XXXXX</dd>
+		            </dl>
+	            
+	            </div>
+	            
+	            <div class="div_minInfo">
+	    			<div class="div_minTitle">
+	    				<h3>推荐福品</h3>
+	    				<a href="">&nbsp;</a>
+	    			</div>
+		        	<dl class="dl_info">
+		            	<dt>
+		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="218" />
+		                </dt>
+		                <dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+		                <dd>XXX XXXXX</dd>
+		            </dl>
+	           
+	            
+		        	<dl class="dl_info">
+		            	<dt>
+		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="218" />
+		                </dt>
+		                <dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+		                <dd>XXX XXXXX</dd>
+		            </dl>
+	           
+	          		<dl class="dl_info">
+		            	<dt>
+		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="218" />
+		                </dt>
+		                <dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+		                <dd>XXX XXXXX</dd>
+		            </dl>
+		            
+		            <dl class="dl_info">
+		            	<dt>
+		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="218" />
+		                </dt>
+		                <dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+		                <dd>XXX XXXXX</dd>
+		            </dl>
+		            
+		            <dl class="dl_info">
+		            	<dt>
+		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="218" />
+		                </dt>
+		                <dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+		                <dd>XXX XXXXX</dd>
+		            </dl>
+		            
+		            
+		            <dl class="dl_info">
+		            	<dt>
+		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="218" />
+		                </dt>
+		                <dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+		                <dd>XXX XXXXX</dd>
+		            </dl>
+		            
+		            <dl class="dl_info">
+		            	<dt>
+		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="218" />
+		                </dt>
+		                <dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+		                <dd>XXX XXXXX</dd>
+		            </dl>
+		            
+		            <dl class="dl_info">
+		            	<dt>
+		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="218" />
+		                </dt>
+		                <dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+		                <dd>XXX XXXXX</dd>
+		            </dl>
+		            <dl class="dl_info">
+		            	<dt>
+		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="218" />
+		                </dt>
+		                <dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+		                <dd>XXX XXXXX</dd>
+		            </dl>
+		            <dl class="dl_info">
+		            	<dt>
+		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="218" />
+		                </dt>
+		                <dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+		                <dd>XXX XXXXX</dd>
+		            </dl>
+	            
+	            </div>
+	            
+	            <div class="div_minInfo">
+	    			<div class="div_minTitle">
+	    				<h3>试民晒货</h3>
+	    				<a href=""></a>
+	    			</div>
+		        	<dl class="dl_shaihuo">
+		            	<dt>
+			                <a href=""><img src="__PUBLIC__/Home/img/shai1.jpg" width="91" /></a>
+			                <a href=""><img src="__PUBLIC__/Home/img/shai2.jpg" width="91" /></a>
+			                <a href=""><img src="__PUBLIC__/Home/img/shai3.jpg" width="91" /></a>
+			                <a href=""><img src="__PUBLIC__/Home/img/shai4.jpg" width="91" /></a>
+		                
+		                </dt>
+		                <dd style="">1个晒货|1个推荐</dd>
+		                <dd><a href="#" >去看看</a></dd>
+		            </dl>
+	           
+	            	<dl class="dl_shaihuo">
+		            	<dt>
+		                <a href=""><img src="__PUBLIC__/Home/img/shai1.jpg" width="91" /></a>
+		                <a href=""><img src="__PUBLIC__/Home/img/shai2.jpg" width="91" /></a>
+		                <a href=""><img src="__PUBLIC__/Home/img/shai3.jpg" width="91" /></a>
+		                <a href=""><img src="__PUBLIC__/Home/img/shai4.jpg" width="91" /></a>
+		                </dt>
+		                <dd style="">1个晒货|1个推荐</dd>
+		                <dd><a href="#" >去看看</a></dd>
+		            </dl>
+		            
+		            <dl class="dl_shaihuo">
+		            	<dt>
+		                <a href=""><img src="__PUBLIC__/Home/img/shai1.jpg" width="91" /></a>
+		                <a href=""><img src="__PUBLIC__/Home/img/shai2.jpg" width="91" /></a>
+		                <a href=""><img src="__PUBLIC__/Home/img/shai3.jpg" width="91" /></a>
+		                <a href=""><img src="__PUBLIC__/Home/img/shai4.jpg" width="91" /></a>
+		                </dt>
+		                <dd style="">1个晒货|1个推荐</dd>
+		                <dd><a href="#" >去看看</a></dd>
+		            </dl>
+		            
+		            <dl class="dl_shaihuo">
+		            	<dt>
+		               <a href=""><img src="__PUBLIC__/Home/img/shai1.jpg" width="91" /></a>
+		                <a href=""><img src="__PUBLIC__/Home/img/shai2.jpg" width="91" /></a>
+		                <a href=""><img src="__PUBLIC__/Home/img/shai3.jpg" width="91" /></a>
+		                <a href=""><img src="__PUBLIC__/Home/img/shai4.jpg" width="91" /></a>
+		                </dt>
+		                <dd style="">1个晒货|1个推荐</dd>
+		                <dd><a href="#" >去看看</a></dd>
+		            </dl>
+		            
+		            <dl class="dl_shaihuo">
+		            	<dt>
+		                <a href=""><img src="__PUBLIC__/Home/img/shai1.jpg" width="91" /></a>
+		                <a href=""><img src="__PUBLIC__/Home/img/shai2.jpg" width="91" /></a>
+		                <a href=""><img src="__PUBLIC__/Home/img/shai3.jpg" width="91" /></a>
+		                <a href=""><img src="__PUBLIC__/Home/img/shai4.jpg" width="91" /></a>
+		                </dt>
+		                <dd style="">1个晒货|1个推荐</dd>
+		                <dd><a href="#" >去看看</a></dd>
+		            </dl>
+		        	
+	            </div>
+	           
+        </div>
+    </div>
+    <hr  color="#ccc" style="clear:both; margin-top:20px; width: 100%;" size="1"/>
+    <div id="div_foot">
+    	<div class="div_info" >
+            <dl class="dl_phone">
+            	<dt class="dt_phone"><img src="__PUBLIC__/Home/img/phone.png" /></dt>
+            	<dd style="font-weight: bold; font-size:13px ;">4008-448-888</dd>
+                <dd>美食街热线</dd>
+                <dd>周一至周六：09:00-17:00</dd>
+            </dl>
+            <dl>
+                <dt>关于我们</dt>
+                <dd class="dd_info"><a href="#">试福街介绍</a></dd>
+                <dd class="dd_info"><a href="#">联系我们</a></dd>
+               
+            </dl>
+            <dl>
+                <dt>我是试民</dt>
+                <dd class="dd_info"><a href="#">新手指引</a></dd>
+                <dd class="dd_info"><a href="#">福币介绍</a></dd>
+                <dd class="dd_info"><a href="#">资金保障</a></dd>
+            </dl>
+                   
+             <dl>
+                <dt>我是商家</dt>
+                <dd class="dd_info"><a href="#">商家入驻</a></dd>
+                <dd class="dd_info"><a href="#">会员体系</a></dd>
+                <dd class="dd_info"><a href="#">活动安全</a></dd>
+            </dl>
+            <dl>
+                <dt>试福街特色</dt>
+                <dd class="dd_info"><a href="#">许愿树</a></dd>
+                <dd class="dd_info"><a href="#">周四盛点</a></dd>
+                <dd class="dd_info"><a href="#">因伙得福</a></dd>
+            </dl>
+            <dl>
+                <dt>共图大业</dt>
+                <dd class="dd_info"><a href="#">招兵买马</a></dd>
+                <dd class="dd_info"><a href="#">拜将求帅</a></dd>
+                <dd class="dd_info"><a href="#">战略伙伴</a></dd>
+                <dd class="dd_info"><a href="#">天赐良机</a></dd>
+            </dl>
+            
+            <dl>
+                <dt>王府微信账号</dt>
+                <dd class="dd_info" style="margin: 0;margin-left: -12px;">
+                	<img  src="__PUBLIC__/Home/img/weixin.png"/>
+                	
+                </dd>
+                
+            </dl>
+    	</div>
+        
+        <div align="center" style="clear:both; margin-bottom:5px;"><font color="#999999" size="-2">杭州博也科技有限公司，保留一切权利。 浙ICP备13025642号-2 © 2015 shifujie.net 版权所有{__RUNTIME__}</font></div>
+   
+    </div>
+</div>
+</body>
 </html>

@@ -3,19 +3,13 @@
 // | WE TRY THE BEST WAY
 // |-----------------------------------------------------------------------------------
 // | Author: 贝贝 <hebiduhebi@163.com>
-// | Copyright (c) 2013-2016 杭州博也网络科技, http://www.itboye.com. All Rights Reserved.
+// | Copyright (c) 2013-2015, http://www.gooraye.net. All Rights Reserved.
 // |-----------------------------------------------------------------------------------
 
+namespace Home\Model;
 
-
-namespace Admin\Api;
-
-use Common\Model\GroupAccessModel;
-
-class GroupAccessApi extends \Common\Api\Api{
-	
-	protected function _init(){
-		$this->model = new GroupAccessModel();
-	}
-	
+/**
+ * AuthGroupAccessModel 用户组与用户对应表
+ */
+class BbjmemberModel extends \Think\Model{
 }

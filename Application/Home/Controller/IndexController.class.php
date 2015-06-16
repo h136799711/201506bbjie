@@ -8,6 +8,7 @@
 namespace Home\Controller;
 use Think\Controller;
 use Think\Storage;
+use Home\Api\HomePublicApi;
 /*
  * 官网首页
  */
@@ -22,57 +23,146 @@ class IndexController extends HomeController {
 		$this->success("退出成功!",U("Home/Index/index"));
 	}
 	
-	public function register(){
+	public function register_sm(){
+		$this->display();
+	}
+	public function register_sj(){
 		$this->display();
 	}
 	
 	public function index(){
 		$this->display();
 	}
+	
+	public function xieyi(){
+		$this->display();
+	}
+	public function smzc(){
+		$username=I('post.user_name');
+		$password=I('post.password');
+		$mobile=I('post.phone_tel');
+		$email=$username."@qq.com";
+		$yqr=I('post.yaoqingren');
+		$result = apiCall(HomePublicApi::User_Register, array($username, $password, $email,$mobile));
+		if($result['status']){
+			$uid=$result['info'];
+			$entity=array(
+				'uid'=>$uid,
+				'referrer_id'=>1,
+				'referrer_name'=>$yqr,
+				'taobao_account'=>'',
+				'aliwawa'=>'',
+				'daily_task_money'=>1000,
+				'dtree_job'=>'',
+				'personal_signature'=>'',
+				'brief_introduction'=>'',
+				'address'=>'',
+				'store_name'=>'',
+			);
+			$result1 = apiCall(HomePublicApi::Bbjmember_Add, array($entity));
+			if($result1['status']){
+				$user=array(
+					'uid'=>$uid,
+					'nickname'=>$username,
+					'status'=>1,
+					'realname'=>'',
+					'idnumber'=>'',
+					'update_time'=>time(),
+				);
+				$result2 = apiCall(HomePublicApi::Member_Add, array($user));
+				if($result2['status']){
+					$group=array(
+						'uid'=>$uid,
+						'group_id'=>14,
+					);
+//					dump($group);
+					$result3 = apiCall(HomePublicApi::Group_Add, array($group));
+					if($result3['status']){
+						$this->display('login');
+					}
+				}
+			}
+		}
+
+	}
+	public function sjzc(){
+		$username=I('post.user_name');
+		$password=I('post.password');
+		$mobile=I('post.phone_tel');
+		$email=$username."@qq.com";
+		$yqr=I('post.yaoqingren');
+		$result = apiCall(HomePublicApi::User_Register, array($username, $password, $email,$mobile));
+		if($result['status']){
+			$uid=$result['info'];
+			$entity=array(
+				'uid'=>$uid,
+				'referrer_id'=>1,
+				'referrer_name'=>$yqr,
+				'taobao_account'=>'',
+				'aliwawa'=>'',
+				'daily_task_money'=>1000,
+				'dtree_job'=>'',
+				'personal_signature'=>'',
+				'brief_introduction'=>'',
+				'address'=>'',
+				'store_name'=>'',
+			);
+			$result1 = apiCall(HomePublicApi::Bbjmember_Add, array($entity));
+			if($result1['status']){
+				$user=array(
+					'uid'=>$uid,
+					'nickname'=>$username,
+					'status'=>1,
+					'realname'=>'',
+					'idnumber'=>'',
+					'update_time'=>time(),
+				);
+				$result2 = apiCall(HomePublicApi::Member_Add, array($user));
+				if($result2['status']){
+					$group=array(
+						'uid'=>$uid,
+						'group_id'=>15,
+					);
+//					dump($group);
+					$result3 = apiCall(HomePublicApi::Group_Add, array($group));
+					if($result3['status']){
+						$this->display('login');
+					}
+				}
+			}
+		}
+	}
 	/**
 	 * 登录地址
 	 */
 	public function login(){
 		if(IS_GET){
-			$this->theme($this->theme)->display();
+			$this->display();
 		}else{
 			//检测用户
-			$verify = I('post.verify', '', 'trim');
-			$id = I("post.id",1);
 			
-			if (!$this -> check_verify($verify, $id)) {
-				$this -> error("验证码错误!");
-			}
 			
 			$username = I('post.username', '', 'trim');
 			$password = I('post.password', '', 'trim');
 			
-			$result = apiCall('Uclient/User/login', array('username' => $username, 'password' => $password));
+			$result = apiCall(HomePublicApi::User_Login, array('username' => $username, 'password' => $password));
 //			dump($result);
 			//调用成功
 			if ($result['status']) {
 				$uid = $result['info'];
-				$userinfo = array();
-				$result = apiCall('Uclient/User/getInfo', array($uid));
 				
-				if ($result['status'] && is_array($result['info'])) {
-					
-					$this->setUserinfo($result['info']);
-					
-					
-					$this -> success("登录成功！", U('Home/TestSys/index'));
+				if ($result['status'] ) {
+					$this -> display('sm_manager');
 
-				} else {
-					LogRecord($result['info'], __FILE__.__LINE__);
-					$this -> error("登录失败!");
-				}
+				} 
 
-			} else {
-				$this -> error($result['info']);
-			}
+			} 
 		}
 	}
 	
+	public function sm_manager(){
+		$this->display();
+	}
 	
 	
 	
@@ -85,84 +175,7 @@ class IndexController extends HomeController {
 		return $verify->checkCode($code,$id);
 	}
 		
-	private function setUserinfo($userinfo){
-		
-		$result = apiCall("Admin/Member/getInfo", array(array('uid'=>$userinfo['id'])));
-		
-		if($result['status'] && is_array($result['info'])){
-			foreach($result['info'] as $key=>$vo){
-				$userinfo['member_'.$key] = $vo;
-			}
-//			$userinfo = array_merge($userinfo,$result['info']);	
-		}
-		
-		//存入 session
-		session('global_user_sign', data_auth_sign($userinfo));
-		session('global_user', $userinfo);
-		session("uid", $userinfo['id']);
-		//登录模块
-		session("LOGIN_MOD", MODULE_NAME);
-				
-	}
-	
-//	public function cate(){
-//		$cateid = I('get.cateid',0);
-//		$map = array('post_category'=>$cateid,'post_status'=>'publish');
-//		
-//		$result = apiCall("Home/Datatree/getInfo", array(array('id'=>$cateid)));
-//		
-//		if(!$result['status']){
-//			$this->error($result['info']);
-//		}
-//		
-//		if(is_null($result['info'])){
-//			$this->error("该分类不存在!");
-//		}
-//		
-//		//----------------------------------------------------
-//		$map = array('parentid'=>getDatatree("POST_CATEGORY"));
-//		$cates = apiCall("Home/Datatree/queryNoPaging",array($map));
-//		if(!$cates['status']){
-//			$this->error($cates['info']);
-//		}
-//		
-//		//---------------------------------------
-//		
-//		$this->assign("title",$result['info']['name']);
-//		$page = array('curpage'=>I('get.p',0),'size'=>6);
-//		
-//		$result = apiCall("Home/Post/query", array($map,$page));
-////		dump($result);
-//		if(!$result['status']){
-//			$this->error($result['info']);
-//		}
-//
-//		$this->assign("cates",$cates['info']);
-//		$this->assign("list",$result['info']['list']);
-//		$this->assign("show",$result['info']['show']);
-//		$this->display("list");
-//		
-//	}
-//	
-//	public function view(){
-//		$map = array('parentid'=>getDatatree("POST_CATEGORY"));
-//		$cates = apiCall("Home/Datatree/queryNoPaging",array($map));
-//		if(!$cates['status']){
-//			$this->error($cates['info']);
-//		}
-//		$id = I('get.id',0);
-//		$map = array('id'=>$id);
-//		$result = apiCall("Home/Post/getInfo", array($map));
-//		if(!$result['status']){
-//			$this->error($result['info']);
-//		}
-//		
-//		$com=M('Post');
-//		$list = $com->where ('id='.$id)->select();
-//		$this->assign('lists',$list);
-//		$this->assign("cates",$cates['info']);
-//		$this->display();
-//	}
+
 	
 	
 }

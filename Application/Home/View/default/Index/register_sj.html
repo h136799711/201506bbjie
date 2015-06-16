@@ -9,7 +9,7 @@ content="IE=11.0000" http-equiv="X-UA-Compatible">
 <TITLE>宝贝街-注册</TITLE>     
 <META http-equiv="cleartype" content="on">     
 <META name="keywords" content="">     
-<META name="description" content="">     <LINK href="__PUBLIC__/Home/css/login.css" 
+<META name="description" content="">     <LINK href="__PUBLIC__/Home/css/login-1.css" 
 rel="stylesheet">     <!--[if lt IE 9]>
     <script src="http://cdn.shifujie.net/public/lib/html5/html5.js"></script>
     <![endif]--> 
@@ -26,17 +26,18 @@ rel="stylesheet">     <!--[if lt IE 9]>
 	<DIV class="content">
 		<DIV class="nav_menu">
 			<UL class="nav nav-tabs" role="menu">
-			  <LI id="sm" class="active" ><A  href="javascript:void(0)">试民注册</A></LI>
-			  <LI id="sj" class="" ><A  href="javascript:void(0)">商家注册</A></LI>
+			  <LI id="sm" class="" ><A  href="{:U('Home/Index/register_sm')}" >试民注册</A></LI>
+			  <LI id="sj" class="active" ><A  href="{:U('Home/Index/register_sj')}" >商家注册</A></LI>
 			</UL>
 		</DIV>
 		<div class="bbj_sm">
 		<DIV class="register-form" controller="app/register">
-	<FORM class="form-horizontal" id="yw0" action="/member/sm_register" method="post">
+	<FORM class="form-horizontal" id="yw0" action="{:U('Home/Index/sjzc')}" method="post">
 		<DIV class="control-group"><LABEL class="control-label" for="user_name"><I 
 		class="required">*</I>用户名：</LABEL>
 			<DIV class="controls">
-				<INPUT name="user_name" class="input-large" id="user_name" type="text" placeholder="用于登录的名字" value="" autocomplete="off">
+				<INPUT name="user_name" class="input-large" id="name" type="text" placeholder="用于登录的名字" value="" autocomplete="off">
+					<span></span>
 			 </DIV>
 		</DIV>
 			<DIV class="control-group"><LABEL class="control-label" for="password"><I class="required">*</I>密码：</LABEL>
@@ -49,7 +50,7 @@ rel="stylesheet">     <!--[if lt IE 9]>
 				<DIV class="102 li"><SPAN class="ls2">适中</SPAN></DIV>                 
 				<DIV class="103 li"><SPAN class="ls3">安全</SPAN></DIV>             
 			</DIV>
-			<DIV class="control-group"><LABEL class="control-label"for="confirm_password"><I class="required">*</I>确认密码：</LABEL>
+			<DIV class="control-group"><LABEL class="control-label" for="confirm_password"><I class="required">*</I>确认密码：</LABEL>
 				<DIV class="controls"><INPUT name= "confirm_password" class="input-large" id="confirm_password" type="password" autocomplete="off">
 					  <span></span>
 				</DIV>
@@ -73,126 +74,78 @@ rel="stylesheet">     <!--[if lt IE 9]>
 				<LABEL class="checkbox">
 					<SPAN style="width: 299px; color: rgb(92, 91, 91); font-weight: normal; display: inline-block;">
 						<INPUT name="agree" id="agree" type="checkbox" value="1"> 我已经阅读并同意接收用户
-							<A style="color: rgb(224, 69, 21);" href="http://www.shifujie.net/member/index.php?app=article&amp;act=view&amp;article_id=16" target="_blank">《使用协议》</A>
+							<A style="color: rgb(224, 69, 21);" href="{:U('Home/Index/xieyi')}" target="_blank">《使用协议》</A>
 					</SPAN>                         
 					<SPAN class="notice help-inline"></SPAN> 
 			    </LABEL>
 			</DIV>
 		</DIV>
-		<BUTTON name="yt0" class="register_submit btn" type="submit">立即注册</BUTTON>            
+		<BUTTON name="yt0" id="sb" class="register_submit btn" type="submit">立即注册</BUTTON>            
 	</FORM>
 	<DIV class="right">
-		<DIV class="login"><A href="http://www.shifujie.net/index.php?app=member&amp;act=login"></A><SPAN>我已注册,点击登录</SPAN></DIV>
+		<DIV class="login"><A href="{:U('Home/Index/login')}"></A><SPAN>我已注册,点击登录</SPAN></DIV>
 		<DIV class="jieshao">                    我想免费获得喜欢的商品，乐享不花钱的商品带来的惊喜！所以我要注册试民福币账号！  </DIV>
 	</DIV>
 </DIV>
 </div>
-<div class="bbj_sj">
-		
-	<DIV class="register-form" controller="app/register">
-	<FORM class="form-horizontal" id="yw0" action="/member/sm_register" method="post">
-		<DIV class="control-group"><LABEL class="control-label" for="user_name"><I 
-		class="required">*</I>用户名：</LABEL>
-		<DIV class="controls">
-			<INPUT name="user_name" class="input-large" id="user_name" type="text" placeholder="用于登录的名字" value="" autocomplete="off">
-			 </DIV></DIV>
-			<DIV class="control-group"><LABEL class="control-label" for="password"><I class="required">*</I>密码：</LABEL>
-				<DIV class="controls"><INPUT name="password" class="input-large" id="password" type="password" placeholder="初始的登录密码，操作密码" value="" autocomplete="off">
-					 
-				</DIV>
-			</DIV>
-			<DIV class="level clearfix">
-				<DIV class="l01 li"><SPAN class="ls">危险</SPAN></DIV>                 
-				<DIV class="l02 li"><SPAN class="ls">适中</SPAN></DIV>                 
-				<DIV class="l03 li"><SPAN class="ls">安全</SPAN></DIV>             
-			</DIV>
-			<DIV class="control-group"><LABEL class="control-label"for="confirm_password"><I class="required">*</I>确认密码：</LABEL>
-				<DIV class="controls"><INPUT name="confirm_password" class="input-large" id="confirm_password" type="password" autocomplete="off">
-					 
-				</DIV>
-			</DIV>
-			<DIV class="control-group"><LABEL class="control-label" for="phone_tel">
-				<I class="required">*</I>手机号码：</LABEL>
-				<DIV class="controls"><INPUT name="phone_tel" class="input-large" id="phone_tel" type="text" placeholder="请输入要绑定的号码" value="" autocomplete="off">
-					 <span></span>
-				</DIV>
-			</DIV>
-		
-		<DIV class="control-group">
-			<LABEL class="control-label" for="yaoqingren">邀请人：</LABEL>
-			<DIV class="controls">
-				<INPUT name="yaoqingren" class="input-large" id="yaoqingren" type="text" placeholder="请填写邀你注册者的用户名，这样他能获得经验值奖励哦！" value="test1">
-			</DIV>
-			
-		</DIV>
-		<DIV class="control-group">
-			<DIV class="controls">
-				<LABEL class="checkbox">
-					<SPAN style="width: 299px; color: rgb(92, 91, 91); font-weight: normal; display: inline-block;">
-						<INPUT name="agree" id="agree" type="checkbox" value="1"> 我已经阅读并同意接收用户
-							<A style="color: rgb(224, 69, 21);" href="http://www.shifujie.net/member/index.php?app=article&amp;act=view&amp;article_id=16" target="_blank">《使用协议》</A>
-					</SPAN>                         
-					<SPAN class="notice help-inline"></SPAN> 
-			    </LABEL>
-			</DIV>
-		</DIV>
-		<BUTTON name="yt0" class="register_submit btn" type="submit">立即注册</BUTTON>            
-	</FORM>
-	<DIV class="right">
-		<DIV class="login"><A href="http://www.shifujie.net/index.php?app=member&amp;act=login"></A><SPAN>我已注册,点击登录</SPAN></DIV>
-		<DIV class="jieshao">                    我想免费获得喜欢的商品，乐享不花钱的商品带来的惊喜！所以我要注册试民福币账号！  </DIV>
-	</DIV>
-</DIV>
-</div>
+
 	</DIV>
 </DIV>
 </DIV>
 <SCRIPT type="text/javascript">
   	$(function(){
-  		$('.bbj_sj').hide();
-  		$('#sj').click(function(){
-  			$('.bbj_sm').hide();
-  			$('.bbj_sj').show();
-  			$('#sj').addClass('active');
-  			$('#sm').removeClass('active');
-  		})
-  		$('#sm').click(function(){
-  			$('.bbj_sm').show();
-  			$('.bbj_sj').hide();
-  			$('#sm').addClass('active');
-  			$('#sj').removeClass('active');
-  		})
   		
-  		$('.controls').blur(function(){
-  			
-  		})
-  		$('#password').keyup(function(){
-  			if($(this).val().length>=2){
-  				$('.bbj_sm .ls1').addClass('current');
+  		
+  		
+  		
+  		var d=0;
+  		var name=/^[a-zA-Z][a-zA-Z0-9]{5,12}$/;
+  		$('#name').blur(function(){
+  			if(name.test($('#name').val())){
+  				d=1;
+  				$(this).parent().find("span").html("<font size='-2' color='green'>正确！</font>");
   			}else{
-  				$('.bbj_sm .ls1').removeClass('current');
+  				d=0;
+  				$(this).parent().find("span").html("<font size='-2' color='red'>字母开头的数字组合！</font>");
+  			}
+  		});
+  		var a=0;
+  		var b=0;
+  		var c=0;
+  		$('#password').keyup(function(){
+  			
+  			if($(this).val().length>=2){
+  				$('.ls1').addClass('current');
+  			}else{
+  				$('.ls1').removeClass('current');
   			}
   			if($(this).val().length>=4 && $(this).val().match(/\D/)!=null){
-  				$('.bbj_sm .ls2').addClass('current');
+  				$('.ls2').addClass('current');
   			}else{
-  				$('.bbj_sm .ls2').removeClass('current');
+  				$('.ls2').removeClass('current');
   			}
   			if($(this).val().length>=6 && $(this).val().match(/[`~!@#$%^&*_+<>{}\/'[\]]/im)){
-  				$('.bbj_sm .ls3').addClass('current');
+  				$('.ls3').addClass('current');
   			}else{
-  				$('.bbj_sm .ls3').removeClass('current');
+  				$('.ls3').removeClass('current');
   			}
   			if($(this).val().length>12){
-  				$(this).append("<span style='color:red; font-size: 11px;'>aaaa</span>")
+  				a=0;
+  				$(this).parent().find("span").html("<font size='-2' color='red'>密码不超过12位！</font>");
+  			}else{
+  				a=1;
+  				$(this).parent().find("span").html("<font size='-2' color='green'>密码可用！</font>");
   			}
   		})
   		var isMobile=/^(?:13\d|15\d|18\d)\d{5}(\d{3}|\*{3})$/;
   		$('#phone_tel').keyup(function(){
   				if(!isMobile.test($(this).val())){
+  					b=0;
   					//$(this).parent().remove($font);
   					$(this).parent().find("span").html("<font size='-2' color='red'>手机号码格式不正确！请重新输入！</font>");
   					
 				}else{
+					b=1;
 					$(this).parent().find("span").html("<font size='-2' color='green'>正确！</font>");
 					//$(this).parent().remove($font);
 					
@@ -204,9 +157,18 @@ rel="stylesheet">     <!--[if lt IE 9]>
   		$('#confirm_password').blur(function(){
   			var a=$('#password').val();
   			if($(this).val()==a){
+  				c=1;
   				$(this).parent().find("span").html("<font size='-2' color='green'>正确！</font>");
   			}else{
+  				c=0;
   				$(this).parent().find("span").html("<font size='-2' color='red'>不一致！</font>");
+  			}
+  		})
+  		$('#sb').click(function(){
+  			if(a==1 && b==1 && c==1 &&d==1){
+  				return true;
+  			}else{
+  				return false;
   			}
   		})
   		
