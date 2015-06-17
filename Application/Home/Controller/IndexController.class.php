@@ -15,13 +15,6 @@ use Home\Api\HomePublicApi;
 class IndexController extends HomeController {
 	
 	
-	/**
-	 * 注销/退出系统
-	 */
-	public function logout(){
-		session('[destroy]');
-		$this->success("退出成功!",U("Home/Index/index"));
-	}
 	
 	public function register_sm(){
 		$this->display();
@@ -31,6 +24,10 @@ class IndexController extends HomeController {
 	}
 	
 	public function index(){
+		$users=session('user_sm');
+//		dump(session('user_sm')['info']['username']);
+		$this->assign('username',session('user_sm')['info']['username']);
+//		if()
 		$this->display();
 	}
 	
@@ -78,7 +75,7 @@ class IndexController extends HomeController {
 //					dump($group);
 					$result3 = apiCall(HomePublicApi::Group_Add, array($group));
 					if($result3['status']){
-						$this->display('login');
+						$this->success('login');
 					}
 				}
 			}
@@ -150,32 +147,50 @@ class IndexController extends HomeController {
 			//调用成功
 			if ($result['status']) {
 				$uid = $result['info'];
-				
-				if ($result['status'] ) {
+				$users=apiCall(HomePublicApi::User_GetInfo, array($username));
+				$userid=$users['info']['id'];
+				$map="uid=".$userid;					
+				$group=apiCall(HomePublicApi::Group_QueryNpPage, array($map));
+				$groupid=$group['info'][0]['group_id'];
+				if($groupid==14){
+					session('user_sm',$users);
+					$this->assign('username',$users['info']['username']);
 					$this -> display('sm_manager');
+				}
+					
 
-				} 
+				
 
 			} 
 		}
 	}
 	
-	public function sm_manager(){
+	public function exits(){
+		session('[destroy]'); // 删除session
+		$this->display('login');
+	}
+	
+	public function manager_rw(){
 		$this->display();
 	}
 	
-	
-	
-	/**
-	 * 校验验证码是否正确
-	 * @return Boolean
-	 */
-	public function check_verify($code, $id = 1) {
-		$verify = A('Tool/Verify','Controller');
-		return $verify->checkCode($code,$id);
-	}
+	public function sm_manager(){
+		$username=I('username');
+		$users=apiCall(HomePublicApi::User_GetInfo, array($username));
+		$userid=$users['info']['id'];
+		$map="uid=".$userid;					
+		$group=apiCall(HomePublicApi::Group_QueryNpPage, array($map));
+		$groupid=$group['info'][0]['group_id'];
+		if($groupid==14){
+			session('user_sm',$users);
+			$this->assign('username',$users['info']['username']);
+			$this->display();
+		}
 		
-
+	}
+	
+	
+	
 	
 	
 }

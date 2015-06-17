@@ -159,7 +159,14 @@ abstract class Api {
 
 		return $this -> save(array('id' => $ID), $entity);
 	}
+	/**
+	 * 根据id保存数据
+	 */
+	public function saveByIDd($ID, $entity) {
+		unset($entity['id']);
 
+		return $this -> save(array('uid' => $ID), $entity);
+	}
 	/**
 	 * 数字类型字段有效
 	 * @param $map 条件

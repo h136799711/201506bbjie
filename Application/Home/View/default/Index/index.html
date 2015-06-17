@@ -13,8 +13,11 @@
     <div id="div_top">
     	<div class="div_info">
         	<div style="color:#FFF; float:left; background: url(__PUBLIC__/Home/img/gonggao.png) no-repeat 0 9px;padding-left:  25px;">试福街美食频道下线通知</div>
+        	<empty name="username">
             <div style="color:#FFF;float:right" >您好，欢迎来到试福街！请[<a href="{:U('Home/Index/login')}">登录</a>][<a href="{:U('Home/Index/register')}">免费注册</a>]|帮助中心</div>
-        </div>
+            <else/><div style="color:#FFF;float:right" ><a href="{:U('Home/Index/sm_manager',array('username'=>$username))}">{$username}</a>,您好，欢迎来到试福街！[<a href="{:U('Home/Index/register')}">免费注册</a>]|帮助中心</div>
+       </empty>
+    	</div>
     </div>
     <div id="div_top2">
     	<div class="div_info">
@@ -22,21 +25,7 @@
         		
         		<input style="padding: 4px 6px;background: #fff;
 				  height: 24px;line-height: 24px;border-radius: 4px; outline: none;border: none;color: #ccc;" />
-        		<!--
-        		 padding: 4px 6px;
-				  display: block;
-				  background: #fff;
-				  height: 24px;
-				  line-height: 24px;
-				  color: #ccc;
-				  border: 1px solid #000000;
-				  outline: none;
-				  width: 182px;
-				  -webkit-border-radius: 0;
-				  -moz-border-radius: 0;
-				  border-radius: 4px;
-				  margin: 0;
-				-->
+        		
 				
 			<input type="button" value="  " style="background: url('../../../Public/Home/img/search.png');
 			  width: 32px;
@@ -46,18 +35,7 @@
 			  cursor: pointer;
 			  margin-left: -5px;" />
 			
-			<!--
-            	
-            
-			display: block;
-  
-			 background: url('__PUBLIC__/Home/img/search.png');
-			  width: 26px;
-			  height: 26px;
-			  border: 1px solid #000000;
-			  cursor: pointer;"
-			  
-        	-->	
+			<
         		
         	</div>
         </div>

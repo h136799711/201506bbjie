@@ -38,7 +38,24 @@ class UserApi extends Api{
 	
 	}
 	
+	/**
+	 * 获取用户信息
+	 * @param  string  $uid         用户ID或用户名
+	 * @param  boolean $is_username 是否使用用户名查询
+	 * @return array                用户信息
+	 */
+	public function getbyname($username){
+		$map = array();
+		$map['username'] = $username;
+		
+		$user = $this->model->where($map)->field('id,username,email,mobile,status')->find();
+		if( is_array($user)){
+	    		return array('status'=>true,'info'=>$user);
+		} else {
+	    		return array('status'=>true,'info'=>"用户不存在");
+		}
 	
+	}
 	
 	
     /**
