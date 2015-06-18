@@ -13,21 +13,26 @@ use Home\Api\HomePublicApi;
  * 官网首页
  */
 class IndexController extends HomeController {
-	
-	
-	
+	/*
+	 * $headtitle="试民中心-任务";
+		$this->assign('head_title',$headtitle);
+	 * */
 	public function register_sm(){
+		$headtitle="宝贝街-试民注册";
+		$this->assign('head_title',$headtitle);
 		$this->display();
 	}
 	public function register_sj(){
+		$headtitle="宝贝街-商家注册";
+		$this->assign('head_title',$headtitle);
 		$this->display();
 	}
 	
 	public function index(){
+		$headtitle="宝贝街-首页";
+		$this->assign('head_title',$headtitle);
 		$users=session('user_sm');
-//		dump(session('user_sm')['info']['username']);
 		$this->assign('username',session('user_sm')['info']['username']);
-//		if()
 		$this->display();
 	}
 	
@@ -41,6 +46,7 @@ class IndexController extends HomeController {
 		$email=$username."@qq.com";
 		$yqr=I('post.yaoqingren');
 		$result = apiCall(HomePublicApi::User_Register, array($username, $password, $email,$mobile));
+//		dump($result);
 		if($result['status']){
 			$uid=$result['info'];
 			$entity=array(
@@ -57,6 +63,7 @@ class IndexController extends HomeController {
 				'store_name'=>'',
 			);
 			$result1 = apiCall(HomePublicApi::Bbjmember_Add, array($entity));
+//			dump($result1);
 			if($result1['status']){
 				$user=array(
 					'uid'=>$uid,
@@ -67,6 +74,7 @@ class IndexController extends HomeController {
 					'update_time'=>time(),
 				);
 				$result2 = apiCall(HomePublicApi::Member_Add, array($user));
+//				dump($result2);
 				if($result2['status']){
 					$group=array(
 						'uid'=>$uid,
@@ -74,8 +82,9 @@ class IndexController extends HomeController {
 					);
 //					dump($group);
 					$result3 = apiCall(HomePublicApi::Group_Add, array($group));
+//					dump($result3);
 					if($result3['status']){
-						$this->success('login');
+						$this->display('login');
 					}
 				}
 			}
@@ -96,15 +105,23 @@ class IndexController extends HomeController {
 				'referrer_id'=>1,
 				'referrer_name'=>$yqr,
 				'taobao_account'=>'',
-				'aliwawa'=>'',
-				'daily_task_money'=>1000,
-				'dtree_job'=>'',
-				'personal_signature'=>'',
-				'brief_introduction'=>'',
 				'address'=>'',
+				'aliwawa'=>'',
 				'store_name'=>'',
+				'store_url'=>'',
+				'linkman'=>'',
+				'linkman_tel'=>'',
+				'task_linkman'=>'',
+				'task_linkman_tel'=>'',
+				'task_linkman_qq'=>'',
+				'waybill_show'=>'',
+				'linkman_qq'=>'',
+				'linkman_otherlink'=>'',
+				'create_time'=>time(),
+				'update_time'=>time(),
 			);
-			$result1 = apiCall(HomePublicApi::Bbjmember_Add, array($entity));
+			$result1 = apiCall(HomePublicApi::Bbjmember_Seller_Add, array($entity));
+			session('sjid',$result1['info']);
 			if($result1['status']){
 				$user=array(
 					'uid'=>$uid,
@@ -123,10 +140,27 @@ class IndexController extends HomeController {
 //					dump($group);
 					$result3 = apiCall(HomePublicApi::Group_Add, array($group));
 					if($result3['status']){
-						$this->display('login');
+						$this->display('register_sj_kz');
 					}
 				}
 			}
+		}
+	}
+	public function sjzc_kz(){
+		
+		$id=session('sjid');
+		$entity=array(
+			'store_name'=>I('post.dpname',''),
+			'aliwawa'=>I('alww',''),
+			'linkman_qq'=>I('post.qq'),
+			'linkman'=>I('post.lxr'),
+			'address'=>I('post.jydz'),
+		);
+		$result1 = apiCall(HomePublicApi::Bbjmember_Seller_SaveByID, array($id,$entity));
+		if ($result1['status']) {
+			$headtitle="宝贝街-登录";
+			$this->assign('head_title',$headtitle);
+			$this->display('login');
 		}
 	}
 	/**
@@ -134,6 +168,8 @@ class IndexController extends HomeController {
 	 */
 	public function login(){
 		if(IS_GET){
+			$headtitle="宝贝街-登录";
+			$this->assign('head_title',$headtitle);
 			$this->display();
 		}else{
 			//检测用户
@@ -156,6 +192,11 @@ class IndexController extends HomeController {
 					session('user_sm',$users);
 					$this->assign('username',$users['info']['username']);
 					$this -> display('sm_manager');
+				}else{
+					session('user_sj',$users);
+					$this->assign('username',$users['info']['username']);
+//					$this->success("欢迎回来！",U('Home/Usersj/index'));
+					$this->display('Usersj/index');
 				}
 					
 
@@ -171,6 +212,8 @@ class IndexController extends HomeController {
 	}
 	
 	public function manager_rw(){
+		$headtitle="试民中心-任务";
+		$this->assign('head_title',$headtitle);
 		$this->display();
 	}
 	
@@ -185,6 +228,10 @@ class IndexController extends HomeController {
 			session('user_sm',$users);
 			$this->assign('username',$users['info']['username']);
 			$this->display();
+		}else{
+			session('user_sm',$users);
+			$this->assign('username',$users['info']['username']);
+			$this->display('Usersj/index');
 		}
 		
 	}

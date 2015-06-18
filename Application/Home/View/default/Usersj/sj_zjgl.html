@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE">
+		<title>账户信息</title>
+		<meta http-equiv="cleartype" content="on">
+		<meta content="" name="keywords">
+		<meta content="" name="description">
+		<script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="main" src="__JS__/main.js"></script>
+		<script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="libs_common" src="__JS__/libs_common.js"></script>
+		<script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="person/address" src="__JS__/address.js"></script>
+		<script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="person/common" src="__JS__/common.js"></script>
+
+		<!--<base href="http://www.shifujie.net/">-->
+		<base href=".">
+		<link rel="stylesheet" href="__CSS__/shangjia.css">
+		<!--[if lt IE 9]>
+  <script src="http://cdn.shifujie.net/public/lib/html5/html5.js"></script>
+  <![endif]-->
+		
+		<script type="text/javascript" src="__JS__/require.min.js"></script>
+	</head>
+	<!--[if IEMobile 7]><body class="iem7" ><![endif]-->
+	<!--[if lte IE 6]><body class="lt-ie9 lt-ie8 lt-ie7" ><![endif]-->
+	<!--[if (IE 7)&(!IEMobile)]><body class="lt-ie9 lt-ie8" ><![endif]-->
+	<!--[if IE 8]><body class="lt-ie9" ><![endif]-->
+	<!--[if (gte IE 9)|(gt IEMobile 7)]><!-->
+
+	<body>
+		<!--<![endif]-->
+		<div class="seller_header_wrap">
+			<div class="seller_header clearfix" style="background: url(__IMG__/header_main_bg.jpg);">
+				<a class="logo" href="#" style=" background: url(__IMG__/logo.png) no-repeat 20px;"></a>
+				<div class="pull-left gzt btn-group">
+					<a class="shifu btn" href="#">试福</a>
+					<a class="taofu btn" href="#">淘福</a>
+					<a class="dropdown-toggle btn" data-toggle="dropdown" href="javascript:;">　账户关联　 <b class="caret"></b></a>
+					<ul role="menu" class="dropdown-menu pull-right">
+						<li role="menuitem"><a tabindex="-1" href="#">关联店铺管理&gt;&gt;</a>
+						</li>
+					</ul>
+				</div>
+				<a style="margin-top:57px; margin-left:20px;" class="text-info pull-left" href="#">试民淘宝号确认</a>
+				<div class="topmenu">
+					<ul class="clearfix">
+						<li>
+							<div>您好，<span class="text-link">{$username}</span>
+								<a href="#">[退出]</a>
+							</div>
+						</li>
+						<li class="shangjia"><a href="#">商家中心</a>
+						</li>
+						<li><a href="#">回到首页</a>
+						</li>
+						<li><a href="#">站内消息</a>
+						</li>
+						<li class="bangzhu"><a href="#">帮助中心</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div></div>
+		<div class="seller_main clearfix" controller="seller/common">
+			<div class="seller_content_wrap">
+				<div class="seller_content" style="padding-top: 10px;">
+
+					<div class="content">
+						<h1>资金管理</h1>
+						<div class="zjgl clearfix">
+							<div class="l">
+								<div class="l1">
+									<div><span class="t">资金概况</span>
+										<a data-toggle="modal2" modal-title="账户充值" class="btn btn-primary" href="">&nbsp; 充值 &nbsp;</a> &nbsp;
+										<a data-toggle="modal2" modal-title="资金提现" class="btn btn-primary" href="">&nbsp; 提现 &nbsp;</a> </div>
+									<div class="p20"></div>
+									<div class="row-fluid">
+										<div class="span3">
+											总余额
+											<br>
+											<div class="price">
+												￥0 </div>
+										</div>
+										<div class="span3">
+											可用余额
+											<br>
+											<div class="price">
+												￥0.00 </div>
+										</div>
+										<div class="span3">
+											冻结金额
+											<br>
+											<div class="price">
+												￥0.00 </div>
+										</div>
+										<div class="span3">
+											提现中
+											<br>
+											<div class="price">
+												￥0.00 </div>
+										</div>
+
+									</div>
+
+								</div>
+								<div class="l2">
+									<div>
+										<span class="t">提现账号</span>
+										<a data-toggle="modal2" modal-title="完善提现账号" class="muted" href="">更换帐号</a> </div>
+									<div style="margin-top: 5px;">
+										<div class="small">未设置提现账号</div>
+									</div>
+
+								</div>
+							</div>
+							<div class="m">
+								<div class="m1">
+									<div class="t text-center">安全中心</div>
+									<div class="p20"></div>
+									<div>
+										<img src="__IMG__/email_none.png" alt=""> <span class="muted">&nbsp; 未设置</span>
+									</div>
+									<div class="p20"></div>
+									<div>
+										&nbsp;
+										<img src="__IMG__/phone_none.png" alt=""> <span class="muted">&nbsp; 未设置</span>
+									</div>
+
+								</div>
+							</div>
+							<div class="r">
+								<div class="r1">
+									<div class="t">商家充值流程</div>
+									<div class="p20"></div>
+									<div>
+										一、从以下收款账户内选择自己方便转账的银行账户进行转账；
+										<br> 二、转账成功后，点击【充值】按钮；
+										<br> 三、按账户充值提示，选择自己所充值的银行账户、填入充值金额、交易流水号或上传交易凭证；
+										<br> 四、核对信息无误后，点击【提交】即可。
+										<br>
+										<div class="text-warning">小提示：转账时请务必按照【试福街账号+用途】的格式进行备注；</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+
+						<div class="p20"></div>
+						<div class="p20"></div>
+						<div class="bb jquery-once-1-processed">
+							<ul class="nav_price nav nav-tabs" role="menu">
+								<li class="active" role="menuitem"><a tabindex="-1" href="http://www.shifujie.net/seller/price/index">帐号收支明细</a>
+								</li>
+								<li role="menuitem"><a tabindex="-1" href="http://www.shifujie.net/seller/price/index?status=2">提现明细记录</a>
+								</li>
+								<li role="menuitem"><a tabindex="-1" href="http://www.shifujie.net/seller/price/index?status=3">充值明细记录</a>
+								</li>
+							</ul>
+							<div id="goodsorder-grid" class="grid-view" controller="extend/gridview" data-options="{&#39;ajaxUpdate&#39;:[&#39;goodsorder-grid&#39;],&#39;ajaxVar&#39;:&#39;ajax&#39;,&#39;pagerClass&#39;:&#39;pagination text-center&#39;,&#39;loadingClass&#39;:&#39;grid-view-loading&#39;,&#39;filterClass&#39;:&#39;filters&#39;,&#39;tableClass&#39;:&#39;price-table table table-hover&#39;,&#39;selectableRows&#39;:1,&#39;enableHistory&#39;:false,&#39;updateSelector&#39;:&#39;{page}, {sort}&#39;,&#39;filterSelector&#39;:&#39;{filter}&#39;,&#39;pageVar&#39;:&#39;YueLog_page&#39;,&#39;arg_id&#39;:&#39;YueLog&#39;}">
+								<table class="price-table table table-hover">
+									<thead>
+										<tr>
+											<th width="120" id="goodsorder-grid_c0">交易编号</th>
+											<th width="120" id="goodsorder-grid_c1"><a class="sort-link" href="http://www.shifujie.net/seller/price/index?YueLog_sort=log_time">交易时间<span class="caret"></span></a>
+											</th>
+											<th id="goodsorder-grid_c2">名称｜备注</th>
+											<th width="100" id="goodsorder-grid_c3">收入</th>
+											<th width="100" id="goodsorder-grid_c4">支出</th>
+											<th width="100" id="goodsorder-grid_c5">余额</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td colspan="6" class="empty"><span class="empty">没有找到数据.</span>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<div class="row-fluid">
+									<div class="span6 offset3"></div>
+									<div class="span3"></div>
+								</div>
+								<div class="keys" style="display:none" title="/seller/price"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="siderbar">
+
+				<dl class="open">
+					<dt class="s_vip">
+
+      <span>账号管理</span>
+
+    </dt>
+					<dd>
+						<a class="" href="{:U('Home/Usersj/sj_zhxx')}"><span>账号信息</span></a>
+					</dd>
+					<dd>
+						<a class="" href="{:U('Home/Usersj/sj_zhaq')}"><span>账户安全</span></a>
+					</dd>
+					<dd>
+						<a class="" href="{:U('Home/Usersj/sj_xgmm')}"><span>修改密码</span></a>
+					</dd>
+				</dl>
+
+				<dl>
+					<dt>
+
+
+
+      <a class="" href="{:U('Home/Usersj/sj_znxx')}">站内消息</a>
+
+
+
+    </dt>
+					<dt class="s_money">
+
+
+
+      <a class="active" href="{:U('Home/Usersj/sj_zjgl')}">资金管理</a>
+
+
+
+    </dt>
+					<dt>
+
+
+
+      <a class="" href="{:U('Home/Usersj/sj_viptd')}">VIP通道</a>
+
+
+
+    </dt>
+					<dt>
+
+
+
+      <a class="" href="{:U('Home/Usersj/sj_sfkt')}">试福课堂</a>
+
+
+
+    </dt>
+				</dl>
+
+				<div class="adorn_bottom"></div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var ready_do = true;
+			$(document).trigger('ready_do');
+		</script>
+	</body>
+
+</html>

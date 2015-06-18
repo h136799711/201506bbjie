@@ -12,22 +12,55 @@ use Home\Api\HomePublicApi;
 /*
  * 官网首页
  */
-class UsersmController extends HomeController {
+class UsersjController extends HomeController {
 	
 	public function index(){
-		$user=session('user_sm');
-		$this->assign('username',$user['info']['username']);
-		$userid=$user['info']['id'];
-//		dump($userid);
+		$user_sj=session('user_sj');
+		$id=$user_sj['info']['id'];
 		$map=array(
-			'uid'=>$userid,
-		);
-		$result=$result = apiCall(HomePublicApi::Member_Query, array($map));
-		$results=apiCall(HomePublicApi::Bbjmember_Query, array($map));
-		$this->assign('info',$results['info']);
-		$this->assign('mum',$result['info']);
-		$this->display('manager_info');
+			'uid'=>$id,
+		);					
+		$sj=apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
+		$this->assign('username',$user_sj['info']['username']);
+		$this->assign('sj',$sj['info']);
+		$this->display();
 	}
+	public function sj_zhxx(){
+		$user_sj=session('user_sj');
+		$this->assign('username',$user_sj['info']['username']);
+		$this->display();
+	}
+	public function sj_zhaq(){
+		$user_sj=session('user_sj');
+		$this->assign('username',$user_sj['info']['username']);
+		$this->display();
+	}
+	public function sj_xgmm(){
+		$user_sj=session('user_sj');
+		$this->assign('username',$user_sj['info']['username']);
+		$this->display();
+	}
+	public function sj_znxx(){
+		$user_sj=session('user_sj');
+		$this->assign('username',$user_sj['info']['username']);
+		$this->display();
+	}
+	public function sj_zzgl(){
+		$user_sj=session('user_sj');
+		$this->assign('username',$user_sj['info']['username']);
+		$this->display();
+	}
+	public function sj_viptd(){
+		$user_sj=session('user_sj');
+		$this->assign('username',$user_sj['info']['username']);
+		$this->display();
+	}
+	public function sj_sfkt(){
+		$user_sj=session('user_sj');
+		$this->assign('username',$user_sj['info']['username']);
+		$this->display();
+	}
+	
 	public function address(){
 		$user=session('user_sm');
 		if(IS_GET){

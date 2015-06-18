@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<!-- saved from url=(0035)http://www.shifujie.net/seller/info -->
+<html lang="zh-cn" dir="ltr">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE">
+		<title>账户信息</title>
+		<meta http-equiv="cleartype" content="on">
+		<meta content="" name="keywords">
+		<meta content="" name="description">
+		<script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="main" src="__JS__/main.js"></script>
+		<script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="libs_common" src="__JS__/libs_common.js"></script>
+		<script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="person/address" src="__JS__/address.js"></script>
+		<script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="person/common" src="__JS__/common.js"></script>
+		<script type="text/javascript" src="__PUBLIC__/Home/js/jquery.js" ></script>
+		<script type="text/javascript" src="__PUBLIC__/Home/js/location.js"></script>
+		<script type="text/javascript" src="__PUBLIC__/Home/js/area.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				$('#loc_province').change(function(){
+					var sheng=$('#loc_province option:selected').text();
+					$('.sheng').val(sheng);
+				})
+				$('#loc_city').change(function(){
+					var shi=$('#loc_city option:selected').text();
+					$('.shi').val(shi);
+				})
+				
+			})
+		</script>
+		<script src="__PUBLIC__/Home/js/select2.js"></script>
+		<script src="__PUBLIC__/Home/js/select2_locale_zh-CN.js"></script>
+		<link href="__PUBLIC__/Home/css/common.css" rel="stylesheet"/>
+		<link href="__PUBLIC__/Home/css/select2.css" rel="stylesheet"/>
+		<!--<base href="http://www.shifujie.net/">-->
+		<base href=".">
+		<link rel="stylesheet" href="__CSS__/shangjia.css">
+		<!--[if lt IE 9]>
+  <script src="http://cdn.shifujie.net/public/lib/html5/html5.js"></script>
+  <![endif]-->
+		
+	</head>
+	<!--[if IEMobile 7]><body class="iem7" ><![endif]-->
+	<!--[if lte IE 6]><body class="lt-ie9 lt-ie8 lt-ie7" ><![endif]-->
+	<!--[if (IE 7)&(!IEMobile)]><body class="lt-ie9 lt-ie8" ><![endif]-->
+	<!--[if IE 8]><body class="lt-ie9" ><![endif]-->
+	<!--[if (gte IE 9)|(gt IEMobile 7)]><!-->
+
+	<body>
+		<!--<![endif]-->
+		<div class="seller_header_wrap">
+			<div class="seller_header clearfix" style="background: url(__IMG__/header_main_bg.jpg);">
+				<a class="logo" href="#" style=" background: url(__IMG__/logo.png) no-repeat 20px;"></a>
+				<div class="pull-left gzt btn-group">
+					<a class="shifu btn" href="#">试福</a>
+					<a class="taofu btn" href="#">淘福</a>
+					<a class="dropdown-toggle btn" data-toggle="dropdown" href="javascript:;">　账户关联　 <b class="caret"></b></a>
+					<ul role="menu" class="dropdown-menu pull-right">
+						<li role="menuitem"><a tabindex="-1" href="#">关联店铺管理&gt;&gt;</a>
+						</li>
+					</ul>
+				</div>
+				<a style="margin-top:57px; margin-left:20px;" class="text-info pull-left" href="#">试民淘宝号确认</a>
+				<div class="topmenu">
+					<ul class="clearfix">
+						<li>
+							<div>您好，<span class="text-link">{$username}</span>
+								<a href="#">[退出]</a>
+							</div>
+						</li>
+						<li class="shangjia"><a href="#">商家中心</a>
+						</li>
+						<li><a href="#">回到首页</a>
+						</li>
+						<li><a href="#">站内消息</a>
+						</li>
+						<li class="bangzhu"><a href="#">帮助中心</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div></div>
+		<div class="seller_main clearfix" controller="seller/common">
+			<div class="seller_content_wrap">
+				<div class="seller_content" style="padding-top: 10px;">
+
+					<div class="content">
+						<h1>账户信息</h1>
+
+						<div class="row">
+							<div class="span10">
+
+								<div class="widget-box">
+									<div class="widget-title">
+										<h5>商家认证信息</h5>
+									</div>
+									<div class="widget-content">
+										<div class="form-wrap">
+											<form class="form-horizontal jquery-once-1-processed" controller="extend/ajax_form" id="yw0" action="#" method="post" novalidate="novalidate">
+
+												<input type="hidden" value="renzheng_form" name="form_id" id="form_id">
+												<div class="control-group">
+													<label class="control-label">会员名</label>
+													<div class="controls">
+														<input readonly="readonly" type="text" value="usernames" name="" id="">
+													</div>
+												</div>
+												<div class="control-group">
+													<label class="control-label" for="ali_wang">绑定旺旺</label>
+													<div class="controls">
+														<input required="required" type="text" value="dsf" name="ali_wang" id="ali_wang"><span class="help-inline"><span class="required_label">*</span></span>
+													</div>
+												</div>
+												<div class="control-group">
+													<label class="control-label" for="store_name">店铺名称</label>
+													<div class="controls">
+														<input required="required" type="text" value="sadf" name="store_name" id="store_name"><span class="help-inline"><span class="required_label">*</span></span>
+													</div>
+												</div>
+												<div class="control-group">
+													<label class="control-label" for="taobao_link">店铺网址</label>
+													<div class="controls">
+														<input class="span5" type="text" value="" name="taobao_link" id="taobao_link">
+													</div>
+												</div>
+												<div controller="person/address">
+													<div id="region">
+														<div class="control-group">
+															<label class="control-label" for="region_id">所在地</label>
+															<div class="controls">
+																<select id="loc_province" style="width:120px;">
+																</select>
+																<select id="loc_city" style="width:120px; margin-left: 10px">
+																</select>
+																<select id="loc_town" style="width:120px;margin-left: 10px">
+																</select>
+																<input type="hidden" name="sheng" class="sheng" />
+																<input type="hidden" name="shi" class="shi" />
+																<input type="hidden" name="qu" class="qi" /> </div>
+														</div>
+														<input id="region_id" class="mls_id" name="Store[region_id]" type="hidden">
+														<input class="mls_names" name="Store[region_name]" id="Store_region_name" type="hidden">
+													</div>
+												</div>
+												<div class="control-group">
+													<label class="control-label" for="Store_address">经营地址</label>
+													<div class="controls">
+														<textarea maxlength="120" style="height:100px;width:365px;" name="Store[address]" id="Store_address">漳州市</textarea>
+													</div>
+												</div>
+
+												<div class="form-actions">
+													<button class="btn btn-primary" type="submit" name="yt0">提交认证</button>
+												</div>
+											</form>
+										</div>
+
+									</div>
+								</div>
+
+								<div class="widget-box">
+									<div class="widget-title">
+										<h5>任务相关</h5>
+										<div class="sub_title">任务流程相关设置</div>
+									</div>
+									<div class="widget-content">
+										<div class="form-wrap">
+											<form class="form-horizontal jquery-once-1-processed" controller="extend/ajax_form" id="yw1" action="./账户信息_files/账户信息.html" method="post" novalidate="novalidate">
+												<input type="hidden" value="renwu_form" name="form_id" id="form_id">
+												<div class="control-group">
+													<label class="control-label" for="xs_wang">运单显示</label>
+													<div class="controls">
+														<input type="text" value="" name="xs_wang" id="xs_wang"><span class="help-inline">试福活动中在物流单号上显示，默认显示旺旺号</span>
+													</div>
+												</div>
+												<div class="control-group">
+													<label class="control-label">信用卡</label>
+													<div class="controls text">
+														<span class="text-muted">店铺未开通信用卡</span>
+														<span class="help-inline">如果状态不一致请联系专属客服修改</span>
+													</div>
+												</div>
+
+												<div class="control-group">
+													<label class="control-label" for="renwu_fzr">任务负责人</label>
+													<div class="controls">
+														<input required="required" type="text" value="df" name="renwu_fzr" id="renwu_fzr"><span class="help-inline">试民搜索进店、任务时寻求帮助</span>
+													</div>
+												</div>
+												<div class="control-group">
+													<label class="control-label" for="renwu_tel">负责人电话</label>
+													<div class="controls">
+														<input required="required" type="text" value="17826823305" name="renwu_tel" id="renwu_tel">
+													</div>
+												</div>
+												<div class="control-group">
+													<label class="control-label" for="renwu_qq">负责人QQ</label>
+													<div class="controls">
+														<input type="text" value="99701759" name="renwu_qq" id="renwu_qq">
+													</div>
+												</div>
+												<div class="form-actions">
+													<button class="btn btn-primary" type="submit" name="yt1">保存修改</button>
+												</div>
+											</form>
+										</div>
+
+									</div>
+								</div>
+								<div class="widget-box">
+									<div class="widget-title">
+										<h5>联系人信息</h5>
+										<div class="sub_title">请确保联系人资料的正确性</div>
+									</div>
+									<div class="widget-content">
+										<div class="form-wrap">
+											<form class="form-horizontal jquery-once-1-processed" controller="extend/ajax_form" id="yw2" action="./账户信息_files/账户信息.html" method="post" novalidate="novalidate">
+												<input type="hidden" value="contact_info_form" name="form_id" id="form_id">
+												<div class="control-group">
+													<label class="control-label" for="owner_name">联系人</label>
+													<div class="controls">
+														<input required="required" type="text" value="df" name="owner_name" id="owner_name"><span class="help-inline"><span class="required_label">*</span>处理试福街相关业务的负责人</span>
+													</div>
+												</div>
+												<div class="control-group">
+													<label class="control-label" for="tel">电话</label>
+													<div class="controls">
+														<input required="required" type="text" value="17826823305" name="tel" id="tel">
+													</div>
+												</div>
+												<div class="control-group">
+													<label class="control-label" for="im_qq">QQ</label>
+													<div class="controls">
+														<input type="text" value="99701759" name="im_qq" id="im_qq">
+													</div>
+												</div>
+												<div class="control-group">
+													<label class="control-label" for="im_msn">其他联系方式</label>
+													<div class="controls">
+														<input type="text" value="" name="im_msn" id="im_msn">
+													</div>
+												</div>
+												<div class="form-actions">
+													<button class="btn btn-primary" type="submit" name="yt2">保存修改</button>
+												</div>
+											</form>
+										</div>
+
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="siderbar">
+
+				<dl class="open">
+					<dt class="s_vip">
+
+      <span>账号管理</span>
+
+    </dt>
+					<dd>
+						<a class="active" href="{:U('Home/Usersj/sj_zhxx')}"><span>账号信息</span></a>
+					</dd>
+					<dd>
+						<a class="" href="{:U('Home/Usersj/sj_zhaq')}"><span>账户安全</span></a>
+					</dd>
+					<dd>
+						<a class="" href="{:U('Home/Usersj/sj_xgmm')}"><span>修改密码</span></a>
+					</dd>
+				</dl>
+
+				<dl>
+					<dt>
+
+
+
+      <a class="" href="{:U('Home/Usersj/sj_znxx')}">站内消息</a>
+
+
+
+    </dt>
+					<dt class="s_money">
+
+
+
+      <a class="" href="{:U('Home/Usersj/sj_zjgl')}">资金管理</a>
+
+
+
+    </dt>
+					<dt>
+
+
+
+      <a class="" href="{:U('Home/Usersj/sj_viptd')}">VIP通道</a>
+
+
+
+    </dt>
+					<dt>
+
+
+
+      <a class="" href="{:U('Home/Usersj/sj_sfkt')}">试福课堂</a>
+
+
+
+    </dt>
+				</dl>
+
+				<div class="adorn_bottom"></div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var ready_do = true;
+			$(document).trigger('ready_do');
+		</script>
+	</body>
+
+</html>

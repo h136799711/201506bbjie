@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE">
+		<title>账户信息</title>
+		<meta http-equiv="cleartype" content="on">
+		<meta content="" name="keywords">
+		<meta content="" name="description">
+		<script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="main" src="__JS__/main.js"></script>
+		<script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="libs_common" src="__JS__/libs_common.js"></script>
+		<script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="person/address" src="__JS__/address.js"></script>
+		<script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="person/common" src="__JS__/common.js"></script>
+
+		<!--<base href="http://www.shifujie.net/">-->
+		<base href=".">
+		<link rel="stylesheet" href="__CSS__/shangjia.css">
+		<!--[if lt IE 9]>
+  <script src="http://cdn.shifujie.net/public/lib/html5/html5.js"></script>
+  <![endif]-->
+		<script type="text/javascript" src="__JS__/require.min.js"></script>
+	</head>
+	<!--[if IEMobile 7]><body class="iem7" ><![endif]-->
+	<!--[if lte IE 6]><body class="lt-ie9 lt-ie8 lt-ie7" ><![endif]-->
+	<!--[if (IE 7)&(!IEMobile)]><body class="lt-ie9 lt-ie8" ><![endif]-->
+	<!--[if IE 8]><body class="lt-ie9" ><![endif]-->
+	<!--[if (gte IE 9)|(gt IEMobile 7)]><!-->
+
+	<body>
+		<!--<![endif]-->
+		<div class="seller_header_wrap">
+			<div class="seller_header clearfix" style="background: url(__IMG__/header_main_bg.jpg);">
+				<a class="logo" href="#" style=" background: url(__IMG__/logo.png) no-repeat 20px;"></a>
+				<div class="pull-left gzt btn-group">
+					<a class="shifu btn" href="#">试福</a>
+					<a class="taofu btn" href="#">淘福</a>
+					<a class="dropdown-toggle btn" data-toggle="dropdown" href="javascript:;">　账户关联　 <b class="caret"></b></a>
+					<ul role="menu" class="dropdown-menu pull-right">
+						<li role="menuitem"><a tabindex="-1" href="#">关联店铺管理&gt;&gt;</a>
+						</li>
+					</ul>
+				</div>
+				<a style="margin-top:57px; margin-left:20px;" class="text-info pull-left" href="#">试民淘宝号确认</a>
+				<div class="topmenu">
+					<ul class="clearfix">
+						<li>
+							<div>您好，<span class="text-link">{$username}</span>
+								<a href="#">[退出]</a>
+							</div>
+						</li>
+						<li class="shangjia"><a href="#">商家中心</a>
+						</li>
+						<li><a href="#">回到首页</a>
+						</li>
+						<li><a href="#">站内消息</a>
+						</li>
+						<li class="bangzhu"><a href="#">帮助中心</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div></div>
+		<div class="seller_main clearfix" controller="seller/common">
+			<div class="seller_content_wrap">
+				<div class="seller_content" style="padding-top: 10px;">
+
+					<div class="content">
+						<h1>
+
+  修改密码
+
+  </h1>
+						<div class="row">
+							<div class="span10">
+								<div class="widget-box">
+									<div class="widget-title">
+										<h5>修改登录密码</h5>
+
+										<div class="sub_title">您在试福街的登录密码</div>
+									</div>
+									<div class="widget-content">
+										<div class="form-wrap">
+											<form class="form-horizontal jquery-once-1-processed" controller="extend/ajax_form" id="yw0" action="./修改密码_files/修改密码.html" method="post" novalidate="novalidate">
+												<input type="hidden" value="denglu_mima_form" name="form_id" id="form_id">
+												<div class="control-group">
+													<label class="control-label" for="old_password">输入旧密码</label>
+													<div class="controls">
+														<input required="required" data-msg-required="您的旧登录密码，必须正确填写。" type="password" value="" name="old_password" id="old_password"><span class="help-inline"><span class="required_label">*</span></span>
+													</div>
+												</div>
+												<div class="control-group">
+													<label class="control-label" for="password">新登录密码</label>
+													<div class="controls">
+														<input required="required" data-msg-required="请输入您的新密码！" type="password" value="" name="password" id="password"><span class="help-inline"><span class="required_label">*</span></span>
+													</div>
+												</div>
+												<div class="control-group">
+													<label class="control-label" for="password2">确认新密码</label>
+													<div class="controls">
+														<input required="required" data-msg-required="请输入与上面一致的密码。" type="password" value="" name="password2" id="password2"><span class="help-inline"><span class="required_label">*</span></span>
+													</div>
+												</div>
+												<div class="form-actions">
+													<button class="btn btn-primary" type="submit" name="yt0">确认修改</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+								<div class="widget-box">
+									<div class="widget-title">
+										<h5>修改操作密码</h5>
+
+										<div class="sub_title">您在试福街的操作密码</div>
+									</div>
+									<div class="widget-content">
+										<div class="form-wrap">
+											<form class="form-horizontal jquery-once-1-processed" controller="extend/ajax_form" id="yw1" action="./修改密码_files/修改密码.html" method="post" novalidate="novalidate">
+												<input type="hidden" value="caozuo_mima_form" name="form_id" id="form_id">
+												<div class="control-group">
+													<label class="control-label" for="old_password">输入旧密码</label>
+													<div class="controls">
+														<input required="required" data-msg-required="您的旧登录密码，必须正确填写。" type="password" value="" name="old_password" id="old_password"><span class="help-inline"><span class="required_label">*</span></span>
+													</div>
+												</div>
+												<div class="control-group">
+													<label class="control-label" for="password">新操作密码</label>
+													<div class="controls">
+														<input required="required" data-msg-required="请输入您的新密码！" type="password" value="" name="password" id="password"><span class="help-inline"><span class="required_label">*</span></span>
+													</div>
+												</div>
+												<div class="control-group">
+													<label class="control-label" for="password2">确认新密码</label>
+													<div class="controls">
+														<input required="required" data-msg-required="请输入与上面一致的密码。" type="password" value="" name="password2" id="password2"><span class="help-inline"><span class="required_label">*</span></span>
+													</div>
+												</div>
+												<div class="form-actions">
+													<button class="btn btn-primary" type="submit" name="yt1">确认修改</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="siderbar">
+
+				<dl class="open">
+					<dt class="s_vip">
+
+      <span>账号管理</span>
+
+    </dt>
+					<dd>
+						<a class="" href="{:U('Home/Usersj/sj_zhxx')}"><span>账号信息</span></a>
+					</dd>
+					<dd>
+						<a class="" href="{:U('Home/Usersj/sj_zhaq')}"><span>账户安全</span></a>
+					</dd>
+					<dd>
+						<a class="active" href="{:U('Home/Usersj/sj_xgmm')}"><span>修改密码</span></a>
+					</dd>
+				</dl>
+
+				<dl>
+					<dt>
+
+
+
+      <a class="" href="{:U('Home/Usersj/sj_znxx')}">站内消息</a>
+
+
+
+    </dt>
+					<dt class="s_money">
+
+
+
+      <a class="" href="{:U('Home/Usersj/sj_zjgl')}">资金管理</a>
+
+
+
+    </dt>
+					<dt>
+
+
+
+      <a class="" href="{:U('Home/Usersj/sj_viptd')}">VIP通道</a>
+
+
+
+    </dt>
+					<dt>
+
+
+
+      <a class="" href="{:U('Home/Usersj/sj_sfkt')}">试福课堂</a>
+
+
+
+    </dt>
+				</dl>
+
+				<div class="adorn_bottom"></div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var ready_do = true;
+			$(document).trigger('ready_do');
+		</script>
+	</body>
+
+</html>

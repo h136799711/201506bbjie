@@ -110,6 +110,7 @@
 						<div class="div_minSet"  style="background: #fbf9fa; line-height: 35px; padding-left: 20px; font-size: 14px;" >
 							<b>基本资料</b>
 						</div>
+						<volist name="info" id="vo">
 						<div class="div_minInfo">
 							
 							<table>
@@ -121,7 +122,7 @@
 									<td class="td_title">性别：</td>
 									<td>
 										<input name="sex" value="2" type="radio"/>保密
-										<input name="sex" value="1" type="radio"/>男
+										<input name="sex" value="1" type="radio" checked="checked"/>男
 										<input name="sex" value="0" type="radio"/>女
 									</td>
 								</tr>
@@ -142,15 +143,20 @@
 								<tr>
 									<td class="td_title">详细地址：</td>
 									<td>
-										<textarea name="address" cols="50" rows="3" style=" border-color: #ccc; border-radius:3px;"></textarea>
+										<textarea name="address" cols="50" rows="3" style=" border-color: #ccc; border-radius:3px;">{$vo.address}</textarea>
 									</td>
 								</tr>
 								<tr>
 									<td class="td_title">生日：</td>
 									<td><select name="year">
+											<option>2008</option>
+											<option>2009</option>
+											<option>2010</option>
+											<option>2011</option>
+											<option>2012</option>
+											<option>2013</option>
+											<option>2014</option>
 											<option>2015</option>
-											<option>2013</option>
-											<option>2013</option>
 											<option>2016</option>
 										</select>
 										<select name="month">
@@ -218,29 +224,30 @@
 							<b>联系人信息</b>
 						</div>
 						<div class="div_minInfo">
+							<volist name="mum" id="v">
 							<table>
 								<tr>
 									<td class="td_title">姓名：</td>
-									<td><input name="name"  style="list-style: none; width: 220px;border-radius:3px;border: 1px solid #ccc;"/></td>
+									<td><input name="realname"  style="list-style: none; width: 220px;border-radius:3px;border: 1px solid #ccc;" value="{$v.realname}"/></td>
 									<td>任务有问题，能第一时间联系</td>
 								</tr>
 								<tr>
 									<td class="td_title">联系电话：</td>
 									<td>
-										<input name="phone" style="list-style: none; width: 220px;border-radius:3px;border: 1px solid #ccc;"/>
+										<input name="phone" style="list-style: none; width: 220px;border-radius:3px;border: 1px solid #ccc;" value="{$vo.mobile}"/>
 										
 									</td>
 									<td></td>
 								</tr>
 								<tr>
 									<td class="td_title">QQ：</td>
-									<td><input name="qq" value="" style="list-style: none; width: 220px;border-radius:3px;border: 1px solid #ccc;"/></td>
+									<td><input name="qq" value="" style="list-style: none; width: 220px;border-radius:3px;border: 1px solid #ccc;" value="{$v.qq}"/></td>
 									<td></td>
 								</tr>
 								
 							</table>
 						</div>
-						
+						</volist>
 						<div class="div_minSet"  style="background: #fbf9fa; line-height: 35px; padding-left: 20px; font-size: 14px;" >
 							<b>其他信息</b>
 						</div>
@@ -248,19 +255,21 @@
 							<table>
 								<tr>
 									<td class="td_title">个人签名：</td>
-									<td><input name="grqm" style="list-style: none; width: 220px;border-radius:3px;border: 1px solid #ccc;"/></td>
+									<td><input name="grqm" style="list-style: none; width: 220px;border-radius:3px;border: 1px solid #ccc;" value="{$vo.personal_signature}"/></td>
 									
 								</tr>
 								<tr>
 									<td class="td_title"  valign="top">简介：</td>
 									<td>
-										<textarea name="grjj" cols="50" rows="5" style=" border-color: #ccc; border-radius:3px;"></textarea>	
+										<textarea name="grjj" cols="50" rows="5" style=" border-color: #ccc; border-radius:3px;">{$vo.brief_introduction}</textarea>	
 									</td>		
 								</tr>
 							</table>
+							
 						</div>
 						<input value="确定修改" type="submit" style="margin-left: 220px; margin-top: 10px; background: #d1343e; color: white; border: none;border-radius: 4px; padding: 5px;"/>
 					</div>
+					</volist>
 				</form>
 			</div>
 		</div>

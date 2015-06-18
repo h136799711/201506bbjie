@@ -337,36 +337,7 @@ abstract class Api {
 			$query = $query->field($fields);
 		}
 		$list = $query -> select();
-		//旧
-//		if (is_null($map)) {
-//			if ($order === false) {
-//				if ($fields === false) {
-//					$list = $this -> model -> select();
-//				} else {
-//					$list = $this -> model -> field($fields) -> select();
-//				}
-//			} else {
-//				if ($fields === false) {
-//					$list = $this -> model -> order($order) -> select();
-//				} else {
-//					$list = $this -> model -> field($fields) -> order($order) -> select();
-//				}
-//			}
-//		} elseif ($order === false) {
-//			if ($fields === false) {
-//				$list = $this -> model -> where($map) -> select();
-//			} else {
-//				$list = $this -> model -> field($fields) -> where($map) -> select();
-//			}
-//		} else {
-//			if ($fields === false) {
-//				$list = $this -> model -> where($map) -> order($order) -> select();
-//			} else {
-//				$list = $this -> model -> field($fields) -> where($map) -> order($order) -> select();
-//			}
-//
-//		}
-
+		
 		if ($list === false) {
 			$error = $this -> model -> getDbError();
 			return $this -> apiReturnErr($error);

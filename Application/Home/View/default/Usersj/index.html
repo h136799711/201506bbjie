@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE">
+		<title>账户信息</title>
+		<meta http-equiv="cleartype" content="on">
+		<meta content="" name="keywords">
+		<meta content="" name="description">
+		<script type="text/javascript"  src="__JS__/main.js"></script>
+		<script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="libs_common" src="__JS__/libs_common.js"></script>
+		<script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="person/address" src="__JS__/address.js"></script>
+		<script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="person/common" src="__JS__/common.js"></script>
+
+		<!--<base href="http://www.shifujie.net/">-->
+		<base href=".">
+		<link rel="stylesheet" href="__CSS__/shangjia.css">
+		<!--[if lt IE 9]>
+  <script src="http://cdn.shifujie.net/public/lib/html5/html5.js"></script>
+  <![endif]-->
+		
+		<script type="text/javascript" src="__JS__/require.min.js"></script>
+	</head>
+	<!--[if IEMobile 7]><body class="iem7" ><![endif]-->
+	<!--[if lte IE 6]><body class="lt-ie9 lt-ie8 lt-ie7" ><![endif]-->
+	<!--[if (IE 7)&(!IEMobile)]><body class="lt-ie9 lt-ie8" ><![endif]-->
+	<!--[if IE 8]><body class="lt-ie9" ><![endif]-->
+	<!--[if (gte IE 9)|(gt IEMobile 7)]><!-->
+
+	<body>
+		<!--<![endif]-->
+		<div class="seller_header_wrap">
+			<div class="seller_header clearfix" style="background: url(__IMG__/header_main_bg.jpg);">
+				<a class="logo" href="#" style=" background: url(__IMG__/logo.png) no-repeat 20px;"></a>
+				<div class="pull-left gzt btn-group">
+					<a class="shifu btn" href="#">试福</a>
+					<a class="taofu btn" href="#">淘福</a>
+					<a class="dropdown-toggle btn" data-toggle="dropdown" href="javascript:;">　账户关联　 <b class="caret"></b></a>
+					<ul role="menu" class="dropdown-menu pull-right">
+						<li role="menuitem"><a tabindex="-1" href="#">关联店铺管理&gt;&gt;</a>
+						</li>
+					</ul>
+				</div>
+				<a style="margin-top:57px; margin-left:20px;" class="text-info pull-left" href="#">试民淘宝号确认</a>
+				<div class="topmenu">
+					<ul class="clearfix">
+						<li>
+							<div>您好，<span class="text-link">{$username}</span>
+								<a href="#">[退出]</a>
+							</div>
+						</li>
+						<li class="shangjia"><a href="{:U('Home/Usersj/index')}">商家中心</a>
+						</li>
+						<li><a href="{:U('Home/Index/index')}">回到首页</a>
+						</li>
+						<li><a href="{:U('Home/Usersj/sj_znxx')}">站内消息</a>
+						</li>
+						<li class="bangzhu"><a href="#">帮助中心</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div></div>
+		<div class="seller_main clearfix" controller="seller/common">
+			<div class="seller_content_wrap">
+				<div class="seller_content" style="padding-top: 10px;">
+
+					<div class="content">
+
+						<div class="row-fluid">
+							<div class="span6">
+								<div class="widget-box">
+									<div class="widget-title">
+										<h5>账号管理&gt;账号概览</h5>
+									</div>
+									<div class="widget-content">
+										<div style="height:300px;line-height: 2.2em;">
+											<table style="width: 100%;">
+												<tbody>
+													<tr>
+														<td style="vertical-align: top;width:160px;">
+															<div class="page_head_img">
+																<a class="index_touxiang" href="#">
+																	<img src="__IMG__/default_user_portrait.gif" alt=""> <i class="icon-edit"></i> </a>
+															</div>
+														</td>
+														<td style="vertical-align: top;">
+															<volist name="sj" id="vo">
+															<div style="margin: 30px 20px;">
+																<p>
+																	{$username} </p>
+																<p>
+																	会员等级 : 普通会员 [ <a class="text-link small" href="#">开通会员</a> ]
+																</p>
+
+																<p>
+																	可用余额 : <span class="number"><span class="price">0.00</span>元</span>
+																	[ <a class="text-link small" href="#">查看试福钱庄</a> ]
+																</p>
+
+																<p>
+																	绑定旺旺 :{$vo.aliwawa} </p>
+
+																<p>
+																	店铺名 : {$vo.store_name} </p>
+
+																<p>
+																	联系人 : {$vo.linkman} <a class="text-link small" href="#">修改</a> </p>
+
+																<div class="alert alert-warning in fade"><a href="#" class="close" data-dismiss="alert" type="button">×</a>您还没有对您的主旺旺进行认证，请先认证您的主旺旺 <a class="text-info" href="#">前往验证</a>
+																</div>
+															</div>
+														</volist>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="span6">
+								<div class="widget-box">
+									<div class="widget-title">
+										<h5>最新公告</h5>
+										<a class="more" href="#">更多&gt;</a> </div>
+									<div class="widget-content">
+										<div style="height:270px;padding:30px 15px 0;line-height: 28px;">
+
+											<ul class="gg">
+												<li>
+													<span class="pull-right muted"><span title="2015-06-18 08:56">06-18 08:56</span></span>
+													<a class="fen" href="#" target="_blank"><span title="关于2015年端午节放假的通知">关于2015年端午节放假的通知</span></a>
+												</li>
+												<li>
+													<span class="pull-right muted"><span title="2015-06-01 08:20">06-01 08:20</span></span>
+													<a class="fen" href="#" target="_blank"><span title="正式启动“试福街 2.0”计划">正式启动“试福街 2.0”计划</span></a>
+												</li>
+												<li>
+													<span class="pull-right muted"><span title="2015-05-22 11:44">05-22 11:44</span></span>
+													<a class="text-normal" href="#" target="_blank"><span title="关于商家活动审核试民功能调整的通知">关于商家活动审核试民功能调整的通知</span></a>
+												</li>
+												<li>
+													<span class="pull-right muted"><span title="2015-05-08 17:01">05-08 17:01</span></span>
+													<a class="text-normal" href="#" target="_blank"><span title="关于商家发货方面的问题说明">关于商家发货方面的问题说明</span></a>
+												</li>
+												<li>
+													<span class="pull-right muted"><span title="2015-04-27 13:58">04-27 13:58</span></span>
+													<a class="text-normal" href="#" target="_blank"><span title="试福街2015年五一放假安排通知">试福街2015年五一放假安排通知</span></a>
+												</li>
+												<li>
+													<span class="pull-right muted"><span title="2015-04-18 15:23">04-18 15:23</span></span>
+													<a class="text-normal" href="#" target="_blank"><span title="关于商家审核试民的优化通知">关于商家审核试民的优化通知</span></a>
+												</li>
+												<li>
+													<span class="pull-right muted"><span title="2015-04-13 10:59">04-13 10:59</span></span>
+													<a class="text-normal" href="#" target="_blank"><span title="试民任务问题联系人的设置">试民任务问题联系人的设置</span></a>
+												</li>
+												<li>
+													<span class="pull-right muted"><span title="2015-04-08 13:22">04-08 13:22</span></span>
+													<a class="text-normal" href="#" target="_blank"><span title="关于任务商品淘宝客设置的说明">关于任务商品淘宝客设置的说明</span></a>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="row-fluid">
+							<div class="span9">
+
+								<div class="widget-box">
+									<div class="widget-title">
+										<h5>任务情况</h5>
+									</div>
+									<div class="widget-content">
+										<div style="padding:10px 20px 0;">
+											<div class="row-fluid" style="padding:15px 0;">
+												<div class="span2">试福任务</div>
+												<div class="span2">待确认还款： <span class="number text-error">0</span>
+												</div>
+												<div class="span2">待审核订单： <span class="number text-error">0</span>
+												</div>
+												<div class="span2">订单未提交： <span class="number text-info">0</span>
+												</div>
+												<div class="span2">挂起： <span class="number">0</span>
+												</div>
+												<div class="span2 text-right"><a class="text-info" target="_blank" href="#">查看详细&gt;&gt;</a>
+												</div>
+											</div>
+
+											<div class="muted" style="border-top:1px solid #ccc;padding:5px 0 0;"></div>
+											<div class="row-fluid" style="padding:15px 0;">
+												<div class="span2">淘福任务</div>
+												<div class="span2">待确认还款： <span class="number text-error">0</span>
+												</div>
+												<div class="span2">待审核订单： <span class="number text-error">0</span>
+												</div>
+												<div class="span2">订单未提交： <span class="number text-info">0</span>
+												</div>
+												<div class="span2">挂起： <span class="number">0</span>
+												</div>
+												<div class="span2 text-right"><a class="text-info" target="_blank" href="#">查看详细&gt;&gt;</a>
+												</div>
+											</div>
+										</div>
+
+									</div>
+								</div>
+
+								<div class="widget-box">
+									<div class="widget-title">
+										<h5>试福助手</h5>
+										<div class="sub_title">v1.2</div>
+									</div>
+									<div class="widget-content">
+										<div class="clearfix index_sfzs" style="padding:10px 0;">
+											<div style="float:left;width:305px;padding:0 20px 0 10px;border-right: 1px solid #dddbdc;">
+												<span class="fen">试福助手</span> 是试福街专门为<span class="vip number">vip、svip</span>商家开发的一款高效精准的核对审核通过试民下单状况的帮手，商家只需轻松安装即可将试福街试民所下订单与真实淘宝买家订单区别开
+												<a class="pull-right btn btn-primary" style="margin-right:5px;" href="#">立即下载</a> </div>
+											<div style="margin-left: 350px;">
+												<form controller="extend/ajax_form" id="yw0" class="form-horizontal jquery-once-1-processed" action="#" method="post" novalidate="novalidate">
+													<input type="hidden" value="miyao" name="form-id" id="form-id">
+													<p>
+														<label class="pull-left" style="margin-top: 5px;">当前密钥：</label>
+													</p>
+													<div style="margin-left:5em;margin-right:20px;">
+														<input style="width:100%;" readonly="readonly" onclick="this.select()" type="text" value="dsf|0d60026bdfd" name="" id=""> </div>
+													<p></p>
+													<p class="muted" style="text-indent: 5em;">
+														请复制密钥后前往插件选项中直接设置
+													</p>
+													<p style="text-indent: 5em;margin-top: 20px;">
+														<button onclick="return confirm(&quot;重新生成密钥后之前的密钥将不能使用，您确定要重新生成么？&quot;)" class="btn btn-primary" type="submit" name="yt0">重新生成密钥</button> <small>
+
+                该操作将使当前的密钥失效，供回收权限使用
+
+                </small>
+													</p>
+
+												</form>
+											</div>
+										</div>
+
+									</div>
+								</div>
+
+							</div>
+
+							<div class="span3">
+
+								<div class="widget-box">
+									<div class="widget-title">
+										<h5>10天数据统计</h5>
+									</div>
+									<div class="widget-content">
+										<div class="index_sjtj">
+											<table class="table table-bordered">
+												<colgroup>
+													<col width="50%">
+												</colgroup>
+												<tbody>
+													<tr>
+														<td>
+															<div>挂起任务</div>
+															<div class="text-center">0</div>
+														</td>
+														<td>
+															<div>多次挂起</div>
+															<div class="text-center">0</div>
+														</td>
+													</tr>
+
+													<tr>
+														<td>
+															<div>自动审核/还款</div>
+															<div class="text-center">0</div>
+														</td>
+														<td>
+															<div>投诉反馈</div>
+															<div class="text-center">0</div>
+														</td>
+													</tr>
+
+												</tbody>
+											</table>
+
+										</div>
+									</div>
+								</div>
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="siderbar">
+
+				<dl class="open">
+					<dt class="s_vip">
+
+      <span>账号管理</span>
+
+    </dt>
+					<dd>
+						<a class="" href="{:U('Home/Usersj/sj_zhxx')}"><span>账号信息</span></a>
+					</dd>
+					<dd>
+						<a class="" href="{:U('Home/Usersj/sj_zhaq')}"><span>账户安全</span></a>
+					</dd>
+					<dd>
+						<a class="" href="{:U('Home/Usersj/sj_xgmm')}"><span>修改密码</span></a>
+					</dd>
+				</dl>
+
+				<dl>
+					<dt>
+
+      <a class="" href="{:U('Home/Usersj/sj_znxx')}">站内消息</a>
+
+    </dt>
+					<dt class="s_money">
+
+      <a class="" href="{:U('Home/Usersj/sj_zjgl')}">资金管理</a>
+
+    </dt>
+					<dt>
+
+      <a class="" href="{:U('Home/Usersj/sj_viptd')}">VIP通道</a>
+
+    </dt>
+					<dt>
+
+      <a class="" href="{:U('Home/Usersj/sj_sfkt')}">试福课堂</a>
+
+    </dt>
+				</dl>
+
+				<div class="adorn_bottom"></div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var ready_do = true;
+			$(document).trigger('ready_do');
+		</script>
+	</body>
+
+</html>
