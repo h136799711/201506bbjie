@@ -17,6 +17,7 @@ class UsersmController extends HomeController {
 	public function index(){
 		$user=session('user_sm');
 		$this->assign('username',$user['info']['username']);
+		$userid=$user['info']['id'];
 		$this->display('manager_info');
 	}
 	public function address(){
