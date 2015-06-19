@@ -34,130 +34,46 @@
 		<div id="div_title">
 			<div class="div_info">
 				<ul>
-					<li onclick="changePageTitle('{:U('Home/Index/index')}')"  class="li_checkedtitle" >宝贝广场</li>
+					<li onclick="changePageTitle('{:U('Home/Index/index')}')">宝贝广场</li>
 					<li onclick="changePageTitle('{:U('Home/Index/flzc')}')">福利专场</li>
-					<li onclick="changePageTitle('{:U('Home/Index/xfyd')}')">幸福一点</li>
+					<li onclick="changePageTitle('{:U('Home/Index/xfyd')}')"  >幸福一点</li>
 					<li onclick="changePageTitle('{:U('Home/Index/sjh')}')">试江湖</li>
 					<li onclick="changePageTitle('{:U('Home/Index/chg')}')">茶话馆</li>
-					<li onclick="changePageTitle('{:U('Home/Index/bzzx')}')" style="border-right: none;">帮助中心</li>
+					<li onclick="changePageTitle('{:U('Home/Index/bzzx')}')" style="border-right: none;" class="li_checkedtitle">帮助中心</li>
 				</ul>
 			</div>
 		</div>
-		<div id="div_lunbo">
+		
+		<div id="div_main" style="border-top: 1px solid #ccc;">
 			<div class="div_info">
-				<div class="div_info1">
-					<ul>
-						<li>
-							<h3><a href="#">日用百货</a></h3>
-							<div>
-								<a href="">居家必备</a>
-								<a href="">家纺</a>
-								<a href="">厨房必备</a>
-								<a href="">美妆必备</a>
-								<a href="">洗护用品</a>
-								<a href="">配饰</a>
-							</div>
-						</li>
-						<li>
-							<h3><a href="#">鞋子箱包</a></h3>
-
-							<div>
-								<a href="">居家必备</a>
-								<a href="">家纺</a>
-								<a href="">厨房必备</a>
-								<a href="">美妆必备</a>
-								<a href="">洗护用品</a>
-								<a href="">配饰</a>
-							</div>
-						</li>
-						<li>
-							<h3><a href="#">母婴用品</a></h3>
-							<div>
-								<a href="">居家必备</a>
-								<a href="">家纺</a>
-								<a href="">厨房必备</a>
-								<a href="">美妆必备</a>
-								<a href="">洗护用品</a>
-								<a href="">配饰</a>
-							</div>
-						</li>
-						<li>
-							<h3><a href="#">数码家电</a></h3>
-							<div>
-								<a href="">居家必备</a>
-								<a href="">家纺</a>
-								<a href="">厨房必备</a>
-								<a href="">美妆必备</a>
-								<a href="">洗护用品</a>
-								<a href="">配饰</a>
-							</div>
-						</li>
-						<li>
-							<h3><a href="#">办公问题</a></h3>
-							<div>
-								<a href="">居家必备</a>
-								<a href="">家纺</a>
-								<a href="">厨房必备</a>
-								<a href="">美妆必备</a>
-								<a href="">洗护用品</a>
-								<a href="">配饰</a>
-							</div>
-						</li>
+				<div class="div_condition">
+					
+					<ul class="ul_condition1">  
+						<li><a href="#">全部</a></li>
+						<li><a href="#">日用百货</a> </li>
+						<li><a href="#">鞋子</a></li>
+						<li><a href="#">箱包</a></li>
+						<li><a href="#">母婴用品</a> </li>
+						<li><a href="#">数码家电</a> </li>
+						<li><a href="#">办公文体</a></li>
 					</ul>
-
+					
+					<br />
+				<br />
+					<span>排序:</span>
+					
+					<div class="am-btn-group">
+						  <button type="button" class="am-btn am-btn-xs am-btn-default">全部</button>
+						  <button type="button" class="am-btn am-btn-xs am-btn-default">最新</button>
+						  <button type="button" class="am-btn am-btn-xs am-btn-default">最热</button>
+						  <button type="button" class="am-btn am-btn-xs am-btn-default">推荐</button>
+						  <button type="button" class="am-btn am-btn-xs am-btn-default">预告</button>
+					</div>
+					<input  style="width: 50px;"/>-
+					<input  style="width: 50px;"/>
+					<button type="button" class="am-btn am-btn-xs am-btn-default" style="">确定</button>
 				</div>
-				<div class="div_image">
-					<div class="div_minlunbo" style="background: url(../../../Public/Home/img/lunbo1.jpg);width: 100%; height: 100%;">
-
-					</div>
-
-					<div class="div_minlunbo" style="background: url(../../../Public/Home/img/lunbo2.jpg);width: 100%; height: 100%; display: none;">
-
-					</div>
-					<div class="div_minlunbo" style="background: url(../../../Public/Home/img/lunbo3.jpg);width: 100%; height: 100%;display: none;">
-
-					</div>
-
-					<div class="div_minlunbo" style="background: url(../../../Public/Home/img/lunbo4.jpg);width: 100%; height: 100%;display: none;">
-
-					</div>
-
-				</div>
-				<ul class="ul_lunbo">
-					<li class="lunboli current"></li>
-					<li class="lunboli"></li>
-					<li class="lunboli"></li>
-					<li class="lunboli"></li>
-				</ul>
-				<div class="div_info2">
-					<ul class="ul_image">
-						<li>
-							<a href="">
-								<img src="__PUBLIC__/Home/img/tu1.jpg" height="140" />
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<img src="__PUBLIC__/Home/img/tu2.jpg" height="140" />
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<img src="__PUBLIC__/Home/img/tu3.jpg" height="140" />
-							</a>
-						</li>
-					</ul>
-
-				</div>
-			</div>
-		</div>
-		<div id="div_main">
-			<div class="div_info">
 				<div class="div_minInfo">
-					<div class="div_minTitle">
-						<h3>上新预告</h3>
-						<a href="">&nbsp;</a>
-					</div>
 					<dl class="dl_info">
 						<dt>
 
@@ -259,10 +175,6 @@
 				</div>
 
 				<div class="div_minInfo">
-					<div class="div_minTitle">
-						<h3>推荐福品</h3>
-						<a href="">&nbsp;</a>
-					</div>
 					<dl class="dl_info">
 						<dt>
 
@@ -362,101 +274,15 @@
 					</dl>
 
 				</div>
-
-				<div class="div_minInfo">
-					<div class="div_minTitle">
-						<h3>试民晒货</h3>
-						<a href=""></a>
-					</div>
-					<dl class="dl_shaihuo">
-						<dt>
-
-			                <a href=""><img src="__PUBLIC__/Home/img/shai1.jpg" width="91" /></a>
-
-			                <a href=""><img src="__PUBLIC__/Home/img/shai2.jpg" width="91" /></a>
-
-			                <a href=""><img src="__PUBLIC__/Home/img/shai3.jpg" width="91" /></a>
-
-			                <a href=""><img src="__PUBLIC__/Home/img/shai4.jpg" width="91" /></a>
-
-		                
-
-		                </dt>
-						<dd style="">1个晒货|1个推荐</dd>
-						<dd><a href="#">去看看</a>
-						</dd>
-					</dl>
-
-					<dl class="dl_shaihuo">
-						<dt>
-
-		                <a href=""><img src="__PUBLIC__/Home/img/shai1.jpg" width="91" /></a>
-
-		                <a href=""><img src="__PUBLIC__/Home/img/shai2.jpg" width="91" /></a>
-
-		                <a href=""><img src="__PUBLIC__/Home/img/shai3.jpg" width="91" /></a>
-
-		                <a href=""><img src="__PUBLIC__/Home/img/shai4.jpg" width="91" /></a>
-
-		                </dt>
-						<dd style="">1个晒货|1个推荐</dd>
-						<dd><a href="#">去看看</a>
-						</dd>
-					</dl>
-
-					<dl class="dl_shaihuo">
-						<dt>
-
-		                <a href=""><img src="__PUBLIC__/Home/img/shai1.jpg" width="91" /></a>
-
-		                <a href=""><img src="__PUBLIC__/Home/img/shai2.jpg" width="91" /></a>
-
-		                <a href=""><img src="__PUBLIC__/Home/img/shai3.jpg" width="91" /></a>
-
-		                <a href=""><img src="__PUBLIC__/Home/img/shai4.jpg" width="91" /></a>
-
-		                </dt>
-						<dd style="">1个晒货|1个推荐</dd>
-						<dd><a href="#">去看看</a>
-						</dd>
-					</dl>
-
-					<dl class="dl_shaihuo">
-						<dt>
-
-		               <a href=""><img src="__PUBLIC__/Home/img/shai1.jpg" width="91" /></a>
-
-		                <a href=""><img src="__PUBLIC__/Home/img/shai2.jpg" width="91" /></a>
-
-		                <a href=""><img src="__PUBLIC__/Home/img/shai3.jpg" width="91" /></a>
-
-		                <a href=""><img src="__PUBLIC__/Home/img/shai4.jpg" width="91" /></a>
-
-		                </dt>
-						<dd style="">1个晒货|1个推荐</dd>
-						<dd><a href="#">去看看</a>
-						</dd>
-					</dl>
-
-					<dl class="dl_shaihuo">
-						<dt>
-
-		                <a href=""><img src="__PUBLIC__/Home/img/shai1.jpg" width="91" /></a>
-
-		                <a href=""><img src="__PUBLIC__/Home/img/shai2.jpg" width="91" /></a>
-
-		                <a href=""><img src="__PUBLIC__/Home/img/shai3.jpg" width="91" /></a>
-
-		                <a href=""><img src="__PUBLIC__/Home/img/shai4.jpg" width="91" /></a>
-
-		                </dt>
-						<dd style="">1个晒货|1个推荐</dd>
-						<dd><a href="#">去看看</a>
-						</dd>
-					</dl>
-
+				<div class="div_page">
+						<a class="am-btn am-btn-danger am-btn-xs" href="#" target="_blank"><上一页</a>
+						<a class="am-btn am-btn-danger am-btn-xs pagechecked" href="#" target="_blank">1</a>
+						<a class="am-btn am-btn-danger am-btn-xs" href="#" target="_blank">2</a>
+						<a class="am-btn am-btn-danger am-btn-xs" href="#" target="_blank">3</a>
+						<a class="am-btn am-btn-danger am-btn-xs" href="#" target="_blank">4</a>
+						<a class="am-btn am-btn-danger am-btn-xs" href="#" target="_blank">下一页></a>
+					
 				</div>
-
 			</div>
 		</div>
 		<hr color="#ccc" style="clear:both; margin-top:20px; width: 100%;" size="1" />
