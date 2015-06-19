@@ -26,13 +26,6 @@
 				})
 				
 			})
-		
-		
-		function del(url){
-			if(confirm("你确定要删除吗？")){
-				window.location.href=url;
-			}
-		}
 	</script>
 
 </block>
@@ -117,14 +110,14 @@
 						<b>基本资料</b>
 					</div>
 					<div class="div_minInfo">
-						<form action="{:U('Home/Usersm/address')}" method="post">
-							
-							<input type="hidden" value="{$v.id}" />
+						<form action="{:U('Home/Usersm/edit')}" method="post">
+							<volist name="addres" id="v">
+							<input type="hidden" name="id" value="{$v.id}" />
 							<table>
 								<tr>
 									<td class="td_title">收货人姓名：</td>
 									<td>
-										<input name="name" style="list-style: none; width: 220px;border-radius:3px;border: 1px solid #ccc;" />
+										<input name="name" value="{$v.contact_name}" style="list-style: none; width: 220px;border-radius:3px;border: 1px solid #ccc;" />
 									</td>
 								</tr>
 								<tr>
@@ -145,25 +138,25 @@
 								<tr>
 									<td class="td_title">详细地址：</td>
 									<td>
-										<textarea name="address" cols="50" rows="3" style=" border-color: #ccc; border-radius:3px;"></textarea>
+										<textarea name="address" cols="50" rows="3" style=" border-color: #ccc; border-radius:3px;">{$v.detail}</textarea>
 									</td>
 								</tr>
 								<tr>
 									<td class="td_title">邮政编码：</td>
 									<td>
-										<input name="yb" style="list-style: none; width: 100px;border-radius:3px;border: 1px solid #ccc;" />
+										<input value="{$v.post_code}" name="yb" style="list-style: none; width: 100px;border-radius:3px;border: 1px solid #ccc;" />
 									</td>
 								</tr>
 								<tr>
 									<td class="td_title">手机号码：</td>
 									<td>
-										<input name="mobile" style="list-style: none; width: 220px;border-radius:3px;border: 1px solid #ccc;" />电话号码、手机号码必填一项</td>
+										<input value="{$v.mobile}" name="mobile" style="list-style: none; width: 220px;border-radius:3px;border: 1px solid #ccc;" />电话号码、手机号码必填一项</td>
 
 								</tr>
 								<tr>
 									<td class="td_title">电话号码：</td>
 									<td>
-										<input name="phone" style="list-style: none; width:50px;border-radius:3px;border: 1px solid #ccc;" />-
+										<input value="{$v.telphone}" name="phone" style="list-style: none; width:50px;border-radius:3px;border: 1px solid #ccc;" />-
 										<input style="list-style: none; width:170px;border-radius:3px;border: 1px solid #ccc;" />-
 										<input style="list-style: none; width:50px;border-radius:3px;border: 1px solid #ccc;" />区号-电话号码-分机</td>
 
@@ -173,11 +166,12 @@
 
 									<td colspan="2">
 										<div style="padding: 25px;">
-											<input type="submit" class="am-btn am-btn-danger am-btn-xs" value="确认修改" style="margin-left: 50px;"></input>
+											<input  type="submit" value="确认修改" style="margin-left: 50px;"></input>
 										</div>
 									</td>
 								</tr>
 							</table>
+							</volist>
 						</form>
 					</div>
 					<table style="width: 1020px; margin-top: 9px; color: #848383;">
@@ -199,7 +193,7 @@
 							<td>{$vo.mobile}{$vo.telephone}</td>
 							<td>
 									<a class="am-btn am-btn-danger am-btn-xs" href="{:U('Home/Usersm/edit',array('id'=>$vo['id']))}">编辑</a>
-									<a class="am-btn am-btn-danger am-btn-xs" href="javascript:del('{:U('Home/Usersm/del',array('id'=>$vo['id']))}')">删除</a>
+									<a class="am-btn am-btn-danger am-btn-xs" href="{:U('Home/Usersm/del',array('id'=>$vo['id']))}">删除</a>
 								
 							</td>
 						</tr>

@@ -25,9 +25,9 @@ class UserApi extends Api{
 	 * @param  boolean $is_username 是否使用用户名查询
 	 * @return array                用户信息
 	 */
-	public function getInfo($uid){
+	public function getInfo($id){
 		$map = array();
-		$map['id'] = $uid;
+		$map['id'] = $id;
 		
 		$user = $this->model->where($map)->field('id,username,email,mobile,status')->find();
 		if( is_array($user)){
@@ -37,6 +37,7 @@ class UserApi extends Api{
 		}
 	
 	}
+	
 	
 	/**
 	 * 获取用户信息

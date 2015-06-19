@@ -15,10 +15,15 @@ class HomePublicApi{
 	const Bbjmember_Seller_SaveByID='Home/BbjmemberSeller/saveByID';
 	const Bbjmember_Seller_Add='Home/BbjmemberSeller/add';
 	const Bbjmember_Seller_Query='Home/BbjmemberSeller/queryNoPaging';
+	const Bbjmember_Seller_GetInfo='Home/BbjmemberSeller/getInfo';
 	const User_Register='Uclient/User/register';
 	const User_Query='Uclient/User/query';
 	const User_Login='Uclient/User/login';
 	const User_GetInfo='Uclient/User/getbyname';
+	const User_GetUser='Uclient/User/getInfo';
+	const User_EditPwd='Uclient/User/updateInfo';
+	const User_SaveByID='Home/UcenterMember/saveByID';
+	const UcenterUser_Query='Home/UcenterMember/queryNoPaging';
 	const Member_Add='Admin/Member/add';
 	const Member_Query='Admin/Member/queryNoPaging';
 	const Member_QueryAll='Admin/Member/query';
@@ -26,5 +31,7 @@ class HomePublicApi{
 	const Group_Add='Admin/AuthGroupAccess/add';
 	const Group_QueryNpPage='Admin/AuthGroupAccess/queryNoPaging';
 	const Address_Add='Home/Address/add';
+	const Address_Del='Home/Address/delete';
+	const Address_SaveByID='Home/Address/saveByID';
 	const Address_Query='Home/Address/queryNoPaging';
 }

@@ -1,143 +1,207 @@
-<!DOCTYPE html>
-<html lang="zh-cn" dir="ltr">
-	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}.ng-animate-block-transitions{transition:0s all!important;-webkit-transition:0s all!important;}.ng-hide-add-active,.ng-hide-remove{display:block!important;}</style>
-	<meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=EDGE">
-	<title>账户信息</title>
-  <meta http-equiv="cleartype" content="on">
-  <meta content="" name="keywords">
-  <meta content="" name="description">
-  <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="main" src="__JS__/main.js"></script>
-  <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="libs_common" src="__JS__/libs_common.js"></script>
-  <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="person/address" src="__JS__/address.js"></script>
-  <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="person/common" src="__JS__/common.js"></script>
-  	
+<extend name="template/base_index" />
 
-  <base href=".">
-  <link rel="stylesheet" href="__CSS__/shangjia.css">
- 
-  <script type="text/javascript">
-    var require = {urlArgs: 'v=45'};
-    var SITE_URL = "#";
-    var RES_URL = "#";
-	</script>
-  <script type="text/javascript" src="__JS__/require.min.js"></script>
-  </head>
-<!--[if IEMobile 7]><body class="iem7" ><![endif]-->
-<!--[if lte IE 6]><body class="lt-ie9 lt-ie8 lt-ie7" ><![endif]-->
-<!--[if (IE 7)&(!IEMobile)]><body class="lt-ie9 lt-ie8" ><![endif]-->
-<!--[if IE 8]><body class="lt-ie9" ><![endif]-->
-<!--[if (gte IE 9)|(gt IEMobile 7)]><!--><body><!--<![endif]-->
-<div class="seller_header_wrap">
-<div class="seller_header clearfix" style="background: url(__IMG__/header_main_bg.jpg);">
-  <a class="logo" href="#" style=" background: url(__IMG__/logo.png) no-repeat 20px;"></a>
-  <div class="pull-left gzt btn-group">
-    <a class="shifu btn" href="#">试福</a>
-    <a class="taofu btn" href="#">淘福</a>
-  <a class="dropdown-toggle btn" data-toggle="dropdown" href="javascript:;">　账户关联　 <b class="caret"></b></a><ul role="menu" class="dropdown-menu pull-right"><li role="menuitem"><a tabindex="-1" href="#">关联店铺管理&gt;&gt;</a></li></ul>  </div>
-  <a style="margin-top:57px; margin-left:20px;" class="text-info pull-left" href="#">试民淘宝号确认</a>
-  <div class="topmenu">
-    <ul class="clearfix">
-      <li><div>您好，<span class="text-link">{$username}</span>
-          <a href="#">[退出]</a></div>
-      </li>
-      <li class="shangjia"><a href="#">商家中心</a></li>
-      <li><a href="#">回到首页</a></li>
-            <li><a href="#">站内消息</a></li>
-      <li class="bangzhu"><a href="#">帮助中心</a></li>
-    </ul>
-  </div>
-</div>
-</div>
-<div></div>
+<block name="area_header">
+
+	<link rel="stylesheet" href="__CSS__/shangjia.css">
+	<style type="text/css">
+	</style>
+</block>
+
+<block name="area_body">
+
+	<div class="seller_header_wrap">
+		<div class="seller_header clearfix" style="background: url(__IMG__/header_main_bg.jpg);">
+			<a class="logo" href="#" style=" background: url(__IMG__/logo.png) no-repeat 20px;"></a>
+			<div class="pull-left gzt btn-group">
+				<a class="shifu btn" href="#">试福</a>
+				<a class="taofu btn" href="#">淘福</a>
+				<a class="dropdown-toggle btn" data-toggle="dropdown" href="javascript:;">　账户关联　 <b class="caret"></b></a>
+				<ul role="menu" class="dropdown-menu pull-right">
+					<li role="menuitem"><a tabindex="-1" href="#">关联店铺管理&gt;&gt;</a>
+					</li>
+				</ul>
+			</div>
+			<a style="margin-top:57px; margin-left:20px;" class="text-info pull-left" href="#">试民淘宝号确认</a>
+			<div class="topmenu">
+				<ul class="clearfix">
+					<li>
+						<div>您好，<span class="text-link">{$username}</span>
+							<a href="{:U('Home/Usersj/exits')}">[退出]</a>
+						</div>
+					</li>
+					<li class="shangjia"><a href="{:U('Home/Usersj/index')}">商家中心</a>
+					</li>
+					<li><a href="{:U('Home/Index/index')}">回到首页</a>
+					</li>
+					<li><a href="{:U('Home/Usersj/sj_znxx')}">站内消息</a>
+					</li>
+					<li class="bangzhu"><a href="#">帮助中心</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div></div>
 	<div class="seller_main clearfix" controller="seller/common">
-  <div class="seller_content_wrap">
-    <div class="seller_content" style="padding-top: 10px;">
-            
-<div class="content">
-  <h1>
-  账户安全
-  </h1>  <div>
-    <table class="renzheng-table">
-      <colgroup><col width="100px"><col width="620px"><col width="120px">
-      </colgroup><tbody><tr>
-        <td style="height:150px;">
-          <img src="__IMG__/email_none.png" alt="">          <p>&nbsp;邮箱认证</p>
-        </td>
-        <td>
-          <div style="width: 520px;">
-                          <span class="text-warning">你尚未绑定邮箱</span>
-                      </div>
-        </td>
-        <td>
-          <a data-toggle="modal2" modal-title="绑定邮箱" class="btn btn-primary" href="#">　修改　</a>        </td>
-      </tr>
-    </tbody></table>
+		<div class="seller_content_wrap">
+			<div class="seller_content" style="padding-top: 10px;">
 
-    <table class="renzheng-table">
-      <colgroup><col width="100px"><col width="620px"><col width="120px">
-      </colgroup><tbody><tr>
-        <td style="height:150px;">
-          <div style="margin-left: 10px;"><img src="__IMG__/phone_none.png" alt=""></div>
-          <p>&nbsp;手机认证</p>
-        </td>
-        <td>
-          <div style="width: 520px;">
-                          <span class="text-warning">你尚未绑定邮箱</span>
-                      </div>
-        </td>
-        <td>
-          <a data-toggle="modal2" modal-title="更换认证手机号码" class="btn btn-primary" href="#">更换号码</a>        </td>
-      </tr>
-    </tbody></table>
-  </div>
-</div>    </div>
-  </div>
-  <div class="siderbar">
-  
-  <dl class="open">
-    <dt class="s_vip">
+				<div class="content">
+					<h1>  账户安全  </h1>
+					<div>
+						<table class="renzheng-table">
+							<colgroup>
+								<col width="100px">
+									<col width="620px">
+										<col width="120px">
+							</colgroup>
+							<tbody>
+								<tr>
+									<td style="height:150px;">
+										<img src="__IMG__/email_none.png" alt="">
+										<p>&nbsp;邮箱认证</p>
+									</td>
+									<td>
+										<div style="width: 520px;">
+											<if condition="$entity['email'] eq ''">
+											<span class="text-warning">你尚未绑定邮箱</span>
+											<else/>
+											<span class="text-success">你已绑定邮箱[ {$entity['email']}]</span>
+											</if>
+										</div>
+									</td>
+									<td>
+										
+
+										<div class="am-modal am-modal-no-btn" tabindex="-1" id="doc-modal-1" >
+											<div class="am-modal-dialog">
+												<div class="am-modal-hd">邮箱验证
+													<a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+												</div>
+												<form action="{:U('Home/Usersj/email')}" method="post">
+													<div class="am-modal-bd">
+														<input type="hidden" name="id" value="{$entity['id']}" />
+														<input type="text" name="email" value="{$entity['email']}">
+														<input style="font-family: '微软雅黑'; font-size: 13px; border-radius:5px ; margin-top: -8px;" class="am-btn-danger am-btn-xs" type="submit" value="确认" />
+													</div>
+												</form>
+											</div>
+										</div>
+										<div class="am-modal am-modal-no-btn" tabindex="-1" id="doc-modal-2" >
+											<div class="am-modal-dialog">
+												<div class="am-modal-hd">手机更换
+													<a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+												</div>
+												<form action="{:U('Home/Usersj/phone')}" method="post">
+													<div class="am-modal-bd">
+														<input type="hidden" name="id" value="{$entity['id']}" />
+														<input type="text" class="email" name="phone" value="{$entity['mobile']}">
+														<input style="font-family: '微软雅黑'; font-size: 13px; border-radius:5px ; margin-top: -8px;" class="am-btn-danger am-btn-xs" type="submit" value="确认" />
+													</div>
+												</form>
+											</div>
+										</div>
+										<button class="am-btn am-btn-primary am-btn-xs" style="font-family: '微软雅黑'; font-size: 13px; width: 60px; height: 30px;line-height: 10px; padding: 10px; border-radius:5px ;" data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 400, height: 225}">修改</button>
+								</tr>
+							</tbody>
+						</table>
+
+						<table class="renzheng-table">
+							<colgroup>
+								<col width="100px">
+									<col width="620px">
+										<col width="120px">
+							</colgroup>
+							<tbody>
+								<tr>
+									<td style="height:150px;">
+										<div style="margin-left: 10px;">
+											<img src="__IMG__/phone_none.png" alt="">
+										</div>
+										<p>&nbsp;手机认证</p>
+									</td>
+									<td>
+										<div style="width: 520px;">
+											<if condition="$entity['mobile'] eq ''">
+											<span class="text-warning">你尚未绑定手机</span>
+											<else/>
+											<span class="text-success">你已绑定手机[ {$entity['mobile']}]</span>
+											</if>
+										</div>
+									</td>
+									<td>
+									<button class="am-btn am-btn-primary am-btn-xs" style="font-family: '微软雅黑'; font-size: 13px; width: 60px; height: 30px;line-height: 10px; padding: 10px; border-radius:5px ;" data-am-modal="{target: '#doc-modal-2', closeViaDimmer: 0, width: 400, height: 225}">更换</button>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="siderbar">
+
+			<dl class="open">
+				<dt class="s_vip">
+
       <span>账号管理</span>
-    </dt>
-    	<dd>
-						<a class="" href="{:U('Home/Usersj/sj_zhxx')}"><span>账号信息</span></a>
-					</dd>
-					<dd>
-						<a class="active" href="{:U('Home/Usersj/sj_zhaq')}"><span>账户安全</span></a>
-					</dd>
-					<dd>
-						<a class="" href="{:U('Home/Usersj/sj_xgmm')}"><span>修改密码</span></a>
-					</dd>
-				</dl>
 
-				<dl>
-					<dt>
+    </dt>
+				<dd>
+					<a class="" href="{:U('Home/Usersj/sj_zhxx')}"><span>账号信息</span></a>
+				</dd>
+				<dd>
+					<a class="active" href="{:U('Home/Usersj/sj_zhaq')}"><span>账户安全</span></a>
+				</dd>
+				<dd>
+					<a class="" href="{:U('Home/Usersj/sj_xgmm')}"><span>修改密码</span></a>
+				</dd>
+			</dl>
+
+			<dl>
+				<dt>
+
+
 
       <a class="" href="{:U('Home/Usersj/sj_znxx')}">站内消息</a>
 
+
+
     </dt>
-					<dt class="s_money">
+				<dt class="s_money">
+
+
 
       <a class="" href="{:U('Home/Usersj/sj_zjgl')}">资金管理</a>
 
+
+
     </dt>
-					<dt>
+				<dt>
+
+
 
       <a class="" href="{:U('Home/Usersj/sj_viptd')}">VIP通道</a>
 
+
+
     </dt>
-					<dt>
+				<dt>
+
+
 
       <a class="" href="{:U('Home/Usersj/sj_sfkt')}">试福课堂</a>
 
-    </dt>
-  </dl>
 
-  
-  <div class="adorn_bottom"></div>
-</div>
-</div>
-  <script type="text/javascript">
-  var ready_do = true; $(document).trigger('ready_do');
-</script></body></html>
+
+    </dt>
+			</dl>
+
+			<div class="adorn_bottom"></div>
+		</div>
+	</div>
+
+</block>
+
+<block name="area_footer">
+
+</block>

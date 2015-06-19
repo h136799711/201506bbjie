@@ -19,14 +19,15 @@
 					<a href="#">帮助中心</a>
 				</div>
 				<div class="login_002">
+					
 					<div class="login_003"><span>登录宝贝街</span> <a href="{:U('Home/Index/register_sm')}">还没有宝贝街账号？</a><a href="{:U('Home/Index/register_sm')}" style="color: #F01861;">30秒注册</a>
 					</div>
 					<div class="clear"></div>
 					<form action="{:U('Home/Index/login')}" method="post">
 
-						<input type="text" name="username" id="textfield2" class="login_004" onfocus="if (this.value==this.defaultValue) this.value=&#39;&#39;;" onblur="if (this.value==&#39;&#39;) this.value=this.defaultValue;" value="用户名">
-						<br>
-
+						<input type="text" name="username" id="textfield2" class="login_004" placeholder="用户名" >
+						
+							<br><br><span style="color: red; font-size: 13px;">{$error}</span>
 						<input type="password" name="password" id="textfield" class="login_005">
 						<div class="login_006">
 							<input type="checkbox" name="auto_login" id="checkbox"> 自动登录 <span><a href="#">忘记密码</a></span>

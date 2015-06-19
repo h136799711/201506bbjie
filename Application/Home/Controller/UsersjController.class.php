@@ -15,6 +15,8 @@ use Home\Api\HomePublicApi;
 class UsersjController extends HomeController {
 	
 	public function index(){
+		$headtitle="宝贝街-商家中心";
+		$this->assign('head_title',$headtitle);
 		$user_sj=session('user_sj');
 		$id=$user_sj['info']['id'];
 		$map=array(
@@ -26,102 +28,162 @@ class UsersjController extends HomeController {
 		$this->display();
 	}
 	public function sj_zhxx(){
+		$headtitle="宝贝街-账号信息";
+		$this->assign('head_title',$headtitle);
 		$user_sj=session('user_sj');
 		$this->assign('username',$user_sj['info']['username']);
+		$map=array(
+			'uid'=>$user_sj['info']['id'],
+		);
+		$result=apiCall(HomePublicApi::Bbjmember_Seller_GetInfo, array($map));
+//		dump($result);
+		$this->assign('entity',$result['info']);
 		$this->display();
+	}
+	public function edit1(){
+		$id=I('id',0);
+		$sheng=I('sheng','');$shi=I('shi','');$qu=I('qu','');$address=I('address');
+		$entity=array(
+			'aliwawa'=>I('aliwawa',''),
+			'store_name'=>I('store_name',''),
+			'store_url'=>I('store_url',''),
+			'address'=>$sheng.$shi.$qu.$address,
+		);
+//		dump($entity);
+		$result=apiCall(HomePublicApi::Bbjmember_Seller_SaveByID, array($id,$entity));
+		if($result['status']){
+			$this->success('修改成功',U('Home/Usersj/sj_zhxx'));
+		}else{
+			$this->error($result['info']);
+		}
+	}
+	public function edit2(){
+		$id=I('id',0);
+		$entity=array(
+			'task_linkman'=>I('rwfzr',''),
+			'task_linkman_tel'=>I('fzrdh',''),
+			'task_linkman_qq'=>I('fzrqq',''),
+			'waybill_show'=>I('ydxs'),
+		);
+//		dump($entity);
+		$result=apiCall(HomePublicApi::Bbjmember_Seller_SaveByID, array($id,$entity));
+		if($result['status']){
+			$this->success('修改成功',U('Home/Usersj/sj_zhxx'));
+		}else{
+			$this->error($result['info']);
+		}
+	}
+	public function edit3(){
+		$id=I('id',0);
+		$entity=array(
+			'linkman'=>I('lxr',''),
+			'linkman_tel'=>I('tel',''),
+			'linkman_qq'=>I('qq',''),
+			'linkman_otherlink'=>I('qt',''),
+		);
+//		dump($entity);
+		$result=apiCall(HomePublicApi::Bbjmember_Seller_SaveByID, array($id,$entity));
+		if($result['status']){
+			$this->success('修改成功',U('Home/Usersj/sj_zhxx'));
+		}else{
+			$this->error($result['info']);
+		}
 	}
 	public function sj_zhaq(){
+		$headtitle="宝贝街-账号安全";
+		$this->assign('head_title',$headtitle);
 		$user_sj=session('user_sj');
 		$this->assign('username',$user_sj['info']['username']);
+		$id=$user_sj['info']['id'];
+//		dump($map);
+		$result=apiCall(HomePublicApi::User_GetUser, array($id));
+		$this->assign('entity',$result['info']);
 		$this->display();
+	}
+	public function email(){
+		$id=I('id','');
+		$entity=array('email'=>I('email',''));
+//		dump($entity);
+		$result=apiCall(HomePublicApi::User_SaveByID, array($id,$entity));
+		if($result['status']){
+			$this->success('修改成功',U('Home/Usersj/sj_zhaq'));
+		}else{
+			$this->error($result['info']);
+		}
+	}
+	public function phone(){
+		$id=I('id','');
+		$entity=array('mobile'=>I('phone',''));
+//		dump($entity);
+		$result=apiCall(HomePublicApi::User_SaveByID, array($id,$entity));
+		if($result['status']){
+			$this->success('修改成功',U('Home/Usersj/sj_zhaq'));
+		}else{
+			$this->error($result['info']);
+		}
 	}
 	public function sj_xgmm(){
-		$user_sj=session('user_sj');
-		$this->assign('username',$user_sj['info']['username']);
-		$this->display();
+		if(IS_GET){
+			$headtitle="宝贝街-修改密码";
+			$this->assign('head_title',$headtitle);
+			$user_sj=session('user_sj');
+			$this->assign('username',$user_sj['info']['username']);
+			$this->display();
+		}else{
+			$user_sj=session('user_sj');
+			$uid=$user_sj['info']['id'];
+			$pwd=I('old_password','');
+			$data=array('password'=>I('password',''),);
+			$result=apiCall(HomePublicApi::User_EditPwd, array($uid,$pwd,$data));
+			if($result['status']){
+			$this->success('修改成功',U('Home/Usersj/sj_xgmm'));
+			}else{
+				$this->error('请检查您输入的原密码');
+			}
+		}
+		
 	}
 	public function sj_znxx(){
+		$headtitle="宝贝街-站内消息";
+		$this->assign('head_title',$headtitle);
 		$user_sj=session('user_sj');
 		$this->assign('username',$user_sj['info']['username']);
 		$this->display();
 	}
 	public function sj_zzgl(){
+		$headtitle="宝贝街-资金管理";
+		$this->assign('head_title',$headtitle);
 		$user_sj=session('user_sj');
 		$this->assign('username',$user_sj['info']['username']);
 		$this->display();
 	}
 	public function sj_viptd(){
+		$headtitle="宝贝街-VIP通道";
+		$this->assign('head_title',$headtitle);
 		$user_sj=session('user_sj');
 		$this->assign('username',$user_sj['info']['username']);
 		$this->display();
 	}
 	public function sj_sfkt(){
+		$headtitle="宝贝街-商家课堂";
+		$this->assign('head_title',$headtitle);
+		$user_sj=session('user_sj');
+		$this->assign('username',$user_sj['info']['username']);
+		$this->display();
+	}
+	public function sj_zjgl(){
+		$headtitle="宝贝街-资金管理";
+		$this->assign('head_title',$headtitle);
 		$user_sj=session('user_sj');
 		$this->assign('username',$user_sj['info']['username']);
 		$this->display();
 	}
 	
-	public function address(){
-		$user=session('user_sm');
-		if(IS_GET){
-			$uid=$user['info']['id'];
-			$map=array(
-				'uid'=>$uid,
-			);
-			$result=apiCall(HomePublicApi::Address_Query, array($map));
-//			dump($result);
-			$this->assign('address',$result['info']);
-			$this->display('manager_address');
-		}else{
-			$ars=array(
-				'uid'=>$user['info']['id'],
-				'country'=>"中国",
-				'province'=>I('sheng'),
-				'city'=>I('shi'),
-				'area'=>I('qu'),
-				'detail'=>I('address',''),
-				'contact_name'=>I('name',''),
-				'mobile'=>I('mobile',''),
-				'telphone'=>I('phone',''),
-				'post_code'=>I('yb',''),
-				'create_time'=>time(),
-			);
-			$result = apiCall(HomePublicApi::Address_Add, array($ars));
-			if($result['status']){
-				$this->success("操作成功！",U('Home/Usersm/address'));
-			}
-		}
-		
+	public function exits(){
+		session('[destroy]'); // 删除session
+		$this->display('Index/login');
 	}
-	public function add(){
-		$user=session('user_sm');
-		$id=$user['info']['id'];
-		$year=I('year',0);
-		$month=I('month',0);
-		$day=I('day',0);
-		$bir=$year.'-'.$month.'-'.$day;
-//		dump($bir);
-		$sm=array(
-			'birthday'=>$bir,
-			'sex'=>I('sex',0),
-			'qq'=>I('qq','1'),
-			'realname'=>I('realname',''),
-		);
-		$sheng=I('sheng');$shi=I('shi');$qu=I('qu');
-		$smm=array(
-			'dtree_job'=>I('zhiye',''),
-			'personal_signature'=>I('grqm',''),
-			'brief_introduction'=>I('grjj',''),
-			'address'=>$sheng.$shi.$qu.I('address',''),
-		);
-//		dump($smm);
-//		dump($smm);
-		$result = apiCall(HomePublicApi::Member_SaveByID, array($id,$sm));
-		if($result['status']){
-			$results=apiCall(HomePublicApi::Bbjmember_SaveByID, array($id,$smm));
-				if($results['status']){
-						$this->success("操作成功！",U('Home/Usersm/index'));
-				}
-		}
+	public function tanchuceng(){
+		$this->display();
 	}
 }

@@ -100,6 +100,7 @@ class IndexController extends HomeController {
 		$result = apiCall(HomePublicApi::User_Register, array($username, $password, $email,$mobile));
 		if($result['status']){
 			$uid=$result['info'];
+			//TODO :处理邀请人
 			$entity=array(
 				'uid'=>$uid,
 				'referrer_id'=>1,
@@ -194,15 +195,22 @@ class IndexController extends HomeController {
 					$this -> display('sm_manager');
 				}else{
 					session('user_sj',$users);
+					$user_sj=session('user_sj');
+					$id=$user_sj['info']['id'];
+					$map=array(
+						'uid'=>$id,
+					);					
+					$sj=apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
+					$this->assign('username',$user_sj['info']['username']);
+					$this->assign('sj',$sj['info']);
 					$this->assign('username',$users['info']['username']);
-//					$this->success("欢迎回来！",U('Home/Usersj/index'));
 					$this->display('Usersj/index');
 				}
-					
-
+			} else{
+				$this->assign('error','请仔细核对您的账号和密码');
+				$this -> display('login');
 				
-
-			} 
+			}
 		}
 	}
 	

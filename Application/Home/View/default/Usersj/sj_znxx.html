@@ -1,141 +1,115 @@
-<!DOCTYPE html>
-<html lang="zh-cn" dir="ltr">
+<extend name="template/base_index" />
 
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		
-		<meta charset="UTF-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=EDGE">
-		<title>账户信息</title>
-		<meta http-equiv="cleartype" content="on">
-		<meta content="" name="keywords">
-		<meta content="" name="description">
-		<script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="main" src="__JS__/main.js"></script>
-		<script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="libs_common" src="__JS__/libs_common.js"></script>
-		<script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="person/address" src="__JS__/address.js"></script>
-		<script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="person/common" src="__JS__/common.js"></script>
-		
-		<!--<base href="http://www.shifujie.net/">-->
-		<base href=".">
-		<link rel="stylesheet" href="__CSS__/shangjia.css">
-		<!--[if lt IE 9]>
-  <script src="http://cdn.shifujie.net/public/lib/html5/html5.js"></script>
-  <![endif]-->
-		
-		<script type="text/javascript" src="__JS__/require.min.js"></script>
-	</head>
-	<!--[if IEMobile 7]><body class="iem7" ><![endif]-->
-	<!--[if lte IE 6]><body class="lt-ie9 lt-ie8 lt-ie7" ><![endif]-->
-	<!--[if (IE 7)&(!IEMobile)]><body class="lt-ie9 lt-ie8" ><![endif]-->
-	<!--[if IE 8]><body class="lt-ie9" ><![endif]-->
-	<!--[if (gte IE 9)|(gt IEMobile 7)]><!-->
+<block name="area_header">
+	<link rel="stylesheet" href="__CSS__/shangjia.css">
 
-	<body>
-		<!--<![endif]-->
-		<div class="seller_header_wrap">
-			<div class="seller_header clearfix" style="background: url(__IMG__/header_main_bg.jpg);">
-				<a class="logo" href="#" style=" background: url(__IMG__/logo.png) no-repeat 20px;"></a>
-				<div class="pull-left gzt btn-group">
-					<a class="shifu btn" href="#">试福</a>
-					<a class="taofu btn" href="#">淘福</a>
-					<a class="dropdown-toggle btn" data-toggle="dropdown" href="javascript:;">　账户关联　 <b class="caret"></b></a>
-					<ul role="menu" class="dropdown-menu pull-right">
-						<li role="menuitem"><a tabindex="-1" href="#">关联店铺管理&gt;&gt;</a>
-						</li>
-					</ul>
-				</div>
-				<a style="margin-top:57px; margin-left:20px;" class="text-info pull-left" href="#">试民淘宝号确认</a>
-				<div class="topmenu">
-					<ul class="clearfix">
-						<li>
-							<div>您好，<span class="text-link">{$username}</span>
-								<a href="#">[退出]</a>
-							</div>
-						</li>
-						<li class="shangjia"><a href="#">商家中心</a>
-						</li>
-						<li><a href="#">回到首页</a>
-						</li>
-						<li><a href="#">站内消息</a>
-						</li>
-						<li class="bangzhu"><a href="#">帮助中心</a>
-						</li>
-					</ul>
-				</div>
+</block>
+
+<block name="area_body">
+	<div class="seller_header_wrap">
+		<div class="seller_header clearfix" style="background: url(__IMG__/header_main_bg.jpg);">
+			<a class="logo" href="#" style=" background: url(__IMG__/logo.png) no-repeat 20px;"></a>
+			<div class="pull-left gzt btn-group">
+				<a class="shifu btn" href="#">试福</a>
+				<a class="taofu btn" href="#">淘福</a>
+				<a class="dropdown-toggle btn" data-toggle="dropdown" href="javascript:;">　账户关联　 <b class="caret"></b></a>
+				<ul role="menu" class="dropdown-menu pull-right">
+					<li role="menuitem"><a tabindex="-1" href="#">关联店铺管理&gt;&gt;</a>
+					</li>
+				</ul>
+			</div>
+			<a style="margin-top:57px; margin-left:20px;" class="text-info pull-left" href="#">试民淘宝号确认</a>
+			<div class="topmenu">
+				<ul class="clearfix">
+					<li>
+						<div>您好，<span class="text-link">{$username}</span>
+							<a href="{:U('Home/Usersj/exits')}">[退出]</a>
+						</div>
+					</li>
+					<li class="shangjia"><a href="{:U('Home/Usersj/index')}">商家中心</a>
+					</li>
+					<li><a href="{:U('Home/Index/index')}">回到首页</a>
+					</li>
+					<li><a href="{:U('Home/Usersj/sj_znxx')}">站内消息</a>
+					</li>
+					<li class="bangzhu"><a href="#">帮助中心</a>
+					</li>
+				</ul>
 			</div>
 		</div>
-		<div></div>
-		<div class="seller_main clearfix" controller="seller/common">
-			<div class="seller_content_wrap">
-				<div class="seller_content" style="padding-top: 10px;">
+	</div>
+	<div></div>
+	<div class="seller_main clearfix" controller="seller/common">
+		<div class="seller_content_wrap">
+			<div class="seller_content" style="padding-top: 10px;">
 
-					<div class="content">
-						<h1>站内信</h1>
-						<div>
-							<ul class="nav nav-tabs" role="menu">
-								<li class="active" role="menuitem"><a tabindex="-1" href="">全部消息</a>
-								</li>
-								<li role="menuitem"><a tabindex="-1" href="">未读消息</a>
-								</li>
-							</ul>
-						</div>
+				<div class="content">
+					<h1>站内信</h1>
+					<div>
+						<ul class="nav nav-tabs" role="menu">
+							<li class="active" role="menuitem"><a tabindex="-1" href="">全部消息</a>
+							</li>
+							<li role="menuitem"><a tabindex="-1" href="">未读消息</a>
+							</li>
+						</ul>
+					</div>
 
-						<div class="jquery-once-1-processed">
-							<div class="pb10">
-								<a data-target="#xiaoxi-grid" controller="extend/grid_do" data-confirm="确定要删除这些消息么？" class="btn grid_do-processed" href="http://www.shifujie.net/seller/message/delete_sel">删除</a>
-								<a data-target="#xiaoxi-grid" controller="extend/grid_do" class="btn grid_do-processed" href="http://www.shifujie.net/seller/message/biaoji_sel">标记为已读</a> </div>
-							<div id="xiaoxi-grid" class="grid-view" controller="extend/gridview" data-options="{&#39;ajaxUpdate&#39;:[&#39;xiaoxi-grid&#39;],&#39;ajaxVar&#39;:&#39;ajax&#39;,&#39;pagerClass&#39;:&#39;pagination text-center&#39;,&#39;loadingClass&#39;:&#39;grid-view-loading&#39;,&#39;filterClass&#39;:&#39;filters&#39;,&#39;tableClass&#39;:&#39;items table table-hover&#39;,&#39;selectableRows&#39;:2,&#39;enableHistory&#39;:false,&#39;updateSelector&#39;:&#39;{page}, {sort}&#39;,&#39;filterSelector&#39;:&#39;{filter}&#39;,&#39;pageVar&#39;:&#39;Xiaoxi_page&#39;,&#39;arg_id&#39;:&#39;Xiaoxi&#39;}">
-								<table class="items table table-hover">
-									<thead>
-										<tr>
-											<th width="50" class="text-center" id="xiaoxi-grid_c0">
-												<input class="select-on-check-all" type="checkbox" value="1" name="" id="">
-											</th>
-											<th width="80" id="xiaoxi-grid_c1">是否已读</th>
-											<th width="80" id="xiaoxi-grid_c2">发件人</th>
-											<th id="xiaoxi-grid_c3">主题</th>
-											<th id="xiaoxi-grid_c4">消息时间</th>
-											<th width="100" class="text-center" id="xiaoxi-grid_c5">操作</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td colspan="6" class="empty"><span class="empty">没有找到数据.</span>
-											</td>
-										</tr>
-									</tbody>
-								</table>
-								<div class="row-fluid">
-									<div class="span6 offset3"></div>
-									<div class="span3"></div>
-								</div>
-								<div class="keys" style="display:none" title="/seller/message/index_all"></div>
+					<div class="jquery-once-1-processed">
+						<div class="pb10">
+							<a data-target="#xiaoxi-grid" controller="extend/grid_do" data-confirm="确定要删除这些消息么？" class="btn grid_do-processed" href="http://www.shifujie.net/seller/message/delete_sel">删除</a>
+							<a data-target="#xiaoxi-grid" controller="extend/grid_do" class="btn grid_do-processed" href="http://www.shifujie.net/seller/message/biaoji_sel">标记为已读</a> </div>
+						<div id="xiaoxi-grid" class="grid-view" controller="extend/gridview" data-options="{&#39;ajaxUpdate&#39;:[&#39;xiaoxi-grid&#39;],&#39;ajaxVar&#39;:&#39;ajax&#39;,&#39;pagerClass&#39;:&#39;pagination text-center&#39;,&#39;loadingClass&#39;:&#39;grid-view-loading&#39;,&#39;filterClass&#39;:&#39;filters&#39;,&#39;tableClass&#39;:&#39;items table table-hover&#39;,&#39;selectableRows&#39;:2,&#39;enableHistory&#39;:false,&#39;updateSelector&#39;:&#39;{page}, {sort}&#39;,&#39;filterSelector&#39;:&#39;{filter}&#39;,&#39;pageVar&#39;:&#39;Xiaoxi_page&#39;,&#39;arg_id&#39;:&#39;Xiaoxi&#39;}">
+							<table class="items table table-hover">
+								<thead>
+									<tr>
+										<th width="50" class="text-center" id="xiaoxi-grid_c0">
+											<input class="select-on-check-all" type="checkbox" value="1" name="" id="">
+										</th>
+										<th width="80" id="xiaoxi-grid_c1">是否已读</th>
+										<th width="80" id="xiaoxi-grid_c2">发件人</th>
+										<th id="xiaoxi-grid_c3">主题</th>
+										<th id="xiaoxi-grid_c4">消息时间</th>
+										<th width="100" class="text-center" id="xiaoxi-grid_c5">操作</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td colspan="6" class="empty"><span class="empty">没有找到数据.</span>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<div class="row-fluid">
+								<div class="span6 offset3"></div>
+								<div class="span3"></div>
 							</div>
+							<div class="keys" style="display:none" title="/seller/message/index_all"></div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="siderbar">
+		</div>
+		<div class="siderbar">
 
-				<dl class="open">
-					<dt class="s_vip">
+			<dl class="open">
+				<dt class="s_vip">
 
       <span>账号管理</span>
 
     </dt>
-					<dd>
-						<a class="" href="{:U('Home/Usersj/sj_zhxx')}"><span>账号信息</span></a>
-					</dd>
-					<dd>
-						<a class="" href="{:U('Home/Usersj/sj_zhaq')}"><span>账户安全</span></a>
-					</dd>
-					<dd>
-						<a class="" href="{:U('Home/Usersj/sj_xgmm')}"><span>修改密码</span></a>
-					</dd>
-				</dl>
+				<dd>
+					<a class="" href="{:U('Home/Usersj/sj_zhxx')}"><span>账号信息</span></a>
+				</dd>
+				<dd>
+					<a class="" href="{:U('Home/Usersj/sj_zhaq')}"><span>账户安全</span></a>
+				</dd>
+				<dd>
+					<a class="" href="{:U('Home/Usersj/sj_xgmm')}"><span>修改密码</span></a>
+				</dd>
+			</dl>
 
-				<dl>
-					<dt>
+			<dl>
+				<dt>
 
 
 
@@ -144,7 +118,7 @@
 
 
     </dt>
-					<dt class="s_money">
+				<dt class="s_money">
 
 
 
@@ -153,7 +127,7 @@
 
 
     </dt>
-					<dt>
+				<dt>
 
 
 
@@ -162,7 +136,7 @@
 
 
     </dt>
-					<dt>
+				<dt>
 
 
 
@@ -171,15 +145,13 @@
 
 
     </dt>
-				</dl>
+			</dl>
 
-				<div class="adorn_bottom"></div>
-			</div>
+			<div class="adorn_bottom"></div>
 		</div>
-		<script type="text/javascript">
-			var ready_do = true;
-			$(document).trigger('ready_do');
-		</script>
-	</body>
+	</div>
+</block>
 
-</html>
+<block name="area_footer">
+
+</block>

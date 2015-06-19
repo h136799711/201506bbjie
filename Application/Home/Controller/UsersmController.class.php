@@ -13,82 +13,97 @@ use Home\Api\HomePublicApi;
  * 官网首页
  */
 class UsersmController extends HomeController {
-	
-	public function index(){
-		$user=session('user_sm');
-		$this->assign('username',$user['info']['username']);
-		$userid=$user['info']['id'];
-//		dump($userid);
-		$map=array(
-			'uid'=>$userid,
-		);
-		$result=$result = apiCall(HomePublicApi::Member_Query, array($map));
-		$results=apiCall(HomePublicApi::Bbjmember_Query, array($map));
-		$this->assign('info',$results['info']);
-		$this->assign('mum',$result['info']);
-		$this->display('manager_info');
+
+	public function index() {
+		$user = session('user_sm');
+		$this -> assign('username', $user['info']['username']);
+		$userid = $user['info']['id'];
+		//		dump($userid);
+		$map = array('uid' => $userid, );
+		$result = $result = apiCall(HomePublicApi::Member_Query, array($map));
+		$results = apiCall(HomePublicApi::Bbjmember_Query, array($map));
+		$this -> assign('info', $results['info']);
+		$this -> assign('mum', $result['info']);
+		$this -> display('manager_info');
 	}
-	public function address(){
-		$user=session('user_sm');
-		if(IS_GET){
-			$uid=$user['info']['id'];
-			$map=array(
-				'uid'=>$uid,
-			);
-			$result=apiCall(HomePublicApi::Address_Query, array($map));
-//			dump($result);
-			$this->assign('address',$result['info']);
-			$this->display('manager_address');
-		}else{
-			$ars=array(
-				'uid'=>$user['info']['id'],
-				'country'=>"中国",
-				'province'=>I('sheng'),
-				'city'=>I('shi'),
-				'area'=>I('qu'),
-				'detail'=>I('address',''),
-				'contact_name'=>I('name',''),
-				'mobile'=>I('mobile',''),
-				'telphone'=>I('phone',''),
-				'post_code'=>I('yb',''),
-				'create_time'=>time(),
-			);
+
+	public function address() {
+		$user = session('user_sm');
+		if (IS_GET) {
+			$uid = $user['info']['id'];
+			$map = array('uid' => $uid, );
+			$result = apiCall(HomePublicApi::Address_Query, array($map));
+			//			dump($result);
+			$this -> assign('address', $result['info']);
+			$this -> display('manager_address');
+		} else {
+
+			$ars = array('uid' => $user['info']['id'], 'country' => "中国", 'province' => I('sheng'), 'city' => I('shi'), 'area' => I('qu'), 'detail' => I('address', ''), 'contact_name' => I('name', ''), 'mobile' => I('mobile', ''), 'telphone' => I('phone', ''), 'post_code' => I('yb', ''), 'create_time' => time(), );
+
 			$result = apiCall(HomePublicApi::Address_Add, array($ars));
-			if($result['status']){
-				$this->success("操作成功！",U('Home/Usersm/address'));
+
+			if ($result['status']) {
+				$this -> success("操作成功！", U('Home/Usersm/address'));
 			}
 		}
-		
+
 	}
-	public function add(){
-		$user=session('user_sm');
-		$id=$user['info']['id'];
-		$year=I('year',0);
-		$month=I('month',0);
-		$day=I('day',0);
-		$bir=$year.'-'.$month.'-'.$day;
-//		dump($bir);
-		$sm=array(
-			'birthday'=>$bir,
-			'sex'=>I('sex',0),
-			'qq'=>I('qq','1'),
-			'realname'=>I('realname',''),
-		);
-		$sheng=I('sheng');$shi=I('shi');$qu=I('qu');
-		$smm=array(
-			'dtree_job'=>I('zhiye',''),
-			'personal_signature'=>I('grqm',''),
-			'brief_introduction'=>I('grjj',''),
-			'address'=>$sheng.$shi.$qu.I('address',''),
-		);
-//		dump($smm);
-//		dump($smm);
-		$result = apiCall(HomePublicApi::Member_SaveByID, array($id,$sm));
-		if($result['status']){
-			$results=apiCall(HomePublicApi::Bbjmember_SaveByID, array($id,$smm));
-				if($results['status']){
-						$this->success("操作成功！",U('Home/Usersm/index'));
-				}
+
+	public function add() {
+		$user = session('user_sm');
+		$id = $user['info']['id'];
+		$year = I('year', 0);
+		$month = I('month', 0);
+		$day = I('day', 0);
+		$bir = $year . '-' . $month . '-' . $day;
+		//		dump($bir);
+		$sm = array('birthday' => $bir, 'sex' => I('sex', 0), 'qq' => I('qq', '1'), 'realname' => I('realname', ''), );
+		$sheng = I('sheng');
+		$shi = I('shi');
+		$qu = I('qu');
+		$smm = array('dtree_job' => I('zhiye', ''), 'personal_signature' => I('grqm', ''), 'brief_introduction' => I('grjj', ''), 'address' => $sheng . $shi . $qu . I('address', ''), );
+		//		dump($smm);
+		//		dump($smm);
+		$result = apiCall(HomePublicApi::Member_SaveByID, array($id, $sm));
+		if ($result['status']) {
+			$results = apiCall(HomePublicApi::Bbjmember_SaveByID, array($id, $smm));
+			if ($results['status']) {
+				$this -> success("操作成功！", U('Home/Usersm/index'));
+			}
 		}
 	}
+
+	public function edit() {
+		if (IS_GET) {
+			$user = session('user_sm');
+			$id = I('id');
+			$map = array('id' => $id, );
+			$uid = $user['info']['id'];
+			$map1 = array('uid' => $uid, );
+			$result1 = apiCall(HomePublicApi::Address_Query, array($map1));
+			//			dump($result);
+			$this -> assign('address', $result1['info']);
+			$result = apiCall(HomePublicApi::Address_Query, array($map));
+			$this -> assign('addres', $result['info']);
+			$this -> display('manager_edit');
+		} else {
+			$id = I('id', 0);
+			$ars = array('country' => "中国", 'province' => I('sheng'), 'city' => I('shi'), 'area' => I('qu'), 'detail' => I('address', ''), 'contact_name' => I('name', ''), 'mobile' => I('mobile', ''), 'telphone' => I('phone', ''), 'post_code' => I('yb', ''), );
+			$result = apiCall(HomePublicApi::Address_SaveByID, array($id, $ars));
+
+			if ($result['status']) {
+				$this -> success("修改成功！", U('Home/Usersm/address'));
+			}
+		}
+
+	}
+	public function del(){
+		
+		$id=I('id');
+		$map=array('id'=>$id,);
+//		dump($map);
+		$result = apiCall(HomePublicApi::Address_Del, array($map));
+		$this -> success("删除成功！", U('Home/Usersm/address'));
+	}
+
 }

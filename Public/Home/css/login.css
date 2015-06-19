@@ -4,7 +4,7 @@ body{background:#fff;}
 a:hover{ color:#f01861;}
 .login_body{ width:1000px; height:470px; margin-top:60px;}
 .login_001{ background:url(../img/login_001.jpg) no-repeat; width:614px; height:424px; float:left;margin-top: -4px;}
-.login_010{width:360px; float:left; margin-left:25px;margin-top:70px; border: 1px solid #CCCCCC; }
+.login_010{width:360px; float:left; margin-left:25px;margin-top:70px; border: 1px solid #CCCCCC; height: 350px; }
 .login_011{float:right;margin-right: 10px;line-height: 30px;}
 .login_002{ no-repeat; width:303px; height:288px;float:left;padding-top:35px; padding-right:30px; padding-left:30px;}
 .login_003{ color:#f01861; text-align:right;}
