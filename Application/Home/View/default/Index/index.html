@@ -14,11 +14,11 @@
 	<div id="div_all">
 		<div id="div_top">
 			<div class="div_info">
-				<div style="color:#FFF; float:left; background: url(__PUBLIC__/Home/img/gonggao.png) no-repeat 0 9px;padding-left:  25px;">试福街美食频道下线通知</div>
+				<div style="color:#FFF; float:left; background: url(__PUBLIC__/Home/img/gonggao.png) no-repeat 0 9px;padding-left:  25px;">宝贝街美食频道下线通知</div>
 				<empty name="username">
-					<div style="color:#FFF;float:right">您好，欢迎来到试福街！请[<a href="{:U('Home/Index/login')}">登录</a>][<a href="{:U('Home/Index/register_sj')}">免费注册</a>]|帮助中心</div>
+					<div style="color:#FFF;float:right">您好，欢迎来到宝贝街！请[<a href="{:U('Home/Index/login')}">登录</a>][<a href="{:U('Home/Index/register_sj')}">免费注册</a>]|帮助中心</div>
 					<else/>
-					<div style="color:#FFF;float:right"><a href="{:U('Home/Index/sm_manager',array('username'=>$username))}">{$username}</a>,您好，欢迎来到试福街！[<a href="{:U('Home/Index/register_sm')}">免费注册</a>]|帮助中心</div>
+					<div style="color:#FFF;float:right"><a href="{:U('Home/Index/sm_manager',array('username'=>$username))}">{$username}</a>,您好，欢迎来到宝贝街！[<a href="{:U('Home/Index/register_sm')}">免费注册</a>]|帮助中心</div>
 				</empty>
 			</div>
 		</div>
@@ -34,17 +34,12 @@
 		<div id="div_title">
 			<div class="div_info">
 				<ul>
-					<li>试福广场</li>
-					<li class="li_fenge">|</li>
-					<li>福利专场</li>
-					<li class="li_fenge">|</li>
-					<li>幸福一点</li>
-					<li class="li_fenge">|</li>
-					<li>试江湖</li>
-					<li class="li_fenge">|</li>
-					<li>茶话馆</li>
-					<li class="li_fenge">|</li>
-					<li>帮助中心</li>
+					<li onclick="changePageTitle('{:U('Home/Index/index')}')"  class="li_checkedtitle" >宝贝广场</li>
+					<li onclick="changePageTitle('{:U('Home/Index/flzc')}')">福利专场</li>
+					<li onclick="changePageTitle('{:U('Home/Index/xfyd')}')">幸福一点</li>
+					<li onclick="changePageTitle('{:U('Home/Index/sjh')}')">试江湖</li>
+					<li onclick="changePageTitle('{:U('Home/Index/chg')}')">茶话馆</li>
+					<li onclick="changePageTitle('{:U('Home/Index/bzzx')}')" style="border-right: none;">帮助中心</li>
 				</ul>
 			</div>
 		</div>
@@ -138,17 +133,17 @@
 					<ul class="ul_image">
 						<li>
 							<a href="">
-								<img src="__PUBLIC__/Home/img/tu1.jpg" height="139" />
+								<img src="__PUBLIC__/Home/img/tu1.jpg" height="140" />
 							</a>
 						</li>
 						<li>
 							<a href="">
-								<img src="__PUBLIC__/Home/img/tu2.jpg" height="139" />
+								<img src="__PUBLIC__/Home/img/tu2.jpg" height="140" />
 							</a>
 						</li>
 						<li>
 							<a href="">
-								<img src="__PUBLIC__/Home/img/tu3.jpg" height="139" />
+								<img src="__PUBLIC__/Home/img/tu3.jpg" height="140" />
 							</a>
 						</li>
 					</ul>
@@ -166,7 +161,17 @@
 					<dl class="dl_info">
 						<dt>
 
-		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="218" />
+		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="216" />
+
+		                </dt>
+						<dd style="border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+						<dd>XXX XXXXX</dd>
+					</dl>
+
+					<dl class="dl_info">
+						<dt>
+
+		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="216" />
 
 		                </dt>
 						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
@@ -176,7 +181,7 @@
 					<dl class="dl_info">
 						<dt>
 
-		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="218" />
+		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="216" />
 
 		                </dt>
 						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
@@ -186,7 +191,7 @@
 					<dl class="dl_info">
 						<dt>
 
-		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="218" />
+		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="216" />
 
 		                </dt>
 						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
@@ -196,7 +201,7 @@
 					<dl class="dl_info">
 						<dt>
 
-		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="218" />
+		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="216" />
 
 		                </dt>
 						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
@@ -206,7 +211,7 @@
 					<dl class="dl_info">
 						<dt>
 
-		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="218" />
+		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="216" />
 
 		                </dt>
 						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
@@ -216,7 +221,7 @@
 					<dl class="dl_info">
 						<dt>
 
-		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="218" />
+		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="216" />
 
 		                </dt>
 						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
@@ -226,17 +231,7 @@
 					<dl class="dl_info">
 						<dt>
 
-		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="218" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="218" />
+		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="216" />
 
 		                </dt>
 						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
@@ -245,7 +240,7 @@
 					<dl class="dl_info">
 						<dt>
 
-		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="218" />
+		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="216" />
 
 		                </dt>
 						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
@@ -254,7 +249,7 @@
 					<dl class="dl_info">
 						<dt>
 
-		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="218" />
+		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="216" />
 
 		                </dt>
 						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
@@ -271,7 +266,7 @@
 					<dl class="dl_info">
 						<dt>
 
-		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="218" />
+		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="216" />
 
 		                </dt>
 						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
@@ -281,7 +276,7 @@
 					<dl class="dl_info">
 						<dt>
 
-		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="218" />
+		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="216" />
 
 		                </dt>
 						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
@@ -291,7 +286,7 @@
 					<dl class="dl_info">
 						<dt>
 
-		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="218" />
+		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="216" />
 
 		                </dt>
 						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
@@ -301,7 +296,7 @@
 					<dl class="dl_info">
 						<dt>
 
-		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="218" />
+		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="216" />
 
 		                </dt>
 						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
@@ -311,7 +306,7 @@
 					<dl class="dl_info">
 						<dt>
 
-		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="218" />
+		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="216" />
 
 		                </dt>
 						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
@@ -321,7 +316,7 @@
 					<dl class="dl_info">
 						<dt>
 
-		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="218" />
+		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="216" />
 
 		                </dt>
 						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
@@ -331,7 +326,7 @@
 					<dl class="dl_info">
 						<dt>
 
-		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="218" />
+		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="216" />
 
 		                </dt>
 						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
@@ -341,7 +336,7 @@
 					<dl class="dl_info">
 						<dt>
 
-		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="218" />
+		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="216" />
 
 		                </dt>
 						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
@@ -350,7 +345,7 @@
 					<dl class="dl_info">
 						<dt>
 
-		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="218" />
+		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="216" />
 
 		                </dt>
 						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
@@ -359,7 +354,7 @@
 					<dl class="dl_info">
 						<dt>
 
-		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="218" />
+		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="216" />
 
 		                </dt>
 						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
@@ -475,7 +470,7 @@
 				</dl>
 				<dl>
 					<dt>关于我们</dt>
-					<dd class="dd_info"><a href="#">试福街介绍</a>
+					<dd class="dd_info"><a href="#">宝贝街介绍</a>
 					</dd>
 					<dd class="dd_info"><a href="#">联系我们</a>
 					</dd>
@@ -522,7 +517,7 @@
 				</dl>
 
 				<dl>
-					<dt>王府微信账号</dt>
+					<dt>宝贝微信账号</dt>
 					<dd class="dd_info" style="margin: 0;margin-left: -12px;">
 						<img src="__PUBLIC__/Home/img/weixin.png" />
 
@@ -531,7 +526,7 @@
 				</dl>
 			</div>
 
-			<div align="center" style="clear:both; margin-bottom:5px;"><font color="#999999" size="-2">杭州博也科技有限公司，保留一切权利。 浙ICP备13025642号-2 © 2015 shifujie.net 版权所有{__RUNTIME__}</font>
+			<div align="center" style="clear:both; margin-bottom:5px; border-top: 1px solid #ccc; width:800px; margin: 0 auto;"><font color="#999999" size="-2">杭州博也科技有限公司，保留一切权利。 浙ICP备13025642号-2 © 2015 shifujie.net 版权所有<font style="display: none;">{__RUNTIME__}</font></font>
 			</div>
 
 		</div>

@@ -37,7 +37,7 @@ $(function(){
 		timeLunbo=window.setInterval('changeBgColor()',3000);
 	});
 	
-	
+		
 	
 })
 
@@ -56,3 +56,8 @@ function changeBgColor(){
 }
 
  var timeLunbo=window.setInterval('changeBgColor()',3000);
+ 
+
+function changePageTitle(url){
+	window.location.href=url;
+}

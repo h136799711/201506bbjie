@@ -36,6 +36,46 @@ class IndexController extends HomeController {
 		$this->display();
 	}
 	
+	public function flzc(){
+		$headtitle="宝贝街-福品专场";
+		$this->assign('head_title',$headtitle);
+		$users=session('user_sm');
+		$this->assign('username',session('user_sm')['info']['username']);
+		$this->display();
+	}
+	
+	public function xfyd(){
+		$headtitle="宝贝街-幸福一点";
+		$this->assign('head_title',$headtitle);
+		$users=session('user_sm');
+		$this->assign('username',session('user_sm')['info']['username']);
+		$this->display();
+	}
+	
+	public function sjh(){
+		$headtitle="宝贝街-试江湖";
+		$this->assign('head_title',$headtitle);
+		$users=session('user_sm');
+		$this->assign('username',session('user_sm')['info']['username']);
+		$this->display();
+	}
+	
+	public function chg(){
+		$headtitle="宝贝街-茶话馆";
+		$this->assign('head_title',$headtitle);
+		$users=session('user_sm');
+		$this->assign('username',session('user_sm')['info']['username']);
+		$this->display();
+	}
+
+	public function bzzx(){
+		$headtitle="宝贝街-帮助中心";
+		$this->assign('head_title',$headtitle);
+		$users=session('user_sm');
+		$this->assign('username',session('user_sm')['info']['username']);
+		$this->display();
+	}
+	
 	public function xieyi(){
 		$this->display();
 	}
