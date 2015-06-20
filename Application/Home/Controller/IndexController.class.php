@@ -259,30 +259,18 @@ class IndexController extends HomeController {
 		$this->display('login');
 	}
 	
-	public function manager_rw(){
-		$headtitle="试民中心-任务";
-		$this->assign('head_title',$headtitle);
-		$this->display();
-	}
+	
 	
 	public function sm_manager(){
-		$username=I('username');
-		$users=apiCall(HomePublicApi::User_GetInfo, array($username));
-		$userid=$users['info']['id'];
-		$map="uid=".$userid;					
-		$group=apiCall(HomePublicApi::Group_QueryNpPage, array($map));
-		$groupid=$group['info'][0]['group_id'];
-		if($groupid==14){
-			session('user_sm',$users);
-			$this->assign('username',$users['info']['username']);
-			$this->display();
-		}else{
-			session('user_sm',$users);
-			$this->assign('username',$users['info']['username']);
-			$this->display('Usersj/index');
-		}
 		
-	}
+		$users=session('user_sm');
+		$uid=$users['info']['id'];
+		$id=$uid;
+		$user=apiCall(HomePublicApi::User_GetUser, array($id));
+		$this->assign('username',$user['info']['username']);
+		$this->assign('phone',$user['info']['mobile']);
+		$this->display();
+	}       
 	
 	
 	

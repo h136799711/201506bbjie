@@ -27,19 +27,103 @@ class UsersmController extends HomeController {
 		$this -> display('manager_info');
 	}
 
+	public function manager_rw() {
+		$user_sm = session('user_sm');
+		$this -> assign('username', $user_sm['info']['username']);
+		$headtitle = "试民中心-任务";
+		$this -> assign('head_title', $headtitle);
+		$this -> display();
+	}
+
+	public function sm_bbqz() {
+		$headtitle = "宝贝街-宝贝钱庄";
+		$this -> assign('head_title', $headtitle);
+		$user_sm = session('user_sm');
+		$this -> assign('username', $user_sm['info']['username']);
+		$this -> display();
+	}
+
+	public function sm_ydsp() {
+		$headtitle = "宝贝街-预定商品";
+		$this -> assign('head_title', $headtitle);
+		$user_sm = session('user_sm');
+		$this -> assign('username', $user_sm['info']['username']);
+		$this -> display();
+	}
+
+	public function sm_schd() {
+		$headtitle = "宝贝街-收藏活动";
+		$this -> assign('head_title', $headtitle);
+		$user_sm = session('user_sm');
+		$this -> assign('username', $user_sm['info']['username']);
+		$this -> display();
+	}
+
+	public function sm_dhsp() {
+		$headtitle = "宝贝街-兑换商品";
+		$this -> assign('head_title', $headtitle);
+		$user_sm = session('user_sm');
+		$this -> assign('username', $user_sm['info']['username']);
+		$this -> display();
+	}
+
+	public function sm_bbhd() {
+		$headtitle = "宝贝街-宝贝活动";
+		$this -> assign('head_title', $headtitle);
+		$user_sm = session('user_sm');
+		$this -> assign('username', $user_sm['info']['username']);
+		$this -> display();
+	}
+
+	public function sm_aqzx() {
+		$headtitle = "宝贝街-宝贝活动";
+		$this -> assign('head_title', $headtitle);
+		$user_sm = session('user_sm');
+		$this -> assign('username', $user_sm['info']['username']);
+		$this -> assign('phone', $user_sm['info']['mobile']);
+		$this -> assign('email', $user_sm['info']['email']);
+		$this -> display();
+	}
+
+	public function sm_xfyd() {
+		$headtitle = "宝贝街-幸福一点";
+		$this -> assign('head_title', $headtitle);
+		$user_sm = session('user_sm');
+		$this -> assign('username', $user_sm['info']['username']);
+		$this -> display();
+	}
+
+	public function sm_xzgl() {
+		$headtitle = "宝贝街-勋章管理";
+		$this -> assign('head_title', $headtitle);
+		$user_sm = session('user_sm');
+		$this -> assign('username', $user_sm['info']['username']);
+		$this -> display();
+	}
+
+	public function sm_znxx() {
+		$headtitle = "宝贝街-站内消息";
+		$this -> assign('head_title', $headtitle);
+		$user_sm = session('user_sm');
+		$this -> assign('username', $user_sm['info']['username']);
+		$this -> display();
+	}
+
 	public function address() {
 		$user = session('user_sm');
 		if (IS_GET) {
 			$uid = $user['info']['id'];
 			$map = array('uid' => $uid, );
 			$result = apiCall(HomePublicApi::Address_Query, array($map));
-			//			dump($result);
 			$this -> assign('address', $result['info']);
 			$this -> display('manager_address');
 		} else {
-
-			$ars = array('uid' => $user['info']['id'], 'country' => "中国", 'province' => I('sheng'), 'city' => I('shi'), 'area' => I('qu'), 'detail' => I('address', ''), 'contact_name' => I('name', ''), 'mobile' => I('mobile', ''), 'telphone' => I('phone', ''), 'post_code' => I('yb', ''), 'create_time' => time(), );
-
+			$ars = array('uid' => $user['info']['id'], 
+						'country' => "中国", 'province' => I('sheng'), 
+						'city' => I('shi'), 'area' => I('qu'), 
+						'detail' => I('address', ''), 'contact_name' => I('name', ''),
+						 'mobile' => I('mobile', ''), 'telphone' => I('phone', ''),
+						  'post_code' => I('yb', ''), 'create_time' => time(), );
 			$result = apiCall(HomePublicApi::Address_Add, array($ars));
 
 			if ($result['status']) {
@@ -97,11 +181,12 @@ class UsersmController extends HomeController {
 		}
 
 	}
-	public function del(){
-		
-		$id=I('id');
-		$map=array('id'=>$id,);
-//		dump($map);
+
+	public function del() {
+
+		$id = I('id');
+		$map = array('id' => $id, );
+		//		dump($map);
 		$result = apiCall(HomePublicApi::Address_Del, array($map));
 		$this -> success("删除成功！", U('Home/Usersm/address'));
 	}

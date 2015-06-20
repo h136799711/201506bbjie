@@ -1,0 +1,149 @@
+<extend name="template/base_index" />
+
+<block name="area_header">
+	<link rel="stylesheet" href="__CSS__/manager.css" />
+</block>
+
+<block name="area_body">
+	<div class="div_all">
+		<div class="div_top1">
+			<div class="div_gonggao"><i class="am-icon-bullhorn"></i>&nbsp;试福街美食频道下线通知</div>
+			<div class="div_zhongxin"><font color="#FD5E85">{$username}</font>，欢迎来到试福街！[<a href="{:U('Home/Index/exits')}">退出</a>]&nbsp;&nbsp;|&nbsp;&nbsp;<a href="{:U('Home/Index/sm_manager')}">试民中心</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="{:U('Home/Index/index')}">回首页</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+				<a href="#">帮助中心</a>
+			</div>
+		</div>
+		<div class="div_top2">
+			<div style="float: left; ">
+				<img src="__IMG__/baobei_logo.jpg" />
+			</div>
+			<div style="float: left; padding: 10px;color: #FFFFFF; margin-left:50px; margin-top: 35px;font-size: 14px;font-family: " 微软雅黑 "; opacity: 0.2;">
+				<a href="#">试民中心</a>
+			</div>
+			<div style="float: left;padding: 10px;color: #FFFFFF;margin-left: 10px;margin-top: 35px;font-size: 14px;font-family: " 微软雅黑 ";opacity: 0.2">
+				<a href="#">因伙得福</a>
+			</div>
+			<div style="float: left;padding: 10px;color: #FFFFFF;margin-left: 10px;margin-top: 35px;font-size: 14px;font-family: " 微软雅黑 ";opacity: 0.2">
+				<a href="#">试福课堂</a>
+			</div>
+		</div>
+		
+		<div class="div_left">
+			<div class="div_znxx">
+				<div><a href="{:U('Home/Usersm/sm_znxx')}" style=""><span class="demo-icon-actions"><i class="am-icon-envelope am-margin-xs" ></i>站内信息</a>
+				</div>
+
+			</div>
+			<dl class="dl_menu">
+				<dt class="dt_menu"><font><i class="am-icon-calendar-o"></i>&nbsp;活动准备</font></dt>
+				<dd class="dd_menu"><a href="{:U('Home/Usersm/manager_rw')}"><i class="am-icon-caret-right"></i>&nbsp;任务设置</a>
+				</dd>
+				<dd class="dd_menu"><a href="{:U('Home/Usersm/sm_dhsp')}"><i class="am-icon-caret-right"></i>&nbsp;兑换商品</a>
+				</dd>
+				<dd class="dd_menu"><a href="{:U('Home/Usersm/sm_ydsp')}"><i class="am-icon-caret-right"></i>&nbsp;预定商品</a>
+				</dd>
+				<dd class="dd_menu"><a href="{:U('Home/Usersm/sm_xfyd')}"><i class="am-icon-caret-right"></i>&nbsp;幸福一点</a>
+				</dd>
+			</dl>
+			<dl class="dl_menu">
+				<dt class="dt_menu"><font ><i class="am-icon-bullhorn"></i>&nbsp;活动管理</font></dt>
+				<dd class="dd_menu"><a href="{:U('Home/Usersm/sm_bbhd')}"><i class="am-icon-caret-right"></i>&nbsp;试福活动</a>
+				</dd>
+				<dd class="dd_menu"><a class="sed" href="{:U('Home/Usersm/sm_schd')}"><i class="am-icon-caret-right"></i>&nbsp;收藏活动</a>
+				</dd>
+			</dl>
+			<dl class="dl_menu">
+				<dt class="dt_menu"><font ><i class="am-icon-user-md"></i>&nbsp;账号设置</font></dt>
+				<dd class="dd_menu"><a href="{:U('Home/Usersm/index')}"><i class="am-icon-caret-right"></i>&nbsp;基本信息</a>
+				</dd>
+				<dd class="dd_menu"><a href="{:U('Home/Usersm/sm_aqzx')}"><i class="am-icon-caret-right"></i>&nbsp;安全中心</a>
+				</dd>
+				<dd class="dd_menu"><a href="{:U('Home/Usersm/address')}"><i class="am-icon-caret-right"></i>&nbsp;收货地址</a>
+				</dd>
+				<dd class="dd_menu"><a href="{:U('Home/Usersm/sm_xzgl')}"><i class="am-icon-caret-right"></i>&nbsp;勋章管理</a>
+				</dd>
+				<br />
+				<br />
+
+			</dl>
+			<div class="div_znxx">
+				<div><a href="{:U('Home/Usersm/sm_shfx')}" style=" padding-left: 15px;"><i class="am-icon-skyatlas"> </i>&nbsp;晒货分享</a>
+				</div>
+			</div>
+			<div class="div_znxx">
+				<div><a href="{:U('Home/Usersm/sm_bbqz')}" style=" padding-left: 15px;"><i class="am-icon-credit-card"> </i>&nbsp;资金管理</a>
+				</div>
+			</div>
+		</div>
+		<div class="div_right">
+
+			<div style="padding: 20px;">
+				<ul class="am-nav am-nav-tabs" style="">
+					<li class="am-active"><a href="#">所有任务</a>
+					</li>
+
+				</ul>
+				<table class="am-table" style="margin-top: 20px; border: 1px solid #CCCCCC; border-radius: 2px;">
+					<thead>
+
+						<tr style=" background: white;">
+							<th>
+								<input name="xxx" style="border-radius:6px; border: 1px solid #ccc; width:80px;" value="">
+							</th>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th>
+								<select style="font-size: 12px; padding: 5px;">
+									<option>请选择步骤</option>
+									<option>未开始</option>
+									<option>等待审核</option>
+									<option>审核通过</option>
+									<option>审核失败</option>
+								</select>
+							</th>
+						</tr>
+						<tr style=" background: white;">
+							<th>编号</th>
+							<th>商家</th>
+							<th>搜索商品</th>
+							<th>任务书</th>
+							<th>接单时间</th>
+							<th>任务步骤</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>xxx</td>
+							<td>xxx</td>
+							<td>xxx</td>
+							<td>xxx</td>
+							<td>x</td>
+							<td>xx</td>
+							<td>xxx</td>
+						</tr>
+
+					</tbody>
+				</table>
+
+				<div class="am-alert" data-am-alert style="border-radius: 3px; background: #D9EDF7; border-color: #CEEAF1;color: #3A87AD;">
+					<button type="button" class="am-close">&times;</button>
+					<p>收藏任务的奖励为3个福币，福币奖励将在审核完成后到帐</p>
+				</div>
+
+			</div>
+                  <!--
+                  	作者：99701759@qq.com
+                  	时间：2015-06-20
+                  	描述：
+                  -->
+		</div>
+	</div>
+
+</block>
+
+<block name="area_footer">
+
+</block>
