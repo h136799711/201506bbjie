@@ -1,0 +1,175 @@
+<extend name="template/base_index" />
+
+<block name="area_header">
+	<link rel="stylesheet" href="__CSS__/manager.css" />
+</block>
+
+<block name="area_body">
+	<div class="div_all">
+		<div class="div_top1">
+			<div class="div_gonggao"><i class="am-icon-bullhorn"></i>&nbsp;试福街美食频道下线通知</div>
+			<div class="div_zhongxin"><font color="#FD5E85">{$username}</font>，欢迎来到试福街！[<a href="{:U('Home/Index/exits')}">退出</a>]&nbsp;&nbsp;|&nbsp;&nbsp;<a href="{:U('Home/Index/sm_manager')}">试民中心</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="{:U('Home/Index/index')}">回首页</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+				<a href="#">帮助中心</a>
+			</div>
+		</div>
+		<div class="div_top2">
+			<div style="float: left; ">
+				<img src="__IMG__/baobei_logo.jpg" />
+			</div>
+			<div style="float: left; padding: 10px;color: #FFFFFF; margin-left:50px; margin-top: 35px;font-size: 14px;font-family: " 微软雅黑 "; opacity: 0.2;">
+				<a href="#">试民中心</a>
+			</div>
+			<div style="float: left;padding: 10px;color: #FFFFFF;margin-left: 10px;margin-top: 35px;font-size: 14px;font-family: " 微软雅黑 ";opacity: 0.2">
+				<a href="#">因伙得福</a>
+			</div>
+			<div style="float: left;padding: 10px;color: #FFFFFF;margin-left: 10px;margin-top: 35px;font-size: 14px;font-family: " 微软雅黑 ";opacity: 0.2">
+				<a href="#">试福课堂</a>
+			</div>
+		</div>
+		
+		<div class="div_left">
+			<div class="div_znxx">
+				<div><a href="{:U('Home/Usersm/sm_znxx')}" style=""><span class="demo-icon-actions"><i class="am-icon-envelope am-margin-xs" ></i>站内信息</a>
+				</div>
+
+			</div>
+			<dl class="dl_menu">
+				<dt class="dt_menu"><font><i class="am-icon-calendar-o"></i>&nbsp;活动准备</font></dt>
+				<dd class="dd_menu"><a href="{:U('Home/Usersm/manager_rw')}"><i class="am-icon-caret-right"></i>&nbsp;任务设置</a>
+				</dd>
+				<dd class="dd_menu"><a href="{:U('Home/Usersm/sm_dhsp')}"><i class="am-icon-caret-right"></i>&nbsp;兑换商品</a>
+				</dd>
+				<dd class="dd_menu"><a href="{:U('Home/Usersm/sm_ydsp')}"><i class="am-icon-caret-right"></i>&nbsp;预定商品</a>
+				</dd>
+				<dd class="dd_menu"><a href="{:U('Home/Usersm/sm_xfyd')}"><i class="am-icon-caret-right"></i>&nbsp;幸福一点</a>
+				</dd>
+			</dl>
+			<dl class="dl_menu">
+				<dt class="dt_menu"><font ><i class="am-icon-bullhorn"></i>&nbsp;活动管理</font></dt>
+				<dd class="dd_menu"><a class="sed" href="{:U('Home/Usersm/sm_bbhd')}"><i class="am-icon-caret-right"></i>&nbsp;试福活动</a>
+				</dd>
+				<dd class="dd_menu"><a href="{:U('Home/Usersm/sm_schd')}"><i class="am-icon-caret-right"></i>&nbsp;收藏活动</a>
+				</dd>
+			</dl>
+			<dl class="dl_menu">
+				<dt class="dt_menu"><font ><i class="am-icon-user-md"></i>&nbsp;账号设置</font></dt>
+				<dd class="dd_menu"><a href="{:U('Home/Usersm/index')}"><i class="am-icon-caret-right"></i>&nbsp;基本信息</a>
+				</dd>
+				<dd class="dd_menu"><a href="{:U('Home/Usersm/sm_aqzx')}"><i class="am-icon-caret-right"></i>&nbsp;安全中心</a>
+				</dd>
+				<dd class="dd_menu"><a href="{:U('Home/Usersm/address')}"><i class="am-icon-caret-right"></i>&nbsp;收货地址</a>
+				</dd>
+				<dd class="dd_menu"><a href="{:U('Home/Usersm/sm_xzgl')}"><i class="am-icon-caret-right"></i>&nbsp;勋章管理</a>
+				</dd>
+				<br />
+				<br />
+
+			</dl>
+			<div class="div_znxx">
+				<div><a href="{:U('Home/Usersm/sm_shfx')}" style=" padding-left: 15px;"><i class="am-icon-skyatlas"> </i>&nbsp;晒货分享</a>
+				</div>
+			</div>
+			<div class="div_znxx">
+				<div><a href="{:U('Home/Usersm/sm_bbqz')}" style=" padding-left: 15px;"><i class="am-icon-credit-card"> </i>&nbsp;资金管理</a>
+				</div>
+			</div>
+		</div>
+		<div class="div_right">
+
+			<div class="div_minTitle">
+				<h3>宝贝活动</h3>
+			</div>
+			<div class="div_minContent" style="padding: 20px;">
+				<a href="" style="text-decoration: none;color: white; background: #d1343e; padding:10px; border-top-left-radius: 3px; border-top-right-radius: 3px;">全部任务</a>
+				<table style="border-top: 1px solid #ccc; width: 1100px; margin-top: 9px;">
+					<thead>
+						<tr>
+							<td colspan="6" style=" height: 120px; ">
+
+								<input style="border: 1px solid #ccc; border-bottom-left-radius:7px; border-top-left-radius:7px;" />
+								<input class="am-btn-default" type="button" value="活动搜索" style="border: 1px solid #ccc;border-bottom-right-radius:7px; border-top-right-radius:7px;" />
+								<span style="font-size: 12px; margin-left: 20px;">
+
+				<a href="#" style="color: red;">所有任务</a>
+
+				<a href="#" style="color: #999;">新任务<font color="red">0</font></a>
+
+				<a href="#" style="color: #999;">被驳回<font color="red">0</font></a>
+
+				<a href="#" style="color: #999;">等待审核<font color="red">0</font></a>
+
+				<a href="#" style="color: #999;">待确认收货<font color="red">0</font></a>
+
+				<a href="#" style="color: #999;">等待返款<font color="red">0</font></a>
+
+				<a href="#" style="color: #999;">任务完成</a>
+
+				<a href="#" style="color: #999;">取消/放弃</a>
+
+				</span>
+
+							</td>
+						</tr>
+						<tr style="border: 1px solid #ccc; background: #F5F5F5; height: 37px;">
+							<td style="padding-left: 20px;">试福信息</td>
+							<td>额外奖励</td>
+							<td>任务金额</td>
+							<td>淘宝帐号/订单号</td>
+							<td>任务步骤</td>
+							<td>操作</td>
+						</tr>
+						<tr style=" height: 5px;">
+							<td colspan="6"></td>
+
+						</tr>
+					</thead>
+					<tbody style="font-size: 12px;">
+						<tr style="border: 1px solid #ccc; background: #F5F5F5; height: 37px;">
+							<td style="padding-left: 20px;" colspan="6">编号:1806189试福时间:06-13 09:20商家:云东网te***r</td>
+
+						</tr>
+						<tr style="border: 1px solid #ccc; height:100px; background:white;">
+							<td>
+								<img src="__IMG__/smxz.png" style="float: left; margin-left: 10px;" />
+								<div style="margin-left:90px;"><font color="red">13</font>福币
+									<br /> 超时由系统取消</div>
+							</td>
+							<td><font color="#999" style="text-decoration:line-through">当日完成: +3福币</font>
+								<br /> 小额任务: <font color="red">+3</font>福币</td>
+							<td>
+								<a href="">任务书</a>
+								<br />
+								<font color="red">￥38.00</font>
+							</td>
+							<td>
+								旺旺名：hbddingding
+								<br /> 订单：-
+								<br /> 返款：-
+								<br />
+							</td>
+							<td>
+								<img src="__IMG__/rwsb.png" />
+							</td>
+							<td> 试福日志</td>
+						</tr>
+
+					</tbody>
+				</table>
+				<div class="div_tishi" style=" height: 180px;">
+					<ul>
+						<li style="font-size:16px; font-weight: bold;color: black;">温馨提示：</li>
+						<li>1:在与商家旺旺聊天时，请勿使用”试用“、“试福”、“还款”等字眼！！！</li>
+						<li>2:请严格按照任务书要求做任务，收到货后请先在淘宝平台对您提交的订单进行确认收货并5分好评哦！！！</li>
+						<li>3:任务过程中有任务问题（包括但不限于返款问题）请联系试福街客服进行处理，勿在旺旺上催促商家审核订单、确认返款！！！</li>
+						<li>4:在淘宝上下单时，请一定要用在本站申请活动的时候提交的淘宝帐号下单哦！！！</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</block>
+
+<block name="area_footer">
+
+</block>

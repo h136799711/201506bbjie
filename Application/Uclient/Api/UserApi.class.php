@@ -41,9 +41,10 @@ class UserApi extends Api{
 	
 	/**
 	 * 获取用户信息
-	 * @param  string  $uid         用户ID或用户名
+	 * @param  string  $username     用户名
 	 * @param  boolean $is_username 是否使用用户名查询
 	 * @return array                用户信息
+	 * @author 王玉国 <99701759@qq.com>
 	 */
 	public function getbyname($username){
 		$map = array();

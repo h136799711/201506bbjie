@@ -16,6 +16,14 @@ class HomePublicApi{
 	const Bbjmember_Seller_Add='Home/BbjmemberSeller/add';
 	const Bbjmember_Seller_Query='Home/BbjmemberSeller/queryNoPaging';
 	const Bbjmember_Seller_GetInfo='Home/BbjmemberSeller/getInfo';
+	
+	
+	
+	/**
+	 * 
+	 */
+	//====================================================================
+	
 	const User_Register='Uclient/User/register';
 	const User_Query='Uclient/User/query';
 	const User_Login='Uclient/User/login';
@@ -23,6 +31,11 @@ class HomePublicApi{
 	const User_GetUser='Uclient/User/getInfo';
 	const User_EditPwd='Uclient/User/updateInfo';
 	const User_SaveByID='Home/UcenterMember/saveByID';
+	/**
+	 * 
+	 * 
+	 */
+	 //
 	const UcenterUser_Query='Home/UcenterMember/queryNoPaging';
 	const Member_Add='Admin/Member/add';
 	const Member_Query='Admin/Member/queryNoPaging';
