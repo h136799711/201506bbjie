@@ -144,7 +144,7 @@ class UsersmController extends HomeController {
 		$sm = array('birthday' => $bir, 'sex' => I('sex', 0), 'qq' => I('qq', '1'), 'realname' => I('realname', ''), );
 		$sheng = I('sheng');
 		$shi = I('shi');
-		$qu = I('qu');
+		$qu = I('qu','');
 		$smm = array('dtree_job' => I('zhiye', ''), 'personal_signature' => I('grqm', ''), 'brief_introduction' => I('grjj', ''), 'address' => $sheng . $shi . $qu . I('address', ''), );
 		//		dump($smm);
 		//		dump($smm);

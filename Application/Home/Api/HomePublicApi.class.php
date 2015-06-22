@@ -47,4 +47,7 @@ class HomePublicApi{
 	const Address_Del='Home/Address/delete';
 	const Address_SaveByID='Home/Address/saveByID';
 	const Address_Query='Home/Address/queryNoPaging';
+	
+	const Post_Query='Admin/Post/query';
 }
+

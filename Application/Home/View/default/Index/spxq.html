@@ -1,0 +1,255 @@
+<extend name="template/base_index" />
+
+<block name="area_header">
+	<script type="text/javascript" src="__PUBLIC__/Home/js/index.js"></script>
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/index.css" />
+	<style type="text/css">
+		* {
+			font-family: "微软雅黑" !important;
+		}
+	</style>
+</block>
+
+<block name="area_body">
+	<div id="div_all">
+		<div id="div_top">
+			<div class="div_info">
+				<div style="color:#FFF; float:left; background: url(__PUBLIC__/Home/img/gonggao.png) no-repeat 0 9px;padding-left:  25px;">
+					<a href="{:U('Home/Index/gfggxx',array('id'=>$gg['id']))}" style="color: white;">{$gg.post_title}</a>
+				</div>
+				<empty name="username">
+					<div style="color:#FFF;float:right">您好，欢迎来到宝贝街！请[<a href="{:U('Home/Index/login')}">登录</a>][<a href="{:U('Home/Index/register_sj')}">免费注册</a>]|帮助中心</div>
+					<else/>
+					<div style="color:#FFF;float:right"><a href="{:U('Home/Index/sm_manager',array('username'=>$username))}">{$username}</a>,您好，欢迎来到宝贝街！[<a href="{:U('Home/Index/register_sm')}">免费注册</a>]|帮助中心</div>
+				</empty>
+			</div>
+		</div>
+		<div id="div_top2">
+			<div class="div_info">
+				<div align="right" style=" padding:10px; padding-top:30px;">
+
+				
+
+				</div>
+			</div>
+		</div>
+		<div id="div_title">
+			<div class="div_info">
+				<ul>
+					<li onclick="changePageTitle('{:U('Home/Index/index')}')"  class="li_checkedtitle" >宝贝广场</li>
+					<li onclick="changePageTitle('{:U('Home/Index/flzc')}')">福利专场</li>
+					<li onclick="changePageTitle('{:U('Home/Index/xfyd')}')">幸福一点</li>
+					<li onclick="changePageTitle('{:U('Home/Index/sjh')}')">试江湖</li>
+					<li onclick="changePageTitle('{:U('Home/Index/chg')}')">茶话馆</li>
+					<li onclick="changePageTitle('{:U('Home/Index/bzzx')}')" style="border-right: none;">帮助中心</li>
+				</ul>
+			</div>
+		</div>
+		<div id="div_main" style="border-top:1px solid #ccc">
+			<div class="div_info" >
+				<div class="div_spxq_info1">
+					<h3 style=" font-weight: 100;font-size: 13px; padding: 10px;"><a href="">首页 </a>> <a href="">试福广场  </a>> 女士夏季人字拖</h3>
+					<div style="border-top: 1px dashed #ccc; padding: 10px;">
+						<img width="400" height="450" src="__PUBLIC__/Home/img/1059085468.jpg" style=" border:1px solid #ccc;padding: 1px;float: left;"/>
+						<div style="margin-left:420px;">
+						
+							<h3>女士夏季人字拖</h3>
+							<div style="background: #EC2B59;height: 80px; line-height: 80px; padding-left: 20px;color: white;font-size: 12px;">价值:<font size="+2" style="">59</font>福币<a class="am-badge am-badge-danger am-round" style="margin-left: 20px;">免费</a><a class="am-badge am-badge-warning am-round" style="margin-left: 20px;">全国包邮</a></div>
+							<table style="font-size: 12px;">
+								<tr style="font-size: 13px; ">
+									<td style="padding-top: 10px;">收藏：</td>
+									<td style="padding-top: 10px;">已有<font color="red">18</font>人收藏</td>
+								</tr>
+								<tr>
+									<td style="padding-top: 10px;">咋拿这东西：</td>
+									<td style="padding-top: 10px;"><div style="line-height: 1.2em;padding-top:8px;">
+											累计完成<font color="red">550.00</font>元试福任务，使用福币兑换<br>
+         						 <font color="#999">日任务金设置大于<font color="red">550.00</font>元的话有几率任务直接获取</font>
+										</div></td>
+								</tr>
+								<tr>
+									<td style="padding-top: 10px;">咨询：</td>
+									<td style="padding-top: 10px;"><button type="button"  style="border: 1px solid #999; border-radius: 15px; padding: 2px 15px; background: white; "><font class="am-icon-comment-o"></font>宝贝官方群</button></td>
+								</tr>
+								<tr>
+									<td style="padding-top: 10px;">颜色:</td>
+									<td style="padding-top: 10px;"><font style="border: 1px solid #ccc;padding: 5px 10px;margin-left: 5px; cursor: pointer;">绿色</font><font style="border: 1px solid #ccc;padding: 5px 10px; margin-left:5px;cursor: pointer; background: url('__PUBLIC__/Home/img/selected.png'); background-size: 100% 100%;">红色</font></td>
+								</tr>
+								<tr>
+									<td style="padding-top: 10px;">尺码：</td>
+									<td style="padding-top: 10px;"><font style="border: 1px solid #ccc;padding: 5px 10px; margin-left: 5px;cursor: pointer;">:S（36-37码）</font></td>
+								</tr>
+								<tr>
+									<td colspan="2" style="font-size:17px; font-weight: 600;color: #ff5497;">小提示：您收藏的宝贝可能会被系统自动匹配给你哦！</td>
+								</tr>
+								<tr>
+									<td colspan="2" style="padding-top: 10px;">
+										<button type="button" class="am-btn am-btn-danger">我要收藏</button>
+										<button type="button" class="am-btn am-btn-warning">我要兑换</button>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2" style="padding-top: 10px;">
+										<button type="button"  style="border: 1px solid #999; border-radius: 15px; padding: 5px 20px; background: white; ">分享</button>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				
+				<div class="am-g" style=" width: 85%;  margin-top: 20px;">
+					<div class="am-u-sm-8" >
+						<div data-am-widget="tabs" class="am-tabs am-tabs-default" style="margin: 0;">
+						  <ul class="am-tabs-nav am-cf" style="border: 1px solid #ccc;">
+						    <li class="am-active">
+						      <a href="[data-tab-panel-0]">商品展示</a>
+						    </li>
+						    <li class="">
+						      <a href="[data-tab-panel-1]">宝贝晒货</a>
+						    </li>
+						    <li class="">
+						      <a href="[data-tab-panel-2]">已审核宝民</a>
+						    </li>
+						  </ul>
+						  <div class="am-tabs-bd" style="padding: 0; ">
+						    <div data-tab-panel-0 class="am-tab-panel am-active" style="padding: 0;">
+								<img src="__PUBLIC__/Home/img/TB2_YwscpXXXXaLXXXXXXXXXXXX-10771667.jpg" width="630"/>
+						    	<img src="__PUBLIC__/Home/img/TB2JCphaXXXXXbRXpXXXXXXXXXX-10771667.jpg" width="630"/>
+						    	<img src="__PUBLIC__/Home/img/TB2k57scpXXXXauXXXXXXXXXXXX-10771667.jpg" width="630"/>
+						    	<img src="__PUBLIC__/Home/img/TB2s03rcpXXXXbdXXXXXXXXXXXX-10771667.jpg" width="630"/>
+						    	<img src="__PUBLIC__/Home/img/TB2vXMrcpXXXXbzXXXXXXXXXXXX-10771667.jpg" width="630"/>
+						    </div>
+						    <div
+						    data-tab-panel-1 class="am-tab-panel ">【彩虹】那时候有多好，任雨打湿裙角。忍不住哼起，心爱的旋律。绿油油的树叶，自由地在说笑。燕子忙归巢，风铃在舞蹈。经过青春的草地，彩虹忽然升起。即使视线渐渐模糊，它也在我心里。就像爱过的旋律，没人能抹去。因为生命存在失望，歌唱，所以才要歌唱。</div>
+						  <div
+						  data-tab-panel-2 class="am-tab-panel ">【歌唱】那时候有多好，任雨打湿裙角。忍不住哼起，心爱的旋律。绿油油的树叶，自由地在说笑。燕子忙归巢，风铃在舞蹈。经过青春的草地，彩虹忽然升起。即使视线渐渐模糊，它也在我心里。就像爱过的旋律，没人能抹去。因为生命存在失望，歌唱，所以才要歌唱。</div>
+						</div>
+						</div>
+					</div>
+					<div class="am-u-sm-4">
+						<div class="am-panel am-panel-default">
+							<div class="am-panel-hd">官方声明</div>
+							<div class="am-panel-bd">
+								<ul>
+									<li><font class="am-icon-adn" color="#ff5497" size="+1" style="margin-right: 5px;"></font>宝贝街官方运营</li>
+									<li><font class="am-icon-gift" color="#ff5497" size="+1" style="margin-right: 5px;"></font>海量免费商品</li>
+									<li><font class="am-icon-cloud-download" color="#ff5497" size="+1" style="margin-right: 5px;"></font>试福全场免邮</li>
+									<li><font class="am-icon-gittip" color="#ff5497" size="+1" style="margin-right: 5px;"></font>72小时闪电发货</li>
+									<li><font class="am-icon-rebel" color="#ff5497" size="+1" style="margin-right: 5px;"></font>商家预存担保金</li>
+								</ul>
+							</div>
+						</div>
+						<div class="am-panel am-panel-default">
+							<div class="am-panel-hd">宝贝流程</div>
+							<div class="am-panel-bd">
+								<ul class="ul_bblc" style="text-align: center;">
+									<li>试民申请</li>
+									<li><font class="am-icon-chevron-down" color="#999"></font></li>
+									<li>等待商家审核</li>
+									<li><font class="am-icon-chevron-down" color="#999"></font></li>
+									<li>开始试福任务</li>
+									<li><font class="am-icon-chevron-down" color="#999"></font></li>
+									<li>完成试福任务</li>
+									<li><font class="am-icon-chevron-down" color="#999"></font></li>
+									<li>返款试福钱庄</li>
+									<li><font class="am-icon-chevron-down" color="#999"></font></li>
+									<li>随时提现 </li>
+								</ul>
+							</div>
+						</div>
+						<div class="am-panel am-panel-default">
+							<div class="am-panel-hd">推荐商品</div>
+							<div class="am-panel-bd">
+								<ul style="text-align: center;">
+									<li><a href=""><img src="__PUBLIC__/Home/img/0913422401.jpg" width="220"/></a></li>
+									<li><a href="">夏季卡通儿童凉拖鞋</a></li>
+									<li><a href=""><img src="__PUBLIC__/Home/img/1521347954.jpg" width="220"/></a></li>
+									<li><a href="">夏季卡通儿童凉拖鞋</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		
+		<hr color="#ccc" style="clear:both; margin-top:20px; width: 100%;" size="1" />
+		<div id="div_foot">
+			<div class="div_info">
+				<dl class="dl_phone">
+					<dt class="dt_phone" style=" height: 100%; margin-right: 10px;"><img src="__PUBLIC__/Home/img/phone.png" /></dt>
+					<dd style="font-weight: bold; font-size:13px ;">4008-448-888</dd>
+					<dd>美食街热线</dd>
+					<dd>周一至周六：09:00-17:00</dd>
+				</dl>
+				<dl>
+					<dt>关于我们</dt>
+					<dd class="dd_info"><a href="#">宝贝街介绍</a>
+					</dd>
+					<dd class="dd_info"><a href="#">联系我们</a>
+					</dd>
+
+				</dl>
+				<dl>
+					<dt>我是试民</dt>
+					<dd class="dd_info"><a href="#">新手指引</a>
+					</dd>
+					<dd class="dd_info"><a href="#">福币介绍</a>
+					</dd>
+					<dd class="dd_info"><a href="#">资金保障</a>
+					</dd>
+				</dl>
+
+				<dl>
+					<dt>我是商家</dt>
+					<dd class="dd_info"><a href="#">商家入驻</a>
+					</dd>
+					<dd class="dd_info"><a href="#">会员体系</a>
+					</dd>
+					<dd class="dd_info"><a href="#">活动安全</a>
+					</dd>
+				</dl>
+				<dl>
+					<dt>宝贝街特色</dt>
+					<dd class="dd_info"><a href="#">许愿树</a>
+					</dd>
+					<dd class="dd_info"><a href="#">周四盛点</a>
+					</dd>
+					<dd class="dd_info"><a href="#">因伙得福</a>
+					</dd>
+				</dl>
+				<dl>
+					<dt>共图大业</dt>
+					<dd class="dd_info"><a href="#">招兵买马</a>
+					</dd>
+					<dd class="dd_info"><a href="#">拜将求帅</a>
+					</dd>
+					<dd class="dd_info"><a href="#">战略伙伴</a>
+					</dd>
+					<dd class="dd_info"><a href="#">天赐良机</a>
+					</dd>
+				</dl>
+
+				<dl>
+					<dt>宝贝微信账号</dt>
+					<dd class="dd_info" style="margin: 0;margin-left: -12px;">
+						<img src="__PUBLIC__/Home/img/weixin.png" />
+
+					</dd>
+
+				</dl>
+			</div>
+
+			<div align="center" style="clear:both; margin-bottom:5px; border-top: 1px solid #ccc; width:800px; margin: 0 auto;"><font color="#999999" size="-2">杭州博也科技有限公司，保留一切权利。 浙ICP备13025642号-2 © 2015 baobeijie.net 版权所有<font style="display: none;">{__RUNTIME__}</font></font>
+			</div>
+
+		</div>
+	</div>
+</block>
+
+<block name="area_footer">
+	
+</block>

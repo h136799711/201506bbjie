@@ -14,7 +14,9 @@
 	<div id="div_all">
 		<div id="div_top">
 			<div class="div_info">
-				<div style="color:#FFF; float:left; background: url(__PUBLIC__/Home/img/gonggao.png) no-repeat 0 9px;padding-left:  25px;">宝贝街美食频道下线通知</div>
+				<div style="color:#FFF; float:left; background: url(__PUBLIC__/Home/img/gonggao.png) no-repeat 0 9px;padding-left:  25px;">
+					<a href="{:U('Home/Index/gfggxx',array('id'=>$gg['id']))}" style="color: white;">{$gg.post_title}</a>
+				</div>
 				<empty name="username">
 					<div style="color:#FFF;float:right">您好，欢迎来到宝贝街！请[<a href="{:U('Home/Index/login')}">登录</a>][<a href="{:U('Home/Index/register_sj')}">免费注册</a>]|帮助中心</div>
 					<else/>
@@ -352,7 +354,7 @@
 				</dl>
 			</div>
 
-			<div align="center" style="clear:both; margin-bottom:5px; border-top: 1px solid #ccc; width:800px; margin: 0 auto;"><font color="#999999" size="-2">杭州博也科技有限公司，保留一切权利。 浙ICP备13025642号-2 © 2015 shifujie.net 版权所有<font style="display: none;">{__RUNTIME__}</font></font>
+			<div align="center" style="clear:both; margin-bottom:5px; border-top: 1px solid #ccc; width:800px; margin: 0 auto;"><font color="#999999" size="-2">杭州博也科技有限公司，保留一切权利。 浙ICP备13025642号-2 © 2015 baobeijie.net 版权所有<font style="display: none;">{__RUNTIME__}</font></font>
 			</div>
 
 		</div>

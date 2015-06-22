@@ -1,0 +1,150 @@
+<extend name="template/base_index" />
+
+<block name="area_header">
+	<script type="text/javascript" src="__PUBLIC__/Home/js/index.js"></script>
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/index.css" />
+	<style type="text/css">
+		* {
+			font-family: "微软雅黑" !important;
+		}
+	</style>
+</block>
+
+<block name="area_body">
+	<div id="div_all">
+		<div id="div_top">
+			<div class="div_info">
+				<div style="color:#FFF; float:left; background: url(__PUBLIC__/Home/img/gonggao.png) no-repeat 0 9px;padding-left:  25px;">
+					<a href="{:U('Home/Index/gfggxx',array('id'=>$gg['id']))}" style="color: white;">{$gg.post_title}</a>
+				</div>
+				<empty name="username">
+					<div style="color:#FFF;float:right">您好，欢迎来到宝贝街！请[<a href="{:U('Home/Index/login')}">登录</a>][<a href="{:U('Home/Index/register_sj')}">免费注册</a>]|帮助中心</div>
+					<else/>
+					<div style="color:#FFF;float:right"><a href="{:U('Home/Index/sm_manager',array('username'=>$username))}">{$username}</a>,您好，欢迎来到宝贝街！[<a href="{:U('Home/Index/register_sm')}">免费注册</a>]|帮助中心</div>
+				</empty>
+			</div>
+		</div>
+		<div id="div_top2">
+			<div class="div_info">
+				<div align="right" style=" padding:10px; padding-top:30px;">
+
+				</div>
+			</div>
+		</div>
+		<div id="div_title">
+			<div class="div_info">
+				<ul>
+					<li onclick="changePageTitle('{:U('Home/Index/index')}')">宝贝广场</li>
+					<li class="li_checkedtitle" onclick="changePageTitle('{:U('Home/Index/flzc')}')">福利专场</li>
+					<li onclick="changePageTitle('{:U('Home/Index/xfyd')}')">幸福一点</li>
+					<li onclick="changePageTitle('{:U('Home/Index/sjh')}')">试江湖</li>
+					<li onclick="changePageTitle('{:U('Home/Index/chg')}')">茶话馆</li>
+					<li onclick="changePageTitle('{:U('Home/Index/bzzx')}')" style="border-right: none;">帮助中心</li>
+				</ul>
+			</div>
+		</div>
+		
+		<div id="div_main" style="border-top: 1px solid #ccc; background: #fde9f1;float: left;padding-bottom: 50px">
+			<div class="div_info" style="">
+				<div class="div_gg_left" style=" background:#f2f2f2;width: 200px;text-align: center; margin-top: 20px;float: left; height: 500px;">
+					<div style="background: url(__PUBLIC__/Home/img/smgg1.png); background-size: 100% 100%; height: 52px;"></div>
+					<ul style="text-align: left;">
+						<li style="font-size: 12px;padding: 5px; border-bottom: 1px solid #E0E2E1;padding-left: 20px;"><font class="am-icon-chevron-circle-right" style="margin-right: 5px;"></font><a href="" class="a_li">宝贝街公告</a></li>
+						<li style="font-size: 12px;padding: 5px;border-bottom: 1px solid #E0E2E1;padding-left: 20px;"><font class="am-icon-chevron-circle-right"style="margin-right: 5px;"></font><a href="" class="a_li">商家公告</a></li>
+						<li style="font-size: 12px;padding: 5px;border-bottom: 1px solid #E0E2E1;padding-left: 20px;"><font class="am-icon-chevron-circle-right"style="margin-right: 5px;"></font><a href="" class="a_li">试民公告</a></li>
+					</ul>
+				</div>
+				<div class="div_gg_info" style="float: left;width: 865px; padding-bottom:50px; margin-top: 20px; margin-left: 10px;background: url(__PUBLIC__/Home/img/smgg2.png)no-repeat scroll -1px 0 #F2F2F2;">
+					<div style=" margin-left:600px;margin-top: 50px;">您的位置：<a href="#" style="color:red">首页</a>>宝贝街公告</div>
+					<ul class="ul_gg_info" style="font-size: 12px; width: 100%;">
+						
+						<empty name="list">
+							
+								<center>没有相关记录</center>
+							
+							<else/>
+							<volist name="list" id="vo">
+								<li><font class="am-icon-caret-right"></font><a href="{:U('Home/Index/gfggxx',array('id'=>$vo['id']))}" class="a_li">{$vo.post_title}</a></li>
+							</volist>
+						</empty>
+
+					</ul>
+					<div class="div_gg_page" style="text-align: center;font-size: 12px; ">
+						{$show}
+					</div>
+				</div>
+				
+				
+			</div>
+		</div>
+		<hr color="#ccc" style="clear:both; margin-top:20px; width: 100%;" size="1" />
+		<div id="div_foot" style="">
+			<div class="div_info" style="">
+				
+				<a href="" class="a_li">
+					<ul style="margin-left:150px;">
+						<li><font class="am-icon-adn" size="7"></font></li>
+						<li style="font-size: 13px;">宝贝街介绍</li>
+						<li>让你了解我们</li>
+					</ul>
+				</a>
+				<a href="" class="a_li">
+					<ul >
+						<li><font class="am-icon-certificate" size="7"></font></li>
+						<li style="font-size: 13px;">客服中心</li>
+						<li>让你试的舒心</li>
+						
+					</ul>
+				</a>
+				<a href="" class="a_li">
+					<ul >
+						<li><font class="am-icon-sort-amount-asc" size="7"></font></li>
+						<li style="font-size: 13px;">注册流程</li>
+						<li>不熟悉我们？</li>
+						
+					</ul>
+				</a>
+				<a href="" class="a_li">
+					<ul >
+						<li><font class="am-icon-star" size="7"></font></li>
+						<li style="font-size: 13px;">试用规则</li>
+						<li>具体了解规则</li>
+						
+					</ul>
+				</a>
+				<a href="" class="a_li">
+					<ul>
+						<li><font class="am-icon-wrench" size="7"></font></li>
+						<li style="font-size: 13px;">商家规则</li>
+						<li>试用发布流程</li>
+						
+					</ul>
+				</a>
+				<a href="" class="a_li">
+					<ul >
+						<li><font class="am-icon-shield" size="7"></font></li>
+						<li style="font-size: 13px;">账号保护</li>
+						<li>修改账号信息</li>
+						
+					</ul>
+				</a>
+				<a href="" class="a_li">
+					<ul >
+						<li><font class="am-icon-exclamation-circle" size="7"></font></li>
+						<li style="font-size: 13px;">问题反馈</li>
+						<li>做到精益求精</li>
+						
+					</ul>
+				</a>
+			</div>
+			<div style="height: 30px; line-height: 30px; background: black;font-size: 12px; text-align: center;color: white; clear: both;"><a href="#" class="a_footer">关于公司</a> | <a href="#" class="a_footer" >用户协议</a> | <a href="#" class="a_footer">免责声明</a> | <a href="#" class="a_footer" >招兵买马</a> | <a href="#" class="a_footer" >注册会员</a> | <a href="#" class="a_footer">帮助中心</a> | <a href="#" class="a_footer">商务合作</a> | <a href="#" class="a_footer">友情链接</a></div>
+			<div align="center" style="clear:both; width:800px; margin: 20px auto;"><font color="#999999" size="-2">杭州博也科技有限公司，保留一切权利。 浙ICP备13025642号-2 © 2015 baobeijie.net 版权所有<font style="display: none;">{__RUNTIME__}</font></font>
+			</div>
+
+		</div>
+	</div>
+</block>
+
+<block name="area_footer">
+	
+</block>

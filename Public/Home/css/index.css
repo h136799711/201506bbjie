@@ -1,6 +1,6 @@
 /* CSS Document */
 h1,h2,h3,h4{ margin: 0; padding:2px;}
-ul,li,dl{ list-style:none; margin:0; padding:0;float:left}
+ul,li,dl{ list-style:none; margin:0; padding:0;}
 input{border:1px solid #ccc; list-style:none;}
 
 
@@ -17,8 +17,8 @@ input{border:1px solid #ccc; list-style:none;}
 	#div_top2 .div_info div{margin-right:20px;}
 #div_title{ height:50px; }
 	#div_title div{  height:100%; padding:12px; font-size: 18px;}
-	#div_title div ul{}
-	#div_title div ul li{ padding-left:20px;padding-right: 20px; padding-top: 0; padding-bottom: 0; font-weight:bold; cursor:pointer; font-size: 14px; border-right:1px solid #ccc ;}
+	#div_title div ul{float:left}
+	#div_title div ul li{ padding-left:20px;padding-right: 20px; float: left; padding-top: 0; padding-bottom: 0; font-weight:bold; cursor:pointer; font-size: 14px; border-right:1px solid #ccc ;}
 	/*#div_title div ul li.li_fenge{ color:#ccc}*/
 #div_lunbo{ background-color:#E1E4F5; height:422px;}
 	#div_lunbo .div_info{ border:1px solid #ccc; height:100% ;margin-top: 0px;}
@@ -43,7 +43,8 @@ input{border:1px solid #ccc; list-style:none;}
 	#div_main .div_info{ padding-left: 20px;}
 	
 	#div_main .div_info .div_condition { border-bottom: 1px solid #ccc; padding-bottom: 5px;}
-	#div_main .div_info .div_condition .ul_condition1 li{ margin-left: 5px; padding: 5px; margin-top: 10px;}
+	#div_main .div_info .div_condition .ul_condition1{float: left;}
+	#div_main .div_info .div_condition .ul_condition1 li{ margin-left: 5px; padding: 5px; margin-top: 10px; float: left;}
 	#div_main .div_info .div_condition .ul_condition1 li a{font-size: 12px;color: #ccc;}
 	
 	#div_main .div_info .div_condition span{ font-size: 14px;}
@@ -54,36 +55,45 @@ input{border:1px solid #ccc; list-style:none;}
 	
 	#div_main .div_info .div_minInfo{float: left; width: 100%;}
 	#div_main .div_info .div_bzzx .div_bzzx_zzfw {padding:20px; padding-left: 100px; padding-top: 30px;}
-	#div_main .div_info .div_bzzx .div_bzzx_zzfw ul li{  width:100px; height:100px; border: 1px solid #ccc; border-top:none; border-left:none; cursor: pointer;}
+	#div_main .div_info .div_bzzx .div_bzzx_zzfw ul li{  width:100px; height:100px; border: 1px solid #ccc; border-top:none; border-left:none; cursor: pointer; float: left;}
 	
-	#div_main .div_info .div_bzzx .div_bzzx_cjwt ul li{clear: left; margin:5px; margin-left: 12px;}
+	#div_main .div_info .div_bzzx .div_bzzx_cjwt ul li{clear: left; margin:5px; margin-left: 12px; float: left;}
 	
-
 	
+	#div_main .div_info .div_spxq_info1{ width:85%; height: 520px; border: 1px solid #ccc; margin: 0 auto;margin-top: 10px;}
+	
+	#div_main .div_info .div_gg_info{}
+	#div_main .div_info .div_gg_info ul.ul_gg_info li{ border-bottom: 1px dotted #ccc;padding: 5px; padding-left: 20px; }
+	#div_main .div_info .div_gg_info .div_gg_page nav span{border: 1px solid red;}
+	#div_main .div_info .div_gg_info .div_gg_page nav ul li{ }
 	#div_main .div_info .div_bzzx .div_bzzx_cjwt ul li a:link {color: #666}		/* 未访问的链接 */
 	#div_main .div_info .div_bzzx .div_bzzx_cjwt ul li a:visited {color: #666}		/* 已访问的链接 */
 	#div_main .div_info .div_bzzx .div_bzzx_cjwt ul li a:hover {color: #ff5497}		/* 鼠标移动到链接上 */
 	#div_main .div_info .div_bzzx .div_bzzx_cjwt ul li a:active {color: #ff5497}		/* 选定的链接 */
 	
-	#div_main .div_info .div_xfyd_info ul{width: 560px; height: 328px; border: 1px solid #ccc; margin: 10px;}
+	#div_main .div_info .div_xfyd_info ul{width: 560px; height: 328px; border: 1px solid #ccc; margin: 10px;float: left;}
 	#div_main .div_info .div_xfyd_info ul li.li_imageinfo{ float: left;width: 260px; padding: 10px; padding-top:30px;}
 	#div_main .div_info .div_xfyd_info ul li.li_image{ float: left;width: 290px;}
 	#div_main .div_info .div_minInfo .div_minTitle{width: 98%; border-bottom: 1px solid #CCCCCC;  font-size: 20px;color: #000;float: left;font-weight: 400;}
 	#div_main .div_info .div_minInfo .div_minTitle h3{ float: left;}
 	#div_main .div_info .div_minInfo .div_minTitle a{ float: right;  color: white; text-decoration: none; background: url(../img/look-more.png) no-repeat scroll; width: 100px; margin-top: 8px;}
-	#div_main dl{ width:218px; height:320px;border:1px solid #fff; margin: 5px;}
+	#div_main dl{ width:218px; height:320px;border:1px solid #fff; margin: 5px;float: left;}
 	#div_main dl.dl_info{ cursor:pointer;}
 	#div_main dl.dl_shaihuo{width:215px;text-align: center; border: 1px solid #CCCCCC; margin-bottom: 10px; margin-top: 10px;  height: 250px; margin-left: 5px;}
 	#div_main dl.dl_shaihuo dd a{font-size: 12px;background: #ff5497;border-radius: 4px;color: #fff;padding: 2px 6px;text-decoration: none;}
 	#div_main dl dt{}
 	#div_main dl dd{color:#666; margin-left:0px; padding:5px; font-size:12px;}
 	
+	
+	#div_main .div_info .ul_bblc{}
+	#div_main .div_info .ul_bblc li{border: 1px solid #ccc; background: #F6F6F6; width: 50%; margin: 0 auto; margin-top: 5px; margin-bottom: 5px; border-radius: 5px; color: #ff5097; font-size:14px;}
+	
 	#div_bzzx_top{width: 100%; height: 70px; border-bottom: 1px solid #ccc;}
 	.bzzx_li_title{font-size: 16px; color: black; font-weight: bold;}
 	.bzzx_li_titleSelect{ background: #ff5097; padding: 5px; border-radius: 5px; color: white; padding-left: 10px; padding-right: 10px;}
 #div_foot{padding-top: 50px; }
 	
-	#div_foot dl{ width:100px; height:100px; margin-left:20px; margin-bottom: 100px;}
+	#div_foot dl{ width:100px; height:100px; margin-left:20px; margin-bottom: 100px;float: left;}
 	#div_foot dl dt{ font-weight:bold ; text-align:center;color:#666;}
 	#div_foot dl dt.dt_phone{float:left; margin-top:12px;}
 	#div_foot dl dd{ color:#999; font-size: 12px; margin-top: 8px;}
@@ -92,6 +102,7 @@ input{border:1px solid #ccc; list-style:none;}
 	#div_foot dl.dl_phone{  width:200px; height:100px;margin-left:100px;}
 	#div_foot div.div_info{ padding-bottom:20px; margin-bottom: 20px;}
 	
+	#div_foot .div_info ul {float: left; width: 100px; margin-left:30px;margin-bottom: 20px; text-align: center;font-size: 12px;}
 	
 .selected{color:#F00;}
 
@@ -114,6 +125,19 @@ input{border:1px solid #ccc; list-style:none;}
 .div_show{}
 
 .li_checkedtitle{color: red;}
+
+
+
+a.a_li:link {color: #666}		/* 未访问的链接 */
+a.a_li:visited {color: #666}		/* 已访问的链接 */
+a.a_li:hover {color: #ff5497}		/* 鼠标移动到链接上 */
+a.a_li:active {color: #ff5497}
+
+
+a.a_footer:link {color: white}		/* 未访问的链接 */
+a.a_footer:visited {color:white}		/* 已访问的链接 */
+a.a_footer:hover {color: #ff5497}		/* 鼠标移动到链接上 */
+a.a_footer:active {color: #ff5497}
 
 
 

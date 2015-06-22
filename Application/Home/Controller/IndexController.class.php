@@ -29,14 +29,31 @@ class IndexController extends HomeController {
 	}
 	
 	public function index(){
+		$order = " post_modified desc ";
+		$result = apiCall('Admin/Post/queryNoPaging',array($map, $order, $fields));
+		
+		$this->assign('gg',$result['info'][0]);
+		
+		
 		$headtitle="宝贝街-首页";
 		$this->assign('head_title',$headtitle);
 		$users=session('user_sm');
+		
+		
+		
+	
+		
+		
 		$this->assign('username',session('user_sm')['info']['username']);
 		$this->display();
 	}
 	
 	public function flzc(){
+		$order = " post_modified desc ";
+		$result = apiCall('Admin/Post/queryNoPaging',array($map, $order, $fields));
+		
+		$this->assign('gg',$result['info'][0]);
+		
 		$headtitle="宝贝街-福品专场";
 		$this->assign('head_title',$headtitle);
 		$users=session('user_sm');
@@ -45,6 +62,11 @@ class IndexController extends HomeController {
 	}
 	
 	public function xfyd(){
+		$order = " post_modified desc ";
+		$result = apiCall('Admin/Post/queryNoPaging',array($map, $order, $fields));
+		
+		$this->assign('gg',$result['info'][0]);
+		
 		$headtitle="宝贝街-幸福一点";
 		$this->assign('head_title',$headtitle);
 		$users=session('user_sm');
@@ -53,6 +75,12 @@ class IndexController extends HomeController {
 	}
 	
 	public function sjh(){
+		$order = " post_modified desc ";
+		$result = apiCall('Admin/Post/queryNoPaging',array($map, $order, $fields));
+		
+		$this->assign('gg',$result['info'][0]);
+		
+		
 		$headtitle="宝贝街-试江湖";
 		$this->assign('head_title',$headtitle);
 		$users=session('user_sm');
@@ -61,6 +89,12 @@ class IndexController extends HomeController {
 	}
 	
 	public function chg(){
+		$order = " post_modified desc ";
+		$result = apiCall('Admin/Post/queryNoPaging',array($map, $order, $fields));
+		
+		$this->assign('gg',$result['info'][0]);
+		
+		
 		$headtitle="宝贝街-茶话馆";
 		$this->assign('head_title',$headtitle);
 		$users=session('user_sm');
@@ -69,9 +103,67 @@ class IndexController extends HomeController {
 	}
 
 	public function bzzx(){
+		
 		$headtitle="宝贝街-帮助中心";
 		$this->assign('head_title',$headtitle);
 		$users=session('user_sm');
+		$this->assign('username',session('user_sm')['info']['username']);
+		$this->display();
+	}
+	
+	public function spxq(){
+		$order = " post_modified desc ";
+		$result = apiCall('Admin/Post/queryNoPaging',array($map, $order, $fields));
+		
+		$this->assign('gg',$result['info'][0]);
+		
+		
+		$headtitle="宝贝街-商品详情";
+		$this->assign('head_title',$headtitle);
+		$users=session('user_sm');
+		$this->assign('username',session('user_sm')['info']['username']);
+		$this->display();
+	}
+	
+	public function gfgg(){
+		$order = " post_modified desc ";
+		$result = apiCall('Admin/Post/queryNoPaging',array($map, $order, $fields));
+		
+		$this->assign('gg',$result['info'][0]);
+		
+		$post_category=I('post_category');
+		//dump($post_category);
+		$map1['$post_category']=$post_category;
+		$page1 = array('curpage' => I('get.p', 0), 'size' => 2);
+		$result1=apiCall("Admin/Post/query",array($map1,$page1,$order1,$params1));
+		$this->assign('list',$result1['info']['list']);
+		$this->assign('show',$result1['info']['show']);
+		//dump($result1);
+		$headtitle="宝贝街-官方公告";
+		$this->assign('head_title',$headtitle);
+		$users=session('user_sm');
+		$this->assign('username',session('user_sm')['info']['username']);
+		$this->display();
+	}
+	
+	public function gfggxx(){
+		$order = " post_modified desc ";
+		$result = apiCall('Admin/Post/queryNoPaging',array($map, $order, $fields));
+		
+		$this->assign('gg',$result['info'][0]);
+		
+		
+		$headtitle="宝贝街-官方公告信息";
+		$this->assign('head_title',$headtitle);
+		$users=session('user_sm');
+		$id=I('id');
+		//dump($id);
+		$map['id']=$id;
+		$result = apiCall('Admin/Post/queryNoPaging',array($map, $order, $fields));
+		$this->assign('gg',$result['info'][0]);
+		
+		//dump($result);
+		
 		$this->assign('username',session('user_sm')['info']['username']);
 		$this->display();
 	}
