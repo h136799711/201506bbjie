@@ -76,7 +76,7 @@ class UsersmController extends HomeController {
 	}
 
 	public function sm_aqzx() {
-		$headtitle = "宝贝街-宝贝活动";
+		$headtitle = "宝贝街-安全中心";
 		$this -> assign('head_title', $headtitle);
 		$user_sm = session('user_sm');
 		$this -> assign('username', $user_sm['info']['username']);
@@ -107,6 +107,33 @@ class UsersmController extends HomeController {
 		$user_sm = session('user_sm');
 		$this -> assign('username', $user_sm['info']['username']);
 		$this -> display();
+	}
+	
+	public function addbank(){
+		$pwd=I('pwd','');
+		$user_sm=session('user_sm');
+		$uid=$user_sm['info']['id'];//think_ucenter_md5($password, UC_AUTH_KEY)
+		$result=apiCall(HomePublicApi::User_GetbyID, array($uid));
+		$password=$result['info']['password'];
+		$pp=think_ucenter_md5($pwd, UC_AUTH_KEY);
+		if($password==$pp){
+			$entity=array(
+				'uid'=>$user_sm['info']['id'],
+				'bank_name'=>I('bank',''),
+				'bank_account'=>I('bank_num',''),
+				'create_time'=>time(),
+				'status'=>0,
+				'notes'=>'',
+				'cardholder'=>I('name',''),
+				'province'=>I('sheng',''),
+				'city'=>I('shi',''),
+			);
+			$map=array('uid'=>$user_sm['info']['id'],);
+			$info=apiCall(HomePublicApi::FinBankaccount_Query,array($map));
+			dump($info);
+		}else{
+			$this->error('登录密码错误！',U('Home/Usersm/sm_bbqz'));
+		}
 	}
 
 	public function address() {

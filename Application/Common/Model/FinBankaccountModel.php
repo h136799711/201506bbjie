@@ -5,3 +5,11 @@
 // | Author: 青 <99701759@qq.com>
 // | Copyright (c) 2013-2016, http://www.itboye.com. All Rights Reserved.
 // |-----------------------------------------------------------------------------------
+
+namespace Home\Model;
+
+/**
+ * FinBankaccountModel 用户组与用户对应表
+ */
+class FinBankaccountModel extends \Think\Model{
+}

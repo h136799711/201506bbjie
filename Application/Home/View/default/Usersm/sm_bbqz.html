@@ -1,7 +1,47 @@
 <extend name="template/base_index" />
 
 <block name="area_header">
+	<script type="text/javascript" src="__PUBLIC__/Home/js/location.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/Home/js/area.js"></script>
+	<script src="__PUBLIC__/Home/js/select2.js"></script>
+	<link href="__PUBLIC__/Home/css/select2.css" rel="stylesheet" />
 	<link rel="stylesheet" href="__CSS__/manager.css" />
+	<style type="text/css">
+		.yz li{padding-left: 40px;  height: 55px;line-height: 40px;margin-left: 20px;padding-left: 53px;}
+		.yz i{color: #CCCCCC; font-size: 60px; float: left; font-size: 40px; margin-top: -15px;}
+		.am-modal-dialog{ height: 300px !important; margin-top: -15% !important;}
+		.am-modal-bd{ text-align: left;  padding: 10px; margin-left: 20px; font-size: 14px;}
+		.am-modal-bd input{ margin-top: 5px; }.am-modal-bd select{ margin-top: 5px; }
+		.am-modal-bd span{ font-size: 10px; }
+	</style>
+	<script type="text/javascript">
+		$(function(){
+				$('#loc_province').change(function(){
+					var sheng=$('#loc_province option:selected').text();
+					$('.sheng').val(sheng);
+				})
+				$('#loc_city').change(function(){
+					var shi=$('#loc_city option:selected').text();
+					$('.shi').val(shi);
+				})
+				$('#loc_town').change(function() {
+				//$('input[@name=location_id]').val($(this).val());
+				var qu=$('#loc_town option:selected').text();
+							//var qu=$('#loc_town').select2('data').text
+							//alert(qu);
+				$('.qi').val(qu);
+		
+				})
+				
+			})
+		
+		
+		function del(url){
+			if(confirm("你确定要删除吗？")){
+				window.location.href=url;
+			}
+		}
+	</script>
 </block>
 
 <block name="area_body">
@@ -74,6 +114,7 @@
 				</div>
 			</div>
 		</div>
+		
 		<div class="div_right">
 			<div class="div_minTitle">
 				<h3>宝贝钱庄</h3>
@@ -103,29 +144,29 @@
 							</div>
 						</td>
 						<td rowspan="2">
-							<div style="margin-left: 60px;">安全中心</div>
-							<ul style="">
-								<li style=" background: url(img/email_small1.png)  no-repeat; padding-left: 40px;  height: 55px;
-
-  line-height: 40px;
-
-  margin-left: 20px;
-
-  padding-left: 53px;">邮箱认证</li>
-								<li style=" background: url(img/phone_small.png)  no-repeat; padding-left: 40px;  height: 55px;
-
-  line-height: 40px;
-
-  margin-left: 20px;
-
-  padding-left: 53px;">手机认证</li>
-								<li style=" background: url(img/mibao_small1.png)  no-repeat; padding-left: 40px;  height: 55px;
-
-  line-height: 40px;
-
-  margin-left: 20px;
-
-  padding-left: 53px;">密保设置</li>
+							<div style="margin-left: 60px;"><i class="am-icon-medkit" ></i>&nbsp;安全中心</div>
+							<ul style="" class="yz">
+								<empty name="email">
+									<i class="am-icon-envelope-o"></i>
+									<li >邮箱认证</li>
+									<else/>
+									<i class="am-icon-envelope-o"  ></i>
+									<li>邮箱认证</li>
+								</empty>
+								<empty name="phone">
+									<i class="am-icon-mobile"></i>
+									<li >手机认证</li>
+									<else/>
+									<i class="am-icon-mobile"  ></i>
+									<li >手机认证</li>
+								</empty>
+								<empty name="mibao">
+									<i class="am-icon-gear"></i>
+									<li>密保设置</li>
+									<else/>
+									<i class="am-icon-gear"  ></i>
+									<li >密保设置</li>
+								</empty>
 							</ul>
 
 						</td>
@@ -134,7 +175,9 @@
 						<td>
 							<table style="width: 100%;">
 								<tr>
-									<td colspan="4"><b style="color: #999;">提现账号 </b><a href="#" style="font-size: 12px;">更换帐号</a>
+									<td colspan="4"><b style="color: #999;">提现账号 </b>
+										<button class="am-btn am-btn-primary am-btn-xs" style="font-family: '微软雅黑'; font-size: 13px; width: 80px; height: 30px;line-height: 10px; padding: 10px; border-radius:5px ;"
+										 data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 400, height: 225}">更换账号</button>
 									</td>
 								</tr>
 								<tr>
@@ -156,6 +199,48 @@
 
 					</tr>
 				</table>
+				
+			<div class="am-modal am-modal-no-btn" tabindex="-1" id="doc-modal-1">
+			<div class="am-modal-dialog">
+				<div class="am-modal-hd">更换提现账号
+					<a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+				</div>
+				<form action="{:U('Home/Usersm/addbank')}" method="post">
+					<div class="am-modal-bd">开户行：
+						<select name="bank">
+							<option value="">请选择</option>
+							<option value="招商银行">招商银行</option>
+							<option value="工商银行">工商银行</option>
+							<option value="建设银行">建设银行</option>
+							<option value="兴业银行">兴业银行</option>
+							<option value="农业银行">农业银行</option>
+							<option value="邮政储蓄">邮政储蓄</option>
+							<option value="交通银行">交通银行</option>
+							<option value="广东发展银行">广东发展银行</option>
+							<option value="中信银行">中信银行</option>
+							<option value="光大银行">光大银行</option>
+							<option value="民生银行">民生银行</option>
+							<option value="浦发银行">浦发银行</option>
+							<option value="中国银行">中国银行</option>
+							<option value="农村信用社">农村信用社</option>
+							<option value="北京银行">北京银行</option>
+							<option value="平安银行">平安银行</option>
+							<option value="农村商业银行">农村商业银行</option>
+							<option value="广东南粤银行">广东南粤银行</option>
+							<option value="上海银行">上海银行</option>
+						</select><br><span style="color: forestgreen;">推荐使用银行卡提现，每日提现三次且不收取手续费</span><br>
+						银行账号：<input type="tel" name="bank_num" id="daan" value="" /><br>
+						持卡人：<input type="text" name="name" id="daan" value="" /><br>
+						开户信息：<select id="loc_province" style="width:120px; margin-top: 5px;"></select>
+						<select id="loc_city" style="width:120px; margin-left: 10px;margin-top: 5px;"></select><br>
+						输入登录密码：<input type="password" name="pwd" id="daan" value="" /><br>
+						<input type="hidden" name="sheng" class="sheng" />
+						<input type="hidden" name="shi" class="shi" />
+					</div>
+					<input style="font-family: '微软雅黑'; font-size: 13px; border-radius:5px ; margin-top: -8px;" class="am-btn-danger am-btn-xs" type="submit" value="确认" />
+				</form>
+			</div>
+		</div>
 				<script type="text/javascript">
 					function changeTab(i){
 						$(".div_right .div_minContent #div_tabs ul li").eq(i).addClass("am-active").siblings().removeClass("am-active");
