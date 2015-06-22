@@ -4,7 +4,7 @@
 	<script type="text/javascript" src="__PUBLIC__/Home/js/location.js"></script>
 	<script type="text/javascript" src="__PUBLIC__/Home/js/area.js"></script>
 	<script src="__PUBLIC__/Home/js/select2.js"></script>
-	<link href="__PUBLIC__/Home/css/select2.css" rel="stylesheet" />
+	<link href="__CDN__/select2/3.5.2/select2.css" rel="stylesheet" />
 	<link rel="stylesheet" href="__CSS__/manager.css" />
 	<style type="text/css">
 		.yz li{padding-left: 40px;  height: 55px;line-height: 40px;margin-left: 20px;padding-left: 53px;}
@@ -13,35 +13,9 @@
 		.am-modal-bd{ text-align: left;  padding: 10px; margin-left: 20px; font-size: 14px;}
 		.am-modal-bd input{ margin-top: 5px; }.am-modal-bd select{ margin-top: 5px; }
 		.am-modal-bd span{ font-size: 10px; }
+		.bank tr td{font-size: 13px;}
 	</style>
-	<script type="text/javascript">
-		$(function(){
-				$('#loc_province').change(function(){
-					var sheng=$('#loc_province option:selected').text();
-					$('.sheng').val(sheng);
-				})
-				$('#loc_city').change(function(){
-					var shi=$('#loc_city option:selected').text();
-					$('.shi').val(shi);
-				})
-				$('#loc_town').change(function() {
-				//$('input[@name=location_id]').val($(this).val());
-				var qu=$('#loc_town option:selected').text();
-							//var qu=$('#loc_town').select2('data').text
-							//alert(qu);
-				$('.qi').val(qu);
-		
-				})
-				
-			})
-		
-		
-		function del(url){
-			if(confirm("你确定要删除吗？")){
-				window.location.href=url;
-			}
-		}
-	</script>
+	
 </block>
 
 <block name="area_body">
@@ -173,7 +147,7 @@
 					</tr>
 					<tr>
 						<td>
-							<table style="width: 100%;">
+							<table class="bank" style="width: 100%;">
 								<tr>
 									<td colspan="4"><b style="color: #999;">提现账号 </b>
 										<button class="am-btn am-btn-primary am-btn-xs" style="font-family: '微软雅黑'; font-size: 13px; width: 80px; height: 30px;line-height: 10px; padding: 10px; border-radius:5px ;"
@@ -187,10 +161,10 @@
 									<td>开户信息:</td>
 								</tr>
 								<tr>
-									<td>-</td>
-									<td>-</td>
-									<td>-</td>
-									<td>-</td>
+									<td>{$bank['bank_name']}</td>
+									<td>{$bank['bank_account']}</td>
+									<td>{$bank['cardholder']}</td>
+									<td>{$bank['province']}{$bank['city']}</td>
 								</tr>
 
 							</table>
@@ -319,5 +293,32 @@
 </block>
 
 <block name="area_footer">
-
+<script type="text/javascript">
+		$(function(){
+				$('#loc_province').change(function(){
+					var sheng=$('#loc_province option:selected').text();
+					$('.sheng').val(sheng);
+				})
+				$('#loc_city').change(function(){
+					var shi=$('#loc_city option:selected').text();
+					$('.shi').val(shi);
+				})
+				$('#loc_town').change(function() {
+				//$('input[@name=location_id]').val($(this).val());
+				var qu=$('#loc_town option:selected').text();
+							//var qu=$('#loc_town').select2('data').text
+							//alert(qu);
+				$('.qi').val(qu);
+		
+				})
+				
+			})
+		
+		
+		function del(url){
+			if(confirm("你确定要删除吗？")){
+				window.location.href=url;
+			}
+		}
+	</script>
 </block>

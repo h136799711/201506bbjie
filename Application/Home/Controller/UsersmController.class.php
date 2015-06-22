@@ -39,6 +39,11 @@ class UsersmController extends HomeController {
 		$headtitle = "宝贝街-宝贝钱庄";
 		$this -> assign('head_title', $headtitle);
 		$user_sm = session('user_sm');
+		$uid=$user_sm['info']['id'];
+		$map=array('uid'=>$uid,);
+		$info=apiCall(HomePublicApi::FinBankaccount_Query, array($map));
+		$info=apiCall(HomePublicApi::FinBankaccount_Query, array($map));
+		$this -> assign('bank', $info['info'][0]);
 		$this -> assign('username', $user_sm['info']['username']);
 		$this -> display();
 	}
@@ -129,8 +134,15 @@ class UsersmController extends HomeController {
 				'city'=>I('shi',''),
 			);
 			$map=array('uid'=>$user_sm['info']['id'],);
-			$info=apiCall(HomePublicApi::FinBankaccount_Query,array($map));
-			dump($info);
+			$info=apiCall(HomePublicApi::FinBankaccount_Query, array($map));
+			if($info['info']==null){
+				$add=apiCall(HomePublicApi::FinBankaccount_Add, array($entity));
+				$this->success('绑定成功',U('Home/Usersm/sm_bbqz'));
+			}else{
+				$id=$info['info'][0]['id'];
+				$update=apiCall(HomePublicApi::FinBankaccount_SaveByID, array($id,$entity));
+				$this->success('修改成功',U('Home/Usersm/sm_bbqz'));
+			}
 		}else{
 			$this->error('登录密码错误！',U('Home/Usersm/sm_bbqz'));
 		}
