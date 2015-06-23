@@ -38,6 +38,26 @@ class UserApi extends Api{
 	
 	}
 	
+	/**
+	 * 获取用户密码
+	 * @param  string  $id    用户
+	 * @param  boolean $is_username 是否使用用户名查询
+	 * @return array                用户信息
+	 * @author 王玉国 <99701759@qq.com>
+	 */
+	public function getbyid($id){
+		$map = array();
+		$map['id'] = $id;
+		
+		$user = $this->model->where($map)->field('id,username,password')->find();
+		if( is_array($user)){
+	    		return array('status'=>true,'info'=>$user);
+		} else {
+	    		return array('status'=>true,'info'=>"用户不存在");
+		}
+	
+	}
+	
 	
 	/**
 	 * 获取用户信息

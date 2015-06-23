@@ -17,7 +17,9 @@ class HomePublicApi{
 	const Bbjmember_Seller_Query='Home/BbjmemberSeller/queryNoPaging';
 	const Bbjmember_Seller_GetInfo='Home/BbjmemberSeller/getInfo';
 	
-	
+	const FinBankaccount_Query='Home/FinBankaccount/queryNoPaging';
+	const FinBankaccount_Add='Home/FinBankaccount/add';
+	const FinBankaccount_SaveByID='Home/FinBankaccount/saveByID';
 	
 	/**
 	 * 
@@ -25,7 +27,7 @@ class HomePublicApi{
 	//====================================================================
 	
 	const User_Register='Uclient/User/register';
-	const User_Query='Uclient/User/query';
+	const User_GetbyID='Uclient/User/getbyid';
 	const User_Login='Uclient/User/login';
 	const User_GetInfo='Uclient/User/getbyname';
 	const User_GetUser='Uclient/User/getInfo';
