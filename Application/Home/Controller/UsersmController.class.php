@@ -10,7 +10,7 @@ use Think\Controller;
 use Think\Storage;
 use Home\Api\HomePublicApi;
 /*
- * 官网首页
+ * 试民操作
  */
 class UsersmController extends HomeController {
 
@@ -39,10 +39,26 @@ class UsersmController extends HomeController {
 		$headtitle = "宝贝街-宝贝钱庄";
 		$this -> assign('head_title', $headtitle);
 		$user_sm = session('user_sm');
-		$uid=$user_sm['info']['id'];
-		$map=array('uid'=>$uid,);
-		$info=apiCall(HomePublicApi::FinBankaccount_Query, array($map));
-		$info=apiCall(HomePublicApi::FinBankaccount_Query, array($map));
+		$uid = $user_sm['info']['id'];
+		$map = array('uid' => $uid, );
+		$info = apiCall(HomePublicApi::FinBankaccount_Query, array($map));
+		$result = apiCall(HomePublicApi::Bbjmember_Query, array($map));
+		$user = apiCall(HomePublicApi::User_GetUser, array($uid));
+		$page = array('curpage' => I('get.p', 0), 'size' => 6);
+		$jyjl = apiCall(HomePublicApi::FinAccountBalanceHis_QueryAll, array($map, $page));
+		$all = apiCall(HomePublicApi::FinAccountBalanceHis_Query, array($map));
+		$jilus = $all['info'];
+		foreach ($jilus as $key => $value) {
+			if ($value['dtree_type'] == 3) {
+				$sum += $value['defray'];
+			}
+		}
+		$this -> assign('jilu', $jyjl['info']['list']);
+		$this -> assign('sum', $sum);
+		$this -> assign('show', $jyjl['info']['show']);
+		$this -> assign('email', $user['info']['email']);
+		$this -> assign('phone', $user['info']['mobile']);
+		$this -> assign('coins', $result['info'][0]['coins']);
 		$this -> assign('bank', $info['info'][0]);
 		$this -> assign('username', $user_sm['info']['username']);
 		$this -> display();
@@ -113,38 +129,29 @@ class UsersmController extends HomeController {
 		$this -> assign('username', $user_sm['info']['username']);
 		$this -> display();
 	}
-	
-	public function addbank(){
-		$pwd=I('pwd','');
-		$user_sm=session('user_sm');
-		$uid=$user_sm['info']['id'];//think_ucenter_md5($password, UC_AUTH_KEY)
-		$result=apiCall(HomePublicApi::User_GetbyID, array($uid));
-		$password=$result['info']['password'];
-		$pp=think_ucenter_md5($pwd, UC_AUTH_KEY);
-		if($password==$pp){
-			$entity=array(
-				'uid'=>$user_sm['info']['id'],
-				'bank_name'=>I('bank',''),
-				'bank_account'=>I('bank_num',''),
-				'create_time'=>time(),
-				'status'=>0,
-				'notes'=>'',
-				'cardholder'=>I('name',''),
-				'province'=>I('sheng',''),
-				'city'=>I('shi',''),
-			);
-			$map=array('uid'=>$user_sm['info']['id'],);
-			$info=apiCall(HomePublicApi::FinBankaccount_Query, array($map));
-			if($info['info']==null){
-				$add=apiCall(HomePublicApi::FinBankaccount_Add, array($entity));
-				$this->success('绑定成功',U('Home/Usersm/sm_bbqz'));
-			}else{
-				$id=$info['info'][0]['id'];
-				$update=apiCall(HomePublicApi::FinBankaccount_SaveByID, array($id,$entity));
-				$this->success('修改成功',U('Home/Usersm/sm_bbqz'));
+
+	public function addbank() {
+		$pwd = I('pwd', '');
+		$user_sm = session('user_sm');
+		$uid = $user_sm['info']['id'];
+		//think_ucenter_md5($password, UC_AUTH_KEY)
+		$result = apiCall(HomePublicApi::User_GetbyID, array($uid));
+		$password = $result['info']['password'];
+		$pp = think_ucenter_md5($pwd, UC_AUTH_KEY);
+		if ($password == $pp) {
+			$entity = array('uid' => $user_sm['info']['id'], 'bank_name' => I('bank', ''), 'bank_account' => I('bank_num', ''), 'create_time' => time(), 'status' => 0, 'notes' => '', 'cardholder' => I('name', ''), 'province' => I('sheng', ''), 'city' => I('shi', ''), );
+			$map = array('uid' => $user_sm['info']['id'], );
+			$info = apiCall(HomePublicApi::FinBankaccount_Query, array($map));
+			if ($info['info'] == null) {
+				$add = apiCall(HomePublicApi::FinBankaccount_Add, array($entity));
+				$this -> success('绑定成功', U('Home/Usersm/sm_bbqz'));
+			} else {
+				$id = $info['info'][0]['id'];
+				$update = apiCall(HomePublicApi::FinBankaccount_SaveByID, array($id, $entity));
+				$this -> success('修改成功', U('Home/Usersm/sm_bbqz'));
 			}
-		}else{
-			$this->error('登录密码错误！',U('Home/Usersm/sm_bbqz'));
+		} else {
+			$this -> error('登录密码错误！', U('Home/Usersm/sm_bbqz'));
 		}
 	}
 
@@ -157,12 +164,7 @@ class UsersmController extends HomeController {
 			$this -> assign('address', $result['info']);
 			$this -> display('manager_address');
 		} else {
-			$ars = array('uid' => $user['info']['id'], 
-						'country' => "中国", 'province' => I('sheng'), 
-						'city' => I('shi'), 'area' => I('qu'), 
-						'detail' => I('address', ''), 'contact_name' => I('name', ''),
-						 'mobile' => I('mobile', ''), 'telphone' => I('phone', ''),
-						  'post_code' => I('yb', ''), 'create_time' => time(), );
+			$ars = array('uid' => $user['info']['id'], 'country' => "中国", 'province' => I('sheng'), 'city' => I('shi'), 'area' => I('qu'), 'detail' => I('address', ''), 'contact_name' => I('name', ''), 'mobile' => I('mobile', ''), 'telphone' => I('phone', ''), 'post_code' => I('yb', ''), 'create_time' => time(), );
 			$result = apiCall(HomePublicApi::Address_Add, array($ars));
 
 			if ($result['status']) {
@@ -183,7 +185,7 @@ class UsersmController extends HomeController {
 		$sm = array('birthday' => $bir, 'sex' => I('sex', 0), 'qq' => I('qq', '1'), 'realname' => I('realname', ''), );
 		$sheng = I('sheng');
 		$shi = I('shi');
-		$qu = I('qu','');
+		$qu = I('qu', '');
 		$smm = array('dtree_job' => I('zhiye', ''), 'personal_signature' => I('grqm', ''), 'brief_introduction' => I('grjj', ''), 'address' => $sheng . $shi . $qu . I('address', ''), );
 		//		dump($smm);
 		//		dump($smm);

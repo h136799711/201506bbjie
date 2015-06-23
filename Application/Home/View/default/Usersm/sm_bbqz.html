@@ -3,17 +3,19 @@
 <block name="area_header">
 	<script type="text/javascript" src="__PUBLIC__/Home/js/location.js"></script>
 	<script type="text/javascript" src="__PUBLIC__/Home/js/area.js"></script>
-	<script src="__PUBLIC__/Home/js/select2.js"></script>
+	<link type="text/css" rel="stylesheet" href="__CDN__/theme/{$cfg.theme|default="simplex"}.min.css" />
+	<script src="__CDN__/select2/3.5.2/select2.js"></script>
 	<link href="__CDN__/select2/3.5.2/select2.css" rel="stylesheet" />
 	<link rel="stylesheet" href="__CSS__/manager.css" />
 	<style type="text/css">
-		.yz li{padding-left: 40px;  height: 55px;line-height: 40px;margin-left: 20px;padding-left: 53px;}
+		.yz li{ height: 55px;line-height: 40px;margin-left: 20px;padding-left: 53px;}
 		.yz i{color: #CCCCCC; font-size: 60px; float: left; font-size: 40px; margin-top: -15px;}
 		.am-modal-dialog{ height: 300px !important; margin-top: -15% !important;}
 		.am-modal-bd{ text-align: left;  padding: 10px; margin-left: 20px; font-size: 14px;}
 		.am-modal-bd input{ margin-top: 5px; }.am-modal-bd select{ margin-top: 5px; }
 		.am-modal-bd span{ font-size: 10px; }
 		.bank tr td{font-size: 13px;}
+		.am-icon-mobile{padding-left: 10px;}
 	</style>
 	
 </block>
@@ -88,7 +90,19 @@
 				</div>
 			</div>
 		</div>
-		
+		<div class="am-modal am-modal-no-btn" tabindex="-1" id="doc-modal-2">
+			<div class="am-modal-dialog">
+				<div class="am-modal-hd">更换提现账号
+					<a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+				</div>
+				<form action="{:U('Home/SMMoney/deposit')}" method="post">
+					<div class="am-modal-bd">
+						请输入提款金额：<input type="number" name="money" id="money" /><br /><span style="font-size: 12px; color: forestgreen;">提现金额不得大于总金额</span>
+					</div>
+					<input id="qr" style="font-family: '微软雅黑'; font-size: 13px; border-radius:5px ; margin-top: -8px;" class="am-btn-danger am-btn-xs" type="submit" value="确认" />
+				</form>
+			</div>
+		</div>
 		<div class="div_right">
 			<div class="div_minTitle">
 				<h3>宝贝钱庄</h3>
@@ -101,7 +115,8 @@
 								<table style="width: 100%;">
 									<tr>
 										<td colspan="3" style="padding-top:0;">资金概况
-											<button class="am-btn am-btn-primary am-btn-xs" style="border-radius: 3px;">提现</button>
+											<button id="tixian" class="am-btn am-btn-primary am-btn-xs" style="font-family: '微软雅黑'; font-size: 13px; width: 80px; height: 30px;line-height: 10px; padding: 10px; border-radius:5px ;"
+										 data-am-modal="{target: '#doc-modal-2', closeViaDimmer: 0, width: 400, height: 225}">提现</button>
 										</td>
 									</tr>
 									<tr>
@@ -110,35 +125,35 @@
 										<td>提现中余额:</td>
 									</tr>
 									<tr>
-										<td style="color:red">￥0.00</td>
-										<td style="color:red">￥0.00</td>
-										<td style="color:red">￥0.00</td>
+										<td style="color:red">￥{$coins}</td>
+										<td style="color:red">￥{$coins}</td>
+										<td style="color:red">￥{$sum}.000</td>
 									</tr>
 								</table>
 							</div>
 						</td>
 						<td rowspan="2">
-							<div style="margin-left: 60px;"><i class="am-icon-medkit" ></i>&nbsp;安全中心</div>
+							<div style="padding-bottom: 20px;"><i class="am-icon-medkit" ></i>&nbsp;安全中心</div>
 							<ul style="" class="yz">
 								<empty name="email">
 									<i class="am-icon-envelope-o"></i>
 									<li >邮箱认证</li>
 									<else/>
-									<i class="am-icon-envelope-o"  ></i>
+									<i class="am-icon-envelope-o" style="color: hotpink;" ></i>
 									<li>邮箱认证</li>
 								</empty>
 								<empty name="phone">
 									<i class="am-icon-mobile"></i>
 									<li >手机认证</li>
 									<else/>
-									<i class="am-icon-mobile"  ></i>
+									<i class="am-icon-mobile" style="color: hotpink;" ></i>
 									<li >手机认证</li>
 								</empty>
 								<empty name="mibao">
 									<i class="am-icon-gear"></i>
 									<li>密保设置</li>
 									<else/>
-									<i class="am-icon-gear"  ></i>
+									<i class="am-icon-gear" style="color: hotpink;" ></i>
 									<li >密保设置</li>
 								</empty>
 							</ul>
@@ -161,16 +176,17 @@
 									<td>开户信息:</td>
 								</tr>
 								<tr>
+									
 									<td>{$bank['bank_name']}</td>
 									<td>{$bank['bank_account']}</td>
 									<td>{$bank['cardholder']}</td>
 									<td>{$bank['province']}{$bank['city']}</td>
 								</tr>
-
+								
 							</table>
 
 						</td>
-
+						
 					</tr>
 				</table>
 				
@@ -245,17 +261,23 @@
 									</tr>
 								</thead>
 								<tbody>
+									<volist name="jilu" id="vo">
+										
+										
 									<tr>
-										<td>XXXX</td>
-										<td>XXXX</td>
-										<td>XXXX</td>
-										<td>XXX</td>
-										<td>XXX</td>
-										<td>XX</td>
+										<td>{$vo.id}</td>
+										<td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+										<td>{$vo.notes}</td>
+										<td>{$vo.income}</td>
+										<td>{$vo.defray}</td>
+										<td>{$vo.defray}</td>
 									</tr>
-
+									</volist>	
+									
 								</tbody>
+								
 							</table>
+							<div>{$show}</div>
 						</div>
 						<div data-tab-panel-1 class="am-tab-panel  ">
 							<table class="am-table" style="border: 1px solid #CCCCCC;">
@@ -270,17 +292,21 @@
 									</tr>
 								</thead>
 								<tbody>
+										<volist name="jilu" id="vo">
 									<tr>
-										<td>XXXX</td>
-										<td>XXXX</td>
-										<td>XXXX</td>
-										<td>XXX</td>
-										<td>XXX</td>
-										<td>XX</td>
+										<td>{$vo.id}</td>
+										<td>{$vo.defray}</td>
+										<td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+										<td><if condition="$vo.status eq 1">正常</if><if condition="$vo.status eq 2">审核中</if></td>
+										<td><if condition="$vo.dtree_type eq 1">后台充值</if><if condition="$vo.dtree_type eq 2">系统奖励</if><if condition="$vo.dtree_type eq 3">提现</if></td>
+										<td>{$vo.notes}</td>
 									</tr>
+									</volist>	
+									
 
 								</tbody>
 							</table>
+							<div>{$show}</div>
 						</div>
 					</div>
 				</div>
@@ -311,14 +337,21 @@
 				$('.qi').val(qu);
 		
 				})
+				$('#tixian').click(function(){
+					if( {$coins}  <1){
+						alert('不能提现，提现金额最低为1元');
+					}
+				})
+				$('#qr').click(function(){
+					if($('#money').val()>{$coins}){
+				  		alert('你还没有这么多钱！！');
+				  		return false;
+					}
+				})
 				
 			})
 		
 		
-		function del(url){
-			if(confirm("你确定要删除吗？")){
-				window.location.href=url;
-			}
-		}
+		
 	</script>
 </block>

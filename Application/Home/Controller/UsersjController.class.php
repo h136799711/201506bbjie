@@ -154,14 +154,19 @@ class UsersjController extends HomeController {
 		$headtitle="宝贝街-资金管理";
 		$this->assign('head_title',$headtitle);
 		$user_sj=session('user_sj');
-		$this->assign('username',$user_sj['info']['username']);
-		$this->display();
+		$this -> assign('username', $user_sj['info']['username']);
+		$this -> display();
 	}
 	public function sj_viptd(){
 		$headtitle="宝贝街-VIP通道";
 		$this->assign('head_title',$headtitle);
 		$user_sj=session('user_sj');
+		$uid = $user_sj['info']['id'];
+		$map = array('uid' => $uid, );
+		$result = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
+		$this -> assign('coins', $result['info'][0]['coins']);
 		$this->assign('username',$user_sj['info']['username']);
+//		dump($result);
 		$this->display();
 	}
 	public function sj_sfkt(){
@@ -175,6 +180,28 @@ class UsersjController extends HomeController {
 		$headtitle="宝贝街-资金管理";
 		$this->assign('head_title',$headtitle);
 		$user_sj=session('user_sj');
+		$uid = $user_sj['info']['id'];
+		$map = array('uid' => $uid, );
+		$info = apiCall(HomePublicApi::FinBankaccount_Query, array($map));
+		$result = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
+		$user = apiCall(HomePublicApi::User_GetUser, array($uid));
+		$page = array('curpage' => I('get.p', 0), 'size' => 6);
+		$jyjl = apiCall(HomePublicApi::FinAccountBalanceHis_QueryAll, array($map, $page));
+		$all = apiCall(HomePublicApi::FinAccountBalanceHis_Query, array($map));
+		$jilus = $all['info'];
+		foreach ($jilus as $key => $value) {
+			if ($value['dtree_type'] == 3) {
+				$sum += $value['defray'];
+			}
+		}
+//		dump($result);
+		$this -> assign('jilu', $jyjl['info']['list']);
+		$this -> assign('sum', $sum);
+		$this -> assign('show', $jyjl['info']['show']);
+		$this -> assign('email', $user['info']['email']);
+		$this -> assign('phone', $user['info']['mobile']);
+		$this -> assign('coins', $result['info'][0]['coins']);
+		$this -> assign('bank', $info['info'][0]);
 		$this->assign('username',$user_sj['info']['username']);
 		$this->display();
 	}
