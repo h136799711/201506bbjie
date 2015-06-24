@@ -50,11 +50,12 @@
 					</ul>
 					<div class="vip_wrap">
 						<form class="form-horizontal jquery-once-1-processed ng-scope ng-pristine ng-valid" controller="extend/ajax_form,extend/angular" data-scope="{&quot;xufei_zhekou_list&quot;:{&quot;1&quot;:1,&quot;3&quot;:0.9,&quot;6&quot;:0.8,&quot;12&quot;:0.6},&quot;nianfei_youhui&quot;:0,&quot;base_price&quot;:500}"
-						id="yw0" action="./VIP通道_files/VIP通道.html" method="post" novalidate="novalidate">
+						id="yw0" action="{:U('Home/SJMoney/vip')}" method="post" novalidate="novalidate">
 							<input type="hidden" name="sgrade" ng-value="sgrade" ng-init="sgrade=2" value="2">
 							<input type="hidden" name="form_id" value="kaitong_form">
 							<input type="hidden" name="price" ng-value="price" value="NaN">
-
+							<input type="hidden" id="moneya" name="money" value=""/>
+							<input type="hidden" id="lv" name="lv">
 							<div class="control-group">
 								<label class="control-label">
 									开通服务
@@ -102,9 +103,7 @@
 									<!-- end ngIf: !xufei_type -->
 									<div ng-show="xufei_type" ng-value="youhui=xufei_type==12?nianfei_youhui:0;bili=sgrade==3?1:0.6" class="ng-hide" value="0.6">
 										<span class="yingfu ng-binding"> ￥NaN </span>
-										<span ng-show="xufei_type&gt;1" class="muted ng-binding ng-hide">(原价 NaN元，优惠
-
-              NaN元)</span>
+										<span ng-show="xufei_type&gt;1" class="muted ng-binding ng-hide">(原价 NaN元，优惠 NaN元)</span>
 									</div>
 								</div>
 							</div>
@@ -119,13 +118,13 @@
 							<div class="control-group">
 								<label class="control-label" for="password">操作密码</label>
 								<div class="controls">
-									<input required="required" type="password" value="" name="password" id="password"><span class="help-inline">你需要输入密码才能做该操作</span>
+									<input required="required" type="password" value="" name="pwd" id="password"><span class="help-inline">你需要输入密码才能做该操作</span>
 								</div>
 							</div>
 							<div class="form-actions">
 								<button ng-class="{disabled:!xufei_type||price&gt;0.00}" class="btn btn-primary disabled" type="submit" name="yt0">确认开通</button>
 							</div>
-
+							
 						</form>
 					</div>
 				</div>
@@ -166,21 +165,26 @@
 	<script type="text/javascript">
 		$(function(){
 			$('.ng-svip').hide();
+			$('#lv').val('1');
 			$('#vip').click(function(){
+				$('#lv').val('1');
 				$('.ng-svip').hide();
 				$('.ng-vip').show();
 				$(this).addClass('vip');
 				$('#svip').removeClass('vip');
 				$("#vipPrice").val(300);
 				$('#xufei_type').change();
+				
 			})
 			$('#svip').click(function(){
+				$('#lv').val('2');
 				$('.ng-vip').hide();
 				$('.ng-svip').show();
 				$(this).addClass('vip');
 				$('#vip').removeClass('vip');
 				$("#vipPrice").val(600);
 				$('#xufei_type').change();
+				
 			})
 			$('#xufei_type').change(function(){
 				var dz=1;
@@ -195,6 +199,7 @@
 					
 				}
 				$('.yingfu').text("￥"+($("#vipPrice").val()*$(this).val()*dz));
+				$('#moneya').val($("#vipPrice").val()*$(this).val()*dz);
 			})
 		})
 	</script>

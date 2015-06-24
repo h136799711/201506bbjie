@@ -9,6 +9,7 @@ namespace Home\Api;
 
 class HomePublicApi{
 	
+	
 	/**
 	 * 用户
 	 */
@@ -18,9 +19,21 @@ class HomePublicApi{
 	const Bbjmember_Add='Home/Bbjmember/add';
 	
 	/**
+	 * 公告文章
+	 */
+	const Post_QueryNoPaging="Admin/Post/queryNoPaging"; 
+	const Post_Query="Admin/Post/query";
+	
+	/**
+	 * 公告
+	 */
+	const Datatree_QueryNoPaging="Admin/Datatree/queryNoPaging";
+	const Datatree_Query="Admin/Datatree/query";
+	
+	/**
 	 * 商家
 	 */
-	const Bbjmember_Seller_SaveByID='Home/BbjmemberSeller/saveByID';
+	const Bbjmember_Seller_SaveByID='Home/BbjmemberSeller/saveByIDd';
 	const Bbjmember_Seller_Add='Home/BbjmemberSeller/add';
 	const Bbjmember_Seller_Query='Home/BbjmemberSeller/queryNoPaging';
 	const Bbjmember_Seller_GetInfo='Home/BbjmemberSeller/getInfo';
@@ -67,6 +80,5 @@ class HomePublicApi{
 	const Address_SaveByID='Home/Address/saveByID';
 	const Address_Query='Home/Address/queryNoPaging';
 	
-	const Post_Query='Admin/Post/query';
 }
 
