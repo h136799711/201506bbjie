@@ -153,16 +153,24 @@
 
 					<div class="p20"></div>
 					<div class="p20"></div>
+					<script type="text/javascript">
+						function changeBB(i){
+							$(".bb ul li").eq(i).addClass("active").siblings().removeClass("active");
+							$(".bb div table").eq(i).show().siblings().hide();
+						}
+						
+					</script>
+				
 					<div class="bb jquery-once-1-processed">
 						<ul class="nav_price nav nav-tabs" role="menu">
-							<li class="active" role="menuitem"><a tabindex="-1" href="">帐号收支明细</a>
+							<li class="active" role="menuitem" onclick="changeBB(0)"><a tabindex="-1" href="javascript:void(0)">帐号收支明细</a>
 							</li>
-							<li role="menuitem"><a tabindex="-1" href="">提现明细记录</a>
+							<li role="menuitem" onclick="changeBB(1)"><a tabindex="-1" href="javascript:void(0)">提现明细记录</a>
 							</li>
-							<li role="menuitem"><a tabindex="-1" href="">充值明细记录</a>
+							<li role="menuitem" onclick="changeBB(2)"><a tabindex="-1" href="javascript:void(0)">充值明细记录</a>
 							</li>
 						</ul>
-						<div id="goodsorder-grid" class="grid-view" controller="extend/gridview" data-options="{&#39;ajaxUpdate&#39;:[&#39;goodsorder-grid&#39;],&#39;ajaxVar&#39;:&#39;ajax&#39;,&#39;pagerClass&#39;:&#39;pagination text-center&#39;,&#39;loadingClass&#39;:&#39;grid-view-loading&#39;,&#39;filterClass&#39;:&#39;filters&#39;,&#39;tableClass&#39;:&#39;price-table table table-hover&#39;,&#39;selectableRows&#39;:1,&#39;enableHistory&#39;:false,&#39;updateSelector&#39;:&#39;{page}, {sort}&#39;,&#39;filterSelector&#39;:&#39;{filter}&#39;,&#39;pageVar&#39;:&#39;YueLog_page&#39;,&#39;arg_id&#39;:&#39;YueLog&#39;}">
+						<div id="goodsorder-grid" class="grid-view" controller="extend/gridview" data-options="{'ajaxUpdate':['goodsorder-grid'],'ajaxVar':'ajax','pagerClass':'pagination text-center','loadingClass':'grid-view-loading','filterClass':'filters','tableClass':'price-table table table-hover','selectableRows':1,'enableHistory':false,'updateSelector':'{page}, {sort}','filterSelector':'{filter}','pageVar':'YueLog_page','arg_id':'YueLog'}">
 							<table class="price-table table table-hover">
 								<thead>
 									<tr>
@@ -182,6 +190,56 @@
 									</tr>
 								</tbody>
 							</table>
+							
+							
+							
+							
+							
+							<table class="price-table table table-hover" style="display: none;">
+							<thead>
+							<tr>
+							<th width="80" id="goodsorder-grid_c0">
+								<a class="sort-link" href="/seller/price/index?status=2&amp;MemberTixian_sort=id">编号<span class="caret"></span></a>
+							</th>
+							<th width="100" id="goodsorder-grid_c1"><a class="sort-link" href="#">提现金额<span class="caret"></span></a></th>
+							<th width="120" id="goodsorder-grid_c2"><a class="sort-link" href="#">申请时间<span class="caret"></span></a></th>
+							<th width="120" id="goodsorder-grid_c3"><a class="sort-link" href="#">提现时间<span class="caret"></span></a></th>
+							<th width="120" id="goodsorder-grid_c4"><a class="sort-link" href="#">提现状态<span class="caret"></span></a></th>
+							<th width="200" id="goodsorder-grid_c5"><a class="sort-link" href="#">提现信息<span class="caret"></span></a></th>
+							<th id="goodsorder-grid_c6"><a class="sort-link" href="#">备注<span class="caret"></span></a></th></tr>
+							</thead>
+							<tbody>
+							<tr><td colspan="7" class="empty"><span class="empty">没有找到数据.</span></td></tr>
+							</tbody>
+							</table>
+							
+							
+							
+							
+							<table class="price-table table table-hover" style="display: none;">
+								<thead>
+								<tr>
+								<th width="60" id="goodsorder-grid_c0">
+									<a class="sort-link" href="#">编号<span class="caret"></span></a>
+								</th>
+									<th width="220" id="goodsorder-grid_c1">收款帐号</th>
+									<th width="80" id="goodsorder-grid_c2"><a class="sort-link" href="#">充值金额<span class="caret"></span></a></th>
+									<th width="100" id="goodsorder-grid_c3">流水号</th><th width="80" id="goodsorder-grid_c4">提交时间</th>
+									<th width="160" id="goodsorder-grid_c5">处理结果</th><th id="goodsorder-grid_c6">系统备注</th></tr>
+								</thead>
+								<tbody>
+								<tr><td colspan="7" class="empty"><span class="empty">没有找到数据.</span></td></tr>
+								</tbody>
+							</table>
+							
+							
+							
+							
+							
+							
+							
+							
+							
 							<div class="row-fluid">
 								<div class="span6 offset3"></div>
 								<div class="span3"></div>
