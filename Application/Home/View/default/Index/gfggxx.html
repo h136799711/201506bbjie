@@ -15,7 +15,7 @@
 		<div id="div_top">
 			<div class="div_info">
 				<div style="color:#FFF; float:left; background: url(__PUBLIC__/Home/img/gonggao.png) no-repeat 0 9px;padding-left:  25px;">
-					<a href="{:U('Home/Index/gfggxx',array('id'=>$gg['id']))}" style="color: white;">{$gg.post_title}</a>
+					<a href="{:U('Home/Index/gfggxx',array('id'=>$zxgg['id']))}" style="color: white;">{$zxgg.post_title}</a>
 				</div>
 				<empty name="username">
 					<div style="color:#FFF;float:right">您好，欢迎来到宝贝街！请[<a href="{:U('Home/Index/login')}">登录</a>][<a href="{:U('Home/Index/register_sj')}">免费注册</a>]|帮助中心</div>
@@ -51,13 +51,21 @@
 				<div class="div_gg_left" style=" background:#f2f2f2;width: 200px;text-align: center; margin-top: 20px;float: left; height: 500px;">
 					<div style="background: url(__PUBLIC__/Home/img/smgg1.png); background-size: 100% 100%; height: 52px;"></div>
 					<ul style="text-align: left;">
-						<li style="font-size: 12px;padding: 5px; border-bottom: 1px solid #E0E2E1;padding-left: 20px;"><font class="am-icon-chevron-circle-right" style="margin-right: 5px;"></font><a href="" class="a_li">宝贝街公告</a></li>
-						<li style="font-size: 12px;padding: 5px;border-bottom: 1px solid #E0E2E1;padding-left: 20px;"><font class="am-icon-chevron-circle-right"style="margin-right: 5px;"></font><a href="" class="a_li">商家公告</a></li>
-						<li style="font-size: 12px;padding: 5px;border-bottom: 1px solid #E0E2E1;padding-left: 20px;"><font class="am-icon-chevron-circle-right"style="margin-right: 5px;"></font><a href="" class="a_li">试民公告</a></li>
+						
+							<empty name="ggTitle">
+							
+								<center>没有相关记录</center>
+							
+							<else/>
+							<volist name="ggTitle" id="vo">
+								<li style="font-size: 12px;padding: 5px;border-bottom: 1px solid #E0E2E1;padding-left: 20px;"><font class="am-icon-chevron-circle-right" style="margin-right: 5px;"></font><a href="{:U('Home/Index/gfgg',array('post_category'=>$vo['hidden_value']))}" class="a_li">{$vo.name}</a></li>
+							</volist>
+							</empty>
+			
 					</ul>
 				</div>
 				<div class="div_gg_info" style="float: left;width: 865px; padding-bottom:50px; margin-top: 20px; margin-left: 10px;background: url(__PUBLIC__/Home/img/smgg2.png)no-repeat scroll -1px 0 #F2F2F2;">
-					<div style=" margin-left:550px;margin-top: 50px;">您的位置：<a href="#" style="color:red">首页</a>><a href="{:U('Home/Index/gfgg',array('post_category'=>$gg['post_category']))}" style="color:red">宝贝街公告</a>>文章内容</div>
+					<div style=" margin-left:550px;margin-top: 50px;">您的位置：<a href="#" style="color:red">首页</a>><a href="{:U('Home/Index/gfgg',array('post_category'=>$ggct['name']))}" style="color:red">{$ggct.name}</a>>文章内容</div>
 					<div class="div_gg_info_context" style="padding: 20px;">
 						<center>
 						<h1 style="color:#ff5097">{$gg.post_title}</h1>

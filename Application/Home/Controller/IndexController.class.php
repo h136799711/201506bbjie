@@ -31,19 +31,14 @@ class IndexController extends HomeController {
 	public function index(){
 		$order = " post_modified desc ";
 		$result = apiCall('Admin/Post/queryNoPaging',array($map, $order, $fields));
-		
-		$this->assign('gg',$result['info'][0]);
+		$this->assign('zxgg',$result['info'][0]);
 		
 		
 		$headtitle="宝贝街-首页";
 		$this->assign('head_title',$headtitle);
 		$users=session('user_sm');
 		
-		
-		
-	
-		
-		
+
 		$this->assign('username',session('user_sm')['info']['username']);
 		$this->display();
 	}
@@ -51,8 +46,7 @@ class IndexController extends HomeController {
 	public function flzc(){
 		$order = " post_modified desc ";
 		$result = apiCall('Admin/Post/queryNoPaging',array($map, $order, $fields));
-		
-		$this->assign('gg',$result['info'][0]);
+		$this->assign('zxgg',$result['info'][0]);
 		
 		$headtitle="宝贝街-福品专场";
 		$this->assign('head_title',$headtitle);
@@ -64,8 +58,7 @@ class IndexController extends HomeController {
 	public function xfyd(){
 		$order = " post_modified desc ";
 		$result = apiCall('Admin/Post/queryNoPaging',array($map, $order, $fields));
-		
-		$this->assign('gg',$result['info'][0]);
+		$this->assign('zxgg',$result['info'][0]);
 		
 		$headtitle="宝贝街-幸福一点";
 		$this->assign('head_title',$headtitle);
@@ -77,8 +70,7 @@ class IndexController extends HomeController {
 	public function sjh(){
 		$order = " post_modified desc ";
 		$result = apiCall('Admin/Post/queryNoPaging',array($map, $order, $fields));
-		
-		$this->assign('gg',$result['info'][0]);
+		$this->assign('zxgg',$result['info'][0]);
 		
 		
 		$headtitle="宝贝街-试江湖";
@@ -91,8 +83,7 @@ class IndexController extends HomeController {
 	public function chg(){
 		$order = " post_modified desc ";
 		$result = apiCall('Admin/Post/queryNoPaging',array($map, $order, $fields));
-		
-		$this->assign('gg',$result['info'][0]);
+		$this->assign('zxgg',$result['info'][0]);
 		
 		
 		$headtitle="宝贝街-茶话馆";
@@ -112,10 +103,10 @@ class IndexController extends HomeController {
 	}
 	
 	public function spxq(){
+		//查询最新通知
 		$order = " post_modified desc ";
 		$result = apiCall('Admin/Post/queryNoPaging',array($map, $order, $fields));
-		
-		$this->assign('gg',$result['info'][0]);
+		$this->assign('zxgg',$result['info'][0]);
 		
 		
 		$headtitle="宝贝街-商品详情";
@@ -126,19 +117,37 @@ class IndexController extends HomeController {
 	}
 	
 	public function gfgg(){
+		//查询最新通知
 		$order = " post_modified desc ";
 		$result = apiCall('Admin/Post/queryNoPaging',array($map, $order, $fields));
+		$this->assign('zxgg',$result['info'][0]);
 		
-		$this->assign('gg',$result['info'][0]);
+		//查询公告标题
+		$map1['level']=1;
+		$result1=apiCall("Admin/Datatree/query",array($map1,$page1,$order1,$params1));
+		$this->assign('ggTitle',$result1['info']['list']);
+		
+		/*foreach($result1['info']['list'] as $a=>$b){
+			echo $a."==".$b[id]."<br>";
+		}*/
+	
 		
 		$post_category=I('post_category');
-		//dump($post_category);
-		$map1['$post_category']=$post_category;
-		$page1 = array('curpage' => I('get.p', 0), 'size' => 2);
-		$result1=apiCall("Admin/Post/query",array($map1,$page1,$order1,$params1));
-		$this->assign('list',$result1['info']['list']);
-		$this->assign('show',$result1['info']['show']);
-		//dump($result1);
+		
+		$map2['post_category']=$post_category;
+		$page2 = array('curpage' => I('get.p', 0), 'size' => 2);
+		$result2=apiCall("Admin/Post/query",array($map2,$page2,$order2,$params2));
+		
+		
+		$this->assign('list',$result2['info']['list']);
+		$this->assign('show',$result2['info']['show']);
+		
+		$map3['hidden_value']=$post_category;
+		$result3=apiCall("Admin/Datatree/queryNoPaging",array($map3, $order3, $fields3));
+		$this->assign('ggct',$result3['info'][0]);
+		
+		
+		
 		$headtitle="宝贝街-官方公告";
 		$this->assign('head_title',$headtitle);
 		$users=session('user_sm');
@@ -149,21 +158,31 @@ class IndexController extends HomeController {
 	public function gfggxx(){
 		$order = " post_modified desc ";
 		$result = apiCall('Admin/Post/queryNoPaging',array($map, $order, $fields));
-		
-		$this->assign('gg',$result['info'][0]);
-		
-		
+		$this->assign('zxgg',$result['info'][0]);
+	
+	
 		$headtitle="宝贝街-官方公告信息";
 		$this->assign('head_title',$headtitle);
-		$users=session('user_sm');
+
+		//查询公告标题
+		$map1['level']=1;
+		$result1=apiCall("Admin/Datatree/query",array($map1,$page1,$order1,$params1));
+		$this->assign('ggTitle',$result1['info']['list']);
+		
+		//根据id查询公告文章
 		$id=I('id');
-		//dump($id);
 		$map['id']=$id;
 		$result = apiCall('Admin/Post/queryNoPaging',array($map, $order, $fields));
+		
 		$this->assign('gg',$result['info'][0]);
 		
-		//dump($result);
 		
+		$map2['hidden_value']=$result['info'][0]['post_category'];
+		$result2=apiCall("Admin/Datatree/queryNoPaging",array($map2, $order2, $fields2));
+		$this->assign('ggct',$result2['info'][0]);
+		
+		
+		$users=session('user_sm');
 		$this->assign('username',session('user_sm')['info']['username']);
 		$this->display();
 	}

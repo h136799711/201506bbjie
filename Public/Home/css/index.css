@@ -64,8 +64,8 @@ input{border:1px solid #ccc; list-style:none;}
 	
 	#div_main .div_info .div_gg_info{}
 	#div_main .div_info .div_gg_info ul.ul_gg_info li{ border-bottom: 1px dotted #ccc;padding: 5px; padding-left: 20px; }
-	#div_main .div_info .div_gg_info .div_gg_page nav span{border: 1px solid red;}
-	#div_main .div_info .div_gg_info .div_gg_page nav ul li{ }
+	#div_main .div_info .div_gg_info .div_gg_page nav span{ float:right; margin-top:10px;}
+	#div_main .div_info .div_gg_info .div_gg_page nav ul li{}
 	#div_main .div_info .div_bzzx .div_bzzx_cjwt ul li a:link {color: #666}		/* 未访问的链接 */
 	#div_main .div_info .div_bzzx .div_bzzx_cjwt ul li a:visited {color: #666}		/* 已访问的链接 */
 	#div_main .div_info .div_bzzx .div_bzzx_cjwt ul li a:hover {color: #ff5497}		/* 鼠标移动到链接上 */
