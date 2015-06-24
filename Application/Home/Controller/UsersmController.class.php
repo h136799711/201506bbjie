@@ -20,10 +20,11 @@ class UsersmController extends HomeController {
 		$userid = $user['info']['id'];
 		//		dump($userid);
 		$map = array('uid' => $userid, );
-		$result = $result = apiCall(HomePublicApi::Member_Query, array($map));
+		$result = apiCall(HomePublicApi::Member_Query, array($map));
 		$results = apiCall(HomePublicApi::Bbjmember_Query, array($map));
 		$this -> assign('info', $results['info']);
 		$this -> assign('mum', $result['info']);
+//		dump($result);
 		$this -> display('manager_info');
 	}
 

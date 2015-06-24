@@ -17,10 +17,11 @@ class HomePublicApi{
 	const Bbjmember_SaveByID='Home/Bbjmember/saveByIDd';
 	const Bbjmember_Add='Home/Bbjmember/add';
 	
+	
 	/**
 	 * 商家
 	 */
-	const Bbjmember_Seller_SaveByID='Home/BbjmemberSeller/saveByID';
+	const Bbjmember_Seller_SaveByID='Home/BbjmemberSeller/saveByIDd';
 	const Bbjmember_Seller_Add='Home/BbjmemberSeller/add';
 	const Bbjmember_Seller_Query='Home/BbjmemberSeller/queryNoPaging';
 	const Bbjmember_Seller_GetInfo='Home/BbjmemberSeller/getInfo';

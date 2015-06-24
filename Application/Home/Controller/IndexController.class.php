@@ -211,7 +211,10 @@ class IndexController extends HomeController {
 				'personal_signature'=>'',
 				'brief_introduction'=>'',
 				'address'=>'',
-				'store_name'=>'',
+				'create_time'=>time(),
+				'update_time'=>time(),
+				'coins'=>0,
+				'fucoin'=>0,
 			);
 			$result1 = apiCall(HomePublicApi::Bbjmember_Add, array($entity));
 //			dump($result1);
@@ -235,7 +238,7 @@ class IndexController extends HomeController {
 					$result3 = apiCall(HomePublicApi::Group_Add, array($group));
 //					dump($result3);
 					if($result3['status']){
-						$this->display('login');
+						$this->success('注册成功',U('Home/Index/login'));
 					}
 				}
 			}
