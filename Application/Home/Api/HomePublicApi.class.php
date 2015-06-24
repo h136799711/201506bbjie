@@ -20,7 +20,7 @@ class HomePublicApi{
 	/**
 	 * 公告文章
 	 */
-	const Post_QueryNoPaging="Admin/Post/queryNoPaging";
+	const Post_QueryNoPaging="Admin/Post/queryNoPaging"; 
 	const Post_Query="Admin/Post/query";
 	
 	/**
@@ -79,6 +79,5 @@ class HomePublicApi{
 	const Address_SaveByID='Home/Address/saveByID';
 	const Address_Query='Home/Address/queryNoPaging';
 	
-	const Post_Query='Admin/Post/query';
 }
 
