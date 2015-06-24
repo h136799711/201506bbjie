@@ -194,7 +194,6 @@ class UsersjController extends HomeController {
 				$sum += $value['defray'];
 			}
 		}
-//		dump($result);
 		$this -> assign('jilu', $jyjl['info']['list']);
 		$this -> assign('sum', $sum);
 		$this -> assign('show', $jyjl['info']['show']);

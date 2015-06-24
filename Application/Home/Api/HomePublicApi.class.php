@@ -9,6 +9,7 @@ namespace Home\Api;
 
 class HomePublicApi{
 	
+	
 	/**
 	 * 用户
 	 */

@@ -8,8 +8,8 @@
 	<script src="__CDN__/select2/3.5.2/select2.js"></script>
 	<link href="__CDN__/select2/3.5.2/select2.css" rel="stylesheet" />
 	<style type="text/css">
-		.yz li{ height: 55px;line-height: 40px;margin-left: 20px;padding-left: 53px;}
-		.yz i{color: #CCCCCC; font-size: 60px; float: left; font-size: 40px; margin-top: -15px;}
+		.yz li{ height: 55px;line-height: 40px;padding-left: 53px;}
+		.yz i{color: #CCCCCC; font-size: 60px; float: left; font-size: 40px; }
 		.am-modal-dialog{ }
 		.am-modal-bd{ text-align: left;  padding: 10px; margin-left: 20px; font-size: 14px;}
 		.am-modal-bd input{ margin-top: 5px; }.am-modal-bd select{ margin-top: 5px; }
@@ -98,7 +98,7 @@
 							<div class="l2">
 								<table class="bank" style="width: 100%;">
 								<tr>
-									<td colspan="4"><b style="color: #999;">提现账号 </b>
+									<td colspan="8"><b style="color: #999;">提现账号 </b>
 										<button class="am-btn am-btn-primary am-btn-xs" style="font-family: '微软雅黑'; font-size: 13px; width: 80px; height: 30px;line-height: 10px; padding: 10px; border-radius:5px ;"
 										 data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 400, height: 355}">更换账号</button>
 									</td>
@@ -120,14 +120,25 @@
 							<div class="m1">
 								<div class="t text-center">安全中心</div>
 								<div class="p20"></div>
-								<div>
-									<img src="__IMG__/email_none.png" alt=""> <span class="muted">&nbsp; 未设置</span>
-								</div>
-								<div class="p20"></div>
-								<div>
-									&nbsp;
-									<img src="__IMG__/phone_none.png" alt=""> <span class="muted">&nbsp; 未设置</span>
-								</div>
+								
+							<ul style="" class="yz">
+								<empty name="email">
+									<i class="am-icon-envelope-o"></i>
+									<li >未认证</li>
+									<else/>
+									<i class="am-icon-envelope-o" style="color: hotpink;" ></i>
+									<li>已认证</li>
+								</empty>
+								<empty name="phone">
+									<i class="am-icon-mobile"></i>
+									<li >未认证</li>
+									<else/>
+									<i class="am-icon-mobile" style="color: hotpink;" ></i>
+									<li >已认证</li>
+								</empty>
+								
+							</ul>
+
 
 							</div>
 						</div>
@@ -231,15 +242,6 @@
 								<tr><td colspan="7" class="empty"><span class="empty">没有找到数据.</span></td></tr>
 								</tbody>
 							</table>
-							
-							
-							
-							
-							
-							
-							
-							
-							
 							<div class="row-fluid">
 								<div class="span6 offset3"></div>
 								<div class="span3"></div>
@@ -255,7 +257,7 @@
 				<div class="am-modal-hd">更换提现账号
 					<a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
 				</div>
-				<form action="{:U('Home/Usersm/addbank')}" method="post">
+				<form action="{:U('Home/SJMoney/addbank')}" method="post">
 					<div class="am-modal-bd">开户行：
 						<select name="bank">
 							<option value="">请选择</option>
