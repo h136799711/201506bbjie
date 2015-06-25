@@ -13,33 +13,42 @@ use Home\Api\HomePublicApi;
  * 官网首页
  */
 class UsersjController extends HomeController {
-	
+	/*
+	 * 商家中心
+	 * TODO:访问验证session
+	 * */
 	public function index(){
 		$headtitle="宝贝街-商家中心";
 		$this->assign('head_title',$headtitle);
-		$user_sj=session('user_sj');
-		$id=$user_sj['info']['id'];
+		$user=session('user');
+		$id=$user['info']['id'];
 		$map=array(
 			'uid'=>$id,
 		);					
 		$sj=apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
-		$this->assign('username',$user_sj['info']['username']);
+		$this->assign('username',$user['info']['username']);
 		$this->assign('sj',$sj['info']);
 		$this->display();
 	}
+	/*
+	 * 商家账号信息
+	 * */
 	public function sj_zhxx(){
 		$headtitle="宝贝街-账号信息";
 		$this->assign('head_title',$headtitle);
-		$user_sj=session('user_sj');
-		$this->assign('username',$user_sj['info']['username']);
+		$user=session('user');
+		$this->assign('username',$user['info']['username']);
 		$map=array(
-			'uid'=>$user_sj['info']['id'],
+			'uid'=>$user['info']['id'],
 		);
 		$result=apiCall(HomePublicApi::Bbjmember_Seller_GetInfo, array($map));
 //		dump($result);
 		$this->assign('entity',$result['info']);
 		$this->display();
 	}
+	/*
+	 * 商家基本信息修改
+	 * */
 	public function edit1(){
 		$id=I('id',0);
 		$sheng=I('sheng','');$shi=I('shi','');$qu=I('qu','');$address=I('address');
@@ -57,6 +66,9 @@ class UsersjController extends HomeController {
 			$this->error($result['info']);
 		}
 	}
+	/*
+	 * 商家负责人信息修改
+	 * */
 	public function edit2(){
 		$id=I('id',0);
 		$entity=array(
@@ -73,6 +85,9 @@ class UsersjController extends HomeController {
 			$this->error($result['info']);
 		}
 	}
+	/*
+	 * 商家负责人联系信息修改
+	 * */
 	public function edit3(){
 		$id=I('id',0);
 		$entity=array(
@@ -89,17 +104,23 @@ class UsersjController extends HomeController {
 			$this->error($result['info']);
 		}
 	}
+	/*
+	 * 商家账号安全
+	 * */
 	public function sj_zhaq(){
 		$headtitle="宝贝街-账号安全";
 		$this->assign('head_title',$headtitle);
-		$user_sj=session('user_sj');
-		$this->assign('username',$user_sj['info']['username']);
-		$id=$user_sj['info']['id'];
+		$user=session('user');
+		$this->assign('username',$user['info']['username']);
+		$id=$user['info']['id'];
 //		dump($map);
 		$result=apiCall(HomePublicApi::User_GetUser, array($id));
 		$this->assign('entity',$result['info']);
 		$this->display();
 	}
+	/*
+	 * 商家邮箱绑定
+	 * */
 	public function email(){
 		$id=I('id','');
 		$entity=array('email'=>I('email',''));
@@ -111,6 +132,9 @@ class UsersjController extends HomeController {
 			$this->error($result['info']);
 		}
 	}
+	/*
+	 * 商家手机绑定
+	 * */
 	public function phone(){
 		$id=I('id','');
 		$entity=array('mobile'=>I('phone',''));
@@ -122,16 +146,19 @@ class UsersjController extends HomeController {
 			$this->error($result['info']);
 		}
 	}
+	/*
+	 * 商家密码修改
+	 * */
 	public function sj_xgmm(){
 		if(IS_GET){
 			$headtitle="宝贝街-修改密码";
 			$this->assign('head_title',$headtitle);
-			$user_sj=session('user_sj');
-			$this->assign('username',$user_sj['info']['username']);
+			$user=session('user');
+			$this->assign('username',$user['info']['username']);
 			$this->display();
 		}else{
-			$user_sj=session('user_sj');
-			$uid=$user_sj['info']['id'];
+			$user=session('user');
+			$uid=$user['info']['id'];
 			$pwd=I('old_password','');
 			$data=array('password'=>I('password',''),);
 			$result=apiCall(HomePublicApi::User_EditPwd, array($uid,$pwd,$data));
@@ -143,44 +170,50 @@ class UsersjController extends HomeController {
 		}
 		
 	}
+	/*
+	 * 站内消息
+	 * */
 	public function sj_znxx(){
 		$headtitle="宝贝街-站内消息";
 		$this->assign('head_title',$headtitle);
-		$user_sj=session('user_sj');
-		$this->assign('username',$user_sj['info']['username']);
+		$user=session('user');
+		$this->assign('username',$user['info']['username']);
 		$this->display();
 	}
-	public function sj_zzgl(){
-		$headtitle="宝贝街-资金管理";
-		$this->assign('head_title',$headtitle);
-		$user_sj=session('user_sj');
-		$this -> assign('username', $user_sj['info']['username']);
-		$this -> display();
-	}
+	
+	/*
+	 * VIP开通
+	 * */
 	public function sj_viptd(){
 		$headtitle="宝贝街-VIP通道";
 		$this->assign('head_title',$headtitle);
-		$user_sj=session('user_sj');
-		$uid = $user_sj['info']['id'];
+		$user=session('user');
+		$uid = $user['info']['id'];
 		$map = array('uid' => $uid, );
 		$result = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
 		$this -> assign('coins', $result['info'][0]['coins']);
-		$this->assign('username',$user_sj['info']['username']);
+		$this->assign('username',$user['info']['username']);
 //		dump($result);
 		$this->display();
 	}
+	/*
+	 * 商家课堂
+	 * */
 	public function sj_sfkt(){
 		$headtitle="宝贝街-商家课堂";
 		$this->assign('head_title',$headtitle);
-		$user_sj=session('user_sj');
-		$this->assign('username',$user_sj['info']['username']);
+		$user=session('user');
+		$this->assign('username',$user['info']['username']);
 		$this->display();
 	}
+	/*
+	 * 商家资金管理
+	 * */
 	public function sj_zjgl(){
 		$headtitle="宝贝街-资金管理";
 		$this->assign('head_title',$headtitle);
-		$user_sj=session('user_sj');
-		$uid = $user_sj['info']['id'];
+		$user=session('user');
+		$uid = $user['info']['id'];
 		$map = array('uid' => $uid, );
 		$info = apiCall(HomePublicApi::FinBankaccount_Query, array($map));
 		$result = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
@@ -194,22 +227,30 @@ class UsersjController extends HomeController {
 				$sum += $value['defray'];
 			}
 		}
+		$we=array('uid' => $uid, 'dtree_type'=>1);$where=array('uid' => $uid, 'dtree_type'=>3);
+		$chongzhi = apiCall(HomePublicApi::FinAccountBalanceHis_QueryAll, array($we));
+		$tixian = apiCall(HomePublicApi::FinAccountBalanceHis_QueryAll, array($where));
+		$this->assign('chongzhi',$chongzhi['info']['list']);
+		$this->assign('tixian',$tixian['info']['list']);
+		$this->assign('all',$jyjl['info']['list']);
 		$this -> assign('jilu', $jyjl['info']['list']);
 		$this -> assign('sum', $sum);
 		$this -> assign('show', $jyjl['info']['show']);
+		$this -> assign('show2', $tixian['info']['show']);
+		$this -> assign('show3', $chongzhi['info']['show']);
 		$this -> assign('email', $user['info']['email']);
 		$this -> assign('phone', $user['info']['mobile']);
 		$this -> assign('coins', $result['info'][0]['coins']);
 		$this -> assign('bank', $info['info'][0]);
-		$this->assign('username',$user_sj['info']['username']);
+		$this->assign('username',$user['info']['username']);
 		$this->display();
 	}
-	
+	/*
+	 * 退出登录
+	 * */
 	public function exits(){
 		session('[destroy]'); // 删除session
 		$this->display('Index/login');
 	}
-	public function tanchuceng(){
-		$this->display();
-	}
+	
 }

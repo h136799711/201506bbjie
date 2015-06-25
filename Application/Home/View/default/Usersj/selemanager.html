@@ -1,0 +1,93 @@
+<extend name="template/base_index" />
+
+<block name="area_header">
+	<link rel="stylesheet" href="__CSS__/shangjia.css">
+
+</block>
+
+<block name="area_body">
+	<div class="seller_header_wrap">
+		<div class="seller_header clearfix" style="background: url(__IMG__/header_main_bg.jpg);">
+			<a class="logo" href="#" style=" background: url(__IMG__/logo.png) no-repeat 20px;"></a>
+			<div class="pull-left gzt btn-group">
+				<a class="shifu btn" href="#">试福</a>
+				<a class="taofu btn" href="#">淘福</a>
+				<a class="dropdown-toggle btn" data-toggle="dropdown" href="javascript:;">　账户关联　 <b class="caret"></b></a>
+				<ul role="menu" class="dropdown-menu pull-right">
+					<li role="menuitem"><a tabindex="-1" href="#">关联店铺管理&gt;&gt;</a>
+					</li>
+				</ul>
+			</div>
+			<a style="margin-top:57px; margin-left:20px;" class="text-info pull-left" href="#">试民淘宝号确认</a>
+			<div class="topmenu">
+				<ul class="clearfix">
+					<li>
+						<div>您好，<span class="text-link">{$username}</span>
+							<a href="{:U('Home/Usersj/exits')}">[退出]</a>
+						</div>
+					</li>
+					<li class="shangjia"><a href="{:U('Home/Usersj/index')}">商家中心</a>
+					</li>
+					<li><a href="{:U('Home/Index/index')}">回到首页</a>
+					</li>
+					<li><a href="{:U('Home/Usersj/sj_znxx')}">站内消息</a>
+					</li>
+					<li class="bangzhu"><a href="#">帮助中心</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div></div>
+	<div class="seller_main clearfix" controller="seller/common">
+		
+		<div class="siderbar">
+
+			<dl class="open">
+				<dt class="s_vip">
+
+      <span>账号管理</span>
+
+    </dt>
+				<dd>
+					<a class="" href="{:U('Home/Usersj/sj_zhxx')}"><span>账号信息</span></a>
+				</dd>
+				<dd>
+					<a class="" href="{:U('Home/Usersj/sj_zhaq')}"><span>账户安全</span></a>
+				</dd>
+				<dd>
+					<a class="" href="{:U('Home/Usersj/sj_xgmm')}"><span>修改密码</span></a>
+				</dd>
+			</dl>
+
+			<dl>
+				<dt>
+
+      <a class="" href="{:U('Home/Usersj/sj_znxx')}">站内消息</a>
+
+    </dt>
+				<dt class="s_money">
+
+      <a class="" href="{:U('Home/Usersj/sj_zjgl')}">资金管理</a>
+
+    </dt>
+				<dt>
+
+      <a class="" href="{:U('Home/Usersj/sj_viptd')}">VIP通道</a>
+
+    </dt>
+				<dt>
+
+      <a class="" href="{:U('Home/Usersj/sj_sfkt')}">试福课堂</a>
+
+    </dt>
+			</dl>
+
+			<div class="adorn_bottom"></div>
+		</div>
+	</div>
+</block>
+
+<block name="area_footer">
+
+</block>
