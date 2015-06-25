@@ -1,0 +1,17 @@
+
+
+//=====Admin 模块 session值与key
+
+key					值 		
+
+global_user_sign  	登录的用户信息经过加密后的
+global_user  		登录的用户信息
+uid  				登录用户的ID
+
+
+
+//=====Home 模块 session值与key
+
+key			值 		
+
+login_user  登录的用户信息
