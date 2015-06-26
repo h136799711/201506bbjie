@@ -17,6 +17,7 @@ class UsersmController extends CheckLoginController {
 	 * 试民资料
 	 * */
 	public function index() {
+		
 		$user = session('user');
 		$this -> assign('username', $user['info']['username']);
 		$userid = $user['info']['id'];
@@ -26,6 +27,7 @@ class UsersmController extends CheckLoginController {
 		$results = apiCall(HomePublicApi::Bbjmember_Query, array($map));
 		$this -> assign('info', $results['info']);
 		$this -> assign('mum', $result['info']);
+		$this -> assign('cs_xx', 'sed');
 //		dump($result);
 		$this -> display('manager_info');
 	}
@@ -37,6 +39,7 @@ class UsersmController extends CheckLoginController {
 		$this -> assign('username', $user['info']['username']);
 		$headtitle = "试民中心-任务";
 		$this -> assign('head_title', $headtitle);
+		$this -> assign('cs_rw', 'sed');
 		$this -> display();
 	}
 	/*
@@ -65,6 +68,7 @@ class UsersmController extends CheckLoginController {
 		$this -> assign('show', $jyjl['info']['show']);
 		$this -> assign('email', $user['info']['email']);
 		$this -> assign('phone', $user['info']['mobile']);
+		$this -> assign('cs_zj', 'sed');
 		$this -> assign('coins', $result['info'][0]['coins']);
 		$this -> assign('bank', $info['info'][0]);
 		$this -> assign('username', $user['info']['username']);
@@ -78,6 +82,7 @@ class UsersmController extends CheckLoginController {
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
 		$this -> assign('username', $user['info']['username']);
+		$this -> assign('cs_yd', 'sed');
 		$this -> display();
 	}
 	/*
@@ -87,6 +92,7 @@ class UsersmController extends CheckLoginController {
 		$headtitle = "宝贝街-收藏活动";
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
+		$this -> assign('cs_sc', 'sed');
 		$this -> assign('username', $user['info']['username']);
 		$this -> display();
 	}
@@ -95,6 +101,7 @@ class UsersmController extends CheckLoginController {
 	 * */
 	public function sm_dhsp() {
 		$headtitle = "宝贝街-兑换商品";
+		$this -> assign('cs_dh', 'sed');
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
 		$this -> assign('username', $user['info']['username']);
@@ -105,6 +112,7 @@ class UsersmController extends CheckLoginController {
 	 * */
 	public function sm_bbhd() {
 		$headtitle = "宝贝街-宝贝活动";
+		$this -> assign('cs_sf', 'sed');
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
 		$this -> assign('username', $user['info']['username']);
@@ -120,6 +128,7 @@ class UsersmController extends CheckLoginController {
 		$this -> assign('username', $user['info']['username']);
 		$this -> assign('phone', $user['info']['mobile']);
 		$this -> assign('email', $user['info']['email']);
+		$this -> assign('cs_aq', 'sed');
 		$this -> display();
 	}
 	/*
@@ -129,6 +138,7 @@ class UsersmController extends CheckLoginController {
 		$headtitle = "宝贝街-幸福一点";
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
+		$this -> assign('cs_xf', 'sed');
 		$this -> assign('username', $user['info']['username']);
 		$this -> display();
 	}
@@ -139,6 +149,7 @@ class UsersmController extends CheckLoginController {
 		$headtitle = "宝贝街-勋章管理";
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
+		$this -> assign('cs_xz', 'sed');
 		$this -> assign('username', $user['info']['username']);
 		$this -> display();
 	}
@@ -149,6 +160,7 @@ class UsersmController extends CheckLoginController {
 		$headtitle = "宝贝街-站内消息";
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
+		$this -> assign('cs_xiaox', 'sed');
 		$this -> assign('username', $user['info']['username']);
 		$this -> display();
 	}
@@ -189,6 +201,7 @@ class UsersmController extends CheckLoginController {
 			$map = array('uid' => $uid, );
 			$result = apiCall(HomePublicApi::Address_Query, array($map));
 			$this -> assign('address', $result['info']);
+			$this -> assign('cs_dz', 'sed');
 			$this -> display('manager_address');
 		} else {
 			$ars = array('uid' => $user['info']['id'], 'country' => "中国", 'province' => I('sheng'), 'city' => I('shi'), 'area' => I('qu'), 'detail' => I('address', ''), 'contact_name' => I('name', ''), 'mobile' => I('mobile', ''), 'telphone' => I('phone', ''), 'post_code' => I('yb', ''), 'create_time' => time(), );

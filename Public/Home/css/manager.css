@@ -8,16 +8,16 @@ a{color: black;}
 	.div_top1 .div_zhongxin a{color: white;}
 	.div_top1  a:link {text-decoration: none;}		/* 未访问的链接 */
 	.div_top1  a:visited {text-decoration:underline; }	/* 已访问的链接 */
-	.div_top1  a:hover { text-decoration: underline;}	/* 鼠标移动到链接上 */
+	.div_top1  a:hover { text-decoration: underline; back}	/* 鼠标移动到链接上 */
 	.div_top1  a:active {text-decoration: underline;}	/* 选定的链接 */
 .div_top2{ width: 100%; background: #C52B47; height:72px; position: fixed;  margin-top: 34px;}
-	.div_top2 a{ text-decoration: none;color: #d9e1ec; width: 100%; height: 100%;}
+	.div_top2 a{ text-decoration: none; width: 100%; height: 100%;}
 .div_left{ width:200px; border-right: 1px solid #f4ccdc; height:850px; float: left; position: fixed; margin-top: 106px; background: #f9eff3;}
-	
+	.demo-icon-actions{ font-size: 1.6rem !important;}
 	.div_left  a{font-family: "Microsoft YaHei",Arial,Verdana,Helvetica,sans-serif; text-decoration: none;}		/* 未访问的链接 */
 	.div_left  a:hover {color:#f92d5e;}	/* 鼠标移动到链接上 */
 	
-	.div_left .div_znxx{width: 100%; text-align: center; height: 30px; margin-top: 5px; line-height: 30px; font-weight: 300;}
+	.div_left .div_znxx{width: 100%; text-align: center; height: 30px; margin-top: 5px; line-height: 30px; font-weight: 300; margin: 8px;}
 	
 	.div_left .dl_menu{ width: 100%;}
 	.div_left .dl_menu .dt_menu{ background:#C52B47; text-align:  center; padding: 5px; color: white;}
@@ -50,6 +50,7 @@ a{color: black;}
 	.div_right .div_minTitleAnQuan{border-bottom: 1px solid #F4CCDC; width: 100%; height:80px;}
 	.div_right .div_minTitleAnQuan h3{line-height: 40px; font-size: 13px;  padding-left: 26px;font-family: "Microsoft YaHei",Arial,Verdana,Helvetica,sans-serif;}
 .selected{background: #CA4756; cursor: pointer;}
-.sed{color: #FF698E;}
-
+.sed{color: #C52B47;}
+.fx{ font-size: 1.6rem;width: 100%; text-align: center; height: 30px; margin-top: 5px; line-height: 30px; font-weight: 300; margin: 8px;}
+.zj{ font-size: 1.6rem;width: 100%; text-align: center; height: 30px; margin-top: 5px; line-height: 30px; font-weight: 300; margin: 8px;}
 .a_button{ padding: 5px 10px; border-radius: 3px; background: #C52B47;  color: white;text-decoration: none; font-size: 14px; }

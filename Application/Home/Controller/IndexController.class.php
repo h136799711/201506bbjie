@@ -424,11 +424,24 @@ class IndexController extends HomeController {
 		$users=session('user');
 		$uid=$users['info']['id'];
 		$id=$uid;
-		$user=apiCall(HomePublicApi::User_GetUser, array($id));
-		$this->assign('username',$user['info']['username']);
-		$this->assign('phone',$user['info']['mobile']);
-		$this->display();
+		$map="uid=".$id;					
+		$group=apiCall(HomePublicApi::Group_QueryNpPage, array($map));
+		$groupid=$group['info'][0]['group_id'];
+		if($groupid==15){
+			$user=apiCall(HomePublicApi::User_GetUser, array($id));
+			$this->assign('username',$user['info']['username']);
+			$this->assign('phone',$user['info']['mobile']);
+			$this->display('Usersj/index');
+		}else{
+			$user=apiCall(HomePublicApi::User_GetUser, array($id));
+			$this->assign('username',$user['info']['username']);
+			$this->assign('phone',$user['info']['mobile']);
+			$this->display();
+		}
+		
 	}       
+	
+	
 	
 	
 	

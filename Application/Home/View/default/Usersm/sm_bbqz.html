@@ -3,7 +3,7 @@
 <block name="area_header">
 	<script type="text/javascript" src="__PUBLIC__/Home/js/location.js"></script>
 	<script type="text/javascript" src="__PUBLIC__/Home/js/area.js"></script>
-	<link type="text/css" rel="stylesheet" href="__CDN__/theme/{$cfg.theme|default="simplex"}.min.css" />
+	
 	<script src="__CDN__/select2/3.5.2/select2.js"></script>
 	<link href="__CDN__/select2/3.5.2/select2.css" rel="stylesheet" />
 	<link rel="stylesheet" href="__CSS__/manager.css" />
@@ -23,30 +23,7 @@
 
 <block name="area_body">
 	<div class="div_all">
-		<div class="div_top1">
-			<div class="div_gonggao"><i class="am-icon-bullhorn"></i>&nbsp;试福街美食频道下线通知</div>
-			<div class="div_zhongxin"><font color="#FD5E85">{$username}</font>，欢迎来到试福街！[<a href="{:U('Home/Index/exits')}">退出</a>]&nbsp;&nbsp;|&nbsp;&nbsp;<a href="{:U('Home/Index/sm_manager')}">试民中心</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="{:U('Home/Index/index')}">回首页</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-				<a href="#">帮助中心</a>
-			</div>
-		</div>
-		<div class="div_top2">
-			<div style="float: left; ">
-				<img src="__IMG__/baobei_logo.jpg" />
-			</div>
-			<div style="float: left; padding: 10px;color: #FFFFFF; margin-left:50px; margin-top: 35px;font-size: 14px;font-family: " 微软雅黑 "; opacity: 0.2;">
-				<a href="{:U('Home/Index/sm_manager')}">试民中心</a>
-			</div>
-			<div style="float: left;padding: 10px;color: #FFFFFF;margin-left: 10px;margin-top: 35px;font-size: 14px;font-family: " 微软雅黑 ";opacity: 0.2">
-				<a href="#">因伙得福</a>
-			</div>
-			<div style="float: left;padding: 10px;color: #FFFFFF;margin-left: 10px;margin-top: 35px;font-size: 14px;font-family: " 微软雅黑 ";opacity: 0.2">
-				<a href="#">试福课堂</a>
-			</div>
-		</div>
-		
-		<div class="div_left">
-			<include file="partials/leftmenu" />
-		</div>
+		<include file="Widget/top_left" />
 		<div class="am-modal am-modal-no-btn" tabindex="-1" id="doc-modal-2">
 			<div class="am-modal-dialog">
 				<div class="am-modal-hd">更换提现账号

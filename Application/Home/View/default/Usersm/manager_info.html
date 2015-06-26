@@ -29,74 +29,7 @@
 
 <block name="area_body">
 <div class="div_all">
-		<div class="div_top1">
-			<div class="div_gonggao"><i class="am-icon-bullhorn"></i>&nbsp;试福街美食频道下线通知</div>
-			<div class="div_zhongxin"><font color="#FD5E85">{$username}</font>，欢迎来到试福街！[<a href="{:U('Home/Index/exits')}">退出</a>]&nbsp;&nbsp;|&nbsp;&nbsp;<a href="{:U('Home/Index/sm_manager')}">试民中心</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="{:U('Home/Index/index')}">回首页</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-				<a href="#">帮助中心</a>
-			</div>
-		</div>
-		<div class="div_top2">
-			<div style="float: left; ">
-				<img src="__IMG__/baobei_logo.jpg" />
-			</div>
-			<div style="float: left; padding: 10px;color: #FFFFFF; margin-left:50px; margin-top: 35px;font-size: 14px;font-family: " 微软雅黑 "; opacity: 0.2;">
-				<a href="#">试民中心</a>
-			</div>
-			<div style="float: left;padding: 10px;color: #FFFFFF;margin-left: 10px;margin-top: 35px;font-size: 14px;font-family: " 微软雅黑 ";opacity: 0.2">
-				<a href="#">因伙得福</a>
-			</div>
-			<div style="float: left;padding: 10px;color: #FFFFFF;margin-left: 10px;margin-top: 35px;font-size: 14px;font-family: " 微软雅黑 ";opacity: 0.2">
-				<a href="#">试福课堂</a>
-			</div>
-		</div>
-		
-		<div class="div_left">
-			<div class="div_znxx">
-				<div><a href="{:U('Home/Usersm/sm_znxx')}" style=""><span class="demo-icon-actions"><i class="am-icon-envelope am-margin-xs" ></i>站内信息</a>
-				</div>
-
-			</div>
-			<dl class="dl_menu">
-				<dt class="dt_menu"><font><i class="am-icon-calendar-o"></i>&nbsp;活动准备</font></dt>
-				<dd class="dd_menu"><a href="{:U('Home/Usersm/manager_rw')}"><i class="am-icon-caret-right"></i>&nbsp;任务设置</a>
-				</dd>
-				<dd class="dd_menu"><a href="{:U('Home/Usersm/sm_dhsp')}"><i class="am-icon-caret-right"></i>&nbsp;兑换商品</a>
-				</dd>
-				<dd class="dd_menu"><a href="{:U('Home/Usersm/sm_ydsp')}"><i class="am-icon-caret-right"></i>&nbsp;预定商品</a>
-				</dd>
-				<dd class="dd_menu"><a href="{:U('Home/Usersm/sm_xfyd')}"><i class="am-icon-caret-right"></i>&nbsp;幸福一点</a>
-				</dd>
-			</dl>
-			<dl class="dl_menu">
-				<dt class="dt_menu"><font ><i class="am-icon-bullhorn"></i>&nbsp;活动管理</font></dt>
-				<dd class="dd_menu"><a href="{:U('Home/Usersm/sm_bbhd')}"><i class="am-icon-caret-right"></i>&nbsp;试福活动</a>
-				</dd>
-				<dd class="dd_menu"><a href="{:U('Home/Usersm/sm_schd')}"><i class="am-icon-caret-right"></i>&nbsp;收藏活动</a>
-				</dd>
-			</dl>
-			<dl class="dl_menu">
-				<dt class="dt_menu"><font ><i class="am-icon-user-md"></i>&nbsp;账号设置</font></dt>
-				<dd class="dd_menu"><a class="sed" href="{:U('Home/Usersm/index')}"><i class="am-icon-caret-right"></i>&nbsp;基本信息</a>
-				</dd>
-				<dd class="dd_menu"><a href="{:U('Home/Usersm/sm_aqzx')}"><i class="am-icon-caret-right"></i>&nbsp;安全中心</a>
-				</dd>
-				<dd class="dd_menu"><a href="{:U('Home/Usersm/address')}"><i class="am-icon-caret-right"></i>&nbsp;收货地址</a>
-				</dd>
-				<dd class="dd_menu"><a href="{:U('Home/Usersm/sm_xzgl')}"><i class="am-icon-caret-right"></i>&nbsp;勋章管理</a>
-				</dd>
-				<br />
-				<br />
-
-			</dl>
-			<div class="div_znxx">
-				<div><a href="{:U('Home/Usersm/sm_shfx')}" style=" padding-left: 15px;"><i class="am-icon-skyatlas"> </i>&nbsp;晒货分享</a>
-				</div>
-			</div>
-			<div class="div_znxx">
-				<div><a href="{:U('Home/Usersm/sm_bbqz')}" style=" padding-left: 15px;"><i class="am-icon-credit-card"> </i>&nbsp;资金管理</a>
-				</div>
-			</div>
-		</div>
+	<include file="Widget/top_left" />
 	<div class="div_right">
 		<form action="{:U('Home/Usersm/add')}" method="post">
 			<div class="div_minTitle">
