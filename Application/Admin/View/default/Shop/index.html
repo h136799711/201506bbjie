@@ -1,0 +1,51 @@
+<extend name="template/base_index" />
+
+
+<block name="area_header">
+
+	<link rel="stylesheet" type="text/css" media="all" href="__CDN__/jquery-datetimepicker/jquery.datetimepicker.css">
+	<script type="text/javascript" src="__CDN__/jquery-datetimepicker/jquery.datetimepicker.js"></script>
+</block>
+
+<block name="area_body">
+	{:W('Menus/topbar')}
+	<div class="admin-main container-fluid">
+		{:W('Menus/left')}
+		<div class="admin-main-content">
+			{:W('Menus/breadcrumb')}
+			<notempty name="parent_vo">
+			<div class="text-center"><h4>上级类目: {$parent_vo.name} </h4></div>
+			</notempty>
+			
+			
+			
+			
+			<center>
+			 	<h1 style="text-shadow:5px 2px 6px #000; color: white; font-weight: bold;">欢迎,</h1>
+			</center>
+				
+			</div>
+
+			<script type="text/javascript">
+				$(function() {
+						$('#startdatetime').datetimepicker({
+							lang: 'ch',
+							format:'Y-m-d',
+							timepicker:false,
+						});
+						$('#enddatetime').datetimepicker({
+							lang: 'ch',
+							format:'Y-m-d',
+							timepicker:false,
+						});
+				});
+			</script>
+		</div>
+		<!-- END admin-main-content -->
+	</div>
+		<!-- END admin-main-->
+</block>
+
+<block name="area_footer">
+
+</block>

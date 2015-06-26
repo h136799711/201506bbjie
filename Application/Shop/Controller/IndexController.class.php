@@ -11,20 +11,33 @@ class IndexController extends ShopController{
 	
 	protected function _initialize(){
 		parent::_initialize();
-		$showStartPage = true;
-		$last_entry_time = cookie("last_entry_time");
-		if(empty($last_entry_time)){
-			//一小时过期
-			cookie("last_entry_time",time(),3600);
-			$last_entry_time = time();			
-		}elseif(time() - $last_entry_time < 20*60){
-			$showStartPage = false;
+		
+		if(isMobile()){
+			//手机访问
+			$showStartPage = true;
+			$last_entry_time = cookie("last_entry_time");
+			if(empty($last_entry_time)){
+				//一小时过期
+				cookie("last_entry_time",time(),3600);
+				$last_entry_time = time();			
+			}elseif(time() - $last_entry_time < 20*60){
+				$showStartPage = false;
+			}else{
+				//一小时过期
+				cookie("last_entry_time",time(),3600);
+			}
+			
+			$this->assign("showstartpage",$showStartPage);
+		
+			
 		}else{
-			//一小时过期
-			cookie("last_entry_time",time(),3600);
+			//电脑端访问
+			
+			
+			
 		}
 		
-		$this->assign("showstartpage",$showStartPage);
+		
 		
 	}
 	
@@ -32,7 +45,8 @@ class IndexController extends ShopController{
 	 * 首页
 	 */
 	public function index(){
-		$map= array('uid'=>$this->wxaccount['uid'],'storeid'=>-1,'position'=>C("DATATREE.SHOP_INDEX_BANNERS"));
+		
+		$map = array('uid'=>$this->wxaccount['uid'],'storeid'=>-1,'position'=>C("DATATREE.SHOP_INDEX_BANNERS"));
 		
 		$page = array('curpage'=>0,'size'=>8);
 		$order = "createtime desc";
@@ -77,6 +91,12 @@ class IndexController extends ShopController{
 		$this->display();
 	}
 
+	
+	//========PC端使用
+	
+	
+	
+	//========移动端使用
 	/**
 	 * 获取首页4格活动
 	 * 
