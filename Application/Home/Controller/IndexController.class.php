@@ -2,7 +2,7 @@
 // .-----------------------------------------------------------------------------------
 // | WE TRY THE BEST WAY 杭州博也网络科技有限公司
 // |-----------------------------------------------------------------------------------
-// | Author: 贝贝 <hebiduhebi@163.com>
+// | Author: 青 <99701759@qq.com>
 // | Copyright (c) 2013-2016, http://www.itboye.com. All Rights Reserved.
 // |-----------------------------------------------------------------------------------
 namespace Home\Controller;
@@ -13,21 +13,26 @@ use Home\Api\HomePublicApi;
  * 官网首页
  */
 class IndexController extends HomeController {
-	/*
-	 * $headtitle="试民中心-任务";
-		$this->assign('head_title',$headtitle);
-	 * */
+	
+	 /*
+	  * 试民注册界面
+	  * */
 	public function register_sm(){
 		$headtitle="宝贝街-试民注册";
 		$this->assign('head_title',$headtitle);
 		$this->display();
 	}
+	/*
+	  * 商家注册界面
+	  * */
 	public function register_sj(){
 		$headtitle="宝贝街-商家注册";
 		$this->assign('head_title',$headtitle);
 		$this->display();
 	}
-	
+	/*
+	  * 首页
+	  * */
 	public function index(){
 		$order = " post_modified desc ";
 		$result = apiCall('Admin/Post/queryNoPaging',array($map, $order, $fields));
@@ -36,13 +41,15 @@ class IndexController extends HomeController {
 		
 		$headtitle="宝贝街-首页";
 		$this->assign('head_title',$headtitle);
-		$users=session('user_sm');
+		$users=session('user');
 		
 
-		$this->assign('username',session('user_sm')['info']['username']);
+		$this->assign('username',session('user')['info']['username']);
 		$this->display();
 	}
-	
+	/*
+	  * 福品专场
+	  * */
 	public function flzc(){
 		$order = " post_modified desc ";
 		$result = apiCall(HomePublicApi::Post_QueryNoPaging,array($map, $order, $fields));
@@ -50,11 +57,13 @@ class IndexController extends HomeController {
 		
 		$headtitle="宝贝街-福品专场";
 		$this->assign('head_title',$headtitle);
-		$users=session('user_sm');
-		$this->assign('username',session('user_sm')['info']['username']);
+		$users=session('user');
+		$this->assign('username',session('user')['info']['username']);
 		$this->display();
 	}
-	
+	/*
+	  * 幸福一点
+	  * */
 	public function xfyd(){
 		$order = " post_modified desc ";
 		$result = apiCall(HomePublicApi::Post_QueryNoPaging,array($map, $order, $fields));
@@ -62,11 +71,13 @@ class IndexController extends HomeController {
 		
 		$headtitle="宝贝街-幸福一点";
 		$this->assign('head_title',$headtitle);
-		$users=session('user_sm');
-		$this->assign('username',session('user_sm')['info']['username']);
+		$users=session('user');
+		$this->assign('username',session('user')['info']['username']);
 		$this->display();
 	}
-	
+	/*
+	  * 试江湖
+	  * */
 	public function sjh(){
 		$order = " post_modified desc ";
 		$result = apiCall(HomePublicApi::Post_QueryNoPaging,array($map, $order, $fields));
@@ -75,11 +86,13 @@ class IndexController extends HomeController {
 		
 		$headtitle="宝贝街-试江湖";
 		$this->assign('head_title',$headtitle);
-		$users=session('user_sm');
-		$this->assign('username',session('user_sm')['info']['username']);
+		$users=session('user');
+		$this->assign('username',session('user')['info']['username']);
 		$this->display();
 	}
-	
+	/*
+	  * 茶话馆
+	  * */
 	public function chg(){
 		$order = " post_modified desc ";
 		$result = apiCall(HomePublicApi::Post_QueryNoPaging,array($map, $order, $fields));
@@ -88,20 +101,24 @@ class IndexController extends HomeController {
 		
 		$headtitle="宝贝街-茶话馆";
 		$this->assign('head_title',$headtitle);
-		$users=session('user_sm');
-		$this->assign('username',session('user_sm')['info']['username']);
+		$users=session('user');
+		$this->assign('username',session('user')['info']['username']);
 		$this->display();
 	}
-
+/*
+	  * 帮助中心
+	  * */
 	public function bzzx(){
 		
 		$headtitle="宝贝街-帮助中心";
 		$this->assign('head_title',$headtitle);
-		$users=session('user_sm');
-		$this->assign('username',session('user_sm')['info']['username']);
+		$users=session('user');
+		$this->assign('username',session('user')['info']['username']);
 		$this->display();
 	}
-	
+	/*
+	  * 商品详情
+	  * */
 	public function spxq(){
 		//查询最新通知
 		$order = " post_modified desc ";
@@ -111,11 +128,13 @@ class IndexController extends HomeController {
 		
 		$headtitle="宝贝街-商品详情";
 		$this->assign('head_title',$headtitle);
-		$users=session('user_sm');
-		$this->assign('username',session('user_sm')['info']['username']);
+		$users=session('user');
+		$this->assign('username',session('user')['info']['username']);
 		$this->display();
 	}
-	
+	/*
+	  * 官方公告
+	  * */
 	public function gfgg(){
 		//查询最新通知
 		$order = " post_modified desc ";
@@ -150,11 +169,13 @@ class IndexController extends HomeController {
 		
 		$headtitle="宝贝街-官方公告";
 		$this->assign('head_title',$headtitle);
-		$users=session('user_sm');
-		$this->assign('username',session('user_sm')['info']['username']);
+		$users=session('user');
+		$this->assign('username',session('user')['info']['username']);
 		$this->display();
 	}
-	
+	/*
+	  * 官方公告信息
+	  * */
 	public function gfggxx(){
 		$order = " post_modified desc ";
 		$result = apiCall(HomePublicApi::Post_QueryNoPaging,array($map, $order, $fields));
@@ -182,14 +203,19 @@ class IndexController extends HomeController {
 		$this->assign('ggct',$result2['info'][0]);
 		
 		
-		$users=session('user_sm');
-		$this->assign('username',session('user_sm')['info']['username']);
+		$users=session('user');
+		$this->assign('username',session('user')['info']['username']);
 		$this->display();
 	}
-	
+	/*
+	  * 用户协议
+	  * */
 	public function xieyi(){
 		$this->display();
 	}
+	/*
+	  * 试民注册界面
+	  * */
 	public function smzc(){
 		$username=I('post.user_name');
 		$password=I('post.password');
@@ -245,6 +271,9 @@ class IndexController extends HomeController {
 		}
 
 	}
+/*
+	  * 商家注册基本信息
+	  * */
 	public function sjzc(){
 		$username=I('post.user_name');
 		$password=I('post.password');
@@ -301,6 +330,9 @@ class IndexController extends HomeController {
 			}
 		}
 	}
+/*
+	  * 商家注册详细信息
+	  * */
 	public function sjzc_kz(){
 		
 		$id=session('sjid');
@@ -328,8 +360,6 @@ class IndexController extends HomeController {
 			$this->display();
 		}else{
 			//检测用户
-			
-			
 			$username = I('post.username', '', 'trim');
 			$password = I('post.password', '', 'trim');
 			
@@ -344,18 +374,18 @@ class IndexController extends HomeController {
 				$group=apiCall(HomePublicApi::Group_QueryNpPage, array($map));
 				$groupid=$group['info'][0]['group_id'];
 				if($groupid==14){
-					session('user_sm',$users);
+					session('user',$users);
 					$this->assign('username',$users['info']['username']);
 					$this -> display('sm_manager');
 				}else{
-					session('user_sj',$users);
-					$user_sj=session('user_sj');
-					$id=$user_sj['info']['id'];
+					session('user',$users);
+					$user=session('user');
+					$id=$user['info']['id'];
 					$map=array(
 						'uid'=>$id,
 					);					
 					$sj=apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
-					$this->assign('username',$user_sj['info']['username']);
+					$this->assign('username',$user['info']['username']);
 					$this->assign('sj',$sj['info']);
 					$this->assign('username',$users['info']['username']);
 					$this->display('Usersj/index');
@@ -367,17 +397,20 @@ class IndexController extends HomeController {
 			}
 		}
 	}
-	
+	/*
+	  * 退出当前账号
+	  * */
 	public function exits(){
 		session('[destroy]'); // 删除session
 		$this->display('login');
 	}
 	
-	
-	
+	/*
+	  * 试民首页
+	  * */
 	public function sm_manager(){
 		
-		$users=session('user_sm');
+		$users=session('user');
 		$uid=$users['info']['id'];
 		$id=$uid;
 		$user=apiCall(HomePublicApi::User_GetUser, array($id));

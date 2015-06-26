@@ -13,9 +13,11 @@ use Home\Api\HomePublicApi;
  * 试民操作
  */
 class UsersmController extends HomeController {
-
+	/*
+	 * 试民资料
+	 * */
 	public function index() {
-		$user = session('user_sm');
+		$user = session('user');
 		$this -> assign('username', $user['info']['username']);
 		$userid = $user['info']['id'];
 		//		dump($userid);
@@ -27,20 +29,24 @@ class UsersmController extends HomeController {
 //		dump($result);
 		$this -> display('manager_info');
 	}
-
+	/*
+	 * 试民任务设置
+	 * */
 	public function manager_rw() {
-		$user_sm = session('user_sm');
-		$this -> assign('username', $user_sm['info']['username']);
+		$user = session('user');
+		$this -> assign('username', $user['info']['username']);
 		$headtitle = "试民中心-任务";
 		$this -> assign('head_title', $headtitle);
 		$this -> display();
 	}
-
+	/*
+	 * 试民钱庄
+	 * */
 	public function sm_bbqz() {
 		$headtitle = "宝贝街-宝贝钱庄";
 		$this -> assign('head_title', $headtitle);
-		$user_sm = session('user_sm');
-		$uid = $user_sm['info']['id'];
+		$user = session('user');
+		$uid = $user['info']['id'];
 		$map = array('uid' => $uid, );
 		$info = apiCall(HomePublicApi::FinBankaccount_Query, array($map));
 		$result = apiCall(HomePublicApi::Bbjmember_Query, array($map));
@@ -61,87 +67,105 @@ class UsersmController extends HomeController {
 		$this -> assign('phone', $user['info']['mobile']);
 		$this -> assign('coins', $result['info'][0]['coins']);
 		$this -> assign('bank', $info['info'][0]);
-		$this -> assign('username', $user_sm['info']['username']);
+		$this -> assign('username', $user['info']['username']);
 		$this -> display();
 	}
-
+	/*
+	 * 预定商品
+	 * */
 	public function sm_ydsp() {
 		$headtitle = "宝贝街-预定商品";
 		$this -> assign('head_title', $headtitle);
-		$user_sm = session('user_sm');
-		$this -> assign('username', $user_sm['info']['username']);
+		$user = session('user');
+		$this -> assign('username', $user['info']['username']);
 		$this -> display();
 	}
-
+	/*
+	 * 收藏活动
+	 * */
 	public function sm_schd() {
 		$headtitle = "宝贝街-收藏活动";
 		$this -> assign('head_title', $headtitle);
-		$user_sm = session('user_sm');
-		$this -> assign('username', $user_sm['info']['username']);
+		$user = session('user');
+		$this -> assign('username', $user['info']['username']);
 		$this -> display();
 	}
-
+	/*
+	 * 兑换商品
+	 * */
 	public function sm_dhsp() {
 		$headtitle = "宝贝街-兑换商品";
 		$this -> assign('head_title', $headtitle);
-		$user_sm = session('user_sm');
-		$this -> assign('username', $user_sm['info']['username']);
+		$user = session('user');
+		$this -> assign('username', $user['info']['username']);
 		$this -> display();
 	}
-
+	/*
+	 * 活动
+	 * */
 	public function sm_bbhd() {
 		$headtitle = "宝贝街-宝贝活动";
 		$this -> assign('head_title', $headtitle);
-		$user_sm = session('user_sm');
-		$this -> assign('username', $user_sm['info']['username']);
+		$user = session('user');
+		$this -> assign('username', $user['info']['username']);
 		$this -> display();
 	}
-
+	/*
+	 * 试民安全资料认证
+	 * */
 	public function sm_aqzx() {
 		$headtitle = "宝贝街-安全中心";
 		$this -> assign('head_title', $headtitle);
-		$user_sm = session('user_sm');
-		$this -> assign('username', $user_sm['info']['username']);
-		$this -> assign('phone', $user_sm['info']['mobile']);
-		$this -> assign('email', $user_sm['info']['email']);
+		$user = session('user');
+		$this -> assign('username', $user['info']['username']);
+		$this -> assign('phone', $user['info']['mobile']);
+		$this -> assign('email', $user['info']['email']);
 		$this -> display();
 	}
-
+	/*
+	 * 幸福一点
+	 * */
 	public function sm_xfyd() {
 		$headtitle = "宝贝街-幸福一点";
 		$this -> assign('head_title', $headtitle);
-		$user_sm = session('user_sm');
-		$this -> assign('username', $user_sm['info']['username']);
+		$user = session('user');
+		$this -> assign('username', $user['info']['username']);
 		$this -> display();
 	}
-
+	/*
+	 * 勋章管理
+	 * */
 	public function sm_xzgl() {
 		$headtitle = "宝贝街-勋章管理";
 		$this -> assign('head_title', $headtitle);
-		$user_sm = session('user_sm');
-		$this -> assign('username', $user_sm['info']['username']);
+		$user = session('user');
+		$this -> assign('username', $user['info']['username']);
 		$this -> display();
 	}
-
+	/*
+	 * 站内消息
+	 * */
 	public function sm_znxx() {
 		$headtitle = "宝贝街-站内消息";
 		$this -> assign('head_title', $headtitle);
-		$user_sm = session('user_sm');
-		$this -> assign('username', $user_sm['info']['username']);
+		$user = session('user');
+		$this -> assign('username', $user['info']['username']);
 		$this -> display();
 	}
-
+	/*
+	 * 试民添加银行卡信息
+	 * */
 	public function addbank() {
 		$pwd = I('pwd', '');
-		$user_sm = session('user_sm');
-		$uid = $user_sm['info']['id'];
+		$user = session('user');
+		$uid = $user['info']['id'];
 		//think_ucenter_md5($password, UC_AUTH_KEY)
 		$result = apiCall(HomePublicApi::User_GetbyID, array($uid));
 		$password = $result['info']['password'];
 		$pp = think_ucenter_md5($pwd, UC_AUTH_KEY);
 		if ($password == $pp) {
-			$entity = array('uid' => $user_sm['info']['id'], 'bank_name' => I('bank', ''), 'bank_account' => I('bank_num', ''), 'create_time' => time(), 'status' => 0, 'notes' => '', 'cardholder' => I('name', ''), 'province' => I('sheng', ''), 'city' => I('shi', ''), );
-			$map = array('uid' => $user_sm['info']['id'], );
+			$entity = array('uid' => $user['info']['id'], 'bank_name' => I('bank', ''), 'bank_account' => I('bank_num', ''), 'create_time' => time(), 'status' => 0, 'notes' => '', 'cardholder' => I('name', ''), 'province' => I('sheng', ''), 'city' => I('shi', ''), );
+			$map = array('uid' => $user['info']['id'], );
 			$info = apiCall(HomePublicApi::FinBankaccount_Query, array($map));
 			if ($info['info'] == null) {
 				$add = apiCall(HomePublicApi::FinBankaccount_Add, array($entity));
@@ -155,9 +179,11 @@ class UsersmController extends HomeController {
 			$this -> error('登录密码错误！', U('Home/Usersm/sm_bbqz'));
 		}
 	}
-
+	/*
+	 * 试民收货地址管理
+	 * */
 	public function address() {
-		$user = session('user_sm');
+		$user = session('user');
 		if (IS_GET) {
 			$uid = $user['info']['id'];
 			$map = array('uid' => $uid, );
@@ -174,9 +200,11 @@ class UsersmController extends HomeController {
 		}
 
 	}
-
+	/*
+	 * 试民资料添加
+	 * */
 	public function add() {
-		$user = session('user_sm');
+		$user = session('user');
 		$id = $user['info']['id'];
 		$year = I('year', 0);
 		$month = I('month', 0);
@@ -188,8 +216,7 @@ class UsersmController extends HomeController {
 		$shi = I('shi');
 		$qu = I('qu', '');
 		$smm = array('dtree_job' => I('zhiye', ''), 'personal_signature' => I('grqm', ''), 'brief_introduction' => I('grjj', ''), 'address' => $sheng . $shi . $qu . I('address', ''), );
-		//		dump($smm);
-		//		dump($smm);
+		
 		$result = apiCall(HomePublicApi::Member_SaveByID, array($id, $sm));
 		if ($result['status']) {
 			$results = apiCall(HomePublicApi::Bbjmember_SaveByID, array($id, $smm));
@@ -198,10 +225,12 @@ class UsersmController extends HomeController {
 			}
 		}
 	}
-
+	/*
+	 * 试民收货地址修改
+	 * */
 	public function edit() {
 		if (IS_GET) {
-			$user = session('user_sm');
+			$user = session('user');
 			$id = I('id');
 			$map = array('id' => $id, );
 			$uid = $user['info']['id'];
@@ -223,7 +252,9 @@ class UsersmController extends HomeController {
 		}
 
 	}
-
+	/*
+	 * 试民收货地址删除
+	 * */
 	public function del() {
 
 		$id = I('id');

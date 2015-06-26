@@ -19,7 +19,7 @@ class SMMoneyController extends HomeController {
 	 * */
 	 public function deposit(){
 	 	$money=I('money','0.000');
-		$user=session('user_sm');
+		$user=session('user');
 		$entity=array(
 			'uid'=>$user['info']['id'],
 			'defray'=>$money.'.000',

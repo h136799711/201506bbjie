@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="__CDN__/jquery/2.1.1/jquery.min.js"></script>
+	</head>
+	<body>
+		<div style="width: 640px;margin: 0 auto;">
+			<form method="post" action="__SELF__">
+				<input type="text" name="url" value="http://detail.tmall.com/item.htm?spm=a230r.1.14.1.7u82Sp&id=45466776277&cm_id=140105335569ed55e27b&_u=pug2bf62eaa&abbucket=7&sku_properties=5919063:6536025" style="width: 460px;padding: 10px;" />
+				
+				<button type="button" id="J_btn_submit" data-query="0" >提交</button>
+			</form>
+			
+			<div class="getdata">
+				
+			</div>
+			
+		</div>
+		
+		<script type="text/javascript">
+		function showLoading(){
+			$("#J_btn_submit").text("正在提交中....");
+			$("#J_btn_submit").data("query",1);
+		}
+			$(function(){
+				$("#J_btn_submit").click(function(){
+					var query = $("#J_btn_submit").data("query");
+					if(query == 1){
+							alert("正在请求中...");
+							return ;
+					}
+					var param_url = $("input[name='url']").val();
+					
+					$.ajax({
+						cache:false,
+						method:"post",
+						url:"{:U('Tool/Taobao/read',array('r'=>time()))}",
+						data:{url:encodeURI(param_url)},
+						dataType:"json",
+						beforeSend:function(){
+							showLoading();
+						}
+					}).done(function(data){
+						$("#J_btn_submit").text("提交");
+						$("#J_btn_submit").data("query",0);
+						console.log(data);
+						
+						if(data.status){
+							var title = "商品标题:"+data.info.title;
+							var wangwang = "店铺旺旺:"+data.info.wangwang;
+							
+							$(".getdata").html("<p>"+title+"</p><p>"+wangwang+"</p><p><img src='"+data.info.main_img+"' alt='图片' /></p>");
+							
+						}else{
+							$(".getdata").text(data.info);
+//							alert(data.)
+						}
+					})
+				})
+			})
+		</script>
+	</body>
+</html>

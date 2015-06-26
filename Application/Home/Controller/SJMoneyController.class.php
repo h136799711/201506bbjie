@@ -22,25 +22,37 @@ class SJMoneyController extends HomeController {
 		$skzh = I('skzh', '');
 		$jy_num = I('jy_num', '');
 		$jypz = I('jypz', '');
-		$user = session('user_sj');
-		$entity = array('uid' => $user['info']['id'], 'income' => $money . '.000', 'defray' => '0.000', 'create_time' => time(), 'notes' => '用于充值', 'dtree_type' => 1, 'status' => 2, );
+		$user = session('user');
+		$entity = array('uid' => $user['info']['id'], 'income' => '000', 'defray' => $money . '.000', 'create_time' => time(), 'notes' => '用于提现', 'dtree_type' => 3, 'status' => 2, );
 		$result = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entity));
 		if ($result['status']) {
 			$map = array('uid' => $user['info']['id'], );
 			$id = $user['info']['id'];
 			$rets = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
-			$ap = array('coins' => $rets['info'][0]['coins'] + $money, );
+			$ap = array('coins' => $rets['info'][0]['coins'] - $money, );
 			$return = apiCall(HomePublicApi::Bbjmember_Seller_SaveByID, array($id, $ap));
 			if ($return['status']) {
-				$this -> success('你的充值请求已经提交，正在审核...', U('Home/Usersm/sm_bbqz'));
+				$this -> success('你的充值请求已经提交，正在审核...', U('Home/Usersj/sj_zjgl'));
 			}
+			//
+		}
+	}
+	public function recharge(){
+		$user = session('user');
+		$entity = array('uid' => $user['info']['id'], 'income' => I('post.money','').'.000' , 'defray' => '0.000', 'create_time' => time(), 'notes' => I('post.zhanghao','').'流水号：'.I("post.stnum",''), 'dtree_type' => 1, 'status' => 2, );
+		$result = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entity));
+		if ($result['status']) {
+			
+				$this -> success('你的充值请求已经提交，正在审核...', U('Home/Usersj/sj_zjgl'));
+			
 			//
 		}
 	}
 
 	public function vip() {
 		$money = I('money', '');
-		$user = session('user_sj');
+		
+		$user = session('user');
 		$map = array('uid' => $user['info']['id'], );
 		$id = $user['info']['id'];
 		$pwd = I('pwd', '');
@@ -69,15 +81,15 @@ class SJMoneyController extends HomeController {
 
 	public function addbank() {
 		$pwd = I('pwd', '');
-		$user_sj = session('user_sj');
-		$uid = $user_sj['info']['id'];
+		$user = session('user');
+		$uid = $user['info']['id'];
 		//think_ucenter_md5($password, UC_AUTH_KEY)
 		$result = apiCall(HomePublicApi::User_GetbyID, array($uid));
 		$password = $result['info']['password'];
 		$pp = think_ucenter_md5($pwd, UC_AUTH_KEY);
 		if ($password == $pp) {
-			$entity = array('uid' => $user_sj['info']['id'], 'bank_name' => I('bank', ''), 'bank_account' => I('bank_num', ''), 'create_time' => time(), 'status' => 0, 'notes' => '', 'cardholder' => I('name', ''), 'province' => I('sheng', ''), 'city' => I('shi', ''), );
-			$map = array('uid' => $user_sm['info']['id'], );
+			$entity = array('uid' => $user['info']['id'], 'bank_name' => I('bank', ''), 'bank_account' => I('bank_num', ''), 'create_time' => time(), 'status' => 0, 'notes' => '', 'cardholder' => I('name', ''), 'province' => I('sheng', ''), 'city' => I('shi', ''), );
+			$map = array('uid' => $user['info']['id'], );
 			$info = apiCall(HomePublicApi::FinBankaccount_Query, array($map));
 			if ($info['info'] == null) {
 				$add = apiCall(HomePublicApi::FinBankaccount_Add, array($entity));
@@ -90,6 +102,20 @@ class SJMoneyController extends HomeController {
 		} else {
 			$this -> error('登录密码错误！', U('Home/Usersj/sj_zjgl'));
 		}
+	}
+
+	public function upload(){
+	    $upload = new \Think\Upload();// 实例化上传类
+	    $upload->maxSize   =     3145728 ;// 设置附件上传大小
+	    $upload->exts      =     array('jpg', 'gif', 'png', 'jpeg');// 设置附件上传类型
+	    $upload->rootPath  =     '../../Uploads/'; // 设置附件上传根目录
+	    $upload->savePath  =     'JYPZ'; // 设置附件上传（子）目录
+	    // 上传文件 
+	    $info   =   $upload->upload();
+	    if(!$info) {// 上传错误提示错误信息
+	        $this->error($upload->getError());
+	    }else{// 上传成功
+	    }
 	}
 
 }
