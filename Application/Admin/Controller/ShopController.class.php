@@ -41,4 +41,58 @@ class ShopController extends AdminController{
 		}
 	}
 	
+	
+	public function index(){
+		$parent = I('parent',0);
+		$preparent = I('preparent',-1);
+		$level =  I('level',0);
+		$map = array(
+			'parent'=>$parent
+		);
+		$name = I('name','');
+		$params = array(			
+			'parent'=>$parent
+		);
+		
+		if(!empty($name)){
+			$map['name'] = array('like',"%$name%");
+			$params['name'] = $name;
+		}
+		
+		$result = apiCall("Admin/Category/getInfo", array(array('id'=>$parent)));
+		if(!$result['status']){
+			$this->error($result['info']);
+		}
+		$parent_vo = $result['info'];
+		
+		$result = apiCall("Admin/Category/getInfo", array(array('id'=>$preparent)));
+		$prepreparent = "";
+		if($result['status']){
+			$prepreparent = $result['info']['parent'];
+		}
+		
+		
+		$page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));
+		
+		$order = " id asc ";
+		//
+		$result = apiCall("Admin/Category/query",array($map,$page,$order,$params));
+		
+		//
+		if($result['status']){
+			$this->assign('level',$level);
+			$this->assign('parent_vo',$parent_vo);
+			$this->assign('prepreparent',$prepreparent);
+			$this->assign('preparent',$preparent);
+			$this->assign('parent',$parent);
+			$this->assign('name',$name);
+			/*$this->assign('show',$result['info']['show']);
+			$this->assign('list',$result['info']['list']);*/
+			$this->display();
+		}else{
+			LogRecord('INFO:'.$result['info'],'[FILE] '.__FILE__.' [LINE] '.__LINE__);
+			$this->error(L('UNKNOWN_ERR'));
+		}
+	}
+	
 }
