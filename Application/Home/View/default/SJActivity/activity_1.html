@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<!-- saved from url=(0035)http://www.shifujie.net/seller/info -->
+<html lang="zh-cn" dir="ltr">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}.ng-animate-block-transitions{transition:0s all!important;-webkit-transition:0s all!important;}.ng-hide-add-active,.ng-hide-remove{display:block!important;}</style>
+	<meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=EDGE">
+	<title>创建任务</title>
+  <meta http-equiv="cleartype" content="on">
+  <meta content="" name="keywords">
+  <meta content="" name="description">
+  <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="main" src="js/main.js"></script>
+  <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="libs_common" src="js/libs_common.js"></script>
+  <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="person/address" src="js/address.js"></script>
+  <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="person/common" src="js/common.js"></script>
+  	
+  <!--<base href="http://www.shifujie.net/">-->
+  <base href=".">
+  <link rel="stylesheet" href="css/shangjia.css">
+  
+  
+  
+  <link rel="stylesheet" href="css/ystep.css">
+  <link rel="stylesheet" href="css/amazeui.css">
+  <script type="text/javascript" src="js/amazeui.js"></script>
+  <!--[if lt IE 9]>
+  <script src="http://cdn.shifujie.net/public/lib/html5/html5.js"></script>
+  <![endif]-->
+  <script type="text/javascript">
+    var require = {urlArgs: 'v=45'};
+    var SITE_URL = "#";
+    var RES_URL = "#";
+	</script>
+  <script type="text/javascript" src="js/require.min.js"></script>
+  </head>
+<!--[if IEMobile 7]><body class="iem7" ><![endif]-->
+<!--[if lte IE 6]><body class="lt-ie9 lt-ie8 lt-ie7" ><![endif]-->
+<!--[if (IE 7)&(!IEMobile)]><body class="lt-ie9 lt-ie8" ><![endif]-->
+<!--[if IE 8]><body class="lt-ie9" ><![endif]-->
+<!--[if (gte IE 9)|(gt IEMobile 7)]><!--><body><!--<![endif]-->
+<div class="seller_header_wrap">
+<div class="seller_header clearfix" style="background: url(img/header_main_bg.jpg);">
+  <a class="logo" href="#" style=" background: url(img/logo.png) no-repeat 20px;"></a>
+  <div class="pull-left gzt btn-group">
+    <a class="shifu btn" href="#">试福</a>
+    <a class="taofu btn" href="#">淘福</a>
+  <a class="dropdown-toggle btn" data-toggle="dropdown" href="javascript:;">　账户关联　 <b class="caret"></b></a><ul role="menu" class="dropdown-menu pull-right"><li role="menuitem"><a tabindex="-1" href="#">关联店铺管理&gt;&gt;</a></li></ul>  </div>
+  <a style="margin-top:57px; margin-left:20px;" class="text-info pull-left" href="#">试民淘宝号确认</a>
+  <div class="topmenu">
+    <ul class="clearfix">
+      <li><div>您好，<span class="text-link">usernames</span>
+          <a href="#">[退出]</a></div>
+      </li>
+      <li class="shangjia"><a href="#">商家中心</a></li>
+      <li><a href="#">回到首页</a></li>
+            <li><a href="#">站内消息</a></li>
+      <li class="bangzhu"><a href="#">帮助中心</a></li>
+    </ul>
+  </div>
+</div>
+</div>
+<div></div>
+	<div class="seller_main clearfix" controller="seller/common">
+  <div class="seller_content_wrap">
+    <div class="seller_content" style="padding-top: 10px;">
+            
+<div class="content">
+<h1>创建任务</h1>
+
+  <div class="row">
+    <div class="span10">
+<!--
+
+ 	<br><br><br><br><br>
+  ystep容器 
+  <div class="ystep1"></div>
+  
+  <br><br><br><br><br>
+  
+  <div class="ystep2"></div>
+  
+  <br><br><br><br><br>
+  
+  <div class="ystep3"></div>
+  
+  <br><br><br><br><br>
+	
+-->  
+  <div class="ystep4"></div>
+  
+  <!-- 引入jquery -->
+  <script src="js/jquery.min.js"></script>
+  <!-- 引入ystep插件 -->
+  <script src="js/ystep.js"></script>
+  <script>
+    //根据jQuery选择器找到需要加载ystep的容器
+    //loadStep 方法可以初始化ystep
+    /*$(".ystep1").loadStep({
+      //ystep的外观大小
+      //可选值：small,large
+      size: "small",
+      //ystep配色方案
+      //可选值：green,blue
+      color: "green",
+      //ystep中包含的步骤
+      steps: [{
+        //步骤名称
+        title: "发起",
+        //步骤内容(鼠标移动到本步骤节点时，会提示该内容)
+        content: "实名用户/公益组织发起项目"
+      },{
+        title: "审核",
+        content: "乐捐平台工作人员审核项目"
+      },{
+        title: "募款",
+        content: "乐捐项目上线接受公众募款"
+      },{
+        title: "执行",
+        content: "项目执行者线下开展救护行动"
+      },{
+        title: "结项",
+        content: "项目执行者公示善款使用报告"
+      }]
+    });
+
+    $(".ystep2").loadStep({
+      size: "large",
+      color: "green",
+      steps: [{
+        title: "发起",
+        content: "实名用户/公益组织发起项目"
+      },{
+        title: "审核",
+        content: "乐捐平台工作人员审核项目"
+      },{
+        title: "募款",
+        content: "乐捐项目上线接受公众募款"
+      },{
+        title: "执行",
+        content: "项目执行者线下开展救护行动"
+      },{
+        title: "结项",
+        content: "项目执行者公示善款使用报告"
+      }]
+    });
+    
+    $(".ystep3").loadStep({
+      size: "small",
+      color: "blue",
+      steps: [{
+        title: "发起",
+        content: "实名用户/公益组织发起项目"
+      },{
+        title: "审核",
+        content: "乐捐平台工作人员审核项目"
+      },{
+        title: "募款",
+        content: "乐捐项目上线接受公众募款"
+      },{
+        title: "执行",
+        content: "项目执行者线下开展救护行动"
+      },{
+        title: "结项",
+        content: "项目执行者公示善款使用报告"
+      }]
+    });
+    */
+    $(".ystep4").loadStep({
+      size: "large",
+      color: "blue",
+      steps: [{
+        title: "发起",
+        content: "获取淘宝链接"
+      },{
+        title: "设置",
+        content: "详细设置"
+      },{
+        title: "募款",
+        content: "乐捐项目上线接受公众募款"
+      },{
+        title: "执行",
+        content: "项目执行者线下开展救护行动"
+      },{
+        title: "结项",
+        content: "项目执行者公示善款使用报告"
+      }]
+    });
+    
+    /*$(".ystep1").setStep(2);
+    $(".ystep2").setStep(5);
+    $(".ystep3").setStep(3);*/
+    $(".ystep4").setStep(2);
+    
+  </script>
+	  <div style="padding-top: 50px;">
+	  	商品链接：<input style="border-bottom-left-radius: 5px;border-top-left-radius: 5px; border: 1px solid #ccc;"/><input type="button" disabled="disabled" value="从淘宝读取信息" style="border-bottom-right-radius: 5px;border-top-right-radius: 5px;border: 1px solid #ccc;"/><br  />
+	  </div>
+  
+  
+  		<table class="am-table" style="margin-top: 20px;">
+		    <thead>
+		        <tr style="background: #EAEAEA;">
+		        					
+		            <th>宝贝名称</th>
+		            <th>商品规格</th>
+		            <th>商品价格</th>
+		            <th>件数</th>
+		            <th>操作</th>
+		        </tr>
+		    </thead>
+		    <tbody>
+		        <!--
+		        	
+		        
+		        <tr>
+		            <td>Amaze UI</td>
+		            <td>http://amazeui.org</td>
+		            <td>2012-10-01</td>
+		            <td>2012-10-01</td>
+		            <td>2012-10-01</td>
+		        </tr>
+		        -->
+		    </tbody>
+		</table>
+		<center>
+			<font size="-2" color="red">任务最多可以添加3个链接</font>
+			<br />
+	  		<button type="button" class="am-btn am-btn-secondary" style="margin-top: 5px;">下一步</button>
+  		</center>
+    </div>
+ 
+ 
+  </div>
+</div>    </div>
+  </div>
+  <div class="siderbar">
+  
+  
+  
+  
+  
+  <dl class="open">
+      <dt class="s_zhanghao">
+        <span>活动准备</span>
+      </dt>
+
+<!--      <dd>
+        <a class="" href=""><span>商品管理</span></a>
+      </dd>-->
+
+      <dd>
+        <a class="" href="#"><span>搜索管理</span></a>
+      </dd>
+
+           <dd>
+        <a class="" href="#"><span>评语库</span></a>
+      </dd>
+          </dl>
+
+    <dl class="open">
+      <dt class="s_task">
+        <span>活动管理</span>
+      </dt>
+        <dd>
+        <a class="" href="#"><span>淘宝活动</span></a>
+      </dd>
+      <dd>
+        <a class="active" href="#"><span>创建任务</span></a>
+      </dd>
+       <dd>
+         <a class=" " href="#"><span>收藏活动</span></a>
+        </dd>
+      
+    </dl>
+  
+
+  
+  <dl class="open">
+    <dt class="s_vip">
+      <span>账号管理</span>
+    </dt>
+    <dd>
+      <a class="" href="zhxx.html"><span>账号信息</span></a>
+    </dd>
+    <dd>
+      <a class="" href="zhaq.html"><span>账户安全</span></a>
+    </dd>
+    <dd>
+      <a class="" href="xgmm.html"><span>修改密码</span></a>
+    </dd>
+  </dl>
+
+  <dl>
+    <dt>
+      <a class="" href="znx.html">站内消息</a>
+    </dt>
+    <dt class="s_money">
+      <a class="" href="zjgl.html">资金管理</a>
+    </dt>
+    <dt>
+      <a class="" href="viptd.html">VIP通道</a>
+    </dt>
+    <dt>
+      <a class="" href="sfkt.html">试福课堂</a>
+    </dt>
+  </dl>
+
+  
+  <div class="adorn_bottom"></div>
+</div>
+</div>
+  <script type="text/javascript">
+  var ready_do = true; $(document).trigger('ready_do');
+</script></body></html>

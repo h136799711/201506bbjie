@@ -408,16 +408,12 @@ class IndexController extends HomeController {
 	 * 验证用户名是否存在
 	 * */
 	 public function checkname(){
-	 	$name = I("name",''); 
-		if(isset($name)){ 
-			$map=array(
-				'username'=>$name,
-			);
-			$results = apiCall(HomePublicApi::User_GetInfo,array($map));
-			dump($results);
+	 	$username = I("name",''); 
+		if(isset($username)){ 
+			$results = apiCall(HomePublicApi::User_CheckUserName,array($username));
 		}	
 //
-		$this->ajaxReturn($select,'json');
+		$this->ajaxReturn($results['info'],'json');
 	 }
 	
 	/*

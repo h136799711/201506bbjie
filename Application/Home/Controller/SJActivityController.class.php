@@ -32,6 +32,27 @@ class SJActivityController extends HomeController {
 		$this->assign('username',$user['info']['username']);
 		$this->display();
 	 }
+	  public function activity_1(){
+	  	$headtitle="宝贝街-创建任务";
+		$this->assign('head_title',$headtitle);
+		$user=session('user');
+		$this->assign('username',$user['info']['username']);
+		$this->display();
+	  }
+	  public function activity_2(){
+	  	$headtitle="宝贝街-创建任务";
+		$this->assign('head_title',$headtitle);
+		$user=session('user');
+		$this->assign('username',$user['info']['username']);
+		$this->display();
+	  }
+	  public function activity_3(){
+	  	$headtitle="宝贝街-创建任务";
+		$this->assign('head_title',$headtitle);
+		$user=session('user');
+		$this->assign('username',$user['info']['username']);
+		$this->display();
+	  }
 //	public function () {
 //		$money = I('money', '0.000');
 //		$skzh = I('skzh', '');
