@@ -9,7 +9,7 @@ return array(
      
 	),	
 	'DEFAULT_THEME'=>'default',
-	'SESSION_PREFIX'=>'Shop_',
+	//'SESSION_PREFIX'=>'Shop_',
      
      //token，TODO: 一套系统对应一个公众号的商城
     'SHOP_TOKEN'=>'',

@@ -11,23 +11,26 @@
 </block>
 
 <block name="area_body">
-
-	<include file='partials/header' />
+	{:W('Page/head')}
 		<div id="div_lunbo">
 			<div class="div_info">
 				<div class="div_info1">
 					<ul>
-						<li>
-							<h3><a href="#">日用百货</a></h3>
-							<div>
-								<a href="">居家必备</a>
-								<a href="">家纺</a>
-								<a href="">厨房必备</a>
-								<a href="">美妆必备</a>
-								<a href="">洗护用品</a>
-								<a href="">配饰</a>
-							</div>
-						</li>
+						<volist name="categoryParent" id="vo">
+							<li>
+								<h3><a href="#">{$vo.name}</a></h3>
+								<div>
+									<volist name="categoryChildrens" id="v">
+										<if condition="$vo['id'] eq $v['parent']">
+											<a href="">
+												{$v.name}
+											</a>&nbsp;&nbsp;&nbsp;
+										</if>
+									</volist>
+								</div>
+							</li>
+						</volist>
+						<!--
 						<li>
 							<h3><a href="#">鞋子箱包</a></h3>
 
@@ -73,6 +76,7 @@
 								<a href="">配饰</a>
 							</div>
 						</li>
+						-->
 					</ul>
 
 				</div>

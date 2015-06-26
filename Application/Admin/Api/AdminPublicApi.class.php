@@ -24,4 +24,7 @@ class AdminPublicApi {
 	 */
 	const Datatree_QueryNoPaging="Admin/Datatree/queryNoPaging";
 	const Datatree_Query="Admin/Datatree/query";
+	
+	
+	const Category_Query="Admin/Category/queryNoPaging";
 }

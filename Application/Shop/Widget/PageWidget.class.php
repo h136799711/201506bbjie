@@ -19,9 +19,7 @@ class PageWidget  extends Controller {
 	 * 顶部
 	 */
 	public function head() {
-		echo $this->display("partials:header");
+		echo $this->fetch("partials:header");
 	}
-
-	
 
 }

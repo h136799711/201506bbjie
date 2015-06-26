@@ -101,13 +101,24 @@ class IndexController extends ShopController{
 			$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
 			$this->assign('zxgg',$result['info'][0]);
 			
+			$map=array();
+			$map["parent"]=0;
+			$result=apiCall(AdminPublicApi::Category_Query, array($map));
+			$this->assign('categoryParent',$result['info']);
 			
+			$map="parent!=0";
+			$result=apiCall(AdminPublicApi::Category_Query, array($map));
+			$this->assign('categoryChildrens',$result['info']);
+			
+			//dump($result);
+			$this->assign('zxgg',$result['info'][0]);
+			//dump($result);
 			$headtitle="宝贝街-首页";
 			$this->assign('head_title',$headtitle);
 			$users=session('user');
-			
+			//dump($users);
 			$this->assign('indexTitle',0);
-			$this->assign('username',session('user')['info']['username']);
+			$this->assign('username',$users['info']['username']);
 			$this->display();
 		}
 	}
