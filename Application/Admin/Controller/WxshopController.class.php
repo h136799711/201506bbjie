@@ -134,6 +134,7 @@ class WxshopController extends AdminController{
 				'notes'=>I('post.notes',''),
 				'weixin_number'=>json_encode($weixin),
 				'service_phone'=>$service_phone,
+				'exp'=>0,
 			);
 //			dump($entity);
 //			exit();

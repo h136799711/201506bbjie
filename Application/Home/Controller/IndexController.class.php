@@ -404,6 +404,21 @@ class IndexController extends HomeController {
 		session('[destroy]'); // 删除session
 		$this->display('login');
 	}
+	/*
+	 * 验证用户名是否存在
+	 * */
+	 public function checkname(){
+	 	$name = I("name",''); 
+		if(isset($name)){ 
+			$map=array(
+				'username'=>$name,
+			);
+			$results = apiCall(HomePublicApi::User_GetInfo,array($map));
+			dump($results);
+		}	
+//
+		$this->ajaxReturn($select,'json');
+	 }
 	
 	/*
 	  * 试民首页
