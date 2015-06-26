@@ -447,12 +447,12 @@ class WxshopProductController extends AdminController {
 			
 			$map = array('parent'=>0);
 			$result = apiCall("Admin/Category/queryNoPaging", array($map));
-			
+			//dump($result);
 			$storeid = I('get.storeid', 0);
 			
-			if ($storeid == 0) {
+			/*if ($storeid == 0) {
 				$this -> error("缺少商铺ID参数");
-			}
+			}*/
 
 			$this -> assign("storeid", $storeid);
 			if ($result['status']) {

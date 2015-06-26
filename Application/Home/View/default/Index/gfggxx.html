@@ -58,7 +58,7 @@
 							
 							<else/>
 							<volist name="ggTitle" id="vo">
-								<li style="font-size: 12px;padding: 5px;border-bottom: 1px solid #E0E2E1;padding-left: 20px;"><font class="am-icon-chevron-circle-right" style="margin-right: 5px;"></font><a href="{:U('Home/Index/gfgg',array('post_category'=>$vo['hidden_value']))}" class="a_li">{$vo.name}</a></li>
+								<li style="font-size: 12px;padding: 5px;border-bottom: 1px solid #E0E2E1;padding-left: 20px;"><font class="am-icon-chevron-circle-right" style="margin-right: 5px;"></font><a href="{:U('Home/Index/gfgg',array('post_category'=>$vo['id']))}" class="a_li">{$vo.name}</a></li>
 							</volist>
 							</empty>
 			
