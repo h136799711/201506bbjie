@@ -23,13 +23,13 @@
 			<div class="topmenu">
 				<ul class="clearfix">
 					<li>
-						<div>您好，<span class="text-link">usernames</span>
-							<a href="#">[退出]</a>
+						<div>您好，<span class="text-link">{$username}</span>
+							<a href="{:U('Home/Usersj/exits')}">[退出]</a>
 						</div>
 					</li>
-					<li class="shangjia"><a href="#">商家中心</a>
+					<li class="shangjia"><a href="{:U('Home/Usersj/index')}">商家中心</a>
 					</li>
-					<li><a href="#">回到首页</a>
+					<li><a href="{:U('Home/Index/index')}">回到首页</a>
 					</li>
 					<li><a href="#">站内消息</a>
 					</li>
@@ -86,7 +86,7 @@
 							</ul>
 						</div>
 
-						<div id="task-grid" class="grid-view" controller="extend/gridview,person/renwu" data-options="{&#39;ajaxUpdate&#39;:[&#39;task-grid&#39;],&#39;ajaxVar&#39;:&#39;ajax&#39;,&#39;pagerClass&#39;:&#39;pagination text-center&#39;,&#39;loadingClass&#39;:&#39;grid-view-loading&#39;,&#39;filterClass&#39;:&#39;filters&#39;,&#39;tableClass&#39;:&#39;items table table-seller&#39;,&#39;selectableRows&#39;:0,&#39;enableHistory&#39;:false,&#39;updateSelector&#39;:&#39;{page}, {sort}&#39;,&#39;filterSelector&#39;:&#39;{filter}&#39;,&#39;pageVar&#39;:&#39;RenWu_page&#39;,&#39;arg_id&#39;:&#39;RenWu&#39;}">
+						<div id="task-grid" class="grid-view" controller="extend/gridview,person/renwu" >
 							<table class="items table table-seller">
 								<thead>
 									<tr class="filters">
@@ -168,7 +168,7 @@
 										<td colspan="3">
 											<img width="75px" height="75px" title="商品已下架" class="gray" id="gray17297" src="__IMG__/TB13xCbFVXXXXc_XFXXXXXXXXXX_!!0-item_pic.jpg_220x220.jpg" alt="儿童拉丁舞蹈服装幼儿女童练功服黑色少儿连体流苏舞蹈裙2015新款">
 										</td>
-										<td colspan="2"><a class="text-info" target="_blank" href="#">预览任务书</a>
+										<td colspan="2"><a class="text-info" target="_blank" href="{:U('Home/SJActivity/rws')}">预览任务书</a>
 										</td>
 										<td colspan="3">
 											<div>
@@ -261,7 +261,7 @@
 				<dt class="s_task">
 		        <span>活动管理</span>
 		      </dt>
-				<dd><a class="active" href="#"><span>淘宝活动</span></a></dd>
+				<dd><a class="active" href="{:U('Home/SJActivity/sj_tbhd')}"><span>淘宝活动</span></a></dd>
 				<dd><a class=" " href="#"><span>收藏活动</span></a></dd>
 			</dl>
 			<dl class="open">

@@ -112,13 +112,30 @@
 			var d = 0;
 			var name = /^[a-zA-Z][a-zA-Z0-9]{5,12}$/;
 			$('#name').blur(function() {
-				if (name.test($('#name').val())) {
-					d = 1;
-					$(this).parent().find("span").html("<font size='-2' color='green'>正确！</font>");
-				} else {
-					d = 0;
-					$(this).parent().find("span").html("<font size='-2' color='red'>字母开头的数字组合！</font>");
-				}
+				$.getJSON("{:U('Home/Index/checkname')}",{name:$("#name").val()},function(json){ 
+	//					alert(json);
+						var cs_id = $("#class"); 
+						$("option",cs_id).remove(); //清空原有的选项，也可使用 ds_id.empty(); 
+						$.each(json,function(index,ret){ 
+							if(ret==1){
+								d = 0;
+								var option = "<font size='-2' color='red'>用户已存在！</font>"; 
+							}else{
+								d = 1;
+								var option = "<font size='-2' color='green'>可用！</font>"; 
+							}
+							
+							cs_id.append(option); 
+						}); 
+				}); 
+//				if (name.test($('#name').val())) {
+//					d = 1;
+//					$(this).parent().find("span").html("<font size='-2' color='green'>正确！</font>");
+//				} else {
+//					d = 0;
+//					$(this).parent().find("span").html("<font size='-2' color='red'>字母开头的数字组合！</font>");
+//				}
+				
 			});
 			var a = 0;
 			var b = 0;
@@ -176,6 +193,11 @@
 					return false;
 				}
 			})
-		})
+			
+		
+			
+		
+		
+	})
 	</SCRIPT>
 </block>

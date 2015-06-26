@@ -12,7 +12,7 @@ use Home\Api\HomePublicApi;
 /*
  * 试民操作
  */
-class UsersmController extends HomeController {
+class UsersmController extends CheckLoginController {
 	/*
 	 * 试民资料
 	 * */
@@ -200,6 +200,8 @@ class UsersmController extends HomeController {
 		}
 
 	}
+	
+	 
 	/*
 	 * 试民资料添加
 	 * */

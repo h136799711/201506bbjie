@@ -12,7 +12,7 @@ use Home\Api\HomePublicApi;
 /*
  * 官网首页
  */
-class UsersjController extends HomeController {
+class UsersjController extends CheckLoginController {
 	/*
 	 * 商家中心
 	 * TODO:访问验证session
