@@ -37,6 +37,10 @@ class SJMoneyController extends HomeController {
 			//
 		}
 	}
+	/**
+	 * 充值
+	 * 
+	 */
 	public function recharge(){
 		$user = session('user');
 		$entity = array('uid' => $user['info']['id'], 'income' => I('post.money','').'.000' , 'defray' => '0.000', 'create_time' => time(), 'notes' => I('post.zhanghao','').'流水号：'.I("post.stnum",''), 'dtree_type' => 1, 'status' => 2, );
@@ -48,7 +52,10 @@ class SJMoneyController extends HomeController {
 			//
 		}
 	}
-
+	/**
+	 * 开通vip
+	 * 
+	 */
 	public function vip() {
 		$money = I('money', '');
 		
@@ -78,7 +85,10 @@ class SJMoneyController extends HomeController {
 		}
 
 	}
-
+	/**
+	 * 绑定银行卡
+	 * 
+	 */
 	public function addbank() {
 		$pwd = I('pwd', '');
 		$user = session('user');
@@ -103,7 +113,10 @@ class SJMoneyController extends HomeController {
 			$this -> error('登录密码错误！', U('Home/Usersj/sj_zjgl'));
 		}
 	}
-
+	/**
+	 * 
+	 * 
+	 */
 	public function upload(){
 	    $upload = new \Think\Upload();// 实例化上传类
 	    $upload->maxSize   =     3145728 ;// 设置附件上传大小

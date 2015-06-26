@@ -63,6 +63,7 @@ class HomePublicApi{
 	const User_GetUser='Uclient/User/getInfo';
 	const User_EditPwd='Uclient/User/updateInfo';
 	const User_SaveByID='Home/UcenterMember/saveByID';
+		const User_EditPwd='Uclient/User/checkUsername';
 	/**
 	 * 
 	 * 

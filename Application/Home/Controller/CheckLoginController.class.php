@@ -20,16 +20,20 @@ class CheckLoginController extends  HomeController {
 		//TODO: 检测用户是否登录
 		
 		if($this->is_login()){
-//			define("HOME_UID",session(""))
-			
+			define("USER",session("user"));
 		}else{
 			//TODO: 跳转到登录页面
+			$this->error('请先登录',U('Home/Index/login'));
 		}
 		
 	}
 	
 	private function is_login(){
-		
+		if(session('user')==null || session('user')==''){
+			return false;
+		}else{
+			return true;
+		}
 		
 		
 	}
