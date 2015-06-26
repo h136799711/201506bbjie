@@ -8,7 +8,7 @@
 namespace Admin\Controller;
 
 class CategoryController extends AdminController{
-	
+		
 	public function index(){
 		$parent = I('parent',0);
 		$preparent = I('preparent',-1);
