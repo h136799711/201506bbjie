@@ -1,0 +1,55 @@
+*{ font-family: "微软雅黑";}
+h1,h2,h3,h4,h5,h6{ margin: 0; padding: 0;}
+a{color: black;}
+.div_all{ width: 100%; background:#f8f1f4; height:auto;}
+.div_top1{ width: 100%; background: #363636; height: 34px; position: fixed;}
+	.div_top1 .div_gonggao{color:#FFF; float:left; padding-left:  25px; margin-left: 200px; line-height: 34px; font-size: 12px;}
+	.div_top1 .div_zhongxin{color:#FFF;float:right; margin-right: 200px;  line-height: 34px; font-size: 12px;}
+	.div_top1 .div_zhongxin a{color: white;}
+	.div_top1  a:link {text-decoration: none;}		/* 未访问的链接 */
+	.div_top1  a:visited {text-decoration:underline; }	/* 已访问的链接 */
+	.div_top1  a:hover { text-decoration: underline;}	/* 鼠标移动到链接上 */
+	.div_top1  a:active {text-decoration: underline;}	/* 选定的链接 */
+.div_top2{ width: 100%; background: #C52B47; height:72px; position: fixed;  margin-top: 34px;}
+	.div_top2 a{ text-decoration: none;color: #d9e1ec; width: 100%; height: 100%;}
+.div_left{ width:200px; border-right: 1px solid #f4ccdc; height:850px; float: left; position: fixed; margin-top: 106px; background: #f9eff3;}
+	
+	.div_left  a{font-family: "Microsoft YaHei",Arial,Verdana,Helvetica,sans-serif; text-decoration: none;}		/* 未访问的链接 */
+	.div_left  a:hover {color:#f92d5e;}	/* 鼠标移动到链接上 */
+	
+	.div_left .div_znxx{width: 100%; text-align: center; height: 30px; margin-top: 5px; line-height: 30px; font-weight: 300;}
+	
+	.div_left .dl_menu{ width: 100%;}
+	.div_left .dl_menu .dt_menu{ background:#C52B47; text-align:  center; padding: 5px; color: white;}
+	.div_left .dl_menu .dd_menu{ margin-left:0;text-align: center;font-size:14px ; margin-top: 10px;}
+.div_right{ height:1000px;float: left; width:1200px; margin-left: 200px; margin-top: 106px;}
+	.div_right .div_minTitle{border-bottom: 1px solid #F4CCDC; width: 100%; height: 40px;}
+	.div_right .div_minTitle h3{line-height: 40px; font-size: 13px;  padding-left: 26px;font-family: "Microsoft YaHei",Arial,Verdana,Helvetica,sans-serif;}
+	.div_right  .div_minContent .div_minSet{background: white; width: 1000px; height: 35px;border-top-left-radius:9px; border-top-right-radius:9px;  border: 1px solid #ccc; border-bottom: none; margin-top: 20px;}
+		.div_right  .div_minContent .div_minSet ul,li{ list-style: none;  margin: 0; padding: 0;}
+		.div_right  .div_minContent .div_minSet li{float: left; font-size: 12px; line-height: 35px;}
+		.div_right  .div_minContent .div_minSet li.li_first{background:url(img/setting-ok.png) no-repeat 3px; padding-left: 30px; margin-left:10px ; color: #8ACA1D; margin-right: 20px;}
+		.div_right  .div_minContent .div_minSet li.li_title{font-size: 14px; margin-left: 20px; margin-right: 10px;}
+		.div_right  .div_minContent .div_minSet li.li_last{float: right; margin-right: 20px;}
+		.div_right  .div_minContent .div_minSet li.li_last a{text-decoration: none;}
+	.div_right  .div_minContent .div_minSetInfo{background: white; width: 1000px; height: 80px; border-bottom-left-radius: 9px; border-bottom-right-radius:9px;  border: 1px solid #ccc;border-top: 1px dashed #ccc; line-height: 80px; text-align: center;font-family: "Microsoft YaHei",Arial,Verdana,Helvetica,sans-serif;}
+	.div_right .div_minContent .div_minDl{ margin-top: 50px;}
+		.div_right .div_minContent .div_minDl dl{ float:  left;  width: 130px;  margin-left: 20px;}
+		.div_right .div_minContent .div_minDl dl dt{ font-size: 14px; font-weight: bold;margin-bottom: 10px; }
+		.div_right .div_minContent .div_minDl dl dd{ margin: 0;font-size: 14px; padding-top:5px; padding-bottom: 5px; border-bottom: 1px solid #848383;color: #848383;}
+		.div_right .div_minContent .div_minDl dl dd.dd_last{ font-size: 12px;border-bottom:none;}
+		.div_right .div_minContent table td{ padding: 8px;font-family: "Microsoft YaHei",Arial,Verdana,Helvetica,sans-serif;}
+		.div_right .div_minContent .div_tishi{width: 1100px; height:150px;background: #FCF8E3; border: 1px solid #FBEED5; margin-top: 60px; border-radius: 3px;}
+		.div_right .div_minContent .div_tishi ul li{font-size: 12px; color:red;  margin-top: 10px;}
+		.div_right .div_minContent .div_minInfo{background: white; width: 1020px;border-bottom-left-radius: 9px; border-bottom-right-radius:9px;  border: 1px solid #ccc;font-size: 14px; }
+		.div_right .div_minContent .div_minInfo table{ margin-left: 80px;color:#848383}
+		.div_right .div_minContent .div_minInfo table td.td_title{ text-align: right;}
+		.div_right .div_minContent .div_minInfo table td select{ color: black; border-radius: 3px; width: 110px; height:30px; border-color: #ccc;}
+		/*.div_right .div_minContent .div_minDl dl{ float:  left;}*/
+		
+	.div_right .div_minTitleAnQuan{border-bottom: 1px solid #F4CCDC; width: 100%; height:80px;}
+	.div_right .div_minTitleAnQuan h3{line-height: 40px; font-size: 13px;  padding-left: 26px;font-family: "Microsoft YaHei",Arial,Verdana,Helvetica,sans-serif;}
+.selected{background: #CA4756; cursor: pointer;}
+.sed{color: #FF698E;}
+
+.a_button{ padding: 5px 10px; border-radius: 3px; background: #C52B47;  color: white;text-decoration: none; font-size: 14px; }

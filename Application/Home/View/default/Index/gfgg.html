@@ -21,9 +21,9 @@
 					<a href="{:U('Home/Index/gfggxx',array('id'=>$zxgg['id']))}" style="color: white;">{$zxgg.post_title}</a>
 				</div>
 				<empty name="username">
-					<div style="color:#FFF;float:right">您好，欢迎来到宝贝街！请[<a href="{:U('Home/Index/login')}">登录</a>][<a href="{:U('Home/Index/register_sj')}">免费注册</a>]|帮助中心</div>
+					<div style="color:#FFF;float:right">您好，欢迎来到宝贝街！请[<a href="{:U('Home/Index/login')}">登录</a>][<a href="{:U('Home/Index/register_sj')}">免费注册</a>]|<a href="{:U('Home/Index/bzzx')}">帮助中心</a></div>
 					<else/>
-					<div style="color:#FFF;float:right"><a href="{:U('Home/Index/sm_manager',array('username'=>$username))}">{$username}</a>,您好，欢迎来到宝贝街！[<a href="{:U('Home/Index/register_sm')}">免费注册</a>]|帮助中心</div>
+					<div style="color:#FFF;float:right"><a href="{:U('Home/Index/sm_manager',array('username'=>$username))}">{$username}</a>,您好，欢迎来到宝贝街！[<a href="{:U('Home/Index/register_sm')}">免费注册</a>]|<a href="{:U('Home/Index/bzzx')}">帮助中心</a></div>
 				</empty>
 			</div>
 		</div>
@@ -37,11 +37,11 @@
 		<div id="div_title">
 			<div class="div_info">
 				<ul>
-					<li onclick="changePageTitle('{:U('Home/Index/index')}')">宝贝广场</li>
-					<li class="li_checkedtitle" onclick="changePageTitle('{:U('Home/Index/flzc')}')">福利专场</li>
-					<li onclick="changePageTitle('{:U('Home/Index/xfyd')}')">幸福一点</li>
-					<li onclick="changePageTitle('{:U('Home/Index/sjh')}')">试江湖</li>
-					<li onclick="changePageTitle('{:U('Home/Index/chg')}')">茶话馆</li>
+					<li onclick="changePageTitle('{:U('Shop/Index/index')}')">宝贝广场</li>
+					<li class="li_checkedtitle" onclick="changePageTitle('{:U('Shop/Index/flzc')}')">福利专场</li>
+					<li onclick="changePageTitle('{:U('Shop/Index/xfyd')}')">幸福一点</li>
+					<li onclick="changePageTitle('{:U('Shop/Index/sjh')}')">试江湖</li>
+					<li onclick="changePageTitle('{:U('Shop/Index/chg')}')">茶话馆</li>
 					<li onclick="changePageTitle('{:U('Home/Index/bzzx')}')" style="border-right: none;">帮助中心</li>
 				</ul>
 			</div>
@@ -58,7 +58,7 @@
 							
 							<else/>
 							<volist name="ggTitle" id="vo">
-								<li style="font-size: 12px;padding: 5px;border-bottom: 1px solid #E0E2E1;padding-left: 20px;"><font class="am-icon-chevron-circle-right" style="margin-right: 5px;"></font><a href="{:U('Home/Index/gfgg',array('post_category'=>$vo['hidden_value']))}" class="a_li">{$vo.name}</a></li>
+								<li style="font-size: 12px;padding: 5px;border-bottom: 1px solid #E0E2E1;padding-left: 20px;"><font class="am-icon-chevron-circle-right" style="margin-right: 5px;"></font><a href="{:U('Home/Index/gfgg',array('post_category'=>$vo['id']))}" class="a_li">{$vo.name}</a></li>
 							</volist>
 							</empty>
 					</ul>

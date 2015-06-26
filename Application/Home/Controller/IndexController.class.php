@@ -9,6 +9,7 @@ namespace Home\Controller;
 use Think\Controller;
 use Think\Storage;
 use Home\Api\HomePublicApi;
+use Admin\Api\AdminPublicApi;
 /*
  * 官网首页
  */
@@ -35,7 +36,7 @@ class IndexController extends HomeController {
 	  * */
 	public function index(){
 		$order = " post_modified desc ";
-		$result = apiCall('Admin/Post/queryNoPaging',array($map, $order, $fields));
+		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
 		$this->assign('zxgg',$result['info'][0]);
 		
 		
@@ -52,7 +53,7 @@ class IndexController extends HomeController {
 	  * */
 	public function flzc(){
 		$order = " post_modified desc ";
-		$result = apiCall(HomePublicApi::Post_QueryNoPaging,array($map, $order, $fields));
+		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
 		$this->assign('zxgg',$result['info'][0]);
 		
 		$headtitle="宝贝街-福品专场";
@@ -66,7 +67,7 @@ class IndexController extends HomeController {
 	  * */
 	public function xfyd(){
 		$order = " post_modified desc ";
-		$result = apiCall(HomePublicApi::Post_QueryNoPaging,array($map, $order, $fields));
+		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
 		$this->assign('zxgg',$result['info'][0]);
 		
 		$headtitle="宝贝街-幸福一点";
@@ -80,7 +81,7 @@ class IndexController extends HomeController {
 	  * */
 	public function sjh(){
 		$order = " post_modified desc ";
-		$result = apiCall(HomePublicApi::Post_QueryNoPaging,array($map, $order, $fields));
+		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
 		$this->assign('zxgg',$result['info'][0]);
 		
 		
@@ -95,7 +96,7 @@ class IndexController extends HomeController {
 	  * */
 	public function chg(){
 		$order = " post_modified desc ";
-		$result = apiCall(HomePublicApi::Post_QueryNoPaging,array($map, $order, $fields));
+		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
 		$this->assign('zxgg',$result['info'][0]);
 		
 		
@@ -122,7 +123,7 @@ class IndexController extends HomeController {
 	public function spxq(){
 		//查询最新通知
 		$order = " post_modified desc ";
-		$result = apiCall(HomePublicApi::Post_QueryNoPaging,array($map, $order, $fields));
+		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
 		$this->assign('zxgg',$result['info'][0]);
 		
 		
@@ -138,32 +139,30 @@ class IndexController extends HomeController {
 	public function gfgg(){
 		//查询最新通知
 		$order = " post_modified desc ";
-		$result = apiCall(HomePublicApi::Post_QueryNoPaging,array($map, $order, $fields));
+		$map=array();
+		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
 		$this->assign('zxgg',$result['info'][0]);
 		
 		//查询公告标题
-		$map1['level']=1;
-		$result1=apiCall(HomePublicApi::Datatree_Query,array($map1,$page1,$order1,$params1));
-		$this->assign('ggTitle',$result1['info']['list']);
-		
-		/*foreach($result1['info']['list'] as $a=>$b){
-			echo $a."==".$b[id]."<br>";
-		}*/
-	
-		
+		$map['parentid']=21;
+		$result=apiCall(AdminPublicApi::Datatree_Query,array($map));
+		$this->assign('ggTitle',$result['info']['list']);
+		//dump($result['info']['list']);
 		$post_category=I('post_category');
+		$map=array();
+		$map['post_category']=$post_category;
+		$page=array();
+		$page = array('curpage' => I('get.p', 0), 'size' => 2);
+		$result=apiCall(AdminPublicApi::Post_Query,array($map,$page));
 		
-		$map2['post_category']=$post_category;
-		$page2 = array('curpage' => I('get.p', 0), 'size' => 2);
-		$result2=apiCall(HomePublicApi::Post_Query,array($map2,$page2,$order2,$params2));
 		
+		$this->assign('list',$result['info']['list']);
+		$this->assign('show',$result['info']['show']);
 		
-		$this->assign('list',$result2['info']['list']);
-		$this->assign('show',$result2['info']['show']);
-		
-		$map3['hidden_value']=$post_category;
-		$result3=apiCall(HomePublicApi::Post_QueryNoPaging,array($map3, $order3, $fields3));
-		$this->assign('ggct',$result3['info'][0]);
+		$map=array();
+		$map['id']=$post_category;
+		$result=apiCall(AdminPublicApi::Post_QueryNoPaging,array($map));
+		$this->assign('ggct',$result['info'][0]);
 		
 		
 		
@@ -177,8 +176,9 @@ class IndexController extends HomeController {
 	  * 官方公告信息
 	  * */
 	public function gfggxx(){
+		$map=array();
 		$order = " post_modified desc ";
-		$result = apiCall(HomePublicApi::Post_QueryNoPaging,array($map, $order, $fields));
+		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
 		$this->assign('zxgg',$result['info'][0]);
 	
 	
@@ -186,21 +186,22 @@ class IndexController extends HomeController {
 		$this->assign('head_title',$headtitle);
 
 		//查询公告标题
-		$map1['level']=1;
-		$result1=apiCall(HomePublicApi::Datatree_Query,array($map1,$page1,$order1,$params1));
-		$this->assign('ggTitle',$result1['info']['list']);
+		$map=array();
+		$map['parentid']=21;
+		$result=apiCall(AdminPublicApi::Datatree_Query,array($map));
+		$this->assign('ggTitle',$result['info']['list']);
 		
 		//根据id查询公告文章
-		$id=I('id');
-		$map['id']=$id;
-		$result = apiCall(HomePublicApi::Post_QueryNoPaging,array($map, $order, $fields));
+		$map=array();
+		$map['id']=I('id');
+		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map));
 		
 		$this->assign('gg',$result['info'][0]);
 		
-		
-		$map2['hidden_value']=$result['info'][0]['post_category'];
-		$result2=apiCall(HomePublicApi::Datatree_QueryNoPaging,array($map2, $order2, $fields2));
-		$this->assign('ggct',$result2['info'][0]);
+		$map=array();
+		$map['id']=$result['info'][0]['post_category'];
+		$result=apiCall(AdminPublicApi::Datatree_QueryNoPaging,array($map));
+		$this->assign('ggct',$result['info'][0]);
 		
 		
 		$users=session('user');

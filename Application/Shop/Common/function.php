@@ -155,3 +155,14 @@ function getTaobaoOrderStatus($status) {
 			return "未知";
 	}
 }
+
+/**
+ * 是否使用移动设备访问
+ * @return true:是 false:否
+ */
+function isMobile(){
+	
+	vendor("MobileDetect.Mobile_Detect");
+	$mobileDetect = new \Mobile_Detect();
+	return $mobileDetect->isMobile();
+}

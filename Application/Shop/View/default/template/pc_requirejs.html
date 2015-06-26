@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>{$meta_title}-{:C('WEBSITE_TITLE')}</title>
+		<meta name="keywords" content="{$seo.keywords|default=" "}" />
+		<meta name="description" content="{$seo.description|default=" "}" />
+		<meta name="author" content="{$cfg.owner|default=" ITBOYE "}" />
+	    <meta content="yes" name="apple-mobile-web-app-capable" />
+	    <meta content="yes" name="apple-touch-fullscreen" />
+	    <meta content="telephone=no,email=no" name="format-detection" />
+	    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+		<block name="area_header">
+			<!--顶部区域 -->
+		</block>
+	</head>
+	
+	<body class="theme-default">
+		
+		<block name="area_body">
+			<!--内容区域 -->
+		</block>
+		
+		<script type="text/javascript" data-main="" src="__PUBLIC__/amdcdn/require/2.1.18/require.js"></script>
+		<script type="text/javascript">
+			requirejs.config({
+				
+			  // 别名配置
+			  alias: {
+			    'jquery': '__CDN__/jquery/1.11.0/jquery.min'
+			  },
+			
+			  // 路径配置
+			  paths: [
+			  	window.$ || window.jQuery ? '' :'jquery',
+			  ],
+//			  },
+			
+			  // 变量配置
+			  vars: {
+			    'locale': 'zh-cn'
+			  },
+			
+			  // 映射配置
+			  map: [
+                [ /^(\.(?:css|js))(?:.*)$/i, '$1?__APP_VERSION__' ]
+			  ],
+			
+			  // 预加载项
+			  preload: [
+			  ],
+			
+			  // 调试模式
+			  debug: true,
+			
+			  // Sea.js 的基础路径
+			  base: '__PUBLIC__/Seajs/app.home/',
+				
+			  // 文件编码
+			  charset: 'utf-8'
+			  
+			});
+		</script>
+		
+		<block name="area_footer">
+			<!--底部区域 -->
+		</block>
+	</body>
+
+</html>
