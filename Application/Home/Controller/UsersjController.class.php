@@ -58,7 +58,7 @@ class UsersjController extends CheckLoginController {
 			'store_url'=>I('store_url',''),
 			'address'=>$sheng.$shi.$qu.$address,
 		);
-//		dump($entity);
+//		dump($id);dump($entity);
 		$result=apiCall(HomePublicApi::Bbjmember_Seller_SaveByID, array($id,$entity));
 		if($result['status']){
 			$this->success('修改成功',U('Home/Usersj/sj_zhxx'));

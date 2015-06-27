@@ -429,6 +429,7 @@ class IndexController extends HomeController {
 		$map="uid=".$id;					
 		$group=apiCall(HomePublicApi::Group_QueryNpPage, array($map));
 		$groupid=$group['info'][0]['group_id'];
+		
 		if($groupid==15){
 			$user=apiCall(HomePublicApi::User_GetUser, array($id));
 			$this->assign('username',$user['info']['username']);
@@ -438,6 +439,10 @@ class IndexController extends HomeController {
 			$user=apiCall(HomePublicApi::User_GetUser, array($id));
 			$this->assign('username',$user['info']['username']);
 			$this->assign('phone',$user['info']['mobile']);
+			$order = " post_modified desc ";
+			$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
+			$this->assign('zxgg',$result['info'][0]);
+//			dump($result);
 			$this->display();
 		}
 		

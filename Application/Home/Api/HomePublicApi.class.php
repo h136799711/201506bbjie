@@ -23,7 +23,7 @@ class HomePublicApi{
 	/**
 	 * 商家
 	 */
-	const Bbjmember_Seller_SaveByID='Home/BbjmemberSeller/saveByIDd';
+	const Bbjmember_Seller_SaveByID='Home/BbjmemberSeller/saveByID';
 	const Bbjmember_Seller_Add='Home/BbjmemberSeller/add';
 	const Bbjmember_Seller_Query='Home/BbjmemberSeller/queryNoPaging';
 	const Bbjmember_Seller_GetInfo='Home/BbjmemberSeller/getInfo';
@@ -70,6 +70,15 @@ class HomePublicApi{
 	const Address_Del='Home/Address/delete';
 	const Address_SaveByID='Home/Address/saveByID';
 	const Address_Query='Home/Address/queryNoPaging';
+	
+	/*
+	 * 商品
+	 * */
+    const Product_QueryAll='Home/TaskProduct/query';
+	const Product_Query='Home/TaskProduct/queryNoPaging';
+	const Product_SaveByID='Home/TaskProduct/saveByID';
+	const Product_Add='Home/TaskProduct/add';
+	const Product_Del='Home/TaskProduct/delete';
 	
 }
 
