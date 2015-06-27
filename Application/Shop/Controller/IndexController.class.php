@@ -111,7 +111,32 @@ class IndexController extends ShopController{
 			$map="parent!=0";
 			$result=apiCall(AdminPublicApi::Category_Query, array($map));
 			$this->assign('categoryChildrens',$result['info']);
+			//公告
+			$map = array();
+			//$map = array('uid'=>34);
+			//dump(UID);
+			$map['position'] = 18;
+		
+			$page = array('curpage' => I('get.p', 0), 'size' => 4);
+			$order = " createtime desc ";
+			//
+			$result = apiCall('Admin/Banners/queryWithPosition', array($map, $page, $order, $params));
+			//
+			$this -> assign('lunboList', $result['info']['list']);
 			
+			
+			$map = array();
+			//$map = array('uid'=>34);
+			//dump(UID);
+			$map['position'] = 20;
+			$page=array();
+			$page = array('curpage' => I('get.p', 0), 'size' => 3);
+			$order = " createtime desc ";
+			//
+			$result = apiCall('Admin/Banners/queryWithPosition', array($map, $page, $order, $params));
+			//
+			$this -> assign('hotTypeList', $result['info']['list']);
+		
 		
 			$headtitle="宝贝街-首页";
 			$this->assign('head_title',$headtitle);

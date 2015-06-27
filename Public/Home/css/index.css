@@ -20,7 +20,7 @@ input{border:1px solid #ccc; list-style:none;}
 	#div_title div ul{float:left}
 	#div_title div ul li{ padding-left:20px;padding-right: 20px; float: left; padding-top: 0; padding-bottom: 0; font-weight:bold; cursor:pointer; font-size: 14px; border-right:1px solid #ccc ;}
 	/*#div_title div ul li.li_fenge{ color:#ccc}*/
-#div_lunbo{ background-color:#E1E4F5; height:422px;}
+#div_lunbo{  height:422px;}
 	#div_lunbo .div_info{ border:1px solid #ccc; height:100% ;margin-top: 0px;}
 	#div_lunbo .div_info .div_info1{ height:100%; width:300px; float:left; background: #FFFFFF; }
 	#div_lunbo .div_info .div_info1 ul li{ clear: left; margin-left:30px; border-bottom: 1px dotted #CCCCCC; }
