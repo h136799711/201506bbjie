@@ -15,8 +15,9 @@ class BannersController extends  AdminController{
 		
 		
 		$map = array();
-		$map = array('uid'=>UID);
-		$map['position'] = array("in","18,20");
+		//$map = array('uid'=>34);
+		//dump(UID);
+		//$map['position'] = array("in","18,20");
 		
 		$page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));
 		$order = " createtime desc ";
