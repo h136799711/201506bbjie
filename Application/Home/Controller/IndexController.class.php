@@ -161,7 +161,8 @@ class IndexController extends HomeController {
 		
 		$map=array();
 		$map['id']=$post_category;
-		$result=apiCall(AdminPublicApi::Post_QueryNoPaging,array($map));
+		$result=apiCall(AdminPublicApi::Datatree_QueryNoPaging,array($map));
+		//dump($post_category);
 		$this->assign('ggct',$result['info'][0]);
 		
 		

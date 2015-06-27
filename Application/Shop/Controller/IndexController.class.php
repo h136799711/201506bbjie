@@ -101,6 +101,8 @@ class IndexController extends ShopController{
 			$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
 			$this->assign('zxgg',$result['info'][0]);
 			
+			
+			//dump($result['info'][0]);
 			$map=array();
 			$map["parent"]=0;
 			$result=apiCall(AdminPublicApi::Category_Query, array($map));
@@ -110,14 +112,11 @@ class IndexController extends ShopController{
 			$result=apiCall(AdminPublicApi::Category_Query, array($map));
 			$this->assign('categoryChildrens',$result['info']);
 			
-			//dump($result);
-			$this->assign('zxgg',$result['info'][0]);
-			//dump($result);
+		
 			$headtitle="宝贝街-首页";
 			$this->assign('head_title',$headtitle);
-			$users=session('user');
-			//dump($users);
 			$this->assign('indexTitle',0);
+			$users=$_SESSION['Home']['user'];
 			$this->assign('username',$users['info']['username']);
 			$this->display();
 		}
@@ -206,8 +205,8 @@ class IndexController extends ShopController{
 		
 		$headtitle="宝贝街-福品专场";
 		$this->assign('head_title',$headtitle);
-		$users=session('user');
-		$this->assign('username',session('user')['info']['username']);
+		$users=$_SESSION["Home"]['user'];
+		$this->assign('username',$users['info']['username']);
 		$this->display();
 	}
 	/*
@@ -221,8 +220,8 @@ class IndexController extends ShopController{
 		
 		$headtitle="宝贝街-幸福一点";
 		$this->assign('head_title',$headtitle);
-		$users=session('user');
-		$this->assign('username',session('user')['info']['username']);
+		$users=$_SESSION["Home"]['user'];
+		$this->assign('username',$users['info']['username']);
 		$this->display();
 	}
 	/*
@@ -238,8 +237,8 @@ class IndexController extends ShopController{
 		
 		$headtitle="宝贝街-试江湖";
 		$this->assign('head_title',$headtitle);
-		$users=session('user');
-		$this->assign('username',session('user')['info']['username']);
+		$users=$_SESSION["Home"]['user'];
+		$this->assign('username',$users['info']['username']);
 		$this->display();
 	}
 	/*
@@ -255,8 +254,8 @@ class IndexController extends ShopController{
 		
 		$headtitle="宝贝街-茶话馆";
 		$this->assign('head_title',$headtitle);
-		$users=session('user');
-		$this->assign('username',session('user')['info']['username']);
+		$users=$_SESSION["Home"]['user'];
+		$this->assign('username',$users['info']['username']);
 		$this->display();
 	}
 
@@ -272,8 +271,8 @@ class IndexController extends ShopController{
 		
 		$headtitle="宝贝街-商品详情";
 		$this->assign('head_title',$headtitle);
-		$users=session('user');
-		$this->assign('username',session('user')['info']['username']);
+		$users=$_SESSION["Home"]['user'];
+		$this->assign('username',$users['info']['username']);
 		$this->display();
 	}
 	

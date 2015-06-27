@@ -20,7 +20,7 @@
 				<empty name="username">
 					<div style="color:#FFF;float:right">您好，欢迎来到宝贝街！请[<a href="{:U('Home/Index/login')}">登录</a>][<a href="{:U('Home/Index/register_sj')}">免费注册</a>]|<a href="{:U('Home/Index/bzzx')}">帮助中心</a></div>
 					<else/>
-					<div style="color:#FFF;float:right"><a href="{:U('Home/Index/sm_manager',array('username'=>$username))}">{$username}</a>,您好，欢迎来到宝贝街！[<a href="{:U('Home/Index/register_sm')}">免费注册</a>]|<a href="{:U('Home/Index/bzzx')}">帮助中心</a></div>
+					<div style="color:#FFF;float:right"><a href="{:U('Home/Index/sm_manager',array('username'=>$username))}">{$username}</a>,您好，欢迎来到宝贝街！[<a href="{:U('Home/Index/exits')}">注销</a>]|<a href="{:U('Home/Index/bzzx')}">帮助中心</a></div>
 				</empty>
 			</div>
 		</div>
