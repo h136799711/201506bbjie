@@ -91,8 +91,8 @@ $(function(){
 
 
 function toUrl(url){
-	alert("跳到地址："+url);
-	//window.location.href=url;
+	//alert("跳到地址："+url);
+	window.location.href=url;
 }
 
 var i=0;
