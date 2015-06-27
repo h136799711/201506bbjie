@@ -15,8 +15,9 @@ class BannersController extends  AdminController{
 		
 		
 		$map = array();
-		$map = array('uid'=>UID);
-		$map['position'] = array("in","18,20");
+		//$map = array('uid'=>34);
+		//dump(UID);
+		//$map['position'] = array("in","18,20");
 		
 		$page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));
 		$order = " createtime desc ";
@@ -42,6 +43,8 @@ class BannersController extends  AdminController{
 //			$url = 
 			$notes = I('post.notes','');
 			$position = I('post.position',18);
+			$bgcolor=I('post.bgcolor','');
+			//var_dump($bgcolor);
 			if(empty($position)){
 				$this->error("配置错误！");
 			}
@@ -53,6 +56,7 @@ class BannersController extends  AdminController{
 				'notes'=>$notes,
 				'img'=>I('img',''),
 				'url'=>I('url',''),
+				'bgcolor'=>$bgcolor,
 				'starttime'=>0,
 				'endtime'=>0,
 				'noticetime'=>0,
@@ -84,6 +88,7 @@ class BannersController extends  AdminController{
 			$title = I('post.title','');
 //			$url = 
 			$notes = I('post.notes','');
+			$bgcolor=I('post.bgcolor','');
 			$position = I('post.position',18);
 			if(empty($position)){
 				$this->error("配置错误！");
@@ -92,6 +97,7 @@ class BannersController extends  AdminController{
 				'position'=>$position,
 				'title'=>$title,
 				'notes'=>$notes,
+				'bgcolor'=>$bgcolor,
 				'img'=>I('post.img',''),
 				'url'=>I('post.url',''),
 			);

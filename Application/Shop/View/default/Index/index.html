@@ -30,71 +30,24 @@
 								</div>
 							</li>
 						</volist>
-						<!--
-						<li>
-							<h3><a href="#">鞋子箱包</a></h3>
-
-							<div>
-								<a href="">居家必备</a>
-								<a href="">家纺</a>
-								<a href="">厨房必备</a>
-								<a href="">美妆必备</a>
-								<a href="">洗护用品</a>
-								<a href="">配饰</a>
-							</div>
-						</li>
-						<li>
-							<h3><a href="#">母婴用品</a></h3>
-							<div>
-								<a href="">居家必备</a>
-								<a href="">家纺</a>
-								<a href="">厨房必备</a>
-								<a href="">美妆必备</a>
-								<a href="">洗护用品</a>
-								<a href="">配饰</a>
-							</div>
-						</li>
-						<li>
-							<h3><a href="#">数码家电</a></h3>
-							<div>
-								<a href="">居家必备</a>
-								<a href="">家纺</a>
-								<a href="">厨房必备</a>
-								<a href="">美妆必备</a>
-								<a href="">洗护用品</a>
-								<a href="">配饰</a>
-							</div>
-						</li>
-						<li>
-							<h3><a href="#">办公问题</a></h3>
-							<div>
-								<a href="">居家必备</a>
-								<a href="">家纺</a>
-								<a href="">厨房必备</a>
-								<a href="">美妆必备</a>
-								<a href="">洗护用品</a>
-								<a href="">配饰</a>
-							</div>
-						</li>
-						-->
+						
 					</ul>
 
 				</div>
 				<div class="div_image">
-					<div class="div_minlunbo" style="background: url(__IMG__/lunbo1.jpg);width: 100%; height: 100%;">
-
-					</div>
-
-					<div class="div_minlunbo" style="background: url(__IMG__/lunbo2.jpg);width: 100%; height: 100%; display: none;">
-
-					</div>
-					<div class="div_minlunbo" style="background: url(__IMG__/lunbo3.jpg);width: 100%; height: 100%;display: none;">
-
-					</div>
-
-					<div class="div_minlunbo" style="background: url(__IMG__/lunbo4.jpg);width: 100%; height: 100%;display: none;">
-
-					</div>
+					<volist name="lunboList" id="l" key="k">
+			
+						<div class="div_minlunbo" onclick="toUrl('{$l.url}')"
+						<if condition="$k neq 1">
+							style="display:none"
+						</if>
+						>
+						
+						<img src="{$l.img}" width="700" height="420"/>
+						</div>
+						<input type="hidden" name="bgcolor" value="{$l.bgcolor}" />
+					</volist>
+					
 
 				</div>
 				<ul class="ul_lunbo">
@@ -105,21 +58,13 @@
 				</ul>
 				<div class="div_info2">
 					<ul class="ul_image">
-						<li>
-							<a href="">
-								<img src="__PUBLIC__/Shop/img/tu1.jpg" height="140" />
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<img src="__PUBLIC__/Shop/img/tu2.jpg" height="140" />
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<img src="__PUBLIC__/Shop/img/tu3.jpg" height="140" />
-							</a>
-						</li>
+						<volist name="hotTypeList" id="htl">
+							<li>
+								<a href="javascript:toUrl('{$htl.url}')">
+									<img src="{$htl.img}" height="140" />
+								</a>
+							</li>
+						</volist>
 					</ul>
 
 				</div>
