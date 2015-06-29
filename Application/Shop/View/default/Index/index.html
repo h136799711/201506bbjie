@@ -1,7 +1,7 @@
 <extend name="template/base_index" />
 <block name="area_header">
-	<script type="text/javascript" src="__PUBLIC__/Home/js/index.js"></script>
-	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/index.css" />
+	<script type="text/javascript" src="__PUBLIC__/Shop/js/index.js"></script>
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Shop/css/index.css" />
 	<style type="text/css">
 		* {
 			font-family: "微软雅黑" !important;
@@ -77,103 +77,19 @@
 						<h3>上新预告</h3>
 						<a href="">&nbsp;</a>
 					</div>
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Shop/img/tupian1.jpg" width="216" />
-
-		                </dt>
-						<dd style="border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Shop/img/tupian2.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Shop/img/tupian1.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Shop/img/tupian2.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Shop/img/tupian1.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Shop/img/tupian2.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Shop/img/tupian1.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Shop/img/tupian2.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Shop/img/tupian1.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Shop/img/tupian2.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
+					<volist name="newProductList" id="rpl">
+						<dl class="dl_info">
+							<dt>
+	
+			                <img src="{$rpl.main_img}" width="216" height="245"/>
+	
+			                </dt>
+							<dd style=" border-bottom:1px dotted #666">{$rpl.name}</dd>
+							<dd style="color:#FF5899;"><span style="background: url(__PUBLIC__/Shop/img/fubi.png) no-repeat 0 1px; padding-left:17px;" >{:number_format($rpl['price']/100,0)}</span> </dd>
+						</dl>
+						
+						
+					</volist>
 
 				</div>
 
@@ -182,104 +98,21 @@
 						<h3>推荐福品</h3>
 						<a href="">&nbsp;</a>
 					</div>
-					<dl class="dl_info">
+					
+					<volist name="recommendProductList" id="npl">
+					<dl class="dl_info" onclick="toDetail({$npl.id})">
 						<dt>
 
-		                <img src="__PUBLIC__/Shop/img/tupian1.jpg" width="216" />
+		                <img src="{$npl.main_img}" width="216" height="245"/>
 
 		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
+						<dd style=" border-bottom:1px dotted #666">{$npl.name}</dd>
+						<dd style="color:#FF5899;"><span style="background: url(__PUBLIC__/Shop/img/fubi.png) no-repeat 0 1px; padding-left:17px;" >{:number_format($npl['price']/100,0)}</span> </dd>
 					</dl>
-
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Shop/img/tupian2.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Shop/img/tupian1.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Shop/img/tupian2.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Shop/img/tupian1.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Shop/img/tupian2.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Shop/img/tupian1.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Shop/img/tupian2.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Shop/img/tupian1.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Shop/img/tupian2.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-
+						
+						
+					</volist>
+				
 				</div>
 
 				<div class="div_minInfo">

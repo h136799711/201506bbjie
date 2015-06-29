@@ -300,9 +300,9 @@ class WxshopProductController extends AdminController {
 			if(empty($productid)){
 				$this->error("缺少商品ID");
 			}
-			if(empty($storeid)){
+			/*if(empty($storeid)){
 				$this->error("缺少店铺ID");
-			}
+			}*/
 			$map['product_id'] = $productid;
 			$result = apiCall("Admin/Wxproduct/getInfo",array($map));
 			if($result['status']){
@@ -315,7 +315,7 @@ class WxshopProductController extends AdminController {
 			
 			$this->assign("detail",json_decode(htmlspecialchars_decode($detail),JSON_UNESCAPED_UNICODE));
 			$this->assign("productid",$productid);
-			$this->assign("storeid",$storeid);
+			//$this->assign("storeid",$storeid);
 			$this->assign("id",$id);
 			$this->display();
 			
@@ -345,7 +345,7 @@ class WxshopProductController extends AdminController {
 	 * 首页/商品管理页面
 	 */
 	public function index() {
-		//$onshelf = I('onshelf', 0);
+		$onshelf = I('onshelf', 0);
 		
 		/*$storeid = I('storeid', 0, "intval");
 		if (empty($storeid)) {
@@ -362,8 +362,9 @@ class WxshopProductController extends AdminController {
 			$map['name'] = array('like', '%'.$name.'%');
 			$params['name'] = $name;
 		}
-		$map['onshelf'] = $onshelf;
+	
 		$map['storeid'] = $storeid;*/
+		$map['onshelf'] = $onshelf;
 		$page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));
 		$order = " createtime desc ";
 		//

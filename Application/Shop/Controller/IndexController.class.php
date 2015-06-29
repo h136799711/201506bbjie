@@ -125,9 +125,9 @@ class IndexController extends ShopController{
 			$this -> assign('lunboList', $result['info']['list']);
 			
 			
+			
+			
 			$map = array();
-			//$map = array('uid'=>34);
-			//dump(UID);
 			$map['position'] = 20;
 			$page=array();
 			$page = array('curpage' => I('get.p', 0), 'size' => 3);
@@ -136,6 +136,28 @@ class IndexController extends ShopController{
 			$result = apiCall('Admin/Banners/queryWithPosition', array($map, $page, $order, $params));
 			//
 			$this -> assign('hotTypeList', $result['info']['list']);
+			
+			$map = array();
+			$map = array(
+				'g_id'=>34,
+			);
+			$page=array();
+			$page = array('curpage' => I('get.p', 0), 'size' => 10);
+			$order = " createtime desc ";
+		//
+			$result = apiCall('Admin/Wxproduct/queryJoin', array($map, $page, $order, $params));
+			
+			
+			//recommend
+			$this -> assign('newProductList', $result['info']['list']); //上新预告
+			
+			
+			$map = array(
+				'g_id'=>35,
+			);
+			$result = apiCall('Admin/Wxproduct/queryJoin', array($map, $page, $order, $params));
+			$this -> assign('recommendProductList', $result['info']['list']); //推荐福品
+			//dump($result);
 		
 		
 			$headtitle="宝贝街-首页";
@@ -293,6 +315,23 @@ class IndexController extends ShopController{
 		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
 		$this->assign('zxgg',$result['info'][0]);
 		
+		
+		$id=I("id");
+		//dump($id);
+		$map['id']=$id;
+		$result = apiCall('Admin/Wxproduct/queryNoPaging',array($map));
+		$detail=$result['info'][0];
+		//dump($detail['img']);
+		$detail['img']=explode(',',$detail['img']); //分割字符串成数组
+		array_pop($detail['img']);//删除最后一个空元素
+		//dump($detail);
+		$this->assign('detail',$detail);
+		
+		//dump($id);
+		$map=array();
+		$map['product_id']=44;
+		$result = apiCall('Admin/WxproductSku/queryNoPaging',array($map));
+		//dump($result);
 		
 		$headtitle="宝贝街-商品详情";
 		$this->assign('head_title',$headtitle);
