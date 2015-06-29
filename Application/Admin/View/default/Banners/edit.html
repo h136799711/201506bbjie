@@ -66,7 +66,7 @@
 							</div>							
 							<!-- 图片选择DOM结构 -->
 							
-							<div class="help-block">(上传图片,尺寸：640像素*200像素)</div>
+							<div class="help-block">(上传图片,尺寸：700像素*420像素)</div>
 						</div>
 					</div>
 					<div class="form-group">
@@ -74,6 +74,13 @@
 						<div class="col-md-10 col-lg-10">
 							<input name="url" class="form-control" type="text" value="{$vo.url}" />							
 							<div class="help-block">(点击图片跳转链接，完整的链接地址)</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="inputtitle" class="col-md-2 col-lg-2 control-label">背景色<br>(搭配图片)</label>
+						<div class="col-md-10 col-lg-10">
+							<input name="bgcolor" style="width: 50px; height: 50px;" type="color" value="{$vo.bgcolor}"/>							
+							<!--<div class="help-block"></div>-->
 						</div>
 					</div>
 					<div class="form-group">

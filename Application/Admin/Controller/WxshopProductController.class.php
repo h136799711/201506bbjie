@@ -345,17 +345,17 @@ class WxshopProductController extends AdminController {
 	 * 首页/商品管理页面
 	 */
 	public function index() {
-		$onshelf = I('onshelf', 0);
+		//$onshelf = I('onshelf', 0);
 		
-		$storeid = I('storeid', 0, "intval");
+		/*$storeid = I('storeid', 0, "intval");
 		if (empty($storeid)) {
 			$this -> error("缺少店铺ID参数！");
-		}
+		}*/
 		//get.startdatetime
 		//分页时带参数get参数
-		$params = array('onshelf' => $onshelf,'storeid'=>$storeid);
+		//$params = array('onshelf' => $onshelf);
 //		dump($params);
-		$name = I('post.name', '');
+		/*$name = I('post.name', '');
 		
 		$map = array();
 		if (!empty($name)) {
@@ -363,7 +363,7 @@ class WxshopProductController extends AdminController {
 			$params['name'] = $name;
 		}
 		$map['onshelf'] = $onshelf;
-		$map['storeid'] = $storeid;
+		$map['storeid'] = $storeid;*/
 		$page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));
 		$order = " createtime desc ";
 		//
@@ -473,9 +473,9 @@ class WxshopProductController extends AdminController {
 			$base_attr = $this -> getBaseAttr();
 			$storeid = I('storeid', 0);
 
-			if ($storeid == 0) {
+			/*if ($storeid == 0) {
 				$this -> error("缺少商铺ID参数");
-			}
+			}*/
 
 			$attrext = array('isPostFree' => 1, 'isHasReceipt' => I('post.ishasreceipt', 0), 'isUnderGuaranty' => I('post.isunderguaranty', 0), 'isSupportReplace' => I('post.issupportreplace', 0), 'location' => array('country' => '中国', 'province' => '四川省', 'city' => '内江市', 'address' => '威远县'));
 			$sku_list = $this -> getSKUList();

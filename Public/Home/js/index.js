@@ -1,4 +1,6 @@
 // JavaScript Document
+
+var color=[];
 $(function(){
 	
 	$("#div_main dl.dl_info").mouseover(function(){
@@ -77,9 +79,22 @@ $(function(){
 		$(this).removeClass("font_bzjlc_hdzb");
 	})*/
 	
+	$("input[name='bgcolor']").each(function(i){
+		if(i==0){
+			$("#div_lunbo").css("background",$(this).val());
+		}
+		color.push($(this).val());
+	})
+	
+	
 })
 
-var color=['#E1E4F5','#E34D35','#ECA76C','#00A0AA']
+
+function toUrl(url){
+	//alert("跳到地址："+url);
+	window.location.href=url;
+}
+
 var i=0;
 function changeBgColor(){
 	i=i+1;
@@ -88,7 +103,7 @@ function changeBgColor(){
 	}
 	$("#div_lunbo  ul.ul_lunbo li").eq(i).addClass("current").siblings().removeClass("current");
 	$("#div_lunbo").css('background',color[i]);	
-    $("#div_lunbo .div_image .div_minlunbo:eq("+i+")").css("display","block").siblings().css("display","none")
+    $("#div_lunbo .div_image .div_minlunbo:eq("+i+")").css("display","block").siblings().css("display","none");
 	
 	
 }

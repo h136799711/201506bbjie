@@ -13,6 +13,25 @@
 			width: 320px;			
 		}
 	</style>
+	
+	<script type="text/javascript">
+		
+	function	changeType(type){
+		if(type.value==18){
+			$("#div_color").show();
+			$("#div_help").html('(上传图片,尺寸：700像素*420像素)');
+			return;
+		}
+		
+		if(type.value==20){
+			$("#div_color").hide();
+			$("#div_help").html('(上传图片,尺寸：200像素*140像素)');
+			return;	
+		}
+		
+	}
+		
+	</script>
 </block>
 
 <block name="area_body">
@@ -38,9 +57,9 @@
 					<div class="form-group">
 						<label for="inputtitle" class="col-md-2 col-lg-2 control-label">所在类别或位置</label>
 						<div class="col-md-10 col-lg-10">
-							<select name="position" class="form-control input-normal">
+							<select name="position" class="form-control input-normal" onchange="changeType(this)">
 								<option value="18" >首页-滚动大图</option>
-								<option value="20" >首页-推荐店铺</option>
+								<option value="20" >首页-推荐类目</option>
 							</select>
 							<div class="help-block">(选择类别或位置)</div>
 						</div>
@@ -60,7 +79,7 @@
 							</div>							
 							<!-- 图片选择DOM结构 -->
 							
-							<div class="help-block">(上传图片,尺寸：640像素*200像素)</div>
+							<div id="div_help" class="help-block">(上传图片,尺寸：700像素*420像素)</div>
 						</div>
 					</div>
 					<div class="form-group">
@@ -68,6 +87,13 @@
 						<div class="col-md-10 col-lg-10">
 							<input name="url" class="form-control" type="text" />							
 							<div class="help-block">(点击图片跳转链接，完整的链接地址)</div>
+						</div>
+					</div>
+					<div id="div_color" class="form-group">
+						<label for="inputtitle" class="col-md-2 col-lg-2 control-label">背景色<br>(搭配图片)</label>
+						<div class="col-md-10 col-lg-10">
+							<input name="bgcolor" style="width: 50px; height: 50px;" type="color" />							
+							<!--<div class="help-block"></div>-->
 						</div>
 					</div>
 					<div class="form-group">

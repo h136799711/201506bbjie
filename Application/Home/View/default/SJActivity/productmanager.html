@@ -1,0 +1,437 @@
+﻿<extend name="template/base_index" />
+<block name="area_header">
+	<link rel="stylesheet" href="__CSS__/shangjia2.css">
+	<style type="text/css">.show img {
+	width: 80px;
+	height: 80px;
+	margin-right: 5px;
+}
+.show {
+	padding: 10px;
+	width: 80%;
+	font-size: 12px;
+}</style>
+</block>
+<block name="area_body">
+	<include file='Widget/sjtop' />
+	<div class="seller_main clearfix" controller="seller/common">
+		<div class="seller_content_wrap">
+			<div class="seller_content" style="padding-top: 10px;">
+				<div class="content">
+					<!--录入商品窗口-->
+					<div class="am-modal am-modal-no-btn" tabindex="-1" id="doc-modal-1">
+						<div class="am-modal-dialog" style="border-radius: 5px;">
+							<div class="am-modal-hd" style="border-bottom: 1px solid #ccc; text-align: left;font-size:18px;">
+								添加任务商品
+								<a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>
+									&times;
+								</a>
+							</div>
+							<div class="am-modal-bd">
+								<form action="{:U('Home/SJActivity/addproduct')}" method="post">
+								<input type="hidden" name="alww" class="alww" value="">
+								<input type="hidden" name="img" class="img" value="">
+								<input type="hidden" name="title" class="title" value="">
+								<table border="" cellspacing="" cellpadding="" style="margin-top: 10px;">
+									<tr>
+										<td width="20%" style="text-align: right; padding-right: 5px; padding-top: 10px;">
+											商品链接
+										</td>
+										<td style="padding-top: 10px;">
+											<input id="url" name="url" style="border-bottom-left-radius:5px ;border-top-left-radius:5px ;border: 1px solid #ccc;" />
+											<input type="button" id="read" style="color:#666; border-bottom-right-radius:5px ;border-top-right-radius:5px ; border: 1px solid #ccc;" value="从淘宝读取信息" />
+										</td>
+									</tr>
+									<tr>
+										<td style="text-align: right;padding-right: 5px;padding-top: 10px;">
+										</td>
+										<td style="font-size: 12px;padding-top: 10px;">
+											供客服审核使用,不会展示给试民
+										</td>
+									</tr>
+									<tr>
+										<td style="text-align: right;padding-right: 5px;padding-top: 10px;">
+										</td>
+										<td style="font-size: 12px;padding-top: 10px;">
+											<div class="show" style="text-align: left;">
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td style="text-align: right;padding-right: 5px;padding-top: 10px;">
+											价格*
+										</td>
+										<td style="padding-top: 10px;">
+											<input name="price" style="border-bottom-left-radius:5px ;border-top-left-radius:5px ;border: 1px solid #ccc;" />
+											<input type="button" name="price" value="元" disabled="disabled" style="border-bottom-right-radius:5px ;border-top-right-radius:5px ;border: 1px solid #ccc;" />
+										</td>
+									</tr>
+									<tr>
+										<td style="padding-top: 10px;">
+										</td>
+										<td style="font-size: 12px;padding-top: 10px;">
+											我的商品有较大的价格跨度?我想更精准的分配任务？
+											<a href="#">
+												点此进入高级设置
+											</a>
+										</td>
+									</tr>
+									<tr>
+										<td style="text-align: right;padding-right: 5px; vertical-align: top;padding-top: 10px;">
+											商品位置
+										</td>
+										
+										<td style="padding-top: 10px;">
+											<textarea rows="5" cols="70" name="weizhi">
+
+												</textarea>																						
+												<br>
+											<font size="-1">
+												试民要根据此信息在店铺中找到商品,审核后可修改
+												<br>
+												<font size="-2">
+													例子1:首页-所有宝贝-T恤-第2页
+													<br>
+													例子2:首页-新品上架-雪纺连衣裙-前2页
+													<br>
+												</font>
+											</font>
+										</td>
+									</tr>
+									<tr>
+										<td style="padding-top: 10px;">
+										</td>
+										<td style="padding-top: 10px;">
+											<button type="submit" class="am-btn am-btn-primary am-btn-xs" style="width: 80px; height:30px;padding: 0;border-radius: 5px; ">
+												保存
+											</button>
+										</td>
+									</tr>
+								</table>
+								</form>
+							</div>
+						</div>
+					</div>
+					<!--录入商品窗口-->
+					<h1 style="height: 40px;">
+						<div class="pull-right btn-group">
+							<button class="am-btn am-btn-primary am-btn-xs" style="height: 30px;width: 80px; padding: 0;border-radius: 5px;" data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 750, height:500}">
+								录入商品
+							</button>
+						</div>
+						<div class="pull-left">
+							商品管理
+						</div>
+						<ul class="pull-left taobao-jd">
+							<li class="active" >
+								<a href="#">
+									淘宝商品
+								</a>
+							</li>
+						</ul>
+					</h1>
+					<div class="jquery-once-1-processed">
+						<div class="p10">
+						</div>
+						<script type="text/javascript">$(function() {
+							$("#ul_start_down li").click(function() {
+								$(this).addClass("active").siblings().removeClass("active");
+								$(".grid-view").eq($(this).index()).show().siblings().hide();
+							})
+						})</script>
+						<ul id="ul_start_down" class="nav nav-tabs" role="menu">
+							<li class="active" role="menuitem">
+								<a tabindex="-1" href="javascript:void(0)">
+									启用状态商品
+								</a>
+							</li>
+							<li role="menuitem">
+								<a tabindex="-1" href="javascript:void(0)">
+									已下架
+								</a>
+							</li>
+						</ul>
+						<form controller="extend/search_form" id="yw0" action="#" method="post" class="search_form-processed">
+							<div class="well well-small">
+								<div class="row">
+									<div class="span4">
+										按名称
+										<input placeholder="搜索宝贝名称" class="mb0" name="Product[title]" id="Product_title" type="text" style="height: 30px;">
+									</div>
+									<div class="span4">
+										按宝贝
+										<input placeholder="输入宝贝链接搜索" class="mb0" autocomplete="off" onclick="this.select()" name="Product[url]" style="height: 30px;" id="Product_url" type="text">
+									</div>
+									<div class="span2">
+										<button class="btn" type="submit" name="yt0">
+											搜索
+										</button>
+									</div>
+								</div>
+							</div>
+						</form>
+						<div>
+							<!-- 上架中-->
+							<div class="grid-view" controller="extend/gridview" data-options="{&#39;ajaxUpdate&#39;:[&#39;product-grid&#39;],&#39;ajaxVar&#39;:&#39;ajax&#39;,&#39;pagerClass&#39;:&#39;pagination text-center&#39;,&#39;loadingClass&#39;:&#39;grid-view-loading&#39;,&#39;filterClass&#39;:&#39;filters&#39;,&#39;tableClass&#39;:&#39;items table table-hover&#39;,&#39;selectableRows&#39;:1,&#39;enableHistory&#39;:false,&#39;updateSelector&#39;:&#39;{page}, {sort}&#39;,&#39;filterSelector&#39;:&#39;{filter}&#39;,&#39;pageVar&#39;:&#39;Product_page&#39;,&#39;arg_id&#39;:&#39;Product&#39;}">
+								<table class="items table table-hover">
+									<thead>
+										<tr>
+											<th width="40" id="product-grid_c0">
+												<a class="sort-link" href="#">
+													ID
+													<span class="caret">
+													</span>
+												</a>
+											</th>
+											<th id="product-grid_c1">
+												宝贝名称
+											</th>
+											<th width="80" id="product-grid_c2">
+												<a class="sort-link" href="#">
+													单价
+													<span class="caret">
+													</span>
+												</a>
+											</th>
+											<th width="160" id="product-grid_c3">
+												<a class="sort-link" href="#">
+													位置
+													<span class="caret">
+													</span>
+												</a>
+											</th>
+											<th width="100" id="product-grid_c5">
+												<a class="sort-link desc" href="">
+													最后更新
+													<span class="caret">
+													</span>
+												</a>
+											</th>
+											<th width="60" id="product-grid_c6">
+												操作
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										<empty name="products">
+											<tr><td colspan="6">暂无商品信息</td></tr>
+										<else/>
+										<volist name="products" id="vo">
+										<tr class="odd">
+											<td>
+												{$vo.id}
+											</td>
+											<td>
+												<a data-toggle="modal2" modal-title="查看商品#17224" href="#">
+													<div class="p_img">
+														<img width="56px" height="56px" src="{$vo.main_img}" alt="">
+													</div>
+													<div class="p_title small">
+														{$vo.title}
+														<br>
+														<span class="muted">
+														</span>
+													</div>
+												</a>
+											</td>
+											<td>
+												<span data-role="inline_edit" class="inline_edit" fieldid="17224" fieldname="price" required="required" datatype="price" >{$vo.price}</span>
+											</td>
+											<td>
+												<span data-role="inline_edit" class="inline_edit" fieldid="17224" fieldname="weizhi" required="required" method="textarea">{$vo.position}</span>
+											</td>
+											<td>
+												<span title="2015-06-27 09:10">{$vo.update_time|date='Y-m-d H:i:s',###}</span>
+											</td>
+											<td>
+												<a data-toggle="modal2" tooltip="更新" modal-title="更新商品#{$vo.id}" visible="1" class="btn btn-mini" href="#" data-original-title="" title="">
+													更新
+												</a>
+												<span style="height:3px;display:table;">
+												</span>
+												<a data-role="ajax" visible="1" class="btn btn-mini"
+												href="{:U('Home/SJActivity/downpro',array('id'=>$vo['id']))}">
+													下架
+												</a>
+											</td>
+										</tr>
+										</volist>
+										</empty>
+									</tbody>
+								</table>
+								<!-- 上架中-->
+								
+								<div class="row-fluid">
+									<div class="span6 offset3">
+									</div>
+									<div class="span3">
+										<div class="summary">
+											{$showall}
+										</div>
+									</div>
+								</div>
+								<div class="keys" style="display:none" title="/seller/product">
+									<span>17224</span>
+								</div>
+							</div>
+							<!-- 下架中-->
+							<div style="display: none;" class="grid-view" controller="extend/gridview" data-options="{&#39;ajaxUpdate&#39;:[&#39;product-grid&#39;],&#39;ajaxVar&#39;:&#39;ajax&#39;,&#39;pagerClass&#39;:&#39;pagination text-center&#39;,&#39;loadingClass&#39;:&#39;grid-view-loading&#39;,&#39;filterClass&#39;:&#39;filters&#39;,&#39;tableClass&#39;:&#39;items table table-hover&#39;,&#39;selectableRows&#39;:1,&#39;enableHistory&#39;:false,&#39;updateSelector&#39;:&#39;{page}, {sort}&#39;,&#39;filterSelector&#39;:&#39;{filter}&#39;,&#39;pageVar&#39;:&#39;Product_page&#39;,&#39;arg_id&#39;:&#39;Product&#39;}">
+								<table class="items table table-hover">
+									<thead>
+										<tr>
+											<th width="40" id="product-grid_c0">
+												<a class="sort-link" href="#">
+													ID
+													<span class="caret">
+													</span>
+												</a>
+											</th>
+											<th id="product-grid_c1">
+												宝贝名称
+											</th>
+											<th width="80" id="product-grid_c2">
+												<a class="sort-link" href="#">
+													单价
+													<span class="caret">
+													</span>
+												</a>
+											</th>
+											<th width="160" id="product-grid_c3">
+												<a class="sort-link" href="#">
+													位置
+													<span class="caret">
+													</span>
+												</a>
+											</th>
+											<th width="100" id="product-grid_c5">
+												<a class="sort-link desc" href="#">
+													最后更新
+													<span class="caret">
+													</span>
+												</a>
+											</th>
+											<th width="60" id="product-grid_c6">
+												操作
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										<empty name="products">
+											暂无商品信息
+											<else/>
+										<volist name="downpro" id="vo">
+										<tr class="odd">
+											<td>
+												{$vo.id}
+											</td>
+											<td>
+												<a data-toggle="modal2" modal-title="查看商品#17332" href="#">
+													<div class="p_img">
+														<img width="56px" height="56px" src="{$vo.main_img}" alt="">
+													</div>
+													<div class="p_title small">
+														{$vo.title}
+														<br>
+														<span class="muted">
+														</span>
+													</div>
+												</a>
+											</td>
+											<td>
+												<span data-role="inline_edit" class="inline_edit" fieldid="17332" fieldname="price" required="required" datatype="price">100.00</span>
+											</td>
+											<td>
+												<span data-role="inline_edit" class="inline_edit" fieldid="17332" fieldname="weizhi" required="required" method="textarea" >{$vo.position}
+												</span>
+											</td>
+											<td>
+												<span title="2015-06-27 09:10">{$vo.update_time|date='Y-m-d H:i:s',###}</span>
+											</td>
+											<td>
+												<a data-role="delete" tooltip="删除" visible="1" class="btn btn-mini" href="{:U('Home/SJActivity/delpro',array('id'=>$vo['id']))}" data-original-title="" title="">
+													删除
+												</a>
+												<span style="height:3px;display:table;">
+												</span>
+												<a data-role="ajax" visible="1" class="btn btn-mini" href="{:U('Home/SJActivity/uppro',array('id'=>$vo['id']))}">
+													启用
+												</a>
+											</td>
+										</tr>
+										</volist>
+										</empty>
+									</tbody>
+								</table>
+								<!-- 下架中-->
+								<div class="row-fluid">
+									<div class="span6 offset3">
+									</div>
+									<div class="span3">
+										<div class="summary">
+											{$showdown}
+										</div>
+									</div>
+								</div>
+								<div class="keys" style="display:none" title="#">
+									<span>17332</span><span>17297</span><span>17223</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<include file='Widget/sjleft' />
+	</div>
+</block>
+<block name="area_footer">
+	<script type="text/javascript">function showLoading() {
+	$("#J_btn_submit").text("正在提交中....");
+	$("#J_btn_submit").data("query", 1);
+}
+$(function() {
+	$("#read").click(function() {
+		var query = $("#J_btn_submit").data("query");
+		if (query == 1) {
+			alert("正在请求中...");
+			return;
+		}
+		var param_url = $("#url").val();
+		$.ajax({
+			cache: false,
+			method: "post",
+			url: "{:U('Home/SJActivity/read',array('r'=>time()))}",
+			data: {
+				url: encodeURI(param_url)
+			},
+			dataType: "json",
+			beforeSend: function() {
+				showLoading();
+			}
+		}).done(function(data) {
+			$("#read").text("提交");
+			$("#read").data("query", 0);
+			console.log(data);
+			if (data.status) {
+				var title = "商品标题:" + data.info.title;
+				var wangwang = data.info.wangwang;
+				if ('{$aliwawa}'.trim() == wangwang.trim()) {
+					$("input[name='alww']").val(wangwang.trim());
+					$(".title").val(title);
+					$(".img").val(data.info.main_img);
+					$('#doc-modal-1 .am-modal-dialog').css('height', '600px');
+					$(".show").html("<img  src='" + data.info.main_img + "' alt='图片' style='float:left' />" + title);
+					
+				} else {
+					$('#doc-modal-1 .am-modal-dialog').css('height', '580px');
+					$(".show").html("<font color='red'>该商品的铺主为：" + wangwang + "</font><br><font color='red'>您的阿里旺旺为：" + '{$aliwawa}' + "</font><br><font color='red'>请录入您自己的商品</font>");
+				}
+			} else {
+				$('#doc-modal-1 .am-modal-dialog').css('height', '520px');
+				$(".show").html("<font color='red'>" + data.info + "</font>");
+				//							alert(data.)
+			}
+		})
+	})
+})</script>
+</block>
