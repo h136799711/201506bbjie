@@ -36,7 +36,7 @@
 					$.ajax({
 						cache:false,
 						method:"post",
-						url:"{:U('Tool/Taobao/read',array('r'=>time()))}",
+						url:"{:U('Tool/RemoteProductParser/read',array('r'=>time()))}",
 						data:{url:encodeURI(param_url)},
 						dataType:"json",
 						beforeSend:function(){
@@ -48,10 +48,11 @@
 						console.log(data);
 						
 						if(data.status){
+							var url = "商品优化后的链接:"+data.info.url;
 							var title = "商品标题:"+data.info.title;
 							var wangwang = "店铺旺旺:"+data.info.wangwang;
 							
-							$(".getdata").html("<p>"+title+"</p><p>"+wangwang+"</p><p><img src='"+data.info.main_img+"' alt='图片' /></p>");
+							$(".getdata").html("<p>"+url+"</p><p>"+title+"</p><p>"+wangwang+"</p><p><img src='"+data.info.main_img+"' alt='图片' /></p>");
 							
 						}else{
 							$(".getdata").text(data.info);
