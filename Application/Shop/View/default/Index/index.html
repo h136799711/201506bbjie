@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <extend name="template/base_index" />
 <block name="area_header">
 	<script type="text/javascript" src="__PUBLIC__/Shop/js/index.js"></script>
@@ -217,4 +218,392 @@
 
 <block name="area_footer">
 	
+=======
+<extend name="template/base_index" />
+<block name="area_header">
+	<script type="text/javascript" src="__PUBLIC__/Home/js/index.js"></script>
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/index.css" />
+	<style type="text/css">
+		* {
+			font-family: "微软雅黑" !important;
+		}
+	</style>		
+		
+</block>
+
+<block name="area_body">
+	{:W('Page/head')}
+		<div id="div_lunbo">
+			<div class="div_info">
+				<div class="div_info1">
+					<ul>
+						<volist name="categoryParent" id="vo">
+							<li>
+								<h3><a href="#">{$vo.name}</a></h3>
+								<div>
+									<volist name="categoryChildrens" id="v">
+										<if condition="$vo['id'] eq $v['parent']">
+											<a href="">
+												{$v.name}
+											</a>&nbsp;&nbsp;&nbsp;
+										</if>
+									</volist>
+								</div>
+							</li>
+						</volist>
+						
+					</ul>
+
+				</div>
+				<div class="div_image">
+					<volist name="lunboList" id="l" key="k">
+			
+						<div class="div_minlunbo" onclick="toUrl('{$l.url}')"
+						<if condition="$k neq 1">
+							style="display:none"
+						</if>
+						>
+						
+						<img src="{$l.img}" width="700" height="420"/>
+						</div>
+						<input type="hidden" name="bgcolor" value="{$l.bgcolor}" />
+					</volist>
+					
+
+				</div>
+				<ul class="ul_lunbo">
+					<li class="lunboli current"></li>
+					<li class="lunboli"></li>
+					<li class="lunboli"></li>
+					<li class="lunboli"></li>
+				</ul>
+				<div class="div_info2">
+					<ul class="ul_image">
+						<volist name="hotTypeList" id="htl">
+							<li>
+								<a href="javascript:toUrl('{$htl.url}')">
+									<img src="{$htl.img}" height="140" />
+								</a>
+							</li>
+						</volist>
+					</ul>
+
+				</div>
+			</div>
+		</div>
+		<div id="div_main">
+			<div class="div_info">
+				<div class="div_minInfo">
+					<div class="div_minTitle">
+						<h3>上新预告</h3>
+						<a href="">&nbsp;</a>
+					</div>
+					<dl class="dl_info">
+						<dt>
+
+		                <img src="__PUBLIC__/Shop/img/tupian1.jpg" width="216" />
+
+		                </dt>
+						<dd style="border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+						<dd>XXX XXXXX</dd>
+					</dl>
+
+					<dl class="dl_info">
+						<dt>
+
+		                <img src="__PUBLIC__/Shop/img/tupian2.jpg" width="216" />
+
+		                </dt>
+						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+						<dd>XXX XXXXX</dd>
+					</dl>
+
+					<dl class="dl_info">
+						<dt>
+
+		                <img src="__PUBLIC__/Shop/img/tupian1.jpg" width="216" />
+
+		                </dt>
+						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+						<dd>XXX XXXXX</dd>
+					</dl>
+
+					<dl class="dl_info">
+						<dt>
+
+		                <img src="__PUBLIC__/Shop/img/tupian2.jpg" width="216" />
+
+		                </dt>
+						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+						<dd>XXX XXXXX</dd>
+					</dl>
+
+					<dl class="dl_info">
+						<dt>
+
+		                <img src="__PUBLIC__/Shop/img/tupian1.jpg" width="216" />
+
+		                </dt>
+						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+						<dd>XXX XXXXX</dd>
+					</dl>
+
+					<dl class="dl_info">
+						<dt>
+
+		                <img src="__PUBLIC__/Shop/img/tupian2.jpg" width="216" />
+
+		                </dt>
+						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+						<dd>XXX XXXXX</dd>
+					</dl>
+
+					<dl class="dl_info">
+						<dt>
+
+		                <img src="__PUBLIC__/Shop/img/tupian1.jpg" width="216" />
+
+		                </dt>
+						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+						<dd>XXX XXXXX</dd>
+					</dl>
+
+					<dl class="dl_info">
+						<dt>
+
+		                <img src="__PUBLIC__/Shop/img/tupian2.jpg" width="216" />
+
+		                </dt>
+						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+						<dd>XXX XXXXX</dd>
+					</dl>
+					<dl class="dl_info">
+						<dt>
+
+		                <img src="__PUBLIC__/Shop/img/tupian1.jpg" width="216" />
+
+		                </dt>
+						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+						<dd>XXX XXXXX</dd>
+					</dl>
+					<dl class="dl_info">
+						<dt>
+
+		                <img src="__PUBLIC__/Shop/img/tupian2.jpg" width="216" />
+
+		                </dt>
+						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+						<dd>XXX XXXXX</dd>
+					</dl>
+
+				</div>
+
+				<div class="div_minInfo">
+					<div class="div_minTitle">
+						<h3>推荐福品</h3>
+						<a href="">&nbsp;</a>
+					</div>
+					<dl class="dl_info">
+						<dt>
+
+		                <img src="__PUBLIC__/Shop/img/tupian1.jpg" width="216" />
+
+		                </dt>
+						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+						<dd>XXX XXXXX</dd>
+					</dl>
+
+					<dl class="dl_info">
+						<dt>
+
+		                <img src="__PUBLIC__/Shop/img/tupian2.jpg" width="216" />
+
+		                </dt>
+						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+						<dd>XXX XXXXX</dd>
+					</dl>
+
+					<dl class="dl_info">
+						<dt>
+
+		                <img src="__PUBLIC__/Shop/img/tupian1.jpg" width="216" />
+
+		                </dt>
+						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+						<dd>XXX XXXXX</dd>
+					</dl>
+
+					<dl class="dl_info">
+						<dt>
+
+		                <img src="__PUBLIC__/Shop/img/tupian2.jpg" width="216" />
+
+		                </dt>
+						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+						<dd>XXX XXXXX</dd>
+					</dl>
+
+					<dl class="dl_info">
+						<dt>
+
+		                <img src="__PUBLIC__/Shop/img/tupian1.jpg" width="216" />
+
+		                </dt>
+						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+						<dd>XXX XXXXX</dd>
+					</dl>
+
+					<dl class="dl_info">
+						<dt>
+
+		                <img src="__PUBLIC__/Shop/img/tupian2.jpg" width="216" />
+
+		                </dt>
+						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+						<dd>XXX XXXXX</dd>
+					</dl>
+
+					<dl class="dl_info">
+						<dt>
+
+		                <img src="__PUBLIC__/Shop/img/tupian1.jpg" width="216" />
+
+		                </dt>
+						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+						<dd>XXX XXXXX</dd>
+					</dl>
+
+					<dl class="dl_info">
+						<dt>
+
+		                <img src="__PUBLIC__/Shop/img/tupian2.jpg" width="216" />
+
+		                </dt>
+						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+						<dd>XXX XXXXX</dd>
+					</dl>
+					<dl class="dl_info">
+						<dt>
+
+		                <img src="__PUBLIC__/Shop/img/tupian1.jpg" width="216" />
+
+		                </dt>
+						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+						<dd>XXX XXXXX</dd>
+					</dl>
+					<dl class="dl_info">
+						<dt>
+
+		                <img src="__PUBLIC__/Shop/img/tupian2.jpg" width="216" />
+
+		                </dt>
+						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
+						<dd>XXX XXXXX</dd>
+					</dl>
+
+				</div>
+
+				<div class="div_minInfo">
+					<div class="div_minTitle">
+						<h3>试民晒货</h3>
+						<a href=""></a>
+					</div>
+					<dl class="dl_shaihuo">
+						<dt>
+
+			                <a href=""><img src="__PUBLIC__/Shop/img/shai1.jpg" width="91" /></a>
+
+			                <a href=""><img src="__PUBLIC__/Shop/img/shai2.jpg" width="91" /></a>
+
+			                <a href=""><img src="__PUBLIC__/Shop/img/shai3.jpg" width="91" /></a>
+
+			                <a href=""><img src="__PUBLIC__/Shop/img/shai4.jpg" width="91" /></a>
+
+		                
+
+		                </dt>
+						<dd style="">1个晒货|1个推荐</dd>
+						<dd><a href="#">去看看</a>
+						</dd>
+					</dl>
+
+					<dl class="dl_shaihuo">
+						<dt>
+
+		                <a href=""><img src="__PUBLIC__/Shop/img/shai1.jpg" width="91" /></a>
+
+		                <a href=""><img src="__PUBLIC__/Shop/img/shai2.jpg" width="91" /></a>
+
+		                <a href=""><img src="__PUBLIC__/Shop/img/shai3.jpg" width="91" /></a>
+
+		                <a href=""><img src="__PUBLIC__/Shop/img/shai4.jpg" width="91" /></a>
+
+		                </dt>
+						<dd style="">1个晒货|1个推荐</dd>
+						<dd><a href="#">去看看</a>
+						</dd>
+					</dl>
+
+					<dl class="dl_shaihuo">
+						<dt>
+
+		                <a href=""><img src="__PUBLIC__/Shop/img/shai1.jpg" width="91" /></a>
+
+		                <a href=""><img src="__PUBLIC__/Shop/img/shai2.jpg" width="91" /></a>
+
+		                <a href=""><img src="__PUBLIC__/Shop/img/shai3.jpg" width="91" /></a>
+
+		                <a href=""><img src="__PUBLIC__/Shop/img/shai4.jpg" width="91" /></a>
+
+		                </dt>
+						<dd style="">1个晒货|1个推荐</dd>
+						<dd><a href="#">去看看</a>
+						</dd>
+					</dl>
+
+					<dl class="dl_shaihuo">
+						<dt>
+
+		               <a href=""><img src="__PUBLIC__/Shop/img/shai1.jpg" width="91" /></a>
+
+		                <a href=""><img src="__PUBLIC__/Shop/img/shai2.jpg" width="91" /></a>
+
+		                <a href=""><img src="__PUBLIC__/Shop/img/shai3.jpg" width="91" /></a>
+
+		                <a href=""><img src="__PUBLIC__/Shop/img/shai4.jpg" width="91" /></a>
+
+		                </dt>
+						<dd style="">1个晒货|1个推荐</dd>
+						<dd><a href="#">去看看</a>
+						</dd>
+					</dl>
+
+					<dl class="dl_shaihuo">
+						<dt>
+
+		                <a href=""><img src="__PUBLIC__/Shop/img/shai1.jpg" width="91" /></a>
+
+		                <a href=""><img src="__PUBLIC__/Shop/img/shai2.jpg" width="91" /></a>
+
+		                <a href=""><img src="__PUBLIC__/Shop/img/shai3.jpg" width="91" /></a>
+
+		                <a href=""><img src="__PUBLIC__/Shop/img/shai4.jpg" width="91" /></a>
+
+		                </dt>
+						<dd style="">1个晒货|1个推荐</dd>
+						<dd><a href="#">去看看</a>
+						</dd>
+					</dl>
+
+				</div>
+
+			</div>
+		</div>
+	<include file="partials/footer" />
+
+</block>
+
+<block name="area_footer">
+	
+>>>>>>> branch 'master' of https://github.com/h136799711/201506bbjie.git
 </block>

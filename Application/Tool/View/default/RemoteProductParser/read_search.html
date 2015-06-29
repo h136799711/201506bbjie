@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript" src="__CDN__/jquery/2.1.1/jquery.min.js"></script>
+	</head>
+	<body>
+		搜索条件：<div style="padding: 10px;background: #eee;color:#222;margin-bottom: 20px;">
+			<p>打开： {$return_info['url']}</p>
+			<p>搜索关键词： {$return_info['key']}</p>
+			<if condition="!empty($return_info['tab'])" >
+			<p>选择： {$return_info['tab']}</p>
+			</if>
+			<p>排序： {$return_info['order']}</p>
+			<if condition="!empty($return_info['price'])" >
+			<p>价格： {:number_format($return_info['price'][0],2)}-{:number_format($return_info['price'][1],2)}</p>
+			</if>
+			<if condition="!empty($return_info['location'])" >
+			<p>发货地： {$return_info['location']}</p>
+			</if>
+			
+			<volist name="return_info['attr']" id="vo">
+				<p>
+					{$vo}
+				</p>
+			</volist>
+			
+			
+			<if condition="$return_info['sameStyle']" >
+			<p>合并同款宝贝 </p>
+			</if>
+			<if condition="$return_info['sameSeller']" >
+			<p>合并卖家 </p>
+			</if>
+			<p> 
+			<if condition="is_array($return_info['pager'])" >
+				商品位置在第{$return_info['pager']['currentPage']}页,总共{$return_info['pager']['totalPage']}页,每页{$return_info['pager']['pageSize']}条.
+			<else/>
+				一般在前五页即可找到对应商品
+			</if>
+			</p>
+			
+			<notempty name="return_info['items']">
+			搜索到的商品：
+			<div class="items">
+				<ul>
+					<volist name="return_info['items']" id="vo">
+						<li><a href="{$vo.detail_url}">{$vo.title}<img src="{$vo.pic_url}" /></a>
+							<a href="{$vo.shopLink}">{$vo.nick}</a><span>{:number_format($vo['view_price'],2)}</span></li>
+					</volist>
+				</ul>
+			</div>
+			</notempty>
+			
+		</div>
+		<div style="width: 640px;margin: 0 auto;">
+			<form method="post" action="__SELF__">
+				<input type="text" name="url" value="http://list.tmall.com/search_product.htm?start_price=0&sort=s&style=g&from=sn_1_prop-qp&q=%B4%F3%D2%C2&brand=647810584%2C289672164&prop=20663%3A20213%3B20021%3A28355%3B31611%3A20213&search_condition=52#J_crumbs" style="width: 460px;padding: 10px;" />
+				<button type="submit"  data-query="0" >POST提交</button>
+				
+				<button type="button" id="J_btn_submit" data-query="0" >AJAX提交</button>
+			</form>
+			
+			<div class="getdata">
+				
+			</div>
+			
+		</div>
+		
+		<script type="text/javascript">
+		function showLoading(){
+			$("#J_btn_submit").text("正在提交中....");
+			$("#J_btn_submit").data("query",1);
+		}
+			$(function(){
+				$("#J_btn_submit").click(function(){
+					var query = $("#J_btn_submit").data("query");
+					if(query == 1){
+							alert("正在请求中...");
+							return ;
+					}
+					var param_url = $("input[name='url']").val();
+					
+					$.ajax({
+						cache:false,
+						method:"post",
+						url:"{:U('Tool/RemoteProductParser/read_search',array('r'=>time()))}",
+						data:{url:encodeURI(param_url)},
+						dataType:"json",
+						beforeSend:function(){
+							showLoading();
+						}
+					}).done(function(data){
+						$("#J_btn_submit").text("提交");
+						$("#J_btn_submit").data("query",0);
+						console.log(data);
+						
+						if(data.status){
+							
+						}else{
+							$(".getdata").text(data.info);
+//							alert(data.)
+						}
+					})
+				})
+			})
+		</script>
+	</body>
+</html>

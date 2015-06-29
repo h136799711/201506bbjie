@@ -8,7 +8,7 @@
 	<body>
 		<div style="width: 640px;margin: 0 auto;">
 			<form method="post" action="__SELF__">
-				<input type="text" name="url" value="" placeholder="请复制淘宝或天猫浏览器完整地址" style="width: 460px;padding: 10px;" />
+				<input type="text" name="url" value="http://detail.tmall.com/item.htm?spm=a230r.1.14.1.7u82Sp&id=45466776277&cm_id=140105335569ed55e27b&_u=pug2bf62eaa&abbucket=7&sku_properties=5919063:6536025" style="width: 460px;padding: 10px;" />
 				
 				<button type="button" id="J_btn_submit" data-query="0" >提交</button>
 			</form>
@@ -36,7 +36,7 @@
 					$.ajax({
 						cache:false,
 						method:"post",
-						url:"{:U('Tool/Taobao/read',array('r'=>time()))}",
+						url:"{:U('Tool/RemoteProductParser/read',array('r'=>time()))}",
 						data:{url:encodeURI(param_url)},
 						dataType:"json",
 						beforeSend:function(){
@@ -48,10 +48,11 @@
 						console.log(data);
 						
 						if(data.status){
+							var url = "商品优化后的链接:"+data.info.url;
 							var title = "商品标题:"+data.info.title;
 							var wangwang = "店铺旺旺:"+data.info.wangwang;
 							
-							$(".getdata").html("<p>"+title+"</p><p>"+wangwang+"</p><p><img src='"+data.info.main_img+"' alt='图片' /></p>");
+							$(".getdata").html("<p>"+url+"</p><p>"+title+"</p><p>"+wangwang+"</p><p><img src='"+data.info.main_img+"' alt='图片' /></p>");
 							
 						}else{
 							$(".getdata").text(data.info);
