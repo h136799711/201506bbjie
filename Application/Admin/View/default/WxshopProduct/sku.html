@@ -119,9 +119,10 @@
 		};
 
 		function manageSkuClick(ev){			
-			
+			//alert();
 			$ele = $(ev.target);
 			if($ele.hasClass("js_sku_cancel")){
+
 				$ele.parents(".skuvalue_edit_wrp").addClass("hidden");
 				$ele.parents(".skuvalue_wrp").removeClass("hidden");
 			}
@@ -133,6 +134,7 @@
 			
 			
 			if($ele.hasClass("js_sku_sure")){
+				
 				var cont = $ele.parents(".skuvalue_edit_wrp").prev();
 				var label = cont.find("label");
 				for(var del in window.skumanage.deleted){
@@ -179,8 +181,9 @@
 				skumanage.deleted.push(skuvalue);
 				return ;
 			}
-
+			
 			if($ele.hasClass("js_sku_add")){
+				
 				var $cont = $(".skuvalue_edit_wrp");
 				var skuvalue = $ele.prev().val().trim();
 				
@@ -216,6 +219,7 @@
 	
 	
 		function createSKUTable(){
+			
 			var cont = $(".sku-table");
 			cont.empty();
 			var table = $("<table class='table table-border'></table>");
@@ -247,7 +251,7 @@
 			for(var j=0;j<col;j++){
 				header.append("<th>"+$(sku_arr[j]['sku']).attr("data-skuname")+"</th>");
 			}
-			header.append("<th>微信价</th><th>原价<span class='text-muted'>(必须大于微信价)</span></th><th>库存</th><th>商品条码<span class='text-muted'>(选填)</span></th>");
+			header.append("<th>福币</th><th>原福币<span class='text-muted'></span></th><th>库存</th><th>商品条码<span class='text-muted'>(选填)</span></th>");
 			
 			//创建好所有的行
 			for(var i=0;i<row;i++){
@@ -338,6 +342,7 @@
 		}
 		
 		function getSkuData(){
+			
 			var skulist = [];
 			$(".sku-table tr").each(function(index,item){
 				if($(item).attr("data-id")){
@@ -478,7 +483,7 @@
 					});
 					
 					if($flag){
-						$(".sku-table input.quantity").val($price);
+						$(".sku-table input.quantity").val($quantity);
 					}
 				}
 //				console.log($flag);

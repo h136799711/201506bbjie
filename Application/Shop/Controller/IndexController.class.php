@@ -166,6 +166,17 @@ class IndexController extends ShopController{
 			$this->assign('head_title',$headtitle);
 			$this->assign('indexTitle',0);
 			$users=$_SESSION['Home']['user'];
+			
+			$id=$users['info']['id'];
+			
+			$map = array(
+				'uid'=>$id,
+				//'onshelf'=>1,
+			);
+			$result=apiCall(HomePublicApi::Group_QueryNpPage, array($map));
+			
+			//dump($result);
+			$this->assign('group',$result['info'][0]['group_id']);
 			$this->assign('username',$users['info']['username']);
 			$this->display();
 		}
@@ -333,55 +344,33 @@ class IndexController extends ShopController{
 		$map=array();
 		$map['product_id']=44;
 		$result = apiCall('Admin/WxproductSku/queryNoPaging',array($map));
-		
-		$skuList=array();
-		$i=1;
-		foreach($result['info'] as $skus){
+		//dump($result[info]);
+		$skuList=$result[info];
+		foreach($skuList as $key=> $skus){
 			$skuIds=explode(';',$skus['sku_id']);
 			array_pop($skuIds);
-			//dump($skuId);
-			
-			//$skuId[1]=substr($skuId[1],0,strlen($skuId[1])-1);
-			//dump($skuIds);
 			foreach($skuIds as $sku){
-				
 				$skuId=explode(':',$sku);
-				if(!isset($skuList[$skuId[0]][$skuId[1]])){
-					$skuList[$skuId[0]][$skuId[1]]=array();
-				}
-				
-				//$skuList[$skuId[0]][$skuId[1]]
-				//$skuList[$skuId[0]]
-				
-				/*$map=array();
+				$map=array();
 				$map['id']=$skuId[0];
 				$result1 = apiCall('Admin/Sku/queryNoPaging',array($map));
 				
-				
 				$map=array();
 				$map['id']=$skuId[1];
-				$result2 = apiCall('Admin/Skuvalue/queryNoPaging',array($map));*/
+				$result2 = apiCall('Admin/Skuvalue/queryNoPaging',array($map));
+				$skus[$result1[info][0][name]]=$result2[info][0][name];
+				
 			}
-			
-			
+			//$skus['ddd']='32132';	
+			$skuList[$key]=$skus;
 		}
-		dump($skuList);	
-	
-		/*$skuList["sku$i"]=array(
-				'sku_id'=>$skuId[0],
-				'sku_name'=>$result1[info][0]['name'],
-				//'sku_id'=>$skuId[0],
-				'sku_value'=>$result2[info][0]['name'],
-				'url'=>$sku['icon_url']
-			);
-			$i++;*/
-		//dump($skuList);
+		//dump($skuList);	
 		
-		/*$headtitle="宝贝街-商品详情";
+		$headtitle="宝贝街-商品详情";
 		$this->assign('head_title',$headtitle);
 		$users=$_SESSION["Home"]['user'];
 		$this->assign('username',$users['info']['username']);
-		$this->display();*/
+		$this->display();
 	}
 	
 }

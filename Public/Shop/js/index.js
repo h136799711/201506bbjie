@@ -133,7 +133,7 @@ function changeBgColor(){
  */
 function toDetail(pid){
 	//alert(pid);
-	window.location.href="spxq?id="+pid;
+	window.location.href="Index/spxq?id="+pid;
 }
 
 function overSku(font){
