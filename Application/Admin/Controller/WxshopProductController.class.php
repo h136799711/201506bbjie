@@ -257,8 +257,9 @@ class WxshopProductController extends AdminController {
 			$sku_info = I('post.sku_info','');
 			
 			$sku_info = json_decode(htmlspecialchars_decode($sku_info),JSON_UNESCAPED_UNICODE);
-			$sku_list = json_decode(htmlspecialchars_decode($sku_list),JSON_UNESCAPED_UNICODE);	
-			
+			$sku_list = json_decode(htmlspecialchars_decode($sku_list),JSON_UNESCAPED_UNICODE);
+
+//            dump($sku_list);
 			$result = apiCall("Admin/WxproductSku/addSkuList", array($id,$sku_info,$sku_list));
 			
 			if(!$result['status']){				
