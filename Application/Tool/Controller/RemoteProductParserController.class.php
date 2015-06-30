@@ -39,9 +39,9 @@ class RemoteProductParserController extends Controller{
             }
 
             $return_info['ori_url'] = $url;
-            dump($return_info);
+//            dump($return_info);
             if(IS_AJAX){
-                var_dump($return_info);
+//                var_dump($return_info);
                 $this->success($return_info);
             }else{
                 $this->assign("return_info",$return_info);
