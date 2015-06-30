@@ -340,12 +340,11 @@ class IndexController extends ShopController{
 		//dump($detail);
 		$this->assign('detail',$detail);
 		
-		//dump($id);
 		$map=array();
-		$map['product_id']=44;
+		$map['product_id']=$id;
 		$result = apiCall('Admin/WxproductSku/queryNoPaging',array($map));
-		//dump($result[info]);
 		$skuList=$result[info];
+		$skuInfo=array();
 		foreach($skuList as $key=> $skus){
 			$skuIds=explode(';',$skus['sku_id']);
 			array_pop($skuIds);
@@ -355,17 +354,22 @@ class IndexController extends ShopController{
 				$map['id']=$skuId[0];
 				$result1 = apiCall('Admin/Sku/queryNoPaging',array($map));
 				
+				$skuInfo[$result1['info'][0]['id']]['name']=$result1['info'][0]['name'];
+				
 				$map=array();
 				$map['id']=$skuId[1];
 				$result2 = apiCall('Admin/Skuvalue/queryNoPaging',array($map));
-				$skus[$result1[info][0][name]]=$result2[info][0][name];
+				$skus['sku']=$skus['sku'].';'.$result1['info'][0]['name'].':'.$result2['info'][0]['name'];
+				if(!in_array($result2['info'][0]['name'], $skuInfo[$result1['info'][0]['id']]['value'])){
+					$skuInfo[$result1['info'][0]['id']]['value'][]=$result2['info'][0]['name'];
+				}
 				
 			}
-			//$skus['ddd']='32132';	
 			$skuList[$key]=$skus;
 		}
-		//dump($skuList);	
 		
+		$this->assign('skuInfo',$skuInfo);
+		$this->assign('skuList',$skuList);
 		$headtitle="宝贝街-商品详情";
 		$this->assign('head_title',$headtitle);
 		$users=$_SESSION["Home"]['user'];
