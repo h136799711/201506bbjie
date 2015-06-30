@@ -125,9 +125,9 @@ class IndexController extends ShopController{
 			$this -> assign('lunboList', $result['info']['list']);
 			
 			
+			
+			
 			$map = array();
-			//$map = array('uid'=>34);
-			//dump(UID);
 			$map['position'] = 20;
 			$page=array();
 			$page = array('curpage' => I('get.p', 0), 'size' => 3);
@@ -136,6 +136,30 @@ class IndexController extends ShopController{
 			$result = apiCall('Admin/Banners/queryWithPosition', array($map, $page, $order, $params));
 			//
 			$this -> assign('hotTypeList', $result['info']['list']);
+			
+			$map = array();
+			$map = array(
+				'g_id'=>34,
+				'onshelf'=>0,
+			);
+			$page=array();
+			$page = array('curpage' => I('get.p', 0), 'size' => 10);
+			$order = " createtime desc ";
+		//
+			$result = apiCall('Admin/Wxproduct/queryJoin', array($map, $page, $order, $params));
+			
+			
+			//recommend
+			$this -> assign('newProductList', $result['info']['list']); //上新预告
+			
+			
+			$map = array(
+				'g_id'=>35,
+				'onshelf'=>1,
+			);
+			$result = apiCall('Admin/Wxproduct/queryJoin', array($map, $page, $order, $params));
+			$this -> assign('recommendProductList', $result['info']['list']); //推荐福品
+			//dump($result);
 		
 		
 			$headtitle="宝贝街-首页";
@@ -294,11 +318,70 @@ class IndexController extends ShopController{
 		$this->assign('zxgg',$result['info'][0]);
 		
 		
-		$headtitle="宝贝街-商品详情";
+		$id=I("id");
+		//dump($id);
+		$map['id']=$id;
+		$result = apiCall('Admin/Wxproduct/queryNoPaging',array($map));
+		$detail=$result['info'][0];
+		//dump($detail['img']);
+		$detail['img']=explode(',',$detail['img']); //分割字符串成数组
+		array_pop($detail['img']);//删除最后一个空元素
+		//dump($detail);
+		$this->assign('detail',$detail);
+		
+		//dump($id);
+		$map=array();
+		$map['product_id']=44;
+		$result = apiCall('Admin/WxproductSku/queryNoPaging',array($map));
+		
+		$skuList=array();
+		$i=1;
+		foreach($result['info'] as $skus){
+			$skuIds=explode(';',$skus['sku_id']);
+			array_pop($skuIds);
+			//dump($skuId);
+			
+			//$skuId[1]=substr($skuId[1],0,strlen($skuId[1])-1);
+			//dump($skuIds);
+			foreach($skuIds as $sku){
+				
+				$skuId=explode(':',$sku);
+				if(!isset($skuList[$skuId[0]][$skuId[1]])){
+					$skuList[$skuId[0]][$skuId[1]]=array();
+				}
+				
+				//$skuList[$skuId[0]][$skuId[1]]
+				//$skuList[$skuId[0]]
+				
+				/*$map=array();
+				$map['id']=$skuId[0];
+				$result1 = apiCall('Admin/Sku/queryNoPaging',array($map));
+				
+				
+				$map=array();
+				$map['id']=$skuId[1];
+				$result2 = apiCall('Admin/Skuvalue/queryNoPaging',array($map));*/
+			}
+			
+			
+		}
+		dump($skuList);	
+	
+		/*$skuList["sku$i"]=array(
+				'sku_id'=>$skuId[0],
+				'sku_name'=>$result1[info][0]['name'],
+				//'sku_id'=>$skuId[0],
+				'sku_value'=>$result2[info][0]['name'],
+				'url'=>$sku['icon_url']
+			);
+			$i++;*/
+		//dump($skuList);
+		
+		/*$headtitle="宝贝街-商品详情";
 		$this->assign('head_title',$headtitle);
 		$users=$_SESSION["Home"]['user'];
 		$this->assign('username',$users['info']['username']);
-		$this->display();
+		$this->display();*/
 	}
 	
 }

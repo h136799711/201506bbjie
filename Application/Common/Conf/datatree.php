@@ -11,5 +11,9 @@ defined("BOYE_SYS_NAME") or die("未定义");
 return array(
 	'DATATREE'=>array(		
 		'POST_CATEGORY'=>21, //文章分类
+		'WXPRODUCTGROUP'=>33//商品分组
+		
 	)
+	
+	
 );
