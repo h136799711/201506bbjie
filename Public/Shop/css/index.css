@@ -127,6 +127,10 @@ input{border:1px solid #ccc; list-style:none;}
 .li_checkedtitle{color: red;}
 
 
+.font_sku{border: 1px solid #ccc;padding: 5px 10px;margin-left: 5px; cursor: pointer; margin-left:5px;}
+.sku_style{ background:url(../img/selected.png); background-size:100% 100%;}
+
+
 
 a.a_li:link {color: #666}		/* 未访问的链接 */
 a.a_li:visited {color: #666}		/* 已访问的链接 */

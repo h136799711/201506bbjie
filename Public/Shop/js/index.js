@@ -136,6 +136,28 @@ function toDetail(pid){
 	window.location.href="spxq?id="+pid;
 }
 
+function overSku(font){
+	$(font).addClass("sku_style");
+}
+
+function outSku(font){
+	if($(font).attr("index")==0){
+		$(font).removeClass("sku_style");
+	}
+}
+
+function selectSku(font){
+	$(font).siblings().removeClass("sku_style");
+	$(font).siblings().attr("index",0);
+	$(font).attr("index")==0?$(font).attr("index",1):$(font).attr("index",0);
+	
+	$(".sku_style").each(function(i,n){
+		//alert($(n).html());
+	})
+}
+
+
+
 /**
  *	轮播器 
  */
