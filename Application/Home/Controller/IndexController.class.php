@@ -377,6 +377,10 @@ class IndexController extends HomeController {
 				$groupid=$group['info'][0]['group_id'];
 				if($groupid==14){
 					session('user',$users);
+					$order = " post_modified desc ";
+					$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
+					$this->assign('zxgg',$result['info'][0]);
+						$this->assign('info',$result['info']);
 					$this->assign('username',$users['info']['username']);
 					$this -> display('sm_manager');
 				}else{
@@ -423,6 +427,7 @@ class IndexController extends HomeController {
 	  * */
 	public function sm_manager(){
 		
+			
 		$users=session('user');
 		$uid=$users['info']['id'];
 		$id=$uid;
@@ -442,6 +447,7 @@ class IndexController extends HomeController {
 			$order = " post_modified desc ";
 			$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
 			$this->assign('zxgg',$result['info'][0]);
+			$this->assign('info',$result['info']);
 //			dump($result);
 			$this->display();
 		}

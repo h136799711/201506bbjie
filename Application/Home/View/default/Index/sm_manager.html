@@ -70,14 +70,9 @@
 					<div class="am-panel-hd">最新公告<span style="margin-left:200px;"><a href="#" style="font-size: 12px;">更多>></a></span> </div>
 					<div class="am-panel-bd" style="height: 350px; font-size:12px;">
 						<ul>
-							<li style="margin-top: 10px;">试福美食频道下线通知</li>
-							<li style="margin-top: 10px;">正式启动“试福街 2.0”计划</li>
-							<li style="margin-top: 10px;">关于试民任务获取方式的调整通知</li>
-							<li style="margin-top: 10px;">试福街2015年五一放假安排通知</li>
-							<li style="margin-top: 10px;">关于试福任务发件的调整通知</li>
-							<li style="margin-top: 10px;">关于收货地址与淘宝收货地址保持一致的通知</li>
-							<li style="margin-top:10px;">试民任务时需要聊天内容的规范</li>
-							<li style="margin-top: 10px;">关于“聚来宝”等淘宝客问题的通知</li>
+							<volist name="info" id="vo">
+							<li style="margin-top: 10px;">{$vo.post_title}</li>
+							</volist>
 						</ul>
 					</div>
 				</div>
@@ -211,6 +206,15 @@
 </block>
 
 <block name="area_footer">
-
+<script type="text/javascript">
+	$(function(){
+		$('.t2').css('background-color','');
+		$('.t2 a').css('color','#FFFFFF');
+		$('.t1').css('background-color','#FFFFFF');
+		$('.t1 a').css('color','#000000');
+		$('.t3').css('background-color','');
+		$('.t3 a').css('color','#FFFFFF');
+	})
+</script>
 </block>
 

@@ -9,6 +9,7 @@ namespace Home\Controller;
 use Think\Controller;
 use Think\Storage;
 use Home\Api\HomePublicApi;
+use Admin\Api\AdminPublicApi;
 /*
  * 试民操作
  */
@@ -28,6 +29,9 @@ class UsersmController extends CheckLoginController {
 		$this -> assign('info', $results['info']);
 		$this -> assign('mum', $result['info']);
 		$this -> assign('cs_xx', 'sed');
+		$order = " post_modified desc ";
+		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
+		$this->assign('zxgg',$result['info'][0]);
 //		dump($result);
 		$this -> display('manager_info');
 	}
@@ -38,6 +42,9 @@ class UsersmController extends CheckLoginController {
 		$user = session('user');
 		$this -> assign('username', $user['info']['username']);
 		$headtitle = "试民中心-任务";
+		$order = " post_modified desc ";
+		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
+		$this->assign('zxgg',$result['info'][0]);
 		$this -> assign('head_title', $headtitle);
 		$this -> assign('cs_rw', 'sed');
 		$this -> display();
@@ -63,6 +70,9 @@ class UsersmController extends CheckLoginController {
 				$sum += $value['defray'];
 			}
 		}
+		$order = " post_modified desc ";
+		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
+		$this->assign('zxgg',$result['info'][0]);
 		$this -> assign('jilu', $jyjl['info']['list']);
 		$this -> assign('sum', $sum);
 		$this -> assign('show', $jyjl['info']['show']);
@@ -83,6 +93,35 @@ class UsersmController extends CheckLoginController {
 		$user = session('user');
 		$this -> assign('username', $user['info']['username']);
 		$this -> assign('cs_yd', 'sed');
+		$order = " post_modified desc ";
+		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
+		$this->assign('zxgg',$result['info'][0]);
+		$this -> display();
+	}
+	/*
+	 * 因祸得福
+	 * */
+	public function sm_yhdf() {
+		$headtitle = "宝贝街-因祸得福";
+		$this -> assign('head_title', $headtitle);
+		$user = session('user');
+		$this -> assign('username', $user['info']['username']);
+		$order = " post_modified desc ";
+		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
+		$this->assign('zxgg',$result['info'][0]);
+		$this -> display();
+	}
+/*
+	 * 师傅课堂
+	 * */
+	public function sm_sfkt() {
+		$headtitle = "宝贝街-试福课堂";
+		$this -> assign('head_title', $headtitle);
+		$user = session('user');
+		$this -> assign('username', $user['info']['username']);
+		$order = " post_modified desc ";
+		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
+		$this->assign('zxgg',$result['info'][0]);
 		$this -> display();
 	}
 	/*
@@ -93,8 +132,12 @@ class UsersmController extends CheckLoginController {
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
 		$this -> assign('cs_sc', 'sed');
+		$order = " post_modified desc ";
+		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
+		$this->assign('zxgg',$result['info'][0]);
 		$this -> assign('username', $user['info']['username']);
 		$this -> display();
+		
 	}
 	/*
 	 * 兑换商品
@@ -104,6 +147,9 @@ class UsersmController extends CheckLoginController {
 		$this -> assign('cs_dh', 'sed');
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
+		$order = " post_modified desc ";
+		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
+		$this->assign('zxgg',$result['info'][0]);
 		$this -> assign('username', $user['info']['username']);
 		$this -> display();
 	}
@@ -115,6 +161,9 @@ class UsersmController extends CheckLoginController {
 		$this -> assign('cs_sf', 'sed');
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
+		$order = " post_modified desc ";
+		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
+		$this->assign('zxgg',$result['info'][0]);
 		$this -> assign('username', $user['info']['username']);
 		$this -> display();
 	}
@@ -125,6 +174,9 @@ class UsersmController extends CheckLoginController {
 		$headtitle = "宝贝街-安全中心";
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
+		$order = " post_modified desc ";
+		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
+		$this->assign('zxgg',$result['info'][0]);
 		$this -> assign('username', $user['info']['username']);
 		$this -> assign('phone', $user['info']['mobile']);
 		$this -> assign('email', $user['info']['email']);
@@ -138,6 +190,9 @@ class UsersmController extends CheckLoginController {
 		$headtitle = "宝贝街-幸福一点";
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
+		$order = " post_modified desc ";
+		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
+		$this->assign('zxgg',$result['info'][0]);
 		$this -> assign('cs_xf', 'sed');
 		$this -> assign('username', $user['info']['username']);
 		$this -> display();
@@ -149,6 +204,9 @@ class UsersmController extends CheckLoginController {
 		$headtitle = "宝贝街-勋章管理";
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
+		$order = " post_modified desc ";
+		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
+		$this->assign('zxgg',$result['info'][0]);
 		$this -> assign('cs_xz', 'sed');
 		$this -> assign('username', $user['info']['username']);
 		$this -> display();
@@ -160,6 +218,9 @@ class UsersmController extends CheckLoginController {
 		$headtitle = "宝贝街-站内消息";
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
+		$order = " post_modified desc ";
+		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
+		$this->assign('zxgg',$result['info'][0]);
 		$this -> assign('cs_xiaox', 'sed');
 		$this -> assign('username', $user['info']['username']);
 		$this -> display();
@@ -201,6 +262,9 @@ class UsersmController extends CheckLoginController {
 			$map = array('uid' => $uid, );
 			$result = apiCall(HomePublicApi::Address_Query, array($map));
 			$this -> assign('address', $result['info']);
+			$order = " post_modified desc ";
+			$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
+			$this->assign('zxgg',$result['info'][0]);
 			$this -> assign('cs_dz', 'sed');
 			$this -> display('manager_address');
 		} else {
