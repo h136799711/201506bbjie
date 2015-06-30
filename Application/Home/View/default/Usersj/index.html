@@ -36,12 +36,21 @@
 																<p>
 																	{$username} </p>
 																<p>
-																	会员等级 : 普通会员 [ <a class="text-link small" href="#">开通会员</a> ]
+																	<if condition="$vo.vip_level eq 1">
+																		会员等级 : vip会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">续费或开通超级会员</a> ]
+																		
+																	</if>
+																	<if condition="$vo.vip_level eq 2">
+																		会员等级 : 超级会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">续费超级会员</a> ]
+																		<else/>
+																		会员等级 : 普通会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">开通会员</a> ]
+																	</if>
+																	
 																</p>
 
 																<p>
-																	可用余额 : <span class="number"><span class="price">0.00</span>元</span>
-																	[ <a class="text-link small" href="#">查看试福钱庄</a> ]
+																	可用余额 : <span class="number"><span class="price">{$vo.coins}</span>元</span>
+																	[ <a class="text-link small" href="{:U('Home/Usersj/sj_zjgl')}">查看试福钱庄</a> ]
 																</p>
 
 																<p>
@@ -73,40 +82,13 @@
 									<a class="more" href="#">更多&gt;</a> </div>
 								<div class="widget-content">
 									<div style="height:270px;padding:30px 15px 0;line-height: 28px;">
-
 										<ul class="gg">
+											<volist name="info" id="vo">
 											<li>
-												<span class="pull-right muted"><span title="2015-06-18 08:56">06-18 08:56</span></span>
-												<a class="fen" href="#" target="_blank"><span title="关于2015年端午节放假的通知">关于2015年端午节放假的通知</span></a>
+												<span class="pull-right muted"><span title="{$vo.post_date|date='m-d h:i',###}">{$vo.post_date|date='m-d h:i',###}</span></span>
+												<a class="" href="{:U('Home/Index/gfggxx',array('id'=>$vo['id']))}" target="_blank"><span title="{$vo.post_title}">{$vo.post_title}</span></a>
 											</li>
-											<li>
-												<span class="pull-right muted"><span title="2015-06-01 08:20">06-01 08:20</span></span>
-												<a class="fen" href="#" target="_blank"><span title="正式启动“试福街 2.0”计划">正式启动“试福街 2.0”计划</span></a>
-											</li>
-											<li>
-												<span class="pull-right muted"><span title="2015-05-22 11:44">05-22 11:44</span></span>
-												<a class="text-normal" href="#" target="_blank"><span title="关于商家活动审核试民功能调整的通知">关于商家活动审核试民功能调整的通知</span></a>
-											</li>
-											<li>
-												<span class="pull-right muted"><span title="2015-05-08 17:01">05-08 17:01</span></span>
-												<a class="text-normal" href="#" target="_blank"><span title="关于商家发货方面的问题说明">关于商家发货方面的问题说明</span></a>
-											</li>
-											<li>
-												<span class="pull-right muted"><span title="2015-04-27 13:58">04-27 13:58</span></span>
-												<a class="text-normal" href="#" target="_blank"><span title="试福街2015年五一放假安排通知">试福街2015年五一放假安排通知</span></a>
-											</li>
-											<li>
-												<span class="pull-right muted"><span title="2015-04-18 15:23">04-18 15:23</span></span>
-												<a class="text-normal" href="#" target="_blank"><span title="关于商家审核试民的优化通知">关于商家审核试民的优化通知</span></a>
-											</li>
-											<li>
-												<span class="pull-right muted"><span title="2015-04-13 10:59">04-13 10:59</span></span>
-												<a class="text-normal" href="#" target="_blank"><span title="试民任务问题联系人的设置">试民任务问题联系人的设置</span></a>
-											</li>
-											<li>
-												<span class="pull-right muted"><span title="2015-04-08 13:22">04-08 13:22</span></span>
-												<a class="text-normal" href="#" target="_blank"><span title="关于任务商品淘宝客设置的说明">关于任务商品淘宝客设置的说明</span></a>
-											</li>
+											</volist>
 										</ul>
 									</div>
 								</div>
