@@ -1,8 +1,9 @@
 <extend name="template/base_index" />
 
 <block name="area_header">
-	<script type="text/javascript" src="__PUBLIC__/Home/js/index.js"></script>
-	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/index.css" />
+	<script type="text/javascript" src="__PUBLIC__/Shop/js/index.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/Shop/js/share.js"></script>
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Shop/css/index.css" />
 	<style type="text/css">
 		* {
 			font-family: "微软雅黑" !important;
@@ -15,13 +16,13 @@
 		<div id="div_main" style="border-top:1px solid #ccc">
 			<div class="div_info" >
 				<div class="div_spxq_info1">
-					<h3 style=" font-weight: 100;font-size: 13px; padding: 10px;"><a href="">首页 </a>> <a href="">试福广场  </a>> 女士夏季人字拖</h3>
+					<h3 style=" font-weight: 100;font-size: 13px; padding: 10px;"><a href="">首页 </a>> <a href="">试福广场  </a>> {$detail.name}</h3>
 					<div style="border-top: 1px dashed #ccc; padding: 10px;">
-						<img width="400" height="450" src="__PUBLIC__/Home/img/1059085468.jpg" style=" border:1px solid #ccc;padding: 1px;float: left;"/>
+						<img width="400" height="450" src="{$detail.main_img}" style=" border:1px solid #ccc;padding: 1px;float: left;"/>
 						<div style="margin-left:420px;">
 						
-							<h3>女士夏季人字拖</h3>
-							<div style="background: #EC2B59;height: 80px; line-height: 80px; padding-left: 20px;color: white;font-size: 12px;">价值:<font size="+2" style="">59</font>福币<a class="am-badge am-badge-danger am-round" style="margin-left: 20px;">免费</a><a class="am-badge am-badge-warning am-round" style="margin-left: 20px;">全国包邮</a></div>
+							<h3>{$detail.name}</h3>
+							<div style="background: #EC2B59;height: 80px; line-height: 80px; padding-left: 20px;color: white;font-size: 12px;">价值:<font size="+2" style="">{:number_format($detail['price']/100,0)}</font>福币<a class="am-badge am-badge-danger am-round" style="margin-left: 20px;">免费</a><a class="am-badge am-badge-warning am-round" style="margin-left: 20px;">全国包邮</a></div>
 							<table style="font-size: 12px;">
 								<tr style="font-size: 13px; ">
 									<td style="padding-top: 10px;">收藏：</td>
@@ -40,26 +41,29 @@
 										<a target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=df3a9ab6dc7cde89abc1069af63dc04428e0a9df0ccf6fdaf7bd768d7d5c82c0"><img border="0" src="__PUBLIC__/Shop/img/baobeiqun.jpg" alt="宝贝官方群" title="宝贝官方群"></a>
 									</td>
 								</tr>
+								
 								<tr>
-									<td style="padding-top: 10px;">颜色:</td>
-									<td style="padding-top: 10px;"><font style="border: 1px solid #ccc;padding: 5px 10px;margin-left: 5px; cursor: pointer;">绿色</font><font style="border: 1px solid #ccc;padding: 5px 10px; margin-left:5px;cursor: pointer; background: url('__PUBLIC__/Home/img/selected.png'); background-size: 100% 100%;">红色</font></td>
+									<td style="padding-top: 20px;">颜色:</td>
+									<td style="padding-top: 20px;"><font class="font_sku" index="0" onmouseover="overSku(this)" onclick="selectSku(this)" onmouseout="outSku(this)">绿色</font><font index="0" class="font_sku" onmouseover="overSku(this)" onclick="selectSku(this)" onmouseout="outSku(this)">红色</font></td>
 								</tr>
 								<tr>
-									<td style="padding-top: 10px;">尺码：</td>
-									<td style="padding-top: 10px;"><font style="border: 1px solid #ccc;padding: 5px 10px; margin-left: 5px;cursor: pointer;">:S（36-37码）</font></td>
+									<td style="padding-top: 20px;">尺码：</td>
+									<td style="padding-top: 20px;"><font class="font_sku" index="0" onmouseover="overSku(this)" onclick="selectSku(this)" onmouseout="outSku(this)">:S（36-37码）</font></td>
 								</tr>
 								<tr>
 									<td colspan="2" style="font-size:17px; font-weight: 600;color: #ff5497; padding-top: 10px;">小提示：您收藏的宝贝可能会被系统自动匹配给你哦！</td>
 								</tr>
 								<tr>
 									<td colspan="2" style="padding-top: 10px;">
-										<button type="button" class="am-btn am-btn-danger">我要收藏</button>
-										<button type="button" class="am-btn am-btn-warning">我要兑换</button>
+										<button type="button" class="am-btn am-btn-danger" style="width:120px; height: 50px;border-radius: 10px;"><font size="+1">我要收藏></font></button>
+										<button type="button" class="am-btn am-btn-warning" style="width:120px; height: 50px;border-radius: 10px;"><font size="+1">我要兑换></font></button>
 									</td>
 								</tr>
 								<tr>
 									<td colspan="2" style="padding-top: 10px;">
-										<button type="button"  style="border: 1px solid #999; border-radius: 15px; padding: 5px 20px; background: white; ">分享</button>
+										
+										<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more" style="width: 70px;height: 27px;background:url(__PUBLIC__/Shop/img/goods_fenxiang.jpg) no-repeat; "></a></div>
+
 									</td>
 								</tr>
 							</table>
@@ -83,16 +87,19 @@
 						  </ul>
 						  <div class="am-tabs-bd" style="padding: 0; ">
 						    <div data-tab-panel-0 class="am-tab-panel am-active" style="padding: 0;">
-								<img src="__PUBLIC__/Home/img/TB2_YwscpXXXXaLXXXXXXXXXXXX-10771667.jpg" width="630"/>
-						    	<img src="__PUBLIC__/Home/img/TB2JCphaXXXXXbRXpXXXXXXXXXX-10771667.jpg" width="630"/>
-						    	<img src="__PUBLIC__/Home/img/TB2k57scpXXXXauXXXXXXXXXXXX-10771667.jpg" width="630"/>
-						    	<img src="__PUBLIC__/Home/img/TB2s03rcpXXXXbdXXXXXXXXXXXX-10771667.jpg" width="630"/>
-						    	<img src="__PUBLIC__/Home/img/TB2vXMrcpXXXXbzXXXXXXXXXXXX-10771667.jpg" width="630"/>
+						    	<volist name="detail.img" id="img">
+						    		<img src="{$img}" width="630"/>
+						    	</volist>
 						    </div>
-						    <div
-						    data-tab-panel-1 class="am-tab-panel ">【彩虹】那时候有多好，任雨打湿裙角。忍不住哼起，心爱的旋律。绿油油的树叶，自由地在说笑。燕子忙归巢，风铃在舞蹈。经过青春的草地，彩虹忽然升起。即使视线渐渐模糊，它也在我心里。就像爱过的旋律，没人能抹去。因为生命存在失望，歌唱，所以才要歌唱。</div>
+						   <div data-tab-panel-1 class="am-tab-panel " style="height: 800px;">
+						   <h3>	已晒货的试民：</h3>
+						  		当前商品还没有人晒货哦！！！
+						   </div>
 						  <div
-						  data-tab-panel-2 class="am-tab-panel ">【歌唱】那时候有多好，任雨打湿裙角。忍不住哼起，心爱的旋律。绿油油的树叶，自由地在说笑。燕子忙归巢，风铃在舞蹈。经过青春的草地，彩虹忽然升起。即使视线渐渐模糊，它也在我心里。就像爱过的旋律，没人能抹去。因为生命存在失望，歌唱，所以才要歌唱。</div>
+						  data-tab-panel-2 class="am-tab-panel " style="height: 800px;">
+						   <h3>	已通过审批的试民：</h3>
+						  
+						  </div>
 						</div>
 						</div>
 					</div>
@@ -149,5 +156,3 @@
 </block>
 
 <block name="area_footer">
-	
-</block>

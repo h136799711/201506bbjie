@@ -67,6 +67,49 @@ class WxproductApi extends Api{
 
 		return $this -> apiReturnSuc(array("show" => $show, "list" => $list));
 	}
+
+
+	/**
+	 * 联表查询
+	 */
+	public function queryJoin($map = null, $page = array('curpage'=>0,'size'=>10), $order = false, $params = false, $fields = false){
+		$query = $this->model;
+		if(!is_null($map)){
+			$query = $query->where($map);
+		}
+		if(!($order === false)){
+			$query = $query->order($order);
+		}
+		if(!($fields === false)){
+			$query = $query->field($fields);
+		}
+		$list = $query ->
+		table('itboye_wxproduct_group iwg,itboye_wxproduct p')->where('iwg.p_id = p.id')
+		/*join('join itboye_wxproduct_group as iwg ON itboye_wxproduct.id = iwg.p_id')->*/
+		->page($page['curpage'] . ',' . $page['size'])-> select();
+		
+
+		if ($list === false) {
+			$error = $this -> model -> getDbError();
+			return $this -> apiReturnErr($error);
+		}
+
+		$count = $this -> model -> where($map) -> count();
+		// 查询满足要求的总记录数
+		$Page = new \Think\Page($count, $page['size']);
+
+		//分页跳转的时候保证查询条件
+		if ($params !== false) {
+			foreach ($params as $key => $val) {
+				$Page -> parameter[$key] = urlencode($val);
+			}
+		}
+
+		// 实例化分页类 传入总记录数和每页显示的记录数
+		$show = $Page -> show();
+
+		return $this -> apiReturnSuc(array("show" => $show, "list" => $list));
+	}
 	
 }
 
