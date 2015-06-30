@@ -99,6 +99,48 @@ class SJActivityController extends HomeController {
 			}
 	   }
 	   /*
+	    * 更新商品
+	    * */
+	    public function productedit(){
+	    	$user=session('user');
+	    	$id=I('id','');
+			$mapa=array('id'=>$id,);
+			if(IS_GET){
+				$pro=apiCall(HomePublicApi::Product_Query, array($mapa));
+				$this->assign('id',$pro['info'][0]['id']);
+				$this->assign('product',$pro['info'][0]);
+				$map=array('uid'=>$user['info']['id'],'is_on_sale'=>1);
+				$mwe=array('uid'=>$user['info']['id'],'is_on_sale'=>0,);
+				$sj=apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
+				$pro=apiCall(HomePublicApi::Product_QueryAll, array($map));
+				$prduct=apiCall(HomePublicApi::Product_QueryAll, array($mwe));
+				$this->assign('downpro',$prduct['info']['list']);
+				$this->assign('showdown',$product['show']);
+				$this->assign('showall',$pro['show']);
+				$this->assign('products',$pro['info']['list']);
+				$this->assign('aliwawa',$sj['info'][0]['aliwawa']);
+				$this->assign('username',$user['info']['username']);
+//				dump($pro['info'][0]);
+				$this->display('productmanager');
+			}else{
+				$entity=array(
+				'price'=>I('price',''),
+				'position'=>trim(I('weizhi','')),
+				'update_time'=>time(),
+				);
+				
+//				dump($id);
+				//dump($entity);
+				$result=apiCall(HomePublicApi::Product_SaveByID, array($id,$entity));
+				if ($result['status']) {
+					$this -> success('更新成功', U('Home/SJActivity/productmanager'));
+				}else{
+					$this -> error($result['info']);
+				}
+			}
+			
+	    }
+	   /*
 	    * 商品上架
 	    * */
 	    public function uppro(){
@@ -129,28 +171,63 @@ class SJActivityController extends HomeController {
 	   * */
 	   public function addproduct(){
 	   		$user=session('user');
-	   		$entity=array(
-	   			'uid'=>$user['info']['id'],
-				'link'=>I('post.url',''),
-				'price'=>I('post.price',''),
-				'has_model_num'=>0,
-				'position'=>trim(I('post.weizhi','')),
-				'title'=>I('title',''),
-				'main_img'=>I('img',''),
-				'wangwang'=>I('alww',''),
-				'create_time'=>time(),
-				'update_time'=>time(),
-				'status'=>1,
-				'model_num_cfg'=>'',
-				'is_on_sale'=>1,
-				
+			$gaoji=array(
+				'xinghao1'=>I('xinghao1',''),
+				'price1'=>I('price1',''),
+				'xinghao2'=>I('xinghao2',''),
+				'price2'=>I('price2',''),
+				'xinghao3'=>I('xinghao3',''),
+				'price3'=>I('price3',''),
 			);
-			$result=apiCall(HomePublicApi::Product_Add, array($entity));
-			if ($result['status']) {
-				$this -> success('商品添加成功', U('Home/SJActivity/productmanager'));
+			$a=serialize($gaoji);
+			if($gaoji['xinghao1']=='' && $gaoji['xinghao2']=='' && $gaoji['xinghao3']==''){
+					$entity=array(
+		   			'uid'=>$user['info']['id'],
+					'link'=>I('post.url',''),
+					'price'=>I('post.price',''),
+					'has_model_num'=>0,
+					'position'=>trim(I('post.weizhi','')),
+					'title'=>I('title',''),
+					'main_img'=>I('img',''),
+					'wangwang'=>I('alww',''),
+					'create_time'=>time(),
+					'update_time'=>time(),
+					'status'=>1,
+					'model_num_cfg'=>'',
+					'is_on_sale'=>1,
+					
+				);
+				$result=apiCall(HomePublicApi::Product_Add, array($entity));
+				if ($result['status']) {
+					$this -> success('商品添加成功', U('Home/SJActivity/productmanager'));
+				}else{
+					$this -> error($result['info']);
+				}
 			}else{
-				$this -> error($result['info']);
+					$entity=array(
+		   			'uid'=>$user['info']['id'],
+					'link'=>I('post.url',''),
+					'price'=>I('post.price',''),
+					'has_model_num'=>1,
+					'position'=>trim(I('post.weizhi','')),
+					'title'=>I('title',''),
+					'main_img'=>I('img',''),
+					'wangwang'=>I('alww',''),
+					'create_time'=>time(),
+					'update_time'=>time(),
+					'status'=>1,
+					'model_num_cfg'=>$a,
+					'is_on_sale'=>1,
+					
+				);
+				$result=apiCall(HomePublicApi::Product_Add, array($entity));
+				if ($result['status']) {
+					$this -> success('商品添加成功', U('Home/SJActivity/productmanager'));
+				}else{
+					$this -> error($result['info']);
+				}
 			}
+	   		
 //		dump($entity);
 	   }
 	  /**
