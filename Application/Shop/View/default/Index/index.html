@@ -101,7 +101,7 @@
 					</div>
 					
 					<volist name="recommendProductList" id="npl">
-					<dl class="dl_info" onclick="toDetail({$npl.id})">
+					<dl class="dl_info" onclick="toUrl('{:U('Shop/Index/spxq',array('id'=>$npl['id']))}')" >
 						<dt>
 
 		                <img src="{$npl.main_img}" width="216" height="245"/>

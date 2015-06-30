@@ -26,7 +26,12 @@
 							<input type="hidden" id="lv" name="lv">
 							<div class="control-group">
 								<label class="control-label">
+									<if condition="$vip eq 0">
 									开通服务
+									
+									<else/>
+									续费服务
+									</if>
 								</label>
 
 								<div class="controls">
@@ -39,7 +44,15 @@
 										<div class="ng-vip">费用：300元/月</div>
 										<div class="ng-svip">费用：600元/月</div>
 										<div>
-											您当前服务状态：普通会员
+											<if condition="$vip eq 1">
+												当前会员等级 : vip会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">vip会员</a> ]
+																		
+											</if>
+											<if condition="$vip eq 2">
+												当前会员等级 : 超级vip会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">超级vip会员</a> ]
+												<else/>
+												当前会员等级 : 普通会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">普通会员</a> ]
+											</if>
 										</div>
 									</div>
 								</div>
@@ -64,11 +77,9 @@
 							<div class="control-group">
 								<label class="control-label">应付金额</label>
 								<div class="controls text">
-									<!-- ngIf: !xufei_type -->
 									<div ng-if="!xufei_type" class="ng-scope">
 										<span class="yingfu">  </span>
 									</div>
-									<!-- end ngIf: !xufei_type -->
 									<div ng-show="xufei_type" ng-value="youhui=xufei_type==12?nianfei_youhui:0;bili=sgrade==3?1:0.6" class="ng-hide" value="0.6">
 										<span class="yingfu ng-binding"> ￥NaN </span>
 										<span ng-show="xufei_type&gt;1" class="muted ng-binding ng-hide">(原价 NaN元，优惠 NaN元)</span>

@@ -38,13 +38,10 @@ class IndexController extends HomeController {
 		$order = " post_modified desc ";
 		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
 		$this->assign('zxgg',$result['info'][0]);
-		
-		
 		$headtitle="宝贝街-首页";
 		$this->assign('head_title',$headtitle);
 		$users=session('user');
 		
-
 		$this->assign('username',session('user')['info']['username']);
 		$this->display();
 	}
@@ -380,7 +377,8 @@ class IndexController extends HomeController {
 					$order = " post_modified desc ";
 					$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
 					$this->assign('zxgg',$result['info'][0]);
-						$this->assign('info',$result['info']);
+					$this->assign('info',$result['info']);
+					$this->assign('phone',$user['info']['mobile']);
 					$this->assign('username',$users['info']['username']);
 					$this -> display('sm_manager');
 				}else{
@@ -391,7 +389,8 @@ class IndexController extends HomeController {
 						'uid'=>$id,
 					);					
 					$sj=apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
-					$this->assign('username',$user['info']['username']);
+					$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
+					$this->assign('info',$result['info']);
 					$this->assign('sj',$sj['info']);
 					$this->assign('username',$users['info']['username']);
 					$this->display('Usersj/index');
@@ -426,19 +425,26 @@ class IndexController extends HomeController {
 	  * 试民首页
 	  * */
 	public function sm_manager(){
-		
-			
 		$users=session('user');
 		$uid=$users['info']['id'];
 		$id=$uid;
-		$map="uid=".$id;					
-		$group=apiCall(HomePublicApi::Group_QueryNpPage, array($map));
+		$mapp="uid=".$uid;					
+		$group=apiCall(HomePublicApi::Group_QueryNpPage, array($mapp));
 		$groupid=$group['info'][0]['group_id'];
-		
 		if($groupid==15){
+			$user=session('user');
+			$id=$user['info']['id'];
+			$map=array(
+				'uid'=>$id,
+			);	
 			$user=apiCall(HomePublicApi::User_GetUser, array($id));
+			$sj=apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
+			$order = " post_modified desc ";
+			$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
+			$this->assign('info',$result['info']);
+			$this->assign('money',$sj['info'][0]['coins']);
 			$this->assign('username',$user['info']['username']);
-			$this->assign('phone',$user['info']['mobile']);
+			$this->assign('sj',$sj['info']);
 			$this->display('Usersj/index');
 		}else{
 			$user=apiCall(HomePublicApi::User_GetUser, array($id));

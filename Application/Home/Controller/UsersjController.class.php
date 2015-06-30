@@ -9,6 +9,8 @@ namespace Home\Controller;
 use Think\Controller;
 use Think\Storage;
 use Home\Api\HomePublicApi;
+use Admin\Api\AdminPublicApi;
+
 /*
  * 官网首页
  */
@@ -25,7 +27,12 @@ class UsersjController extends CheckLoginController {
 		$map=array(
 			'uid'=>$id,
 		);					
+		$order = " post_modified desc ";
+		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
+		
+		$this->assign('info',$result['info']);
 		$sj=apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
+		$this->assign('money',$sj['info'][0]['coins']);
 		$this->assign('username',$user['info']['username']);
 		$this->assign('sj',$sj['info']);
 		$this->display();
@@ -42,7 +49,6 @@ class UsersjController extends CheckLoginController {
 			'uid'=>$user['info']['id'],
 		);
 		$result=apiCall(HomePublicApi::Bbjmember_Seller_GetInfo, array($map));
-//		dump($result);
 		$this->assign('entity',$result['info']);
 		$this->display();
 	}
@@ -192,6 +198,7 @@ class UsersjController extends CheckLoginController {
 		$map = array('uid' => $uid, );
 		$result = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
 		$this -> assign('coins', $result['info'][0]['coins']);
+		$this -> assign('vip', $result['info'][0]['vip_level']);
 		$this->assign('username',$user['info']['username']);
 //		dump($result);
 		$this->display();
