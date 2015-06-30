@@ -18,15 +18,15 @@
 				<div class="div_spxq_info1">
 					<h3 style=" font-weight: 100;font-size: 13px; padding: 10px;"><a href="">首页 </a>> <a href="">试福广场  </a>> {$detail.name}</h3>
 					<div style="border-top: 1px dashed #ccc; padding: 10px;">
-						<img width="400" height="450" src="{$detail.main_img}" style=" border:1px solid #ccc;padding: 1px;float: left;"/>
+						<img width="400" height="450" id="img_main" src="{$detail.main_img}" style=" border:1px solid #ccc;padding: 1px;float: left;"/>
 						<div style="margin-left:420px;">
-						
+							
 							<h3>{$detail.name}</h3>
-							<div style="background: #EC2B59;height: 80px; line-height: 80px; padding-left: 20px;color: white;font-size: 12px;">价值:<font size="+2" style="">{:number_format($detail['price']/100,0)}</font>福币<a class="am-badge am-badge-danger am-round" style="margin-left: 20px;">免费</a><a class="am-badge am-badge-warning am-round" style="margin-left: 20px;">全国包邮</a></div>
+							<div style="background: #EC2B59;height: 80px; line-height: 80px; padding-left: 20px;color: white;font-size: 12px;">价值:<font size="+2" id="font_price">{:number_format($detail['price']/100,0)}</font>福币<a class="am-badge am-badge-danger am-round" style="margin-left: 20px;">免费</a><a class="am-badge am-badge-warning am-round" style="margin-left: 20px;">全国包邮</a></div>
 							<table style="font-size: 12px;">
 								<tr style="font-size: 13px; ">
 									<td style="padding-top: 10px;">收藏：</td>
-									<td style="padding-top: 10px;">已有<font color="red">18</font>人收藏</td>
+									<td style="padding-top: 10px;">已有<font color="red">0</font>人收藏</td>
 								</tr>
 								<tr>
 									<td style="padding-top: 10px;">咋拿这东西：</td>
@@ -41,15 +41,24 @@
 										<a target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=df3a9ab6dc7cde89abc1069af63dc04428e0a9df0ccf6fdaf7bd768d7d5c82c0"><img border="0" src="__PUBLIC__/Shop/img/baobeiqun.jpg" alt="宝贝官方群" title="宝贝官方群"></a>
 									</td>
 								</tr>
+							
+								<volist name="skuList" id="sl">
+									
+									<input name="skuList" type="hidden" data_price="{:number_format($sl['price']/100,0)}" data_url="{$sl.icon_url}" value="{$sl.sku}"/>
+								</volist>
 								
-								<tr>
-									<td style="padding-top: 20px;">颜色:</td>
-									<td style="padding-top: 20px;"><font class="font_sku" index="0" onmouseover="overSku(this)" onclick="selectSku(this)" onmouseout="outSku(this)">绿色</font><font index="0" class="font_sku" onmouseover="overSku(this)" onclick="selectSku(this)" onmouseout="outSku(this)">红色</font></td>
-								</tr>
-								<tr>
-									<td style="padding-top: 20px;">尺码：</td>
-									<td style="padding-top: 20px;"><font class="font_sku" index="0" onmouseover="overSku(this)" onclick="selectSku(this)" onmouseout="outSku(this)">:S（36-37码）</font></td>
-								</tr>
+								<volist name="skuInfo" id="si">
+									<tr class="tr_sku">
+										<td style="padding-top: 20px;">{$si.name}:</td>
+										<td style="padding-top: 20px;">
+											<volist name="si.value" id="sv">
+												<font class="font_sku" index="0" onmouseover="overSku(this)" onclick="selectSku(this)" onmouseout="outSku(this)">{$sv}</font>
+											</volist>
+											<!--<font class="font_sku" index="0" onmouseover="overSku(this)" onclick="selectSku(this)" onmouseout="outSku(this)">红色</font>-->
+										</td>
+									</tr>
+								</volist>
+								
 								<tr>
 									<td colspan="2" style="font-size:17px; font-weight: 600;color: #ff5497; padding-top: 10px;">小提示：您收藏的宝贝可能会被系统自动匹配给你哦！</td>
 								</tr>

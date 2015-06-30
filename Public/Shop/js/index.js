@@ -133,7 +133,7 @@ function changeBgColor(){
  */
 function toDetail(pid){
 	//alert(pid);
-	window.location.href="spxq?id="+pid;
+	window.location.href="Index/spxq?id="+pid;
 }
 
 function overSku(font){
@@ -150,10 +150,25 @@ function selectSku(font){
 	$(font).siblings().removeClass("sku_style");
 	$(font).siblings().attr("index",0);
 	$(font).attr("index")==0?$(font).attr("index",1):$(font).attr("index",0);
-	
-	$(".sku_style").each(function(i,n){
-		//alert($(n).html());
-	})
+	//当被选中
+	if($(font).attr("index")==1){
+		//如果每个规格都有被选
+		if($(".sku_style").size()==$(".tr_sku").size()){ 
+			var skuValues="";
+			$(".sku_style").each(function(i,n){
+				skuValues+=";"+$(n).parent().siblings().eq(0).html()+$(n).html();
+			});
+			
+			$("input[name='skuList']").each(function(i,n){
+				if($(n).val()==skuValues){
+					$("#img_main").attr('src',$(n).attr('data_url'));
+					$("#font_price").html($(n).attr('data_price'));//alert();
+				}
+			})
+			
+		}
+		//alert();
+	}
 }
 
 
