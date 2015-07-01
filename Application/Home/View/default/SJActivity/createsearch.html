@@ -7,11 +7,11 @@
 	<script type="text/javascript" src="__CDN__/select2/4.0.0/js/i18n/zh-CN.js"></script>
 	<link type="text/css" rel="stylesheet" href="__CDN__/select2/4.0.0/css/select2.min.css" />
 	<style type="text/css">
-	.select2-results__options{ background: white;width: 500px;}
+	.select2-results__options{ background: white;width: 465px;}
 		/*.select2-container{ background: white;}
 		.select2-dropdown--below{ background: white;}*/
 		.select2-search--dropdown{
-			width: 500px;
+			width: 465px;
 			margin-top: -85px;
 			background: white;
 		}
@@ -51,7 +51,15 @@
 				templateSelection: function (repo) {
 					//var minTitle= repo.title.substring(10);
 					if(repo.title!=undefined){
-						var minTitle= repo.title.substring(0,15)+"...";
+						var minTitle= repo.title.substring(0,20)+"...";
+						$("#product_base_info img").attr('src',repo.main_img);
+						$("#product_base_info .controls .font_title").html(repo.title);
+						     
+						$("#product_base_info .controls .font_time").html(new Date(parseInt(repo.update_time) * 1000).toLocaleString().replace(/:\d{1,2}$/,' '));
+						$("#product_base_info .controls .input_url").val(repo.link);
+						$("#product_base_info").show();
+						//alert();
+
 						return minTitle || repo.text;
 					}else{
 						return repo.title || repo.text;
@@ -129,7 +137,7 @@
    			<div class="filter-controls pull-left" style="">
 				<form action="" class="addToGroupForm" method="post" style="">
 					<input type="hidden" name="groupid" value="{$groupid}" style="" />
-					<select style="width:500px;padding: 10px 15px;font-size: 15px;" id="user_select2" name="uid" class="form-control">
+					<select style="width:465px;padding: 10px 15px;font-size: 15px;" id="user_select2" name="uid" class="form-control">
 						<option></option>
 					</select>
 					<!--<a id="addtogroup" target-form="addToGroupForm" class="ajax-post btn btn-sm btn-primary" href="{:U('Admin/Wxuser/addToGroup')}">添加到</a>
@@ -173,13 +181,13 @@
     </script>
  -->
     <div id="product_base_info" class="" style="margin-top: 15px; margin-left: 103px;display: none;"><div url="#"><div class="control-group">
-  <div class="control-label">
+  <div class="control-label" style="float: left;">
     <img width="100" src="img/TB1ZyBzFVXXXXXDXFXXXXXXXXXX_!!0-item_pic.jpg_220x220.jpg" alt="">  </div>
-  <div class="controls">
+  <div  class="controls" style="margin-left: 110px;">
     <p class="pb10" style="margin-top: 8px;">
-      商品名称 : 儿童舞蹈服装女童练功服少儿夏款拉丁舞蹈裙跳舞考级培训服新款    </p>
-  <p class="pb10">商品链接 : <input readonly="readonly" onclick="this.select();" style="width:395px" type="text" value="http://item.taobao.com/item.htm?id=38725578272" id=""></p>
-  <p>最后更新 : 2015-06-30 13:42    <a data-toggle="modal2" modal-title="更新商品#17224" class="btn" href="#">更新商品</a>  </p>
+      商品名称 : <font class="font_title"></font>  </p>
+  <p class="pb10">商品链接 : <input readonly="readonly"  style="width:395px" type="text" value="#" class="input_url"></p>
+  <p>最后更新 : <font class="font_time"></font>    <a data-toggle="modal2" modal-title="更新商品#17224" class="btn" href="#">更新商品</a>  </p>
    <input type="hidden" value="38725578272" name="product_id" id="product_id">  </div>
 </div></div></div>
     <div class="control-group" style="margin-left:103px;">

@@ -415,7 +415,13 @@ class SJActivityController extends HomeController {
 	 */
 	public function select(){
 		$user=session('user');
-		$map=array('uid'=>$user['info']['id'],'status'=>1);
+		$map=array(
+			'uid'=>$user['info']['id'],
+			'status'=>1,
+			'title'=>array('like', "%" . I('q', '', 'trim') . "%"),
+			//'link'=>array('like', "%" . I('q', '', 'trim') . "%"),
+			//'_logic' =>'OR',
+		);
 		$result=apiCall(HomePublicApi::Product_QueryAll, array($map));
 		$this->success($result['info']['list']);
 		
