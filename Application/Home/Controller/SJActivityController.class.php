@@ -39,12 +39,24 @@ class SJActivityController extends HomeController {
 	  * 创建任务第一步
 	  * */
 	  public function activity_1(){
-	  	$headtitle="宝贝街-创建任务";
-		$this->assign('head_title',$headtitle);
-		$user=session('user');
-		$this->assign('username',$user['info']['username']);
-		$this->display();
+	  	$user=session('user');
+		
+	  	if(IS_GET){
+	  		$headtitle="宝贝街-创建任务";
+			$this->assign('head_title',$headtitle);
+			$this->assign('username',$user['info']['username']);
+			$map=array('uid'=>$user['info']['id'],'status'=>1);
+			$pro=apiCall(HomePublicApi::Product_Query, array($map));
+			$this->assign('pros',$pro['info']);
+//			dump($pro);
+			$this->display();
+	  	}else{
+	  		
+	  	}
+	  	
 	  }
+	 
+	  
 	  /*
 	  * 创建任务第二步
 	  * */
@@ -52,6 +64,7 @@ class SJActivityController extends HomeController {
 	  	$headtitle="宝贝街-创建任务";
 		$this->assign('head_title',$headtitle);
 		$user=session('user');
+		
 		$this->assign('username',$user['info']['username']);
 		$this->display();
 	  }
@@ -285,6 +298,9 @@ class SJActivityController extends HomeController {
 			$this->display();
 		}
 	}
+	
+	/*
+	 * */
 	
 	/**
 	 * 判断是什么链接，淘宝？天猫？
