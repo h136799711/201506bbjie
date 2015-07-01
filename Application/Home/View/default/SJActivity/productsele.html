@@ -1,0 +1,403 @@
+<extend name="template/base_index" />
+<block name="area_header">
+	<link rel="stylesheet" href="__CSS__/shangjia2.css">
+	<style type="text/css">.show img {
+	width: 80px;
+	height: 80px;
+	margin-right: 5px;
+}
+.show {
+	padding: 10px;
+	width: 80%;
+	font-size: 12px;
+}</style>
+</block>
+<block name="area_body">
+	<include file='Widget/sjtop' />
+	<div class="seller_main clearfix" controller="seller/common">
+		<div class="seller_content_wrap">
+			<div class="seller_content" style="padding-top: 10px;">
+				<div class="content">
+					
+					<h1 style="height: 40px;">
+						<div class="pull-right btn-group">
+							<button id="luruBtn" class="am-btn am-btn-primary am-btn-xs" style="height: 30px;width: 80px; padding: 0;border-radius: 5px;" >
+								新增搜索
+							</button>
+						</div>
+						<div class="pull-left">
+							搜索方式
+						</div>
+						<ul class="pull-left taobao-jd">
+							<li class="active" >
+								<a href="#">
+									淘宝搜索
+								</a>
+							</li>
+						</ul>
+					</h1>
+					<div class="jquery-once-1-processed">
+						<div class="p10">
+						</div>
+						<script type="text/javascript">$(function() {
+							$("#ul_start_down li").click(function() {
+								$(this).addClass("active").siblings().removeClass("active");
+								$(".grid-view").eq($(this).index()).show().siblings().hide();
+							})
+						})</script>
+						<ul id="ul_start_down" class="nav nav-tabs" role="menu">
+							<li class="active" role="menuitem">
+								<a tabindex="-1" href="javascript:void(0)">
+									全部
+								</a>
+							</li>
+							<li role="menuitem">
+								<a tabindex="-1" href="javascript:void(0)">
+									已启用
+								</a>
+							</li>
+							<li role="menuitem">
+								<a tabindex="-1" href="javascript:void(0)">
+									暂停
+								</a>
+							</li>
+						</ul>
+						<form controller="extend/search_form" id="yw0" action="#" method="post" class="search_form-processed">
+							<div class="well well-small">
+								<div class="row">
+									<div class="span4">
+										按关键字
+										<input placeholder="搜索宝贝名称" class="mb0" name="Product[title]" id="Product_title" type="text" style="height: 30px;">
+									</div>
+									
+									<div class="span2">
+										<button class="btn" type="submit" name="yt0">
+											搜索
+										</button>
+									</div>
+								</div>
+							</div>
+						</form>
+						<div>
+							<!-- 全部中-->
+							<div class="grid-view" controller="extend/gridview" >
+								<table class="items table table-hover">
+									<thead>
+										<tr>
+											<th width="120" id="product-grid_c0">
+												<a class="sort-link" href="#">
+													搜索商品
+													<span class="caret">
+													</span>
+												</a>
+											</th>
+											<th id="product-grid_c1">
+												关键字/搜索名称
+											</th>
+											<th width="120" id="product-grid_c2">
+												<a class="sort-link" href="#">
+													搜索类型
+													<span class="caret">
+													</span>
+												</a>
+											</th>
+											<th width="80" id="product-grid_c3">
+												<a class="sort-link" href="#">
+													状态
+													<span class="caret">
+													</span>
+												</a>
+											</th>
+											<th width="100" id="product-grid_c5">
+												<a class="sort-link desc" href="">
+													最后更新
+													<span class="caret">
+													</span>
+												</a>
+											</th>
+											<th width="60" id="product-grid_c6">
+												操作
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										<empty name="pro">
+											<tr><td colspan="6">暂无商品信息</td></tr>
+										<else/>
+										<volist name="pro" id="vo">
+										<tr class="odd">
+											<td>
+												<div class="p_img">
+														<img width="56px" height="56px" src="{$vo.main_img}" alt="">
+													</div>
+											</td>
+											<td>
+												<a data-toggle="modal2" modal-title="" href="#">
+													
+													<div class="p_title small">
+														{$vo.title}
+														
+													</div>
+												</a>
+											</td>
+											<td>
+												<span data-role="inline_edit" class="inline_edit" fieldid="" fieldname="" required="required" datatype="" >关键词</span>
+											</td>
+											<td>
+												<span data-role="inline_edit" class="inline_edit" fieldid="17224" fieldname="weizhi" required="required" method="textarea"><if condition="$vo['status'] eq 1">正常</if><if condition="$vo['status'] eq 0">暂停</if></span>
+											</td>
+											<td>
+												<span title="2015-06-27 09:10">{$vo.update_time|date='Y-m-d H:i:s',###}</span>
+											</td>
+											<td>
+												<a  tooltip="更新" modal-title="" visible="1" class="btn btn-mini" href="{:U('Home/SJActivity/productedit',array('id'=>$vo['id']))}" >
+													查看
+												</a>
+
+													<a  tooltip="更新" modal-title="" visible="1" class="btn btn-mini" href="{:U('Home/SJActivity/productedit',array('id'=>$vo['id']))}" >
+													暂停
+												</a>
+												
+												<span style="height:3px;display:table;">
+												</span>
+												<a data-role="ajax" visible="1" class="btn btn-mini"
+												href="{:U('Home/SJActivity/downpro',array('id'=>$vo['id']))}">
+													设为默认
+												</a>
+											</td>
+										</tr>
+										</volist>
+										</empty>
+									</tbody>
+								</table>
+								<!-- 全部-->
+								
+								<div class="row-fluid">
+									<div class="span6 offset3">
+									</div>
+									<div class="span3">
+										<div class="summary">
+											{$proshow}
+										</div>
+									</div>
+								</div>
+								<div class="keys" style="display:none" title="/seller/product">
+									<span>17224</span>
+								</div>
+							</div>
+							<!-- 已启用-->
+							<div style="display: none;" class="grid-view" controller="extend/gridview" >
+								<table class="items table table-hover">
+									<thead>
+										<tr>
+											<th width="120" id="product-grid_c0">
+												<a class="sort-link" href="#">
+													搜索商品
+													<span class="caret">
+													</span>
+												</a>
+											</th>
+											<th id="product-grid_c1">
+												关键字/搜索名称
+											</th>
+											<th width="120" id="product-grid_c2">
+												<a class="sort-link" href="#">
+													搜索类型
+													<span class="caret">
+													</span>
+												</a>
+											</th>
+											<th width="80" id="product-grid_c3">
+												<a class="sort-link" href="#">
+													状态
+													<span class="caret">
+													</span>
+												</a>
+											</th>
+											<th width="100" id="product-grid_c5">
+												<a class="sort-link desc" href="">
+													最后更新
+													<span class="caret">
+													</span>
+												</a>
+											</th>
+											<th width="60" id="product-grid_c6">
+												操作
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										<empty name="product">
+											<tr><td colspan="6">暂无商品信息</td></tr>
+										<else/>
+										<volist name="pro" id="vo">
+										<tr class="product">
+											<td>
+												<div class="p_img">
+														<img width="56px" height="56px" src="{$vo.main_img}" alt="">
+													</div>
+											</td>
+											<td>
+												<a data-toggle="modal2" modal-title="" href="#">
+													
+													<div class="p_title small">
+														{$vo.title}
+														
+													</div>
+												</a>
+											</td>
+											<td>
+												<span data-role="inline_edit" class="inline_edit" fieldid="" fieldname="" required="required" datatype="" >关键词</span>
+											</td>
+											<td>
+												<span data-role="inline_edit" class="inline_edit" fieldid="17224" fieldname="weizhi" required="required" method="textarea"><if condition="$vo['status'] eq 1">正常</if><if condition="$vo['status'] eq 0">暂停</if></span>
+											</td>
+											<td>
+												<span title="2015-06-27 09:10">{$vo.update_time|date='Y-m-d H:i:s',###}</span>
+											</td>
+											<td>
+												<a  tooltip="更新" modal-title="" visible="1" class="btn btn-mini" href="{:U('Home/SJActivity/productedit',array('id'=>$vo['id']))}" >
+													查看
+												</a>
+
+													<a  tooltip="更新" modal-title="" visible="1" class="btn btn-mini" href="{:U('Home/SJActivity/productedit',array('id'=>$vo['id']))}" >
+													暂停
+												</a>
+												
+												<span style="height:3px;display:table;">
+												</span>
+												<a data-role="ajax" visible="1" class="btn btn-mini"
+												href="{:U('Home/SJActivity/downpro',array('id'=>$vo['id']))}">
+													设为默认
+												</a>
+											</td>
+										</tr>
+										</volist>
+										</empty>
+									</tbody>
+								</table>
+								
+								<div class="row-fluid">
+									<div class="span6 offset3">
+									</div>
+									<div class="span3">
+										<div class="summary">
+											{$prooshow}
+										</div>
+									</div>
+								</div>
+								<div class="keys" style="display:none" title="#">
+									
+								</div>
+							</div>
+							<!-- 已启用-->
+							<!-- 暂停-->
+							<div style="display: none;" class="grid-view" controller="extend/gridview" >
+								<table class="items table table-hover">
+									<thead>
+										<tr>
+											<th width="120" id="product-grid_c0">
+												<a class="sort-link" href="#">
+													搜索商品
+													<span class="caret">
+													</span>
+												</a>
+											</th>
+											<th id="product-grid_c1">
+												关键字/搜索名称
+											</th>
+											<th width="120" id="product-grid_c2">
+												<a class="sort-link" href="#">
+													搜索类型
+													<span class="caret">
+													</span>
+												</a>
+											</th>
+											
+											<th width="100" id="product-grid_c5">
+												<a class="sort-link desc" href="">
+													最后更新
+													<span class="caret">
+													</span>
+												</a>
+											</th>
+											<th width="60" id="product-grid_c6">
+												操作
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										<empty name="prduct">
+											<tr><td colspan="6">暂无商品信息</td></tr>
+											<else/>
+										<volist name="prduct" id="vo">
+										<tr class="product">
+											<td>
+												<div class="p_img">
+														<img width="56px" height="56px" src="{$vo.main_img}" alt="">
+													</div>
+											</td>
+											<td>
+												<a data-toggle="modal2" modal-title="" href="#">
+													
+													<div class="p_title small">
+														{$vo.title}
+														
+													</div>
+												</a>
+											</td>
+											<td>
+												<span data-role="inline_edit" class="inline_edit" fieldid="" fieldname="" required="required" datatype="" >关键词</span>
+											</td>
+											
+											<td>
+												<span title="2015-06-27 09:10">{$vo.update_time|date='Y-m-d H:i:s',###}</span>
+											</td>
+											<td>
+												<a  tooltip="更新" modal-title="" visible="1" class="btn btn-mini" href="{:U('Home/SJActivity/productedit',array('id'=>$vo['id']))}" >
+													查看
+												</a>
+
+													<a  tooltip="更新" modal-title="" visible="1" class="btn btn-mini" href="{:U('Home/SJActivity/productedit',array('id'=>$vo['id']))}" >
+													暂停
+												</a>
+												
+												<span style="height:3px;display:table;">
+												</span>
+												<a data-role="ajax" visible="1" class="btn btn-mini"
+												href="{:U('Home/SJActivity/downpro',array('id'=>$vo['id']))}">
+													设为默认
+												</a>
+											</td>
+										</tr>
+										</volist>
+										</empty>
+									</tbody>
+								</table>
+								<!-- 暂停-->
+								<div class="row-fluid">
+									<div class="span6 offset3">
+									</div>
+									<div class="span3">
+										<div class="summary">
+											{$prshow}
+										</div>
+									</div>
+								</div>
+								<div class="keys" style="display:none" title="#">
+								</div>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>												
+		<include file='Widget/sjleft' />
+	</div>
+</block>
+<block name="area_footer">
+<script type="text/javascript">function showLoading() {
+	
+</script>
+</block>
