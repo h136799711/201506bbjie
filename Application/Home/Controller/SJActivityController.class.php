@@ -151,7 +151,9 @@ class SJActivityController extends HomeController {
 			$this->assign('head_title',$headtitle);
 			$user=session('user');
 			$map=array('uid'=>$user['info']['id'],'status'=>1);
-			$mwe=array('uid'=>$user['info']['id'],'status'=>0,);
+			$mapp=array('uid'=>$user['info']['id']);
+			$mwe=array('uid'=>$user['info']['id'],'status'=>0);
+			//dump($user['info']['id']);
 			$product=apiCall(HomePublicApi::Product_QueryAll, array($map));
 			$pro=apiCall(HomePublicApi::Product_QueryAll, array($mapp));
 			$prduct=apiCall(HomePublicApi::Product_QueryAll, array($mwe));
@@ -404,8 +406,34 @@ class SJActivityController extends HomeController {
 	/*	$product=apiCall(HomePublicApi::Product_QueryAll, array($map));
 		$this->assign('prduct',$prduct['info']['list']);*/
 		$this->assign('username',$user['info']['username']);
-		//dump($product);
+	
 		$this->display();
+	}
+	
+	/**
+	 * 创建搜索中的下拉框信息
+	 */
+	public function select(){
+		$user=session('user');
+		$map=array('uid'=>$user['info']['id'],'status'=>1);
+		$result=apiCall(HomePublicApi::Product_QueryAll, array($map));
+		$this->success($result['info']['list']);
+		
+		/*
+		$map['nickname'] = array('like', "%" . I('q', '', 'trim') . "%");
+		$map['id'] = I('q', -1);
+		$map['_logic'] = 'OR';
+		$page = array('curpage' => 0, 'size' => 20);
+		$order = " subscribe_time desc ";
+
+		$result = apiCall("Admin/Wxuser/query", array($map, $page, $order, false, 'id,nickname,avatar,openid'));
+		*/
+		/*if ($result['status']) {
+			$list = $result['info']['list'];
+			$this -> success($list);
+		} else {
+			LogRecord($result['info'], __LINE__);
+		}*/
 	}
 	
 }

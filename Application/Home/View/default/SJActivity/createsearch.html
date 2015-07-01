@@ -2,11 +2,20 @@
 
 <block name="area_header">
 	<link rel="stylesheet" href="__CSS__/shangjia.css">
-	  <!-- <link rel="stylesheet" href="__CSS__/select2.css">-->
+	 <link rel="stylesheet" href="__CSS__/select2.css">
 	  <script type="text/javascript" src="__CDN__/select2/4.0.0/js/select2.full.js"></script>
 	<script type="text/javascript" src="__CDN__/select2/4.0.0/js/i18n/zh-CN.js"></script>
 	<link type="text/css" rel="stylesheet" href="__CDN__/select2/4.0.0/css/select2.min.css" />
-	
+	<style type="text/css">
+	.select2-results__options{ background: white;width: 500px;}
+		/*.select2-container{ background: white;}
+		.select2-dropdown--below{ background: white;}*/
+		.select2-search--dropdown{
+			width: 500px;
+			margin-top: -85px;
+			background: white;
+		}
+	</style>
 	<script type="text/javascript">
 	
 	$(function(){
@@ -14,7 +23,7 @@
 			placeholder: "可输入宝贝名称搜索"	,
 			language: "zh-CN",
 			ajax: {
-			    url: "{:U('Wxuser/select')}",
+			    url: "{:U('SJActivity/select')}",
 			    dataType: 'json',
 			    delay: 250,
 			    data: function (params) {
@@ -39,15 +48,24 @@
 			    cache: true
 		  	}, 
 			  	minimumInputLength: 0,
-				templateSelection: function (repo) {	
-	  				return repo.nickname || repo.text;
+				templateSelection: function (repo) {
+					//var minTitle= repo.title.substring(10);
+					if(repo.title!=undefined){
+						var minTitle= repo.title.substring(0,15)+"...";
+						return minTitle || repo.text;
+					}else{
+						return repo.title || repo.text;
+					}
+	  				
 				},
 			  templateResult: function (repo) {
-			   		
+			   		console.info(repo);
       				if (repo.loading) return repo.text;
 					if(repo.nodata) return repo.nodata;
+					
+					
 //    				var markup = '<div>'+repo.nickname+'</div>';
-      				var markup = '<div><img src="'+repo.avatar+'" style="width:30px;height:30px;"/>[id:'+repo.id+'] '+repo.nickname+'</div>';
+      				var markup = '<div><img src="'+repo.main_img+'" style="width:50px;height:50px;float:left"/>'+repo.title+'</div>';
       				return markup;
     			},
 		});
@@ -66,7 +84,9 @@
 			<div class="seller_content" style="padding-top: 10px;">
 
 				<div class="content">
+					
  <h1>创建搜索</h1>
+ 		
   <div class="p20"></div>
     <div>
 
@@ -81,7 +101,8 @@
       <label class="control-label">
         搜索商品
       </label>
-
+	   
+      
      <div class="controls">
        
          <!-- <div class="select2-container select2-allowclear ng-valid jquery-once-2-processed ng-dirty" id="s2id_yw1-pid" title="" style="width: 400px;">
@@ -105,16 +126,17 @@
        
          <!-- <input title="" ng-model="pid" controller="extend/select2"  id="yw1-pid" name="pid" data-role="need-init" type="text" class="ng-valid jquery-once-2-processed select2-offscreen ng-dirty" tabindex="-1">      
         	-->
-      
-      		<div class="filter-controls pull-left">
-						<form action="" class="addToGroupForm" method="post">
-							<input type="hidden" name="groupid" value="{$groupid}" />
-							<select style="width:220px;padding: 10px 15px;font-size: 15px;line-height: 1.42857143;" id="user_select2" name="uid" class="form-control">
-			<option></option>
-							</select>
-							<a id="addtogroup" target-form="addToGroupForm" class="ajax-post btn btn-sm btn-primary" href="{:U('Admin/Wxuser/addToGroup')}">添加到</a>
-						</form>
+   			<div class="filter-controls pull-left" style="">
+				<form action="" class="addToGroupForm" method="post" style="">
+					<input type="hidden" name="groupid" value="{$groupid}" style="" />
+					<select style="width:500px;padding: 10px 15px;font-size: 15px;" id="user_select2" name="uid" class="form-control">
+						<option></option>
+					</select>
+					<!--<a id="addtogroup" target-form="addToGroupForm" class="ajax-post btn btn-sm btn-primary" href="{:U('Admin/Wxuser/addToGroup')}">添加到</a>
+					-->
+				</form>
 			</div>
+			
      	<!-- <div class="am-dropdown" data-am-dropdown>
 		  <input style="width:386px;" autocomplete="off" ng-model="url" type="text" value="" name="url" id="url" class="ng-valid ng-dirty"><button class="am-btn am-btn-success am-dropdown-toggle">选择需要优化搜索的商品<span class="am-icon-caret-down"></span></button>
 		  <div class="am-dropdown-content" style="width: 400px">
@@ -129,7 +151,7 @@
 		  </div>
 		</div>
          -->
-        <!--<span class="help-inline">选择需要优化搜索的商品</span> -->     </div>
+        <span class="help-inline">选择需要优化搜索的商品</span>    </div>
     </div>
 
 <!--   
@@ -150,7 +172,7 @@
 </div>
     </script>
  -->
-    <div id="product_base_info" class="" style="margin-top: 15px;display: none;"><div url="#"><div class="control-group">
+    <div id="product_base_info" class="" style="margin-top: 15px; margin-left: 103px;display: none;"><div url="#"><div class="control-group">
   <div class="control-label">
     <img width="100" src="img/TB1ZyBzFVXXXXXDXFXXXXXXXXXX_!!0-item_pic.jpg_220x220.jpg" alt="">  </div>
   <div class="controls">
@@ -160,9 +182,10 @@
   <p>最后更新 : 2015-06-30 13:42    <a data-toggle="modal2" modal-title="更新商品#17224" class="btn" href="#">更新商品</a>  </p>
    <input type="hidden" value="38725578272" name="product_id" id="product_id">  </div>
 </div></div></div>
-    <div class="control-group"><label class="control-label" for="url">搜索链接</label>
+    <div class="control-group" style="margin-left:103px;">
     	<div class="controls"><div class="input-append">
-    		<input style="width:386px;" autocomplete="off" ng-model="url" type="text" value="" name="url" id="url" class="ng-valid ng-dirty">
+    		<label style="float: left;">搜索链接</label>
+    		<input style="width:386px; margin-left:20px;" autocomplete="off" ng-model="url" type="text" value="" name="url" id="url" class="ng-valid ng-dirty">
     		<input type="button" class="btn" id="parseBtn" value="解析搜索">
     	</div>
     	<p class="help-block">从淘宝/天猫搜索找到对应商品的搜索页面的链接</p>
