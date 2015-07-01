@@ -299,11 +299,16 @@ class IndexController extends HomeController {
 				'task_linkman_qq'=>'',
 				'waybill_show'=>'',
 				'linkman_qq'=>'',
+				'exp'=>0,
+				'coins'=>'0.000',
+				'vip_level'=>0,
+				'auth_status'=>0,
 				'linkman_otherlink'=>'',
 				'create_time'=>time(),
 				'update_time'=>time(),
 			);
 			$result1 = apiCall(HomePublicApi::Bbjmember_Seller_Add, array($entity));
+//			
 			session('sjid',$result1['info']);
 			if($result1['status']){
 				$user=array(
@@ -315,6 +320,7 @@ class IndexController extends HomeController {
 					'update_time'=>time(),
 				);
 				$result2 = apiCall(HomePublicApi::Member_Add, array($user));
+				
 				if($result2['status']){
 					$group=array(
 						'uid'=>$uid,
@@ -325,6 +331,7 @@ class IndexController extends HomeController {
 					if($result3['status']){
 						$this->display('register_sj_kz');
 					}
+dump($result3);
 				}
 			}
 		}
