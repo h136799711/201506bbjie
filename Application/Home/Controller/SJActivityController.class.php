@@ -160,23 +160,25 @@ class SJActivityController extends HomeController {
 		 * TODO:新增搜索
 		 * */
 		public function productsele(){
-		$headtitle="宝贝街-商品搜索管理";
-		$this->assign('head_title',$headtitle);
-		$user=session('user');
-		$map=array('uid'=>$user['info']['id'],'status'=>1);
-		$mwe=array('uid'=>$user['info']['id'],'status'=>0,);
-		$product=apiCall(HomePublicApi::Product_QueryAll, array($map));
-		$pro=apiCall(HomePublicApi::Product_QueryAll, array($mapp));
-		$prduct=apiCall(HomePublicApi::Product_QueryAll, array($mwe));
-		$this->assign('prduct',$prduct['info']['list']);
-		$this->assign('prshow',$prduct['show']);
-		$this->assign('product',$product['info']['list']);
-		$this->assign('prooshow',$product['show']);
-		$this->assign('proshow',$pro['show']);
-		$this->assign('pro',$pro['info']['list']);
-		$this->assign('username',$user['info']['username']);
-//		dump($prduct);
-		$this->display();
+			$headtitle="宝贝街-商品搜索管理";
+			$this->assign('head_title',$headtitle);
+			$user=session('user');
+			$map=array('uid'=>$user['info']['id'],'status'=>1);
+			$mapp=array('uid'=>$user['info']['id']);
+			$mwe=array('uid'=>$user['info']['id'],'status'=>0);
+			//dump($user['info']['id']);
+			$product=apiCall(HomePublicApi::Product_QueryAll, array($map));
+			$pro=apiCall(HomePublicApi::Product_QueryAll, array($mapp));
+			$prduct=apiCall(HomePublicApi::Product_QueryAll, array($mwe));
+			$this->assign('prduct',$prduct['info']['list']);
+			$this->assign('prshow',$prduct['show']);
+			$this->assign('product',$product['info']['list']);
+			$this->assign('prooshow',$product['show']);
+			$this->assign('proshow',$pro['show']);
+			$this->assign('pro',$pro['info']['list']);
+			$this->assign('username',$user['info']['username']);
+	//		dump($prduct);
+			$this->display();
 		}
 	   /*
 	    * 商品上架
@@ -417,11 +419,37 @@ class SJActivityController extends HomeController {
 		$headtitle="宝贝街-创建搜索";
 		$this->assign('head_title',$headtitle);
 		$user=session('user');
-		$product=apiCall(HomePublicApi::Product_QueryAll, array($map));
-		$this->assign('prduct',$prduct['info']['list']);
+	/*	$product=apiCall(HomePublicApi::Product_QueryAll, array($map));
+		$this->assign('prduct',$prduct['info']['list']);*/
 		$this->assign('username',$user['info']['username']);
-		//dump($product);
+	
 		$this->display();
+	}
+	
+	/**
+	 * 创建搜索中的下拉框信息
+	 */
+	public function select(){
+		$user=session('user');
+		$map=array('uid'=>$user['info']['id'],'status'=>1);
+		$result=apiCall(HomePublicApi::Product_QueryAll, array($map));
+		$this->success($result['info']['list']);
+		
+		/*
+		$map['nickname'] = array('like', "%" . I('q', '', 'trim') . "%");
+		$map['id'] = I('q', -1);
+		$map['_logic'] = 'OR';
+		$page = array('curpage' => 0, 'size' => 20);
+		$order = " subscribe_time desc ";
+
+		$result = apiCall("Admin/Wxuser/query", array($map, $page, $order, false, 'id,nickname,avatar,openid'));
+		*/
+		/*if ($result['status']) {
+			$list = $result['info']['list'];
+			$this -> success($list);
+		} else {
+			LogRecord($result['info'], __LINE__);
+		}*/
 	}
 	
 }
