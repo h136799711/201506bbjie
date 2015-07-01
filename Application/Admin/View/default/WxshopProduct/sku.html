@@ -344,16 +344,17 @@
 		function getSkuData(){
 			
 			var skulist = [];
+            var icon_url = "";
 			$(".sku-table tr").each(function(index,item){
 				if($(item).attr("data-id")){
 				var ori_price = parseFloat($(item).find(".ori_price").val());
-				var icon_url = $(item).find(".wxuploaderimg img").attr("src");
+				var temp_icon_url = $(item).find(".wxuploaderimg img").attr("src");
 				var quantity = parseInt($(item).find(".quantity").val());
 				var price = parseFloat($(item).find(".price").val());
 				var product_code = $(item).find(".barcode").val();
 				
-				if((!icon_url)){
-					icon_url = "";
+				if(temp_icon_url){
+					icon_url = temp_icon_url;
 				}
 				if((!product_code)){
 					product_code = "";
