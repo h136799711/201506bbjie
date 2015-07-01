@@ -510,7 +510,7 @@
       
       //基础框架
       var baseHtml =  "<div class='ystep-container'>"+
-                        "<ul class='ystep-container-steps'>"+
+                        "<ul  class='ystep-container-steps'>"+
                         "</ul>"+
                         "<div class='ystep-progress'>"+
                           "<p class='ystep-progress-bar'>"+

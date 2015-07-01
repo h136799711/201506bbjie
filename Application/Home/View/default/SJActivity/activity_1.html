@@ -2,6 +2,7 @@
 
 <block name="area_header">
 	<link rel="stylesheet" href="__CSS__/shangjia.css">
+	<link rel="stylesheet" href="__CSS__/ystep.css">
 
 </block>
 
@@ -20,42 +21,49 @@
 							<div class="ystep4"></div>
 
 							<!-- 引入jquery -->
-							<script src="js/jquery.min.js"></script>
+
 							<!-- 引入ystep插件 -->
-							<script src="js/ystep.js"></script>
+							<script src="__JS__/ystep.js"></script>
 							<script>
 								 //根据jQuery选择器找到需要加载ystep的容器
-								
 								$(".ystep4").loadStep({
 									size: "large",
 									color: "blue",
 									steps: [{
-										title: "发起",
+										title: "创建淘宝任务",
 										content: "获取淘宝链接"
 									}, {
-										title: "设置",
+										title: "设置任务详细信息",
 										content: "详细设置"
 									}, {
-										title: "募款",
-										content: "乐捐项目上线接受公众募款"
+										title: "设置任务订单信息",
+										content: "设置订单及聊天信息"
 									}, {
-										title: "执行",
-										content: "项目执行者线下开展救护行动"
-									}, {
-										title: "结项",
-										content: "项目执行者公示善款使用报告"
+										title: "完成",
+										content: "创建完成"
 									}]
 								});
-								
-								$(".ystep4").setStep(2);
+								$(".ystep4").setStep(1);
 							</script>
-							<div style="padding-top: 50px;">
+							<div id="taobao" style="padding-top: 50px;">
 								商品链接：
 								<input style="border-bottom-left-radius: 5px;border-top-left-radius: 5px; border: 1px solid #ccc;" />
 								<input type="button" disabled="disabled" value="从淘宝读取信息" style="border-bottom-right-radius: 5px;border-top-right-radius: 5px;border: 1px solid #ccc;" />
+								<button id="probtn" type="button" class="am-btn am-btn-default am-round">从商品库中选取</button>
 								<br />
 							</div>
-
+							<div id="products" class="filter-controls ">
+							<form class="form-inline groupForm" method="post">
+								<div class="form-group-sm">
+									<label class="control-label">cong</label>
+									<select id="groups"  name="groupid" class="form-control">
+										<!--<volist name="groups" id="vo">
+											<option <eq name="groupid" value="$vo.id">selected="selected"</eq> value="{$vo.id}" >{$vo.name}</option>
+										</volist>-->
+									</select>
+								</div>
+							</form>
+						</div>
 							<table class="am-table" style="margin-top: 20px;">
 								<thead>
 									<tr style="background: #EAEAEA;">
@@ -68,13 +76,13 @@
 									</tr>
 								</thead>
 								<tbody>
-									
+
 								</tbody>
 							</table>
 							<center>
 								<font size="-2" color="red">任务最多可以添加3个链接</font>
 								<br />
-								<button type="button" class="am-btn am-btn-secondary" style="margin-top: 5px;">下一步</button>
+								<button id="down" type="button" class="am-btn am-btn-secondary" style="margin-top: 5px;">下一步</button>
 							</center>
 						</div>
 
@@ -87,5 +95,23 @@
 </block>
 
 <block name="area_footer">
-
+	<script type="text/javascript">
+		$(function() {
+			$('#groups').hide();
+			$('#probtn').click(function(){
+				$('#taobao').hide();
+				$('#products').css('margin-left','200px');
+				$('#products').css('margin-top','50px');
+				$('#products').show();
+			})
+			$('#taobaobtn').click(function(){
+				$('#products').hide();
+				$('#taobao').show();
+			})
+			$('#down').click(function() {
+				window.location.href = "{:U('Home/SJActivity/activity_2')}";
+			})
+			
+		})
+	</script>
 </block>

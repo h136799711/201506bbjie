@@ -116,7 +116,6 @@
 				if (name.test($('#name').val())) {
 					d = 1;
 					$.getJSON("{:U('Home/Index/checkname')}",{name:$("#name").val()},function(json){ 
-					
 							if(json!=1){
 								d = 0;
 								$('#name').parent().find("span").html("<font size='-2' color='red'>用户名已存在</font>");
