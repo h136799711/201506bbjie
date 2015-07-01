@@ -393,5 +393,17 @@ class SJActivityController extends HomeController {
 //			//
 //		}
 //	}
+
+	//创建搜索
+	public function createsearch(){
+		$headtitle="宝贝街-创建搜索";
+		$this->assign('head_title',$headtitle);
+		$user=session('user');
+		$product=apiCall(HomePublicApi::Product_QueryAll, array($map));
+		$this->assign('prduct',$prduct['info']['list']);
+		$this->assign('username',$user['info']['username']);
+		//dump($product);
+		$this->display();
+	}
 	
 }

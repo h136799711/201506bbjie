@@ -267,6 +267,19 @@ class IndexController extends ShopController{
 		$this->assign('head_title',$headtitle);
 		$users=$_SESSION["Home"]['user'];
 		$this->assign('username',$users['info']['username']);
+		
+		$id=$users['info']['id'];
+			
+			$map = array(
+				'uid'=>$id,
+				//'onshelf'=>1,
+			);
+			$result=apiCall(HomePublicApi::Group_QueryNpPage, array($map));
+			
+			//dump($result);
+		$this->assign('group',$result['info'][0]['group_id']);
+		
+		
 		$this->display();
 	}
 	/*
@@ -282,6 +295,16 @@ class IndexController extends ShopController{
 		$this->assign('head_title',$headtitle);
 		$users=$_SESSION["Home"]['user'];
 		$this->assign('username',$users['info']['username']);
+		$id=$users['info']['id'];
+			
+		$map = array(
+			'uid'=>$id,
+			//'onshelf'=>1,
+		);
+		$result=apiCall(HomePublicApi::Group_QueryNpPage, array($map));
+		
+		//dump($result);
+		$this->assign('group',$result['info'][0]['group_id']);
 		$this->display();
 	}
 	/*
@@ -299,6 +322,16 @@ class IndexController extends ShopController{
 		$this->assign('head_title',$headtitle);
 		$users=$_SESSION["Home"]['user'];
 		$this->assign('username',$users['info']['username']);
+		$id=$users['info']['id'];
+			
+		$map = array(
+			'uid'=>$id,
+			//'onshelf'=>1,
+		);
+		$result=apiCall(HomePublicApi::Group_QueryNpPage, array($map));
+		
+		//dump($result);
+		$this->assign('group',$result['info'][0]['group_id']);
 		$this->display();
 	}
 	/*
@@ -316,6 +349,19 @@ class IndexController extends ShopController{
 		$this->assign('head_title',$headtitle);
 		$users=$_SESSION["Home"]['user'];
 		$this->assign('username',$users['info']['username']);
+		
+		
+		
+		$id=$users['info']['id'];
+			
+		$map = array(
+			'uid'=>$id,
+			//'onshelf'=>1,
+		);
+		$result=apiCall(HomePublicApi::Group_QueryNpPage, array($map));
+		
+		//dump($result);
+		$this->assign('group',$result['info'][0]['group_id']);
 		$this->display();
 	}
 
@@ -374,6 +420,18 @@ class IndexController extends ShopController{
 		$this->assign('head_title',$headtitle);
 		$users=$_SESSION["Home"]['user'];
 		$this->assign('username',$users['info']['username']);
+		
+		
+		$id=$users['info']['id'];
+			
+		$map = array(
+			'uid'=>$id,
+			//'onshelf'=>1,
+		);
+		$result=apiCall(HomePublicApi::Group_QueryNpPage, array($map));
+		
+		//dump($result);
+		$this->assign('group',$result['info'][0]['group_id']);
 		$this->display();
 	}
 	

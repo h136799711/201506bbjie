@@ -1,3 +1,33 @@
+<style type="text/css">
+	.sele{ width: 440px;font-size: 12px; margin-top: 15px;}
+	.field {
+	margin-top: -15px;
+	 display:flex;
+	  width:40%;
+	  flex-direction:row;
+	  box-shadow:
+	  1px 1px 0 #ECECEC,
+	  2px 2px 0 #ECECEC,
+	  3px 3px 0 #ECECEC,
+	  4px 4px 0 #ECECEC,
+	  5px 5px 0 #ECECEC,
+	  6px 6px 0 #ECECEC,
+	  7px 7px 0 #ECECEC;
+}
+
+.field>input[type=text] {
+  flex:1;
+  padding:0.6em;
+  border:0.2em solid #ECECEC;
+}
+
+.field>button {
+
+  background-color:#ECECEC;
+  color:white;
+  border:none;
+  }
+</style>
 <div id="div_all">
 		<div id="div_top">
 			<div class="div_info">
@@ -21,8 +51,17 @@
 		<div id="div_top2">
 			<div class="div_info">
 				<div align="right" style=" padding:10px; padding-top:30px;">
-
-					<input />
+					
+					
+					<div class="sele">
+									
+										<div class="field" id="searchform">
+											  <input type="text" name="text" id="searchterm" placeholder="请输入.." />
+											  <button type="submit" id="search"><font class="am-icon-search"></font></button>
+										</div>
+									
+					</div>
+					<!--<input /><button><font class="am-icon-search-plus"></font></button>-->
 
 				</div>
 			</div>
