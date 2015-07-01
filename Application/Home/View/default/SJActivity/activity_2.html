@@ -1,327 +1,220 @@
-<!DOCTYPE html>
-<html lang="zh-cn" dir="ltr">
-	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}.ng-animate-block-transitions{transition:0s all!important;-webkit-transition:0s all!important;}.ng-hide-add-active,.ng-hide-remove{display:block!important;}</style>
-	<meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=EDGE">
-	<title>创建任务</title>
-  <meta http-equiv="cleartype" content="on">
-  <meta content="" name="keywords">
-  <meta content="" name="description">
-  <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="main" src="js/main.js"></script>
-  <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="libs_common" src="js/libs_common.js"></script>
-  <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="person/address" src="js/address.js"></script>
-  <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="person/common" src="js/common.js"></script>
-  	
-  <base href=".">
-  <link rel="stylesheet" href="css/shangjia.css">
-  
-  
-  
-  <link rel="stylesheet" href="css/ystep.css">
-<link rel="stylesheet" href="css/amazeui.css">
-  <script type="text/javascript" src="js/amazeui.js"></script>
-  <!--[if lt IE 9]>
-  <![endif]-->
-  <script type="text/javascript">
-    var require = {urlArgs: 'v=45'};
-    var SITE_URL = "#";
-    var RES_URL = "#";
+<extend name="template/base_index" />
+
+<block name="area_header">
+	<link rel="stylesheet" href="__CSS__/shangjia.css">
+	<link rel="stylesheet" href="__CSS__/ystep.css">
+	<script>
+		 //根据jQuery选择器找到需要加载ystep的容器
+		 //loadStep 方法可以初始化ystep
+		/*$(".ystep1").loadStep({
+		  //ystep的外观大小
+		  //可选值：small,large
+		  size: "small",
+		  //ystep配色方案
+		  //可选值：green,blue
+		  color: "green",
+		  //ystep中包含的步骤
+		  steps: [{
+		    //步骤名称
+		    title: "发起",
+		    //步骤内容(鼠标移动到本步骤节点时，会提示该内容)
+		    content: "实名用户/公益组织发起项目"
+		  },{
+		    title: "审核",
+		    content: "乐捐平台工作人员审核项目"
+		  },{
+		    title: "募款",
+		    content: "乐捐项目上线接受公众募款"
+		  },{
+		    title: "执行",
+		    content: "项目执行者线下开展救护行动"
+		  },{
+		    title: "结项",
+		    content: "项目执行者公示善款使用报告"
+		  }]
+		});
+
+		$(".ystep2").loadStep({
+		  size: "large",
+		  color: "green",
+		  steps: [{
+		    title: "发起",
+		    content: "实名用户/公益组织发起项目"
+		  },{
+		    title: "审核",
+		    content: "乐捐平台工作人员审核项目"
+		  },{
+		    title: "募款",
+		    content: "乐捐项目上线接受公众募款"
+		  },{
+		    title: "执行",
+		    content: "项目执行者线下开展救护行动"
+		  },{
+		    title: "结项",
+		    content: "项目执行者公示善款使用报告"
+		  }]
+		});
+    
+		$(".ystep3").loadStep({
+		  size: "small",
+		  color: "blue",
+		  steps: [{
+		    title: "发起",
+		    content: "实名用户/公益组织发起项目"
+		  },{
+		    title: "审核",
+		    content: "乐捐平台工作人员审核项目"
+		  },{
+		    title: "募款",
+		    content: "乐捐项目上线接受公众募款"
+		  },{
+		    title: "执行",
+		    content: "项目执行者线下开展救护行动"
+		  },{
+		    title: "结项",
+		    content: "项目执行者公示善款使用报告"
+		  }]
+		});
+		*/
+		$(".ystep4").loadStep({
+			size: "large",
+			color: "blue",
+			steps: [{
+				title: "发起",
+				content: "获取淘宝链接"
+			}, {
+				title: "设置",
+				content: "详细设置"
+			}, {
+				title: "募款",
+				content: "乐捐项目上线接受公众募款"
+			}, {
+				title: "执行",
+				content: "项目执行者线下开展救护行动"
+			}, {
+				title: "结项",
+				content: "项目执行者公示善款使用报告"
+			}]
+		});
+		/*$(".ystep1").setStep(2);
+		$(".ystep2").setStep(5);
+		$(".ystep3").setStep(3);*/
+		$(".ystep4").setStep(2);
 	</script>
-  <script type="text/javascript" src="js/require.min.js"></script>
-  </head>
-<!--[if IEMobile 7]><body class="iem7" ><![endif]-->
-<!--[if lte IE 6]><body class="lt-ie9 lt-ie8 lt-ie7" ><![endif]-->
-<!--[if (IE 7)&(!IEMobile)]><body class="lt-ie9 lt-ie8" ><![endif]-->
-<!--[if IE 8]><body class="lt-ie9" ><![endif]-->
-<!--[if (gte IE 9)|(gt IEMobile 7)]><!--><body><!--<![endif]-->
-<div class="seller_header_wrap">
-<div class="seller_header clearfix" style="background: url(img/header_main_bg.jpg);">
-  <a class="logo" href="#" style=" background: url(img/logo.png) no-repeat 20px;"></a>
-  <div class="pull-left gzt btn-group">
-    <a class="shifu btn" href="#">试福</a>
-    <a class="taofu btn" href="#">淘福</a>
-  <a class="dropdown-toggle btn" data-toggle="dropdown" href="javascript:;">　账户关联　 <b class="caret"></b></a><ul role="menu" class="dropdown-menu pull-right"><li role="menuitem"><a tabindex="-1" href="#">关联店铺管理&gt;&gt;</a></li></ul>  </div>
-  <a style="margin-top:57px; margin-left:20px;" class="text-info pull-left" href="#">试民淘宝号确认</a>
-  <div class="topmenu">
-    <ul class="clearfix">
-      <li><div>您好，<span class="text-link">usernames</span>
-          <a href="#">[退出]</a></div>
-      </li>
-      <li class="shangjia"><a href="#">商家中心</a></li>
-      <li><a href="#">回到首页</a></li>
-            <li><a href="#">站内消息</a></li>
-      <li class="bangzhu"><a href="#">帮助中心</a></li>
-    </ul>
-  </div>
-</div>
-</div>
-<div></div>
+</block>
+
+<block name="area_body">
+	<include file='Widget/sjtop' />
 	<div class="seller_main clearfix" controller="seller/common">
-  <div class="seller_content_wrap">
-    <div class="seller_content" style="padding-top: 10px;">
-            
-<div class="content">
-<h1>创建任务</h1>
+		<div class="seller_content_wrap">
+			<div class="seller_content" style="padding-top: 10px;">
 
-  <div class="row">
-    <div class="span10">
-<!--
+				<div class="content">
+					<h1>创建任务</h1>
 
- 	<br><br><br><br><br>
-  ystep容器 
-  <div class="ystep1"></div>
-  
-  <br><br><br><br><br>
-  
-  <div class="ystep2"></div>
-  
-  <br><br><br><br><br>
-  
-  <div class="ystep3"></div>
-  
-  <br><br><br><br><br>
+					<div class="row">
+						<div class="span10">
+							
+							<div class="ystep4"></div>
+
+							<!-- 引入ystep插件 -->
+							<script src="__JS__/ystep.js"></script>
+							<script>
+								
+								$(".ystep4").loadStep({
+									size: "large",
+									color: "blue",
+									steps: [{
+										title: "创建淘宝任务",
+										content: "获取淘宝链接"
+									}, {
+										title: "设置任务详细信息",
+										content: "详细设置"
+									}, {
+										title: "设置任务订单信息",
+										content: "设置订单及聊天信息"
+									}, {
+										title: "完成",
+										content: "创建完成"
+									}]
+								});
+								/*$(".ystep1").setStep(2);
+								$(".ystep2").setStep(5);
+								$(".ystep3").setStep(3);*/
+								$(".ystep4").setStep(2);
+							</script>
+							<table style="width: 100%;">
+								<tr>
+									<td>
+										<img width="100" height="100" />
+									</td>
+									<td>幼儿园女童***孩舞台表演服(货号:-118)</td>
+									<td><font color="red">76元</font>X1</td>
+								</tr>
+							</table>
+
+							<table style="width: 100%;margin-top: 10px;font-size: 12px;">
+								<tr style="">
+									<td width="20%" align="right" style="text-align: right; font-size: 14px; padding-top: 10px;">发货模式：</td>
+									<td style=" padding-top: 10px;">
+										<input type="radio" />平台发货
+										<input type="radio" />自己发货
+										<font color="#C34A8A" style="margin-left: 20px;">由系统代为发送快递，需预收邮费10元/份</font>
+									</td>
+								</tr>
+
+								<tr style="">
+									<td width="20%" align="right" style="text-align: right;font-size: 14px; padding-top: 10px;">店铺运费设置：</td>
+									<td style=" padding-top: 10px;">
+										<input type="radio" />包邮 <a href="">设置为默认</a>
+										<input type="radio" />不包邮 <font color="#9EB5D3">默认运费设置</font>
+										<font color="#C34A8A" style="margin-left: 20px;">试民在淘宝下单时还需另付邮费,需加￥15保证金</font>
+									</td>
+								</tr>
+
+								<tr>
+									<td width="20%" align="right" style="text-align: right;font-size: 14px; padding-top: 0;vertical-align: top; padding-top: 10px;">试民下单金额：</td>
+
+									<td style=" padding-top: 10px;">
+										<input value="92.00" style="padding:5px;width:50px; border-bottom-left-radius: 5px; border-top-left-radius: 5px;border: 1px solid #ccc;" />
+										<input type="button" style="padding:5px;border-bottom-right-radius: 5px; border-top-right-radius: 5px; border: 1px solid #ccc;" disabled="disabled" value="元" /> + 任务佣金 <font color="red">5.70</font> 元 + 预收邮费 <font color="red">10</font> 元 = 单份任务保证金 <font color="red">109.70</font> 元 <a href="#">下载佣金表</a>
+										<br />任务金额必须大于等于试民的实付金额，不包邮的商品下单金额加邮费
+										<br />如果您所设的价格低于试民需支付的金额，请说明优惠方式
+										<br />优惠方式:
+										<select>
+											<option value="" selected="selected">无：聊天后正常拍下即可</option>
+											<option value="quan">优惠券：在店铺首页找到后领取使用</option>
+											<option value="manjian">满就减：拍下宝贝后系统自动减价</option>
+											<option value="taocan">套餐：在宝贝详情内找到套餐链接进入拍下</option>
+											<option value="baoyou">包邮：商品拍下不包邮联系客服改价</option>
+										</select>
+									</td>
+								</tr>
+							</table>
+							<center>
+								<button id="up" type="button" class="am-btn am-btn-secondary" style="margin-top: 5px;">上一步</button>
+								<button id="down" type="button" class="am-btn am-btn-secondary" style="margin-top: 5px;">下一步</button>
+							</center>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<include file='Widget/sjleft' />
+	</div>
+</block>
+
+<block name="area_footer">
+<script type="text/javascript">
+	$(function(){
+		$('#up').click(function(){
+			window.location.href="{:U('Home/SJActivity/activity_1')}";
+		})
+		$('#down').click(function(){
+			window.location.href="{:U('Home/SJActivity/activity_3')}";
+		})
+	})
 	
--->  
-  <div class="ystep4"></div>
-  
-  <!-- 引入jquery -->
-  <script src="js/jquery.min.js"></script>
-  <!-- 引入ystep插件 -->
-  <script src="js/ystep.js"></script>
-  <script>
-    //根据jQuery选择器找到需要加载ystep的容器
-    //loadStep 方法可以初始化ystep
-    /*$(".ystep1").loadStep({
-      //ystep的外观大小
-      //可选值：small,large
-      size: "small",
-      //ystep配色方案
-      //可选值：green,blue
-      color: "green",
-      //ystep中包含的步骤
-      steps: [{
-        //步骤名称
-        title: "发起",
-        //步骤内容(鼠标移动到本步骤节点时，会提示该内容)
-        content: "实名用户/公益组织发起项目"
-      },{
-        title: "审核",
-        content: "乐捐平台工作人员审核项目"
-      },{
-        title: "募款",
-        content: "乐捐项目上线接受公众募款"
-      },{
-        title: "执行",
-        content: "项目执行者线下开展救护行动"
-      },{
-        title: "结项",
-        content: "项目执行者公示善款使用报告"
-      }]
-    });
-
-    $(".ystep2").loadStep({
-      size: "large",
-      color: "green",
-      steps: [{
-        title: "发起",
-        content: "实名用户/公益组织发起项目"
-      },{
-        title: "审核",
-        content: "乐捐平台工作人员审核项目"
-      },{
-        title: "募款",
-        content: "乐捐项目上线接受公众募款"
-      },{
-        title: "执行",
-        content: "项目执行者线下开展救护行动"
-      },{
-        title: "结项",
-        content: "项目执行者公示善款使用报告"
-      }]
-    });
-    
-    $(".ystep3").loadStep({
-      size: "small",
-      color: "blue",
-      steps: [{
-        title: "发起",
-        content: "实名用户/公益组织发起项目"
-      },{
-        title: "审核",
-        content: "乐捐平台工作人员审核项目"
-      },{
-        title: "募款",
-        content: "乐捐项目上线接受公众募款"
-      },{
-        title: "执行",
-        content: "项目执行者线下开展救护行动"
-      },{
-        title: "结项",
-        content: "项目执行者公示善款使用报告"
-      }]
-    });
-    */
-    $(".ystep4").loadStep({
-      size: "large",
-      color: "blue",
-      steps: [{
-        title: "发起",
-        content: "获取淘宝链接"
-      },{
-        title: "设置",
-        content: "详细设置"
-      },{
-        title: "募款",
-        content: "乐捐项目上线接受公众募款"
-      },{
-        title: "执行",
-        content: "项目执行者线下开展救护行动"
-      },{
-        title: "结项",
-        content: "项目执行者公示善款使用报告"
-      }]
-    });
-    
-    /*$(".ystep1").setStep(2);
-    $(".ystep2").setStep(5);
-    $(".ystep3").setStep(3);*/
-    $(".ystep4").setStep(2);
-    
-  </script>
-	  	<table style="width: 100%;">
-	  		<tr>
-	  			<td><img width="100" height="100" /></td>
-				<td>幼儿园女童***孩舞台表演服(货号:-118)</td>
-	  			<td><font color="red">76元</font>X1</td>
-	  		</tr>
-	  	</table>
-	  	
-	  	<table style="width: 100%;margin-top: 10px;font-size: 12px;">
-	  		<tr style="">
-	  			<td width="20%" align="right" style="text-align: right; font-size: 14px; padding-top: 10px;">发货模式：</td>
-				<td style=" padding-top: 10px;">
-					<input type="radio"/>平台发货
-					<input type="radio"/>自己发货
-					<font color="#C34A8A" style="margin-left: 20px;">由系统代为发送快递，需预收邮费10元/份</font>
-				</td>
-	  		</tr>
-	  		
-	  		<tr style="">
-	  			<td width="20%" align="right" style="text-align: right;font-size: 14px; padding-top: 10px;">店铺运费设置：</td>
-				<td style=" padding-top: 10px;">
-					 <input type="radio"/>包邮 <a href="">设置为默认</a>
-					 <input type="radio"/>不包邮 <font color="#9EB5D3">默认运费设置</font>
-					 <font color="#C34A8A" style="margin-left: 20px;">试民在淘宝下单时还需另付邮费,需加￥15保证金</font>
-				</td>
-	  		</tr>
-	  		
-	  		
-	  		<tr>
-	  			<td width="20%" align="right" style="text-align: right;font-size: 14px; padding-top: 0;vertical-align: top; padding-top: 10px;">试民下单金额：</td>
-				
-
-				<td style=" padding-top: 10px;">
-					 <input value="92.00" style="padding:5px;width:50px; border-bottom-left-radius: 5px; border-top-left-radius: 5px;border: 1px solid #ccc;"/><input type="button" style="padding:5px;border-bottom-right-radius: 5px; border-top-right-radius: 5px; border: 1px solid #ccc;" disabled="disabled"  value="元"/>
-					 + 任务佣金 <font color="red">5.70</font> 元 + 预收邮费 <font color="red">10</font> 元 = 单份任务保证金 <font color="red">109.70</font> 元 <a href="#">下载佣金表</a>
-					 <br />任务金额必须大于等于试民的实付金额，不包邮的商品下单金额加邮费
-					 <br />如果您所设的价格低于试民需支付的金额，请说明优惠方式
-					 <br />优惠方式: <select>
-					 	<option value="" selected="selected">无：聊天后正常拍下即可</option>
-						 <option value="quan">优惠券：在店铺首页找到后领取使用</option>
-						 <option value="manjian">满就减：拍下宝贝后系统自动减价</option>
-						 <option value="taocan">套餐：在宝贝详情内找到套餐链接进入拍下</option>
-						 <option value="baoyou">包邮：商品拍下不包邮联系客服改价</option>
-					 </select>
-				</td>
-	  		</tr>
-	  	</table>
-		<center>
-			<button type="button" class="am-btn am-btn-secondary" style="margin-top: 5px;">上一步</button>
-	  		<button type="button" class="am-btn am-btn-secondary" style="margin-top: 5px;">下一步</button>
-  		</center>
-    </div>
- 
- 
-  </div>
-</div>    </div>
-  </div>
-  <div class="siderbar">
-  
-  
-  
-  
-  
-  <dl class="open">
-      <dt class="s_zhanghao">
-        <span>活动准备</span>
-      </dt>
-
-<!--      <dd>
-        <a class="" href=""><span>商品管理</span></a>
-      </dd>-->
-
-      <dd>
-        <a class="" href="#"><span>搜索管理</span></a>
-      </dd>
-
-           <dd>
-        <a class="" href="#"><span>评语库</span></a>
-      </dd>
-          </dl>
-
-    <dl class="open">
-      <dt class="s_task">
-        <span>活动管理</span>
-      </dt>
-        <dd>
-        <a class="" href="#"><span>淘宝活动</span></a>
-      </dd>
-      <dd>
-        <a class="active" href="#"><span>创建任务</span></a>
-      </dd>
-       <dd>
-         <a class=" " href="#"><span>收藏活动</span></a>
-        </dd>
-      
-    </dl>
-  
-
-  
-  <dl class="open">
-    <dt class="s_vip">
-      <span>账号管理</span>
-    </dt>
-    <dd>
-      <a class="" href="zhxx.html"><span>账号信息</span></a>
-    </dd>
-    <dd>
-      <a class="" href="zhaq.html"><span>账户安全</span></a>
-    </dd>
-    <dd>
-      <a class="" href="xgmm.html"><span>修改密码</span></a>
-    </dd>
-  </dl>
-
-  <dl>
-    <dt>
-      <a class="" href="znx.html">站内消息</a>
-    </dt>
-    <dt class="s_money">
-      <a class="" href="zjgl.html">资金管理</a>
-    </dt>
-    <dt>
-      <a class="" href="viptd.html">VIP通道</a>
-    </dt>
-    <dt>
-      <a class="" href="sfkt.html">试福课堂</a>
-    </dt>
-  </dl>
-
-  
-  <div class="adorn_bottom"></div>
-</div>
-</div>
-  <script type="text/javascript">
-  var ready_do = true; $(document).trigger('ready_do');
-</script></body></html>
+</script>
+</block>

@@ -489,21 +489,24 @@
 	</div>
 </block>
 <block name="area_footer">
-<script type="text/javascript">function showLoading() {
+<script type="text/javascript">
+function showLoading() {
 	$("#J_btn_submit").text("正在提交中....");
 	$("#J_btn_submit").data("query", 1);
 	}
 	$(function() {
-		if({$id}!=''){
-			$('#gxbtn').click();
-		}
+		
 		$('.hid').hide();
+		
 		$('#gaoji').click(function(){
 			
 			$('.hid').toggle(function(){
 				$('#doc-modal-1 .am-modal-dialog').css('height','600px');
 			});
 		})
+		if({$id}!=''){
+			$('#gxbtn').click();
+		}
 		$("#read").click(function() {
 			var query = $("#J_btn_submit").data("query");
 			if (query == 1) {
@@ -547,5 +550,6 @@
 				}
 			})
 		})
+		
 })</script>
 </block>

@@ -21,9 +21,10 @@
   line-height: 1;
 }
 .ystep-lg {
-  width: 700px;
+	margin-left: 200px;
+  width: 500px !important;
   height: 60px;
-  font-size: 18px;
+  font-size: 12px;
   /*line-height: .3;*/
 }
 
@@ -79,7 +80,7 @@
 }
 .ystep-lg li {
   float: left;
-  width: 100px;
+  width: 102px;
   height: 85px;
 }
 .ystep-lg .ystep-step-done {

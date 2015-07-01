@@ -77,6 +77,8 @@ class SJActivityController extends HomeController {
 		$sj=apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
 		$pro=apiCall(HomePublicApi::Product_QueryAll, array($map));
 		$prduct=apiCall(HomePublicApi::Product_QueryAll, array($mwe));
+		
+		$this->assign('id',0);
 		$this->assign('downpro',$prduct['info']['list']);
 		$this->assign('showdown',$product['show']);
 		$this->assign('showall',$pro['show']);
