@@ -45,7 +45,7 @@ class SJActivityController extends HomeController {
 	  		$headtitle="宝贝街-创建任务";
 			$this->assign('head_title',$headtitle);
 			$this->assign('username',$user['info']['username']);
-			$map=array('uid'=>$user['info']['id'],'is_on_sale'=>1);
+			$map=array('uid'=>$user['info']['id'],'status'=>1);
 			$pro=apiCall(HomePublicApi::Product_Query, array($map));
 			$this->assign('pros',$pro['info']);
 //			dump($pro);
