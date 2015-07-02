@@ -16,7 +16,7 @@ class RemoteProductParserController extends Controller{
     public function read_search(){
         if(IS_POST){
             $url = I('post.url','','urldecode');
-
+			//dump($url);
             $parser = null;
             $which = $this->whichUrl($url);
             switch($which){
@@ -39,7 +39,7 @@ class RemoteProductParserController extends Controller{
             }
 
             $return_info['ori_url'] = $url;
-//            dump($return_info);
+           	//dump($return_info);
             if(IS_AJAX){
 //                var_dump($return_info);
                 $this->success($return_info);
@@ -63,6 +63,7 @@ class RemoteProductParserController extends Controller{
     public function read(){
         if(IS_POST){
             $url = I('post.url','','urldecode');
+			
             $url_parse = parse_url($url);
 //			dump(htmlspecialchars_decode($url_parse['query']));
             $output = array();

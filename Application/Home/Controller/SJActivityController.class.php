@@ -481,5 +481,29 @@ class SJActivityController extends HomeController {
 		 LogRecord($result['info'], __LINE__);
 		 }*/
 	}
+<<<<<<< HEAD
 
+=======
+	
+	
+	public function save(){
+		/*$entity=array(
+			'store_name'=>I('post.dpname',''),
+			'aliwawa'=>I('alww',''),
+			'linkman_qq'=>I('post.qq'),
+			'linkman'=>I('post.lxr'),
+			'address'=>I('post.jydz'),
+		);
+		$result1 = apiCall(HomePublicApi::Bbjmember_Seller_SaveByID, array($id,$entity));
+		if ($result1['status']) {
+			$headtitle="宝贝街-登录";
+			$this->assign('head_title',$headtitle);
+			$this->display('login');
+		}*/
+		I('pid');
+		I('search_url');
+		I('search_q');
+	}
+	
+>>>>>>> branch 'master' of https://github.com/h136799711/201506bbjie.git
 }
