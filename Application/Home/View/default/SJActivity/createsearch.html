@@ -39,6 +39,10 @@
 						$('#div_searchCondition').find('.font_key').html(result.info.key);
 						$('#div_searchCondition').find('.font_tab').html(result.info.tab);
 						$('#div_searchCondition').find('.font_order').html(result.info.order);
+						
+						$("input[name='search_url']").val($('#url').val());
+						$("input[name='search_q']").val(result.info.key);
+						
 						var title1=$("#div_searchCondition .font_title1").html().trim();
 						var wangwang1=$("#div_searchCondition .font_wangwang").html().trim();
 						var result1="未能在结果页面找到对应搜索，提交后需等待客服审核";
@@ -108,11 +112,18 @@
 						$("#product_base_info .controls .input_url").val(repo.link);
 						$("#product_base_info").show();
 						//alert($("#div_searchCondition .img").size());
+						$("input[name='pid']").val(repo.id);
+						
+						
 						$("#div_searchCondition img").attr("src",repo.main_img);
 						$("#div_searchCondition .font_title1").html(repo.title);
 						$("#div_searchCondition .font_price1").html(repo.price);
 						
 						$("#div_searchCondition .font_wangwang").html(repo.wangwang);
+						
+						
+						
+						
 						return minTitle || repo.text;
 					}else{
 						return repo.title || repo.text;
@@ -254,8 +265,10 @@
 
     </form>  </div>
   <div id="sousuo_preview"><div>
-  <form class="form-horizontal jquery-once-1-processed" controller="extend/ajax_form" id="yw0" action="#" method="post" novalidate="novalidate">
-  <input type="hidden" value="1383507634101c247f556a60eef090dd{&quot;data&quot;:{&quot;theme&quot;:&quot;taobao&quot;,&quot;key&quot;:&quot;\u513f\u7ae5\u7235\u58eb\u821e\u670d\u5e7c\u513f\u56ed\u8868\u6f14\u821e\u8e48\u670d\u67b6\u5b50&quot;,&quot;tab&quot;:&quot;\u6240\u6709\u5b9d\u8d1d&quot;,&quot;attr&quot;:[],&quot;order&quot;:&quot;\u7efc\u5408\u6392\u5e8f&quot;,&quot;location&quot;:[],&quot;filter&quot;:[]},&quot;url&quot;:&quot;http:\/\/s.taobao.com\/search?q=%E5%84%BF%E7%AB%A5%E7%88%B5%E5%A3%AB%E8%88%9E%E6%9C%8D%E5%B9%BC%E5%84%BF%E5%9B%AD%E8%A1%A8%E6%BC%94%E8%88%9E%E8%B9%88%E6%9C%8D%E6%9E%B6%E5%AD%90&amp;commend=all&amp;ssid=s5-e&amp;search_type=item&amp;sourceId=tb.index&amp;spm=a21bo.7724922.8452-taobao-item.2&amp;initiative_id=tbindexz_&quot;,&quot;pid&quot;:&quot;17224&quot;,&quot;check_item&quot;:false}" name="yanzheng" id="yanzheng">
+  <form class="form-horizontal jquery-once-1-processed" controller="extend/ajax_form" id="yw0" action="{:U('Home/SJActivity/save')}" method="post" novalidate="novalidate">
+  <input type="hidden" value="" name="pid"  >
+  <input type="hidden" value="" name="search_url"/>
+  <input type="hidden" value="" name="search_q"/>
   <div id="div_searchCondition" style="display: none;">
     <div class="form-horizontal">
   <div class="control-group">
@@ -311,7 +324,7 @@
       </div>
     </div>
 
-    <div class="form-actions"><button class="btn btn-primary" type="submit" >保存搜索</button></div>  </div>
+    <div class="form-actions"><button class="am-btn am-btn-primary" type="submit" >保存搜索</button></div>  </div>
   <div style="padding: 50px;"></div>
 
   </form>

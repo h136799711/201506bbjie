@@ -1,8 +1,10 @@
 <extend name="template/base_index" />
 
 <block name="area_header">
-	<script type="text/javascript" src="__PUBLIC__/Home/js/index.js"></script>
-	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/index.css" />
+	<script type="text/javascript" src="__PUBLIC__/Shop/js/index.js"></script>
+	<link type="text/css" rel="stylesheet" href="__CDN__/theme/{$cfg.theme|default="simplex"}.min.css" />
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Shop/css/index.css" />
+
 	<style type="text/css">
 		* {
 			font-family: "微软雅黑" !important;
@@ -18,17 +20,14 @@
 				<div class="div_condition">
 					
 					<ul class="ul_condition1">  
-						<li><a href="#">全部</a></li>
-						<li><a href="#">日用百货</a> </li>
-						<li><a href="#">鞋子</a></li>
-						<li><a href="#">箱包</a></li>
-						<li><a href="#">母婴用品</a> </li>
-						<li><a href="#">数码家电</a> </li>
-						<li><a href="#">办公文体</a></li>
+						<li><a href="{:U('Shop/Index/flzc')}">全部</a></li>
+						<volist name="categoryParent" id="cp">
+							<li><a href="{:U('Shop/Index/flzc',array('id'=>$cp['id']))}">{$cp.name}</a> </li>
+						</volist>
 					</ul>
 					
 					<br />
-				<br />
+				<br /><br />
 					<span>排序:</span>
 					
 					<div class="am-btn-group">
@@ -43,222 +42,33 @@
 					<button type="button" class="am-btn am-btn-xs am-btn-default" style="">确定</button>
 				</div>
 				<div class="div_minInfo">
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="216" />
-
-		                </dt>
-						<dd style="border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-
+					<empty name="productList">
+							
+								<center style="padding: 50px;"><h1 style="color: #CCC;">没有搜索到相关的商品</h1></center>
+							
+					<else/>
+					<volist name="productList" id="pl">
+						<dl class="dl_info" onclick="toUrl('{:U('Shop/Index/spxq',array('id'=>$pl['id']))}')">
+							<dt>
+	
+			                <img src="{$pl.main_img}" width="216" />
+	
+			                </dt>
+							<dd style="border-bottom:1px dotted #666">{$pl.name}</dd>
+							<dd><span style="background: url(__PUBLIC__/Shop/img/fubi.png) no-repeat 0 1px; padding-left:17px;" >{:number_format($pl['price']/100,0)}</span> </dd>
+						</dl>
+					</volist>
+				</empty>
+				
+						
 				</div>
-
-				<div class="div_minInfo">
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Home/img/tupian1.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-					<dl class="dl_info">
-						<dt>
-
-		                <img src="__PUBLIC__/Home/img/tupian2.jpg" width="216" />
-
-		                </dt>
-						<dd style=" border-bottom:1px dotted #666">三星 NOTE 硅胶套</dd>
-						<dd>XXX XXXXX</dd>
-					</dl>
-
-				</div>
-				<div class="div_page">
-						<!--
-                        	作者：791677927@qq.com
-                        	时间：2015-07-01
-                        	描述：
-                       <a href="" style="width: 100px;height: 50px; border: 1px solid #ccc;">ccccccccc</a> -->
-						<a class="am-btn am-btn-danger am-btn-xs" href="#" target="_blank" style="padding: 5px;"><上一页</a>
-						<a class="am-btn am-btn-danger am-btn-xs pagechecked" href="#" target="_blank" style="padding: 5px;">1</a>
-						<a class="am-btn am-btn-danger am-btn-xs" href="#" target="_blank" style="padding: 5px;">2</a>
-						<a class="am-btn am-btn-danger am-btn-xs" href="#" target="_blank" style="padding: 5px;">3</a>
-						<a class="am-btn am-btn-danger am-btn-xs" href="#" target="_blank" style="padding: 5px;">4</a>
-						<a class="am-btn am-btn-danger am-btn-xs" href="#" target="_blank" style="padding: 5px;">下一页></a>
+				<div class="div_page" style="margin-top: 10px;">
+							{$page}
+						</div>
 					
-				</div>
 			</div>
 		</div>
+	
 		<include file="partials/footer" />
 </block>
 

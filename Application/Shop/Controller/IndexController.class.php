@@ -105,11 +105,11 @@ class IndexController extends ShopController{
 			//dump($result['info'][0]);
 			$map=array();
 			$map["parent"]=0;
-			$result=apiCall(AdminPublicApi::Category_Query, array($map));
+			$result=apiCall(AdminPublicApi::Category_QueryNoPaging, array($map));
 			$this->assign('categoryParent',$result['info']);
 			
 			$map="parent!=0";
-			$result=apiCall(AdminPublicApi::Category_Query, array($map));
+			$result=apiCall(AdminPublicApi::Category_QueryNoPaging, array($map));
 			$this->assign('categoryChildrens',$result['info']);
 			//公告
 			$map = array();
@@ -270,16 +270,77 @@ class IndexController extends ShopController{
 		
 		$id=$users['info']['id'];
 			
-			$map = array(
-				'uid'=>$id,
-				//'onshelf'=>1,
-			);
-			$result=apiCall(HomePublicApi::Group_QueryNpPage, array($map));
+		$map = array(
+			'uid'=>$id,
+		);
+		$result=apiCall(HomePublicApi::Group_QueryNpPage, array($map));
 			
-			//dump($result);
 		$this->assign('group',$result['info'][0]['group_id']);
 		
+		$map=array();
+		$map["parent"]=0;
+		$result=apiCall(AdminPublicApi::Category_QueryNoPaging, array($map));
+		$this->assign('categoryParent',$result['info']);
 		
+		
+		
+		$cate_id=I("id");
+		$product_name=I("searchterm");
+		if($product_name==""){
+			if($cate_id=="0"||$cate_id==""){
+			$map=array(
+				//'id'=>0,
+				'onshelf'=>1,
+			);
+			}else{
+				$map=array(
+					'id'=>$cate_id,
+				);
+				$result=apiCall(AdminPublicApi::Category_QueryNoPaging,array($map));
+				if($result['info'][0]['level']==1){
+					$map=array(
+						'parent'=>$cate_id,
+					);
+					$result=apiCall(AdminPublicApi::Category_QueryNoPaging,array($map));
+					$ids="";
+					foreach($result['info'] as $v){
+						$ids.=$v['id'].=',';
+					}
+					$ids=mb_substr($ids,0,strlen($ids)-1);
+					$map = array();
+					$map = array(
+						'cate_id'=>array("in",$ids),
+						'onshelf'=>1,
+					);
+					
+				}else{
+					$map = array();
+					$map = array(
+						'cate_id'=>$cate_id,
+						'onshelf'=>1,
+					);
+			
+				}
+			}
+		}else{
+			$map = array();
+			$map = array(
+				'name'=>array("like",'%'.$product_name.'%'),
+				'onshelf'=>1,
+			);
+			
+			$this->assign('searchterm',$product_name);
+		}
+		
+		//dump($map);
+		//dump($result);
+		
+		$page=array();
+		$page = array('curpage' => I('get.p', 0), 'size' => 10);
+		$order = " createtime desc ";
+		$result = apiCall('Admin/Wxproduct/query', array($map, $page, $order, $params));
+		$this->assign('page',$result['info']['show']);
+		$this->assign('productList',$result['info']['list']);
 		$this->display();
 	}
 	/*
