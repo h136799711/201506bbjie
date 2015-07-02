@@ -28,6 +28,7 @@
 					
 					<br />
 				<br /><br />
+				<form action="{:U('Shop/Index/flzc')}">
 					<span>排序:</span>
 					
 					<div class="am-btn-group">
@@ -36,10 +37,12 @@
 						  <button type="button" class="am-btn am-btn-xs am-btn-default">最热</button>
 						  <button type="button" class="am-btn am-btn-xs am-btn-default">推荐</button>
 						  <button type="button" class="am-btn am-btn-xs am-btn-default">预告</button>
-					</div>
-					<input  style="width: 50px;"/>-
-					<input  style="width: 50px;"/>
-					<button type="button" class="am-btn am-btn-xs am-btn-default" style="">确定</button>
+					</div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					
+						F<input name="minPrice"  style="width: 50px;"/>-
+						F<input name="maxPrice" style="width: 50px;"/>
+						<button type="submit" class="" style="background: white; border-radius: 5px; border: 1px solid #ccc;">确定</button>
+					</form>
 				</div>
 				<div class="div_minInfo">
 					<empty name="productList">

@@ -286,7 +286,9 @@ class IndexController extends ShopController{
 		
 		$cate_id=I("id");
 		$product_name=I("searchterm");
-		if($product_name==""){
+		$minPrice=I("minPrice");
+		$maxPrice=I("maxPrice");
+		if($product_name==""&&$minPrice==""&&$maxPrice==""){
 			if($cate_id=="0"||$cate_id==""){
 			$map=array(
 				//'id'=>0,
@@ -323,17 +325,38 @@ class IndexController extends ShopController{
 				}
 			}
 		}else{
-			$map = array();
-			$map = array(
-				'name'=>array("like",'%'.$product_name.'%'),
-				'onshelf'=>1,
-			);
+			if($product_name!=""){
+				$map = array();
+				$map = array(
+					'name'=>array("like",'%'.$product_name.'%'),
+					'onshelf'=>1,
+				);
+				$this->assign('searchterm',$product_name);
+				
+			}else{
+				//$map = array();
+				if($minPrice==""&&$maxPrice!=""){
+					$map = array(
+					'price'=>array("elt",$maxPrice*100),
+					'onshelf'=>1,
+					);
+				}else if($minPrice!=""&&$maxPrice==""){
+					$map = array(
+						'price'=>array("egt",$minPrice*100),
+						'onshelf'=>1,
+					);
+				}else{
+					$map = array(
+						'price'=>array("between",array($minPrice*100,$maxPrice*100)),
+						'onshelf'=>1,
+					);
+				}
+				
+			}
 			
-			$this->assign('searchterm',$product_name);
 		}
 		
-		//dump($map);
-		//dump($result);
+		
 		
 		$page=array();
 		$page = array('curpage' => I('get.p', 0), 'size' => 10);
@@ -364,7 +387,6 @@ class IndexController extends ShopController{
 		);
 		$result=apiCall(HomePublicApi::Group_QueryNpPage, array($map));
 		
-		//dump($result);
 		$this->assign('group',$result['info'][0]['group_id']);
 		$this->display();
 	}

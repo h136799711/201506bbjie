@@ -9,6 +9,7 @@ namespace Home\Controller;
 use Think\Controller;
 use Think\Storage;
 use Home\Api\HomePublicApi;
+use Admin\Api\AdminPublicApi;
 /*
  * 资金提现
  */
@@ -442,6 +443,7 @@ class SJActivityController extends HomeController {
 	//	}
 
 	//创建搜索
+<<<<<<< HEAD
 	public function createsearch() {
 		$headtitle = "宝贝街-创建搜索";
 		$this -> assign('head_title', $headtitle);
@@ -451,6 +453,22 @@ class SJActivityController extends HomeController {
 		$this -> assign('username', $user['info']['username']);
 
 		$this -> display();
+=======
+	public function createsearch(){
+		$headtitle="宝贝街-创建搜索";
+		$this->assign('head_title',$headtitle);
+		$user=session('user');
+
+		$map=array(
+			'parentid'=>36,
+		);
+		$result=apiCall(AdminPublicApi::Datatree_QueryNoPaging,array($map));
+		//dump($result);
+		//$this->assign();
+		
+		$this->assign('username',$user['info']['username']);
+		$this->display();
+>>>>>>> branch 'master' of https://github.com/h136799711/201506bbjie.git
 	}
 
 	/**
@@ -485,7 +503,9 @@ class SJActivityController extends HomeController {
 
 =======
 	
-	
+	/**
+	 * 保存搜索
+	 */
 	public function save(){
 		/*$entity=array(
 			'store_name'=>I('post.dpname',''),
@@ -500,9 +520,20 @@ class SJActivityController extends HomeController {
 			$this->assign('head_title',$headtitle);
 			$this->display('login');
 		}*/
+		
+		//id	
+		/*dtree_type	int(11)			
+		status	tinyint(2)		
+		create_time	int(11)		
+
+		update_time	int(11)		
+		pid	int(11)	
+		search_url	varchar(512)
+		search_condition
+		search_q
 		I('pid');
 		I('search_url');
-		I('search_q');
+		I('search_q');*/
 	}
 	
 >>>>>>> branch 'master' of https://github.com/h136799711/201506bbjie.git
