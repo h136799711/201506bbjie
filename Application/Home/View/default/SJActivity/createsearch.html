@@ -18,7 +18,56 @@
 	</style>
 	<script type="text/javascript">
 	
+	
+	
+	
 	$(function(){
+		$('#parseBtn').click(function(){
+			var parseUrl=$('#url').val();
+			$.ajax({
+				cache:false,
+				type:"post",
+				data:{url:encodeURI(parseUrl)},
+				url:"{:U('Tool/RemoteProductParser/read_search',array('r'=>time()))}",
+				//url:"{:U('Tool/RemoteProductParser/read_search')}",
+				dataType:"json",
+				success:function(result){
+					if(result.status==0){
+						alert(result.info);
+					}else{
+						$('#div_searchCondition').find('.font_openUrl').html(result.info.url);
+						$('#div_searchCondition').find('.font_key').html(result.info.key);
+						$('#div_searchCondition').find('.font_tab').html(result.info.tab);
+						$('#div_searchCondition').find('.font_order').html(result.info.order);
+						var title1=$("#div_searchCondition .font_title1").html().trim();
+						var wangwang1=$("#div_searchCondition .font_wangwang").html().trim();
+						var result1="未能在结果页面找到对应搜索，提交后需等待客服审核";
+						var style1="am-alert-warning";
+						//alert(result.info.items);
+						for(var i=0;i<result.info.items.length;i++){
+							 
+							if(title1.indexOf(result.info.items[i].title.trim())!=-1&&result.info.items[i].nick.trim()==wangwang1){
+								result1="成功在搜索页找到对应商品,保存搜索后可直接开始使用";
+								style1="am-alert-success";
+								break;	
+							}
+							//alert();
+						}
+						
+						$("#div_search_result").append('<div class="am-alert '+style1+'" data-am-alert><button type="button" class="am-close">&times;</button><p>'+result1+'</p></div>');
+						
+						
+						$('#div_searchCondition').show();
+					}
+					
+				}
+			});
+			
+		})
+		
+		
+		
+		
 		$("#user_select2").select2({
 			placeholder: "可输入宝贝名称搜索"	,
 			language: "zh-CN",
@@ -58,8 +107,12 @@
 						$("#product_base_info .controls .font_time").html(new Date(parseInt(repo.update_time) * 1000).toLocaleString().replace(/:\d{1,2}$/,' '));
 						$("#product_base_info .controls .input_url").val(repo.link);
 						$("#product_base_info").show();
-						//alert();
-
+						//alert($("#div_searchCondition .img").size());
+						$("#div_searchCondition img").attr("src",repo.main_img);
+						$("#div_searchCondition .font_title1").html(repo.title);
+						$("#div_searchCondition .font_price1").html(repo.price);
+						
+						$("#div_searchCondition .font_wangwang").html(repo.wangwang);
 						return minTitle || repo.text;
 					}else{
 						return repo.title || repo.text;
@@ -67,7 +120,7 @@
 	  				
 				},
 			  templateResult: function (repo) {
-			   		console.info(repo);
+			   		//console.info(repo);
       				if (repo.loading) return repo.text;
 					if(repo.nodata) return repo.nodata;
 					
@@ -182,7 +235,7 @@
  -->
     <div id="product_base_info" class="" style="margin-top: 15px; margin-left: 103px;display: none;"><div url="#"><div class="control-group">
   <div class="control-label" style="float: left;">
-    <img width="100" src="img/TB1ZyBzFVXXXXXDXFXXXXXXXXXX_!!0-item_pic.jpg_220x220.jpg" alt="">  </div>
+    <img width="100" src="" alt="">  </div>
   <div  class="controls" style="margin-left: 110px;">
     <p class="pb10" style="margin-top: 8px;">
       商品名称 : <font class="font_title"></font>  </p>
@@ -212,10 +265,10 @@
 
     <div class="controls">
       <div style="padding: 10px;background: #eee;color:#222;margin-bottom: 20px;">
-                  <p>打开 http://www.taobao.com</p>
-                <p>搜索关键词: 儿童爵士舞服幼儿园表演舞蹈服架子</p>
-                <p>选择 所有宝贝</p>
-			    <p>排序: 综合排序</p>
+                  <p>打开<font class="font_openUrl"></font></p>
+                <p>搜索关键词: <font class="font_key"></font></p>
+                <p>选择 <font class="font_tab"></font></p>
+			    <p>排序: <font class="font_order"></font></p>
                 <p>一般在前五页即可找到对应商品</p>
       </div>
     </div>
@@ -229,19 +282,20 @@
       <div unselectable="on" onselectstart="return false;">
                   <div class="theme_taobao_item_wrap">
             <div class="theme_taobao">
-              <img class="img" src="img/TB1ZyBzFVXXXXXDXFXXXXXXXXXX_!!0-item_pic.jpg_220x220.jpg" alt="">              <div class="row-1">
+              <img class="img" src=""  alt="">              <div class="row-1">
                 <span class="pull-right">XX人付款</span>
               <span class="price">
-                <span>¥</span> 335.00              </span>
+                <span>¥</span>  <font class="font_price1"></font>               </span>
               </div>
-              <div class="row-2"><i class="title_msk"></i>
-                儿童舞蹈服装女童练功服少儿夏款拉丁舞蹈裙跳舞考级培训服新款              </div>
+              <div class="row-2"><i class="title_msk" style="background: url(__IMG__/title_msk.png) 0 -1px no-repeat;display:block;position:absolute;left:60px"></i>
+                <font class="font_title1"></font>          </div>
               <div class="row-3">
                 <div class="pull-right">XX XX</div>
-                <i class="goods_store"></i><span>wd93<i class="ali_wang"></i></span>
+                <i class="goods_store" style="url(__IMG__/goods_store.png) 0 0 no-repeat;vertical-align:middle"></i>
+                <span><font class="font_wangwang"></font><i class="ali_wang" style="background: url(__IMG__/ali_wang.png)  0 -2px no-repeat;vertical-align:middle"></i></span>
               </div>
               <div class="row-4">
-                <i class="pull-right wangwang"></i>
+                <i class="pull-right wangwang" style="background: url(__IMG__/wangwang.png) 0 0px no-repeat;vertical-align:middle"></i>
                                 &nbsp;
               </div>
             </div>
@@ -251,11 +305,13 @@
   </div>
 
 </div>    <div class="control-group">
-      <div class="controls">
-                  <div class="alert alert-warning in fade"><a href="#" class="close" data-dismiss="alert" type="button">×</a>未能在结果页面找到对应搜索，提交后需等待客服审核</div>              </div>
+      <div id="div_search_result" class="controls">
+      
+                  <!--<div class="alert alert-warning in fade"><a href="#" class="close" data-dismiss="alert" type="button">×</a></div> -->            
+      </div>
     </div>
 
-    <div class="form-actions"><button class="btn btn-primary" type="submit" name="yt0">保存搜索</button></div>  </div>
+    <div class="form-actions"><button class="btn btn-primary" type="submit" >保存搜索</button></div>  </div>
   <div style="padding: 50px;"></div>
 
   </form>
