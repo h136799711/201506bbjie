@@ -49,7 +49,11 @@ input{border:1px solid #ccc; list-style:none;}
 	
 	#div_main .div_info .div_condition span{ font-size: 14px;}
 	
-	#div_main .div_info .div_page{ text-align: center; float: left; width: 100%; margin-bottom: 10px;}
+	/*#div_main .div_info .div_page ul li { text-align: center; background: red; width: 100%; margin-bottom: 10px;}*/
+	#div_main .div_info .div_page{ text-align: center; width: 100%; margin-bottom: 10px;}
+		/*#div_main .div_info .div_page ul li{ float: left;}*/
+	
+	
 	.pagechecked{ background: white; color: black;}
 	
 	

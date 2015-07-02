@@ -35,15 +35,8 @@ class IndexController extends HomeController {
 	  * 首页
 	  * */
 	public function index(){
-		$order = " post_modified desc ";
-		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
-		$this->assign('zxgg',$result['info'][0]);
-		$headtitle="宝贝街-首页";
-		$this->assign('head_title',$headtitle);
-		$users=session('user');
 		
-		$this->assign('username',session('user')['info']['username']);
-		$this->display();
+		$this->redirect('Shop/Index/index');
 	}
 	/*
 	  * 福品专场

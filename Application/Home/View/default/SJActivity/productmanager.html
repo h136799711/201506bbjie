@@ -530,7 +530,7 @@ function showLoading() {
 				$("#read").data("query", 0);
 				console.log(data);
 				if (data.status) {
-					var title = "商品标题:" + data.info.title;
+					var title =  data.info.title;
 					var wangwang = data.info.wangwang;
 					if ('{$aliwawa}'.trim() == wangwang.trim()) {
 						$("input[name='alww']").val(wangwang.trim());

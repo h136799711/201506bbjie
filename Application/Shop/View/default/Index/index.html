@@ -19,11 +19,11 @@
 					<ul>
 						<volist name="categoryParent" id="vo">
 							<li>
-								<h3><a href="#">{$vo.name}</a></h3>
+								<h3><a href="{:U('Shop/Index/flzc',array('id'=>$vo['id']))}">{$vo.name}</a></h3>
 								<div>
 									<volist name="categoryChildrens" id="v">
 										<if condition="$vo['id'] eq $v['parent']">
-											<a href="">
+											<a href="{:U('Shop/Index/flzc',array('id'=>$v['id']))}">
 												{$v.name}
 											</a>&nbsp;&nbsp;&nbsp;
 										</if>

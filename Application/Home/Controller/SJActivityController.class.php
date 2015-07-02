@@ -39,12 +39,24 @@ class SJActivityController extends HomeController {
 	  * 创建任务第一步
 	  * */
 	  public function activity_1(){
-	  	$headtitle="宝贝街-创建任务";
-		$this->assign('head_title',$headtitle);
-		$user=session('user');
-		$this->assign('username',$user['info']['username']);
-		$this->display();
+	  	$user=session('user');
+		
+	  	if(IS_GET){
+	  		$headtitle="宝贝街-创建任务";
+			$this->assign('head_title',$headtitle);
+			$this->assign('username',$user['info']['username']);
+			$map=array('uid'=>$user['info']['id'],'status'=>1);
+			$pro=apiCall(HomePublicApi::Product_Query, array($map));
+			$this->assign('pros',$pro['info']);
+//			dump($pro);
+			$this->display();
+	  	}else{
+	  		
+	  	}
+	  	
 	  }
+	 
+	  
 	  /*
 	  * 创建任务第二步
 	  * */
@@ -52,6 +64,7 @@ class SJActivityController extends HomeController {
 	  	$headtitle="宝贝街-创建任务";
 		$this->assign('head_title',$headtitle);
 		$user=session('user');
+		
 		$this->assign('username',$user['info']['username']);
 		$this->display();
 	  }
@@ -147,23 +160,25 @@ class SJActivityController extends HomeController {
 		 * TODO:新增搜索
 		 * */
 		public function productsele(){
-		$headtitle="宝贝街-商品搜索管理";
-		$this->assign('head_title',$headtitle);
-		$user=session('user');
-		$map=array('uid'=>$user['info']['id'],'status'=>1);
-		$mwe=array('uid'=>$user['info']['id'],'status'=>0,);
-		$product=apiCall(HomePublicApi::Product_QueryAll, array($map));
-		$pro=apiCall(HomePublicApi::Product_QueryAll, array($mapp));
-		$prduct=apiCall(HomePublicApi::Product_QueryAll, array($mwe));
-		$this->assign('prduct',$prduct['info']['list']);
-		$this->assign('prshow',$prduct['show']);
-		$this->assign('product',$product['info']['list']);
-		$this->assign('prooshow',$product['show']);
-		$this->assign('proshow',$pro['show']);
-		$this->assign('pro',$pro['info']['list']);
-		$this->assign('username',$user['info']['username']);
-//		dump($prduct);
-		$this->display();
+			$headtitle="宝贝街-商品搜索管理";
+			$this->assign('head_title',$headtitle);
+			$user=session('user');
+			$map=array('uid'=>$user['info']['id'],'status'=>1);
+			$mapp=array('uid'=>$user['info']['id']);
+			$mwe=array('uid'=>$user['info']['id'],'status'=>0);
+			//dump($user['info']['id']);
+			$product=apiCall(HomePublicApi::Product_QueryAll, array($map));
+			$pro=apiCall(HomePublicApi::Product_QueryAll, array($mapp));
+			$prduct=apiCall(HomePublicApi::Product_QueryAll, array($mwe));
+			$this->assign('prduct',$prduct['info']['list']);
+			$this->assign('prshow',$prduct['show']);
+			$this->assign('product',$product['info']['list']);
+			$this->assign('prooshow',$product['show']);
+			$this->assign('proshow',$pro['show']);
+			$this->assign('pro',$pro['info']['list']);
+			$this->assign('username',$user['info']['username']);
+	//		dump($prduct);
+			$this->display();
 		}
 	   /*
 	    * 商品上架
@@ -284,6 +299,9 @@ class SJActivityController extends HomeController {
 		}
 	}
 	
+	/*
+	 * */
+	
 	/**
 	 * 判断是什么链接，淘宝？天猫？
 	 * 检测规则
@@ -401,11 +419,63 @@ class SJActivityController extends HomeController {
 		$headtitle="宝贝街-创建搜索";
 		$this->assign('head_title',$headtitle);
 		$user=session('user');
-		$product=apiCall(HomePublicApi::Product_QueryAll, array($map));
-		$this->assign('prduct',$prduct['info']['list']);
+	/*	$product=apiCall(HomePublicApi::Product_QueryAll, array($map));
+		$this->assign('prduct',$prduct['info']['list']);*/
 		$this->assign('username',$user['info']['username']);
-		//dump($product);
+	
 		$this->display();
+	}
+	
+	/**
+	 * 创建搜索中的下拉框信息
+	 */
+	public function select(){
+		$user=session('user');
+		$map=array(
+			'uid'=>$user['info']['id'],
+			'status'=>1,
+			'title'=>array('like', "%" . I('q', '', 'trim') . "%"),
+			//'link'=>array('like', "%" . I('q', '', 'trim') . "%"),
+			//'_logic' =>'OR',
+		);
+		$result=apiCall(HomePublicApi::Product_QueryAll, array($map));
+		$this->success($result['info']['list']);
+		
+		/*
+		$map['nickname'] = array('like', "%" . I('q', '', 'trim') . "%");
+		$map['id'] = I('q', -1);
+		$map['_logic'] = 'OR';
+		$page = array('curpage' => 0, 'size' => 20);
+		$order = " subscribe_time desc ";
+
+		$result = apiCall("Admin/Wxuser/query", array($map, $page, $order, false, 'id,nickname,avatar,openid'));
+		*/
+		/*if ($result['status']) {
+			$list = $result['info']['list'];
+			$this -> success($list);
+		} else {
+			LogRecord($result['info'], __LINE__);
+		}*/
+	}
+	
+	
+	public function save(){
+		/*$entity=array(
+			'store_name'=>I('post.dpname',''),
+			'aliwawa'=>I('alww',''),
+			'linkman_qq'=>I('post.qq'),
+			'linkman'=>I('post.lxr'),
+			'address'=>I('post.jydz'),
+		);
+		$result1 = apiCall(HomePublicApi::Bbjmember_Seller_SaveByID, array($id,$entity));
+		if ($result1['status']) {
+			$headtitle="宝贝街-登录";
+			$this->assign('head_title',$headtitle);
+			$this->display('login');
+		}*/
+		I('pid');
+		I('search_url');
+		I('search_q');
 	}
 	
 }
