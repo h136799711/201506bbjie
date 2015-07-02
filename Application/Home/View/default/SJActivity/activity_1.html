@@ -80,7 +80,8 @@
 									<button id="taobaobtn" style="margin-left: 550px; margin-top: -50px;" type="button" class="am-btn am-btn-default am-round">从商品库中选取</button>
 								</form>
 							</div>
-							<table class="am-table" style="margin-top: 20px;">
+							<form class="forma1" action="{:U('Home/SJActivity/a1')}" method="post">
+								<table class="am-table" style="margin-top: 20px;">
 								<thead>
 									<tr style="background: #EAEAEA;">
 										<th>宝贝图片</th>
@@ -118,15 +119,16 @@
 									</tr>
 								</tbody>
 							</table>
+							</form>
+						
+								
 							<center>
 								<font size="-2" color="red">任务最多可以添加3个链接</font>
 								<br />
 								<button id="down" type="button" class="am-btn am-btn-secondary" style="margin-top: 5px;">下一步</button>
 							</center>
 						</div>
-						<div>
-							
-						</div>
+						
 					</div>
 				</div>
 			</div>
@@ -145,7 +147,7 @@
 			$('#products').hide();
 			$('#probtn').click(function() {
 				$('#taobao').hide();
-				$('#products').css('margin-left', '50px');
+//				$('#products').css('margin-left', '50px');
 				$('#products').css('margin-top', '50px');
 				$('#products').show();
 			})
@@ -154,7 +156,7 @@
 				$('#taobao').show();
 			})
 			$('#down').click(function() {
-				window.location.href = "{:U('Home/SJActivity/activity_2')}";
+				$('.forma1').submit();
 			})
 			$("#groups").change(function() {
 				$(".groupForm").submit();
@@ -196,23 +198,23 @@
 							var wangwang = data.info.wangwang;
 							if ($(".title").text() == '') {
 								$(".img").html("<img src='" + data.info.main_img + "' alt='图片' style='height:50px;width:100px;folat:left;'  />");
-								$(".title").text(title);
-								$(".guige").text('无');
+								$(".title").html("<span name='title'>"+title+"</span>");
+								$(".guige").html("<span name='title'>无</span>");
 								$(".num").html("<input type='text' style='width:50px' name='num'>");
 								$(".xxx").html("<button class='am-btn am-btn-primary am-btn-xs' style='height:20px'>×</button>");
 								$('.price').html("<input type='text' style='width:50px' name='price'>");
 								//						$(".show").html("<img  src='" + data.info.main_img + "' alt='图片' style='float:left' />" + title);
 							} else if ($(".title").text() != '' && $(".title1").text() == '') {
 								$(".img1").html("<img src='" + data.info.main_img + "' alt='图片' style='height:50px;width:100px;folat:left;'  />");
-								$(".title1").text(title);
-								$(".guige1").text('无');
+								$(".title1").html("<span name='title'>"+title+"</span>");
+								$(".guige1").html("<span name='title'>无</span>");
 								$(".num1").html("<input type='text' style='width:50px' name='num'>");
 								$(".xxx1").html("<button class='am-btn am-btn-primary am-btn-xs' style='height:20px'>×</button>");
 								$('.price1').html("<input type='text' style='width:50px' name='price'>");
 							} else if ($(".title").text() != '' && $(".title1").text() != '') {
 								$(".img2").html("<img src='" + data.info.main_img + "' alt='图片' style='height:50px;width:100px;folat:left;'  />");
-								$(".title2").text(title);
-								$(".guige2").text('无');
+								$(".title2").html("<span name='title'>"+title+"</span>");
+								$(".guige2").html("<span name='title'>无</span>");
 								$(".num2").html("<input type='text' style='width:50px' name='num'>");
 								$(".xxx2").html("<button class='am-btn am-btn-primary am-btn-xs' style='height:20px'>×</button>");
 								$('.price2').html("<input type='text' style='width:50px' name='price'>");
@@ -288,27 +290,29 @@
 						var minTitle = repo.title.substring(0, 30) + "...";
 						if(!pro){
 						if ($(".title").text() == '') {
+								//$('.title').html();
 								$(".img").html("<img src='" + repo.main_img + "' alt='图片' style='height:50px;width:100px;folat:left;'  />");
-								$(".title").text(repo.title);
-								$(".guige").text('无');
-								$(".num").html("<input type='text' style='width:50px' name='num'>");
+								$(".title").html("<input name='title[]' type='hidden' value="+repo.title+">"+"<input name='id[]' type='hidden' value="+repo.id+">"+"<span name='title'>"+repo.title+"</span>");
+								$(".guige").html("<input name='guige[]' type='hidden' value="+repo.model_num_cfg+">"+"<span name='guige'>"+repo.model_num_cfg+"</span>");
+								$(".num").html("<input type='text' style='width:50px' name='num[]'>");
 								$(".xxx").html("<button class='am-btn am-btn-primary am-btn-xs' style='height:20px'>×</button>");
-								$('.price').html("<input type='text' style='width:50px' name='price'>");
+								$('.price').html("<input class='am-form-field' style='height: 20px;' type='text' name='price[]' value="+repo.price+">");
 								//						$(".show").html("<img  src='" + data.info.main_img + "' alt='图片' style='float:left' />" + title);
 							} else if ($(".title").text() != '' && $(".title1").text() == '') {
 								$(".img1").html("<img src='" + repo.main_img + "' alt='图片' style='height:50px;width:100px;folat:left;'  />");
-								$(".title1").text(repo.title);
-								$(".guige1").text('无');
-								$(".num1").html("<input type='text' style='width:50px' name='num'>");
+								$(".title1").html("<input name='title[]' type='hidden' value="+repo.title+">"+"<input name='id[]' type='hidden' value="+repo.id+">"+"<span name='title1'>"+repo.title+"</span>");
+								$(".guige1").html("<input name='guige[]' type='hidden' value="+repo.model_num_cfg+">"+"<span name='guige1'>"+repo.model_num_cfg+"</span>");
+								$(".num1").html("<input type='text' style='width:50px' name='num[]'>");
 								$(".xxx1").html("<button class='am-btn am-btn-primary am-btn-xs' style='height:20px'>×</button>");
-								$('.price1').html("<input type='text' style='width:50px' name='price'>");
+								$('.price1').html("<input class='am-form-field' style='height: 20px;' type='text' name='price[]' value="+repo.price+">");
 							} else if ($(".title").text() != '' && $(".title1").text() != '') {
 								$(".img2").html("<img src='" + repo.main_img + "' alt='图片' style='height:50px;width:100px;folat:left;'  />");
-								$(".title2").text(repo.title);
-								$(".guige2").text('无');
-								$(".num2").html("<input type='text' style='width:50px' name='num'>");
+								$(".title2").html("<input name='title[]' type='hidden' value="+repo.title+">"+"<input name='id[]' type='hidden' value="+repo.id+">"+"<span name='title2'>"+repo.title+"</span>");
+								$(".guige2").html("<input name='guige[]' type='hidden' value="+repo.model_num_cfg+">"+"<span name='guige2'>"+repo.model_num_cfg+"</span>");
+								$(".num2").html("<input type='text' style='width:50px' name='num[]'>");
 								$(".xxx2").html("<button class='am-btn am-btn-primary am-btn-xs' style='height:20px'>×</button>");
-								$('.price2').html("<input type='text' style='width:50px' name='price'>");
+								$('.price2').html("<input class='am-form-field' style='height: 20px;' type='text' name='price[]' value="+repo.price+">");
+								
 							}
 							pro=true;
 						}

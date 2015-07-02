@@ -80,5 +80,23 @@ class HomePublicApi{
 	const Product_Add='Home/TaskProduct/add';
 	const Product_Del='Home/TaskProduct/delete';
 	
+	/*
+	 * 任务信息
+	 * */
+	const Task_QueryAll='Home/Task/query';
+	const Task_Query='Home/Task/queryNoPaging';
+	const Task_SaveByID='Home/Task/saveByID';
+	const Task_Add='Home/Task/add';
+	const Task_Del='Home/Task/delete';
+	
+	/*
+	 * 任务关联表
+	 * */
+	const TaskHasProduct_QueryAll='Home/TaskHasProduct/query';
+	const TaskHasProduct_Query='Home/TaskHasProduct/queryNoPaging';
+	const TaskHasProduct_SaveByID='Home/TaskHasProduct/saveByID';
+	const TaskHasProduct_Add='Home/TaskHasProduct/add';
+	const TaskHasProduct_Del='Home/TaskHasProduct/delete';
 }
+
 

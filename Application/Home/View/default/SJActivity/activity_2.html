@@ -177,7 +177,7 @@
 
 									<td style=" padding-top: 10px;">
 										<input value="92.00" style="padding:5px;width:50px; border-bottom-left-radius: 5px; border-top-left-radius: 5px;border: 1px solid #ccc;" />
-										<input type="button" style="padding:5px;border-bottom-right-radius: 5px; border-top-right-radius: 5px; border: 1px solid #ccc;" disabled="disabled" value="元" /> + 任务佣金 <font color="red">5.70</font> 元 + 预收邮费 <font color="red">10</font> 元 = 单份任务保证金 <font color="red">109.70</font> 元 <a href="#">下载佣金表</a>
+										<input type="button" style="padding:5px;border-bottom-right-radius: 5px; border-top-right-radius: 5px; border: 1px solid #ccc;" disabled="disabled" value="元" /> + 任务佣金 <font color="red">{$yongjin}</font> 元 + 预收邮费 <font color="red">10</font> 元 = 单份任务保证金 <font color="red">109.70</font> 元 <a href="#">下载佣金表</a>
 										<br />任务金额必须大于等于试民的实付金额，不包邮的商品下单金额加邮费
 										<br />如果您所设的价格低于试民需支付的金额，请说明优惠方式
 										<br />优惠方式:
@@ -208,6 +208,7 @@
 <block name="area_footer">
 <script type="text/javascript">
 	$(function(){
+		$()
 		$('#up').click(function(){
 			window.location.href="{:U('Home/SJActivity/activity_1')}";
 		})
