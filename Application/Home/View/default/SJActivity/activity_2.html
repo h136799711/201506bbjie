@@ -6,76 +6,7 @@
 	<script>
 		 //根据jQuery选择器找到需要加载ystep的容器
 		 //loadStep 方法可以初始化ystep
-		/*$(".ystep1").loadStep({
-		  //ystep的外观大小
-		  //可选值：small,large
-		  size: "small",
-		  //ystep配色方案
-		  //可选值：green,blue
-		  color: "green",
-		  //ystep中包含的步骤
-		  steps: [{
-		    //步骤名称
-		    title: "发起",
-		    //步骤内容(鼠标移动到本步骤节点时，会提示该内容)
-		    content: "实名用户/公益组织发起项目"
-		  },{
-		    title: "审核",
-		    content: "乐捐平台工作人员审核项目"
-		  },{
-		    title: "募款",
-		    content: "乐捐项目上线接受公众募款"
-		  },{
-		    title: "执行",
-		    content: "项目执行者线下开展救护行动"
-		  },{
-		    title: "结项",
-		    content: "项目执行者公示善款使用报告"
-		  }]
-		});
-
-		$(".ystep2").loadStep({
-		  size: "large",
-		  color: "green",
-		  steps: [{
-		    title: "发起",
-		    content: "实名用户/公益组织发起项目"
-		  },{
-		    title: "审核",
-		    content: "乐捐平台工作人员审核项目"
-		  },{
-		    title: "募款",
-		    content: "乐捐项目上线接受公众募款"
-		  },{
-		    title: "执行",
-		    content: "项目执行者线下开展救护行动"
-		  },{
-		    title: "结项",
-		    content: "项目执行者公示善款使用报告"
-		  }]
-		});
-    
-		$(".ystep3").loadStep({
-		  size: "small",
-		  color: "blue",
-		  steps: [{
-		    title: "发起",
-		    content: "实名用户/公益组织发起项目"
-		  },{
-		    title: "审核",
-		    content: "乐捐平台工作人员审核项目"
-		  },{
-		    title: "募款",
-		    content: "乐捐项目上线接受公众募款"
-		  },{
-		    title: "执行",
-		    content: "项目执行者线下开展救护行动"
-		  },{
-		    title: "结项",
-		    content: "项目执行者公示善款使用报告"
-		  }]
-		});
-		*/
+		
 		$(".ystep4").loadStep({
 			size: "large",
 			color: "blue",
@@ -96,9 +27,7 @@
 				content: "项目执行者公示善款使用报告"
 			}]
 		});
-		/*$(".ystep1").setStep(2);
-		$(".ystep2").setStep(5);
-		$(".ystep3").setStep(3);*/
+		
 		$(".ystep4").setStep(2);
 	</script>
 </block>
@@ -138,27 +67,29 @@
 										content: "创建完成"
 									}]
 								});
-								/*$(".ystep1").setStep(2);
-								$(".ystep2").setStep(5);
-								$(".ystep3").setStep(3);*/
+								
 								$(".ystep4").setStep(2);
 							</script>
 							<table style="width: 100%;">
+								
+							<volist name='pros.img' id='vo' key='k'>
+								
 								<tr>
 									<td>
-										<img width="100" height="100" />
+										<img width="100" height="100" src="{$vo}" />
 									</td>
-									<td>幼儿园女童***孩舞台表演服(货号:-118)</td>
-									<td><font color="red">76元</font>X1</td>
+									<td>{$pros['title'][$k-1]}</td>
+									<td><font color='red'> X{$pros['num'][$k-1]}</font></td>
 								</tr>
+								</volist>
 							</table>
 
 							<table style="width: 100%;margin-top: 10px;font-size: 12px;">
 								<tr style="">
 									<td width="20%" align="right" style="text-align: right; font-size: 14px; padding-top: 10px;">发货模式：</td>
 									<td style=" padding-top: 10px;">
-										<input type="radio" />平台发货
-										<input type="radio" />自己发货
+										<label for='a'><input id="a" name='fhtype' type="radio" value="平台发货" checked="checked"/>平台发货</label>
+										<label for='b'><input id="b" name='fhtype' type="radio" value="自主发货"/>自主发货</label>
 										<font color="#C34A8A" style="margin-left: 20px;">由系统代为发送快递，需预收邮费10元/份</font>
 									</td>
 								</tr>
@@ -166,8 +97,8 @@
 								<tr style="">
 									<td width="20%" align="right" style="text-align: right;font-size: 14px; padding-top: 10px;">店铺运费设置：</td>
 									<td style=" padding-top: 10px;">
-										<input type="radio" />包邮 <a href="">设置为默认</a>
-										<input type="radio" />不包邮 <font color="#9EB5D3">默认运费设置</font>
+										<input id="c" name="yftype" type="radio" value="包邮" checked="checked"/>包邮 
+										<input id="d" name="yftype" type="radio" value="不包邮"/>不包邮 
 										<font color="#C34A8A" style="margin-left: 20px;">试民在淘宝下单时还需另付邮费,需加￥15保证金</font>
 									</td>
 								</tr>
@@ -176,18 +107,28 @@
 									<td width="20%" align="right" style="text-align: right;font-size: 14px; padding-top: 0;vertical-align: top; padding-top: 10px;">试民下单金额：</td>
 
 									<td style=" padding-top: 10px;">
-										<input value="92.00" style="padding:5px;width:50px; border-bottom-left-radius: 5px; border-top-left-radius: 5px;border: 1px solid #ccc;" />
-										<input type="button" style="padding:5px;border-bottom-right-radius: 5px; border-top-right-radius: 5px; border: 1px solid #ccc;" disabled="disabled" value="元" /> + 任务佣金 <font color="red">{$yongjin}</font> 元 + 预收邮费 <font color="red">10</font> 元 = 单份任务保证金 <font color="red">109.70</font> 元 <a href="#">下载佣金表</a>
+										<input value="{$summ}" class="pronum" style="padding:5px;width:50px; border-bottom-left-radius: 5px; border-top-left-radius: 5px;border: 1px solid #ccc;" />
+										<input type="button" style="padding:5px;border-bottom-right-radius: 5px; border-top-right-radius: 5px; border: 1px solid #ccc;" disabled="disabled" value="元" /> + 任务佣金 <font class="rwyj" color="red">{$yongjin}</font> 元 + 预收邮费 <font class="yf" color="red">10</font> 元 = 单份任务保证金 <font class="bzj" color="red"></font> 元 <a href="javascript:void(0)">下载佣金表</a>
 										<br />任务金额必须大于等于试民的实付金额，不包邮的商品下单金额加邮费
 										<br />如果您所设的价格低于试民需支付的金额，请说明优惠方式
 										<br />优惠方式:
-										<select>
-											<option value="" selected="selected">无：聊天后正常拍下即可</option>
-											<option value="quan">优惠券：在店铺首页找到后领取使用</option>
-											<option value="manjian">满就减：拍下宝贝后系统自动减价</option>
-											<option value="taocan">套餐：在宝贝详情内找到套餐链接进入拍下</option>
-											<option value="baoyou">包邮：商品拍下不包邮联系客服改价</option>
+										<form id='fm' action="{:U('Home/SJActivity/a2')}" method="post">
+											<div class="fm">
+												<input type="hidden" name="by" id="by" value="" />
+												<input type="hidden" name="fhfs" id="fhfs" value="" />
+												<input type="hidden" name="bzj" id="bzj" value="" />
+												<input type="hidden" name="yj" id="yj" value="" />
+												<input type="hidden" name="xiadan" id="xiadan" value="" />
+											</div>
+											
+										<select name="yhfs">
+											<option value="无：聊天后正常拍下即可" selected="selected">无：聊天后正常拍下即可</option>
+											<option value="优惠券：在店铺首页找到后领取使用">优惠券：在店铺首页找到后领取使用</option>
+											<option value="满就减：拍下宝贝后系统自动减价">满就减：拍下宝贝后系统自动减价</option>
+											<option value="套餐：在宝贝详情内找到套餐链接进入拍下">套餐：在宝贝详情内找到套餐链接进入拍下</option>
+											<option value="包邮：商品拍下不包邮联系客服改价">包邮：商品拍下不包邮联系客服改价</option>
 										</select>
+										</form>
 									</td>
 								</tr>
 							</table>
@@ -196,7 +137,7 @@
 								<button id="down" type="button" class="am-btn am-btn-secondary" style="margin-top: 5px;">下一步</button>
 							</center>
 						</div>
-
+						
 					</div>
 				</div>
 			</div>
@@ -208,13 +149,85 @@
 <block name="area_footer">
 <script type="text/javascript">
 	$(function(){
-		$()
+		var youfei=$('.yf').text();
+		var renwu=$('.rwyj').text();
+		var goods={$summ};
+		var a=Number(youfei)+Number(renwu)+Number(goods);
+		$('.bzj').text(a);
+		$('#a,#b').click(function(){
+			var ced=$('input:radio[name="fhtype"]:checked').val();
+			if(ced=='平台发货'){
+				$('.yf').text(10);
+				$('.bzj').text(Number($('.yf').text())+Number($('.rwyj').text())+Number({$summ}));
+			}else{
+				$('.yf').text(0);
+				$('.bzj').text(Number($('.yf').text())+Number($('.rwyj').text())+Number({$summ}));
+			}
+		})
+		$('#c,#d').click(function(){
+			var ced=$('input:radio[name="yftype"]:checked').val();
+			var cedd=$('input:radio[name="fhtype"]:checked').val();
+			var renwu=$('.rwyj').text();var bzj=$('.bzj').text();
+			if(cedd=='平台发货'){
+				if(ced=='包邮'){
+					
+					$('.yf').text(10);
+					$('.bzj').text(Number($('.yf').text())+Number($('.rwyj').text())+Number({$summ}));
+				}else{
+					
+					$('.yf').text(25);
+					$('.bzj').text(Number($('.yf').text())+Number($('.rwyj').text())+Number({$summ}));
+				}
+			}else{
+				if(ced=='包邮'){
+					
+					$('.yf').text(0);
+					$('.bzj').text(Number($('.yf').text())+Number($('.rwyj').text())+Number({$summ}));
+				}else{
+					
+					$('.yf').text(15);
+					$('.bzj').text(Number($('.yf').text())+Number($('.rwyj').text())+Number({$summ}));
+				}
+			}
+			
+		})
+		
 		$('#up').click(function(){
 			window.location.href="{:U('Home/SJActivity/activity_1')}";
 		})
 		$('#down').click(function(){
-			window.location.href="{:U('Home/SJActivity/activity_3')}";
+			var ced=$('input:radio[name="yftype"]:checked').val();
+			var cedd=$('input:radio[name="fhtype"]:checked').val();
+			var renwu=$('.rwyj').text();var bzj=$('.bzj').text();var xiadan={$summ};
+			if(cedd=='平台发货'){
+				if(ced=='包邮'){
+					$('#fhfs').val(1);
+					$('#by').val(10);
+					$('#bzj').val(bzj);
+					$('#yj').val(renwu);
+				}else{
+					$('#fhfs').val(1);
+					$('#by').val(25);
+					$('#bzj').val(bzj);
+					$('#yj').val(renwu);
+				}
+			}else{
+				if(ced=='包邮'){
+					$('#fhfs').val(2);
+					$('#by').val(0);
+					$('#bzj').val(bzj);
+					$('#yj').val(renwu);
+				}else{
+					$('#fhfs').val(2);
+					$('#by').val(15);
+					$('#bzj').val(bzj);
+					$('#yj').val(renwu);
+				}
+			}
+			$('#xiadan').val(xiadan);
+			$('#fm').submit();
 		})
+		
 	})
 	
 </script>

@@ -6,76 +6,7 @@
 	<script>
 		 //根据jQuery选择器找到需要加载ystep的容器
 		 //loadStep 方法可以初始化ystep
-		/*$(".ystep1").loadStep({
-		  //ystep的外观大小
-		  //可选值：small,large
-		  size: "small",
-		  //ystep配色方案
-		  //可选值：green,blue
-		  color: "green",
-		  //ystep中包含的步骤
-		  steps: [{
-		    //步骤名称
-		    title: "发起",
-		    //步骤内容(鼠标移动到本步骤节点时，会提示该内容)
-		    content: "实名用户/公益组织发起项目"
-		  },{
-		    title: "审核",
-		    content: "乐捐平台工作人员审核项目"
-		  },{
-		    title: "募款",
-		    content: "乐捐项目上线接受公众募款"
-		  },{
-		    title: "执行",
-		    content: "项目执行者线下开展救护行动"
-		  },{
-		    title: "结项",
-		    content: "项目执行者公示善款使用报告"
-		  }]
-		});
-
-		$(".ystep2").loadStep({
-		  size: "large",
-		  color: "green",
-		  steps: [{
-		    title: "发起",
-		    content: "实名用户/公益组织发起项目"
-		  },{
-		    title: "审核",
-		    content: "乐捐平台工作人员审核项目"
-		  },{
-		    title: "募款",
-		    content: "乐捐项目上线接受公众募款"
-		  },{
-		    title: "执行",
-		    content: "项目执行者线下开展救护行动"
-		  },{
-		    title: "结项",
-		    content: "项目执行者公示善款使用报告"
-		  }]
-		});
-    
-		$(".ystep3").loadStep({
-		  size: "small",
-		  color: "blue",
-		  steps: [{
-		    title: "发起",
-		    content: "实名用户/公益组织发起项目"
-		  },{
-		    title: "审核",
-		    content: "乐捐平台工作人员审核项目"
-		  },{
-		    title: "募款",
-		    content: "乐捐项目上线接受公众募款"
-		  },{
-		    title: "执行",
-		    content: "项目执行者线下开展救护行动"
-		  },{
-		    title: "结项",
-		    content: "项目执行者公示善款使用报告"
-		  }]
-		});
-		*/
+		
 		$(".ystep4").loadStep({
 			size: "large",
 			color: "blue",
@@ -96,9 +27,7 @@
 				content: "项目执行者公示善款使用报告"
 			}]
 		});
-		/*$(".ystep1").setStep(2);
-		$(".ystep2").setStep(5);
-		$(".ystep3").setStep(3);*/
+		
 		$(".ystep4").setStep(2);
 	</script>
 </block>
@@ -137,9 +66,7 @@
 										content: "创建完成"
 									}]
 								});
-								/*$(".ystep1").setStep(2);
-								$(".ystep2").setStep(5);
-								$(".ystep3").setStep(3);*/
+								
 								$(".ystep4").setStep(3);
 							</script>
 							<table>
@@ -161,9 +88,11 @@
 										<input placeholder="无须订单留言则不填写" class="am-form-field am-radius" />
 									</td>
 								</tr>
+								<volist name='tak' id='vo'>
 								<tr>
-									<td colspan="2" style="font-size: 14px; color:#666; text-align: center;">单份保证金：<font color="red">109.70</font> 元 = 试民下单金额 <font color="red">94.00</font> 元 + 任务佣金 <font color="red">5.70</font> 元 + 预收邮费 <font color="red">10</font> 元 下载佣金表</td>
+									<td colspan="2" style="font-size: 14px; color:#666; text-align: center;">单份保证金：<font color="red">{$vo.task_gold}</font> 元 = 试民下单金额 <font color="red">{$xiadan}</font> 元 + 任务佣金 <font color="red">{$vo.task_brokerage}</font> 元 + 预收邮费 <font color="red">{$vo.task_postage}</font> 元 下载佣金表</td>
 								</tr>
+								</volist>
 
 							</table>
 							<center>
@@ -184,6 +113,7 @@
 <script type="text/javascript">
 	
 	$(function(){
+//		alert({$aaa});
 		$('#up').click(function(){
 			window.location.href="{:U('Home/SJActivity/activity_2')}";
 		})
