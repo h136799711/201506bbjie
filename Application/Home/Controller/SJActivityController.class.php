@@ -443,7 +443,7 @@ class SJActivityController extends HomeController {
 	//	}
 
 	//创建搜索
-<<<<<<< HEAD
+
 	public function createsearch() {
 		$headtitle = "宝贝街-创建搜索";
 		$this -> assign('head_title', $headtitle);
@@ -453,7 +453,7 @@ class SJActivityController extends HomeController {
 		$this -> assign('username', $user['info']['username']);
 
 		$this -> display();
-=======
+
 	public function createsearch(){
 		$headtitle="宝贝街-创建搜索";
 		$this->assign('head_title',$headtitle);
@@ -468,7 +468,7 @@ class SJActivityController extends HomeController {
 		
 		$this->assign('username',$user['info']['username']);
 		$this->display();
->>>>>>> branch 'master' of https://github.com/h136799711/201506bbjie.git
+
 	}
 
 	/**
@@ -499,9 +499,7 @@ class SJActivityController extends HomeController {
 		 LogRecord($result['info'], __LINE__);
 		 }*/
 	}
-<<<<<<< HEAD
 
-=======
 	
 	/**
 	 * 保存搜索
@@ -536,5 +534,5 @@ class SJActivityController extends HomeController {
 		I('search_q');*/
 	}
 	
->>>>>>> branch 'master' of https://github.com/h136799711/201506bbjie.git
+
 }
