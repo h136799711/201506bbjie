@@ -14,6 +14,6 @@ return array(
      //token，TODO: 一套系统对应一个公众号的商城
     'SHOP_TOKEN'=>'',
     
-	'SHOW_PAGE_TRACE'=>false,
+	'SHOW_PAGE_TRACE'=>TRUE,
 	
 );

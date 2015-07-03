@@ -102,7 +102,6 @@ class IndexController extends ShopController{
 			$this->assign('zxgg',$result['info'][0]);
 			
 			
-			//dump($result['info'][0]);
 			$map=array();
 			$map["parent"]=0;
 			$result=apiCall(AdminPublicApi::Category_QueryNoPaging, array($map));
@@ -113,8 +112,6 @@ class IndexController extends ShopController{
 			$this->assign('categoryChildrens',$result['info']);
 			//公告
 			$map = array();
-			//$map = array('uid'=>34);
-			//dump(UID);
 			$map['position'] = 18;
 		
 			$page = array('curpage' => I('get.p', 0), 'size' => 4);
@@ -132,9 +129,9 @@ class IndexController extends ShopController{
 			$page=array();
 			$page = array('curpage' => I('get.p', 0), 'size' => 3);
 			$order = " createtime desc ";
-			//
+			
 			$result = apiCall('Admin/Banners/queryWithPosition', array($map, $page, $order, $params));
-			//
+			
 			$this -> assign('hotTypeList', $result['info']['list']);
 			
 			$map = array();
@@ -145,23 +142,61 @@ class IndexController extends ShopController{
 			$page=array();
 			$page = array('curpage' => I('get.p', 0), 'size' => 10);
 			$order = " createtime desc ";
-		//
-			$result = apiCall('Admin/Wxproduct/queryJoin', array($map, $page, $order, $params));
+			
+		/*	
+			["id"] => string(2) "23"
+        ["product_id"] => string(36) "AD493ED3-901D-4084-BE98-A0ABABEBDF24"
+        ["name"] => string(17) "KT可爱喷水瓶"
+        ["main_img"] => string(86) "http://localhost/github/201506bbjie/Uploads/WxshopPicture/2015-06-29/5590a6afe07f5.jpg"
+        ["img"] => string(87) "http://localhost/github/201506bbjie/Uploads/WxshopPicture/2015-06-29/5590a6d535633.jpg,"
+        ["buy_limit"] => string(1) "0"
+        ["delivery_type"] => string(2) "-1"
+        ["template_id"] => string(0) ""
+        ["express_id"] => string(1) "0"
+        ["express_price"] => string(3) "0.0"
+        ["attrext_ispostfree"] => string(1) "1"
+        ["attrext_ishasreceipt"] => string(1) "0"
+        ["attrext_isunderguaranty"] => string(1) "0"
+        ["attrext_issupportreplace"] => string(1) "0"
+        ["loc_country"] => string(6) "中国"
+        ["loc_province"] => string(9) "四川省"
+        ["loc_city"] => string(9) "内江市"
+        ["loc_address"] => string(9) "威远县"
+        ["has_sku"] => string(1) "0"
+        ["ori_price"] => string(6) "9900.0"
+        ["price"] => string(6) "9900.0"
+        ["icon_url"] => string(86) "http://localhost/github/201506bbjie/Uploads/WxshopPicture/2015-06-29/5590a6afe07f5.jpg"
+        ["quantity"] => string(2) "20"
+        ["product_code"] => string(8) "21356465"
+        ["detail"] => string(0) ""
+        ["createtime"] => string(10) "1435545365"
+        ["updatetime"] => string(10) "1435543912"
+        ["onshelf"] => string(1) "0"
+        ["wxaccountid"] => string(1) "1"
+        ["storeid"] => string(1) "0"
+        ["properties"] => string(0) ""
+        ["sku_info"] => string(0) ""
+        ["cate_id"] => string(2) "12"
+        ["start_sale_time"] => string(1) "0"
+        ["g_id"] => string(2) "34"
+        ["p_id"] => string(2) "17"
+			*/
+			$fields=array('itboye_wxproduct.id','name','main_img','icon_url','updatetime','p_id'); 
 			
 			
-			//recommend
+			$result = apiCall('Admin/Wxproduct/queryJoin', array($map, $page, $order, $params,$fields));
 			$this -> assign('newProductList', $result['info']['list']); //上新预告
 			
+			//dump($result);
 			
 			$map = array(
 				'g_id'=>35,
 				'onshelf'=>1,
 			);
-			$result = apiCall('Admin/Wxproduct/queryJoin', array($map, $page, $order, $params));
+			$result = apiCall('Admin/Wxproduct/queryJoin', array($map, $page, $order, $params,$fields));
 			$this -> assign('recommendProductList', $result['info']['list']); //推荐福品
+			//
 			//dump($result);
-		
-		
 			$headtitle="宝贝街-首页";
 			$this->assign('head_title',$headtitle);
 			$this->assign('indexTitle',0);
@@ -171,11 +206,10 @@ class IndexController extends ShopController{
 			
 			$map = array(
 				'uid'=>$id,
-				//'onshelf'=>1,
+			
 			);
 			$result=apiCall(HomePublicApi::Group_QueryNpPage, array($map));
 			
-			//dump($result);
 			$this->assign('group',$result['info'][0]['group_id']);
 			$this->assign('username',$users['info']['username']);
 			$this->display();
@@ -290,10 +324,10 @@ class IndexController extends ShopController{
 		$maxPrice=I("maxPrice");
 		if($product_name==""&&$minPrice==""&&$maxPrice==""){
 			if($cate_id=="0"||$cate_id==""){
-			$map=array(
-				//'id'=>0,
-				'onshelf'=>1,
-			);
+				$map=array(
+					//'id'=>0,
+					'onshelf'=>1,
+				);
 			}else{
 				$map=array(
 					'id'=>$cate_id,
@@ -323,7 +357,9 @@ class IndexController extends ShopController{
 					);
 			
 				}
+				
 			}
+			$this->assign('cpid',$cate_id);
 		}else{
 			if($product_name!=""){
 				$map = array();
@@ -359,7 +395,7 @@ class IndexController extends ShopController{
 		
 		
 		$page=array();
-		$page = array('curpage' => I('get.p', 0), 'size' => 10);
+		$page = array('curpage' => I('get.p', 0), 'size' => 20);
 		$order = " createtime desc ";
 		$result = apiCall('Admin/Wxproduct/query', array($map, $page, $order, $params));
 		$this->assign('page',$result['info']['show']);
