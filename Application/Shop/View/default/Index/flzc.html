@@ -9,6 +9,12 @@
 		* {
 			font-family: "微软雅黑" !important;
 		}
+		
+		.li_active{
+			background: red;
+			border-radius:5px;
+			
+		}
 	</style>
 </block>
 
@@ -22,7 +28,16 @@
 					<ul class="ul_condition1">  
 						<li><a href="{:U('Shop/Index/flzc')}">全部</a></li>
 						<volist name="categoryParent" id="cp">
-							<li><a href="{:U('Shop/Index/flzc',array('id'=>$cp['id']))}">{$cp.name}</a> </li>
+							<li
+							<if condition="$cpid eq $cp['id']">
+								 class="li_active" 
+								 </if>
+							><a 
+							<if condition="$cpid eq $cp['id']">
+								 style="color:white"
+							</if>
+							 href="{:U('Shop/Index/flzc',array('id'=>$cp['id']))}">{$cp.name}</a> </li>
+							
 						</volist>
 					</ul>
 					

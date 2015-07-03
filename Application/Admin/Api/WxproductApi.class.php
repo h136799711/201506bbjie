@@ -83,9 +83,7 @@ class WxproductApi extends Api{
 		if(!($fields === false)){
 			$query = $query->field($fields);
 		}
-		$list = $query ->
-		table('itboye_wxproduct_group iwg,itboye_wxproduct p')->where('iwg.p_id = p.id')
-		/*join('join itboye_wxproduct_group as iwg ON itboye_wxproduct.id = iwg.p_id')->*/
+		$list = $query ->join('left join __WXPRODUCT_GROUP__ as iwg ON __WXPRODUCT__.id = iwg.p_id')
 		->page($page['curpage'] . ',' . $page['size'])-> select();
 		
 
@@ -94,7 +92,9 @@ class WxproductApi extends Api{
 			return $this -> apiReturnErr($error);
 		}
 
-		$count = $this -> model -> where($map) -> count();
+		$count = $this -> model -> where($map)->
+		join('left join __WXPRODUCT_GROUP__ as iwg ON __WXPRODUCT__.id = iwg.p_id')
+		 -> count();
 		// 查询满足要求的总记录数
 		$Page = new \Think\Page($count, $page['size']);
 
