@@ -7,48 +7,32 @@
 
 <block name="area_body">
 
-	<div class="seller_header_wrap">
-		<div class="seller_header clearfix" style="background: url(__IMG__/header_main_bg.jpg);">
-			<a class="logo" href="#" style=" background: url(__IMG__/logo.png) no-repeat 20px;"></a>
-			<div class="pull-left gzt btn-group">
-				<a class="shifu btn" href="#">试福</a>
-				<a class="taofu btn" href="#">淘福</a>
-				<a class="dropdown-toggle btn" data-toggle="dropdown" href="javascript:;">　账户关联　 <b class="caret"></b></a>
-				<ul role="menu" class="dropdown-menu pull-right">
-					<li role="menuitem"><a tabindex="-1" href="#">关联店铺管理&gt;&gt;</a>
-					</li>
-				</ul>
-			</div>
-			<a style="margin-top:57px; margin-left:20px;" class="text-info pull-left" href="#">试民淘宝号确认</a>
-			<div class="topmenu">
-				<ul class="clearfix">
-					<li>
-						<div>您好，<span class="text-link">{$username}</span>
-							<a href="{:U('Home/Usersj/exits')}">[退出]</a>
-						</div>
-					</li>
-					<li class="shangjia"><a href="{:U('Home/Usersj/index')}">商家中心</a>
-					</li>
-					<li><a href="{:U('Home/Index/index')}">回到首页</a>
-					</li>
-					<li><a href="#">站内消息</a>
-					</li>
-					<li class="bangzhu"><a href="#">帮助中心</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
-	<div></div>
+	<include file='Widget/sjtop' />
 	<div class="seller_main clearfix" controller="seller/common">
 		<div class="seller_content_wrap">
+			<div class="am-modal am-modal-no-btn" tabindex="-1" id="doc-modal-1">
+						<div class="am-modal-dialog" style="border-radius: 5px;">
+							<div class="am-modal-hd" style="border-bottom: 1px solid #ccc; text-align: left;font-size:18px;">
+								选择试民
+								<a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>
+									&times;
+								</a>
+							</div>
+							<div>
+								<ul class="am-list am-list-static am-list-border">
+								  <li>...</li>
+								</ul>
+								
+							</div>
+						</div>
+					</div>
 			<div class="seller_content" style="padding-top: 10px;">
 
 				<div class="content">
 					<div class="jquery-once-1-processed">
 
 						<div style="position: relative">
-							<div class="pull-right btn-group"><a data-toggle="modal2" modal-title="创建淘宝活动" class="btn btn-primary" href="#">创建试福任务</a>
+							<div class="pull-right btn-group"><a data-toggle="modal2" modal-title="创建淘宝活动" style="background-color: #1D99D5; color: #FFFFFF;" class="btn " href="#">创建试福任务</a>
 							</div>
 							<ul class="shifu_nav clearfix" style="position: relative;left: 0;width: 600px;">
 								<li>
@@ -71,9 +55,6 @@
 									<a href="#">未开始</a> </li>
 								<li>
 									<a href="#">已驳回</a> </li>
-
-								<!--    <li style="margin-left: 40px;">
-          </li>-->
 							</ul>
 
 							<div class="clear"></div>
@@ -125,7 +106,7 @@
 									<tr>
 										<th width="60" id="task-grid_c0"><a class="sort-link" href="#">ID<span class="caret"></span></a>
 										</th>
-										<th id="task-grid_c1">任务名称</th>
+										<th width="300" id="task-grid_c1">任务名称</th>
 										<th width="120" id="task-grid_c2">发货模式</th>
 										<th width="60" id="task-grid_c3"><a class="sort-link" href="#">链接数<span class="caret"></span></a>
 										</th>
@@ -136,37 +117,43 @@
 										</th>
 										<th width="100" id="task-grid_c7"><a class="sort-link desc" href="#">创建时间<span class="caret"></span></a>
 										</th>
-										<th width="80" id="task-grid_c9">操作</th>
+										<th width="130" id="task-grid_c9">操作</th>
 									</tr>
 								</thead>
 								<tbody class="item odd">
 									<tr class="padding-tr"></tr>
+									<volist name='task' id='vo'>
 									<tr class="list-tr">
-										<td>54917</td>
-										<td>334333</td>
-										<td>平台发货</td>
-										<td>1</td>
-										<td><span class="price" tooltip="&lt;div class=&quot;text-left&quot;&gt;保证金：60.00元&lt;br/&gt;任务佣金：6.00元&lt;br/&gt;预收邮费：10元&lt;/div&gt;" data-original-title="" title="">￥76.00</span>
+										<td>{$vo.id}</td>
+										<td>{$vo.task_name}</td>
+										<td><if condition="$vo['delivery_mode'] eq 1">平台发货</if><if condition="$vo['delivery_mode'] eq 2">自主发货</if></td>
+										<td>{$geshu}</td>
+										<td><span class="price"  title="">{$vo.task_brokerage}</span>
 										</td>
-										<td><span class="muted">-</span>
+										<td><span class="muted">{$vo.task_gold}</span>
 										</td>
 										<td>启用</td>
-										<td><span title="2015-06-25 15:39">06-25 15:39</span>
+										<td><span title="">{$vo.create_time|date='m-d H:i',###}</span>
 										</td>
 										<td>
-											<div class="btn-group-mini btn-group"><a target="_blank" tooltip="任务计划" visible="1" class="btn btn-primary btn-mini" href="#" data-original-title="" title="">发放任务</a>
-												<button class="dropdown-toggle btn btn-primary btn-mini" data-toggle="dropdown" name="yt0" type="button"> <b class="caret"></b>
-												</button>
-												<ul class="dropdown-menu-mini dropdown-menu pull-right" role="menu">
-													<li role="menuitem"><a tooltip="编辑" data-toggle="modal2" modal-title="淘宝活动编辑" visible="1" tabindex="-1" href="#" data-original-title="" title="">编辑</a>
-													</li>
-												</ul>
+											<div class="am-btn-group">
+											  <button   class="am-btn am-btn-secondary">选择任务方式</button>
+											  <div  class="am-dropdown" data-am-dropdown>
+											    <button  class="am-btn am-btn-secondary am-dropdown-toggle" data-am-dropdown-toggle> <span class="am-icon-caret-down"></span></button>
+											    <ul class="am-dropdown-content">
+											      
+											      <li><a href="{:U('Home/SJActivity/')}">试民自主选择</a></li>
+											      <li ><a href="javascript:void(0)" data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 750, height:500}">指定试民领取</a></li>
+											      
+											    </ul>
+											  </div>
 											</div>
 										</td>
 									</tr>
 									<tr class="lbody-tr">
+										
 										<td colspan="3">
-											<img width="75px" height="75px" title="商品已下架" class="gray" id="gray17297" src="__IMG__/TB13xCbFVXXXXc_XFXXXXXXXXXX_!!0-item_pic.jpg_220x220.jpg" alt="儿童拉丁舞蹈服装幼儿女童练功服黑色少儿连体流苏舞蹈裙2015新款">
+											<volist name='pro' id='v' key='k'><img width="75px" height="75px" src="{$v['info'][0].main_img}" class="gray" id="" alt="{$v.title}"></volist>
 										</td>
 										<td colspan="2"><a class="text-info" target="_blank" href="{:U('Home/SJActivity/rws')}">预览任务书</a>
 										</td>
@@ -181,58 +168,13 @@
 											</div>
 										</td>
 										<td>
-											<div><a class="text-info inline-block" data-role="ajax" href="#">暂停任务</a><a target="_blank" class="text-info inline-block" href="#">任务试民</a>
+											<div><a class="text-info inline-block" data-role="ajax" href="{:U('Home/SJActivity/zanting',array('id'=>$vo['id']))}">暂停任务</a><br><a target="_blank" class="text-info inline-block" href="#">任务试民</a>
 											</div>
 										</td>
 									</tr>
+									</volist>
 								</tbody>
-								<tbody class="item even">
-									<tr class="padding-tr"></tr>
-									<tr class="list-tr">
-										<td>54556</td>
-										<td>儿童</td>
-										<td>平台发货</td>
-										<td>1</td>
-										<td><span class="price" tooltip="&lt;div class=&quot;text-left&quot;&gt;保证金：60.00元&lt;br/&gt;任务佣金：6.00元&lt;br/&gt;预收邮费：10元&lt;/div&gt;" data-original-title="" title="">￥76.00</span>
-										</td>
-										<td><span class="muted">-</span>
-										</td>
-										<td>启用</td>
-										<td><span title="2015-06-24 12:25">06-24 12:25</span>
-										</td>
-										<td>
-											<div class="btn-group-mini btn-group"><a target="_blank" tooltip="任务计划" visible="1" class="btn btn-primary btn-mini" href="#" data-original-title="" title="">发放任务</a>
-												<button class="dropdown-toggle btn btn-primary btn-mini" data-toggle="dropdown" name="yt1" type="button"> <b class="caret"></b>
-												</button>
-												<ul class="dropdown-menu-mini dropdown-menu pull-right" role="menu">
-													<li role="menuitem"><a tooltip="编辑" data-toggle="modal2" modal-title="淘宝活动编辑" visible="1" tabindex="-1" href="#" data-original-title="" title="">编辑</a>
-													</li>
-												</ul>
-											</div>
-										</td>
-									</tr>
-									<tr class="lbody-tr">
-										<td colspan="3">
-											<img width="75px" height="75px" title="儿童舞蹈服装女童练功服少儿夏款拉丁舞蹈裙跳舞考级培训服新款" src="__IMG__/TB1ZyBzFVXXXXXDXFXXXXXXXXXX_!!0-item_pic.jpg_220x220.jpg" alt="儿童舞蹈服装女童练功服少儿夏款拉丁舞蹈裙跳舞考级培训服新款">
-										</td>
-										<td colspan="2"><a class="text-info" target="_blank" href="#">预览任务书</a>
-										</td>
-										<td colspan="3">
-											<div>
-												<div>总份数：<i>0</i>
-												</div>
-												<div>任务中：<i>0</i>
-												</div>
-												<div>已完成：<i>0</i>
-												</div>
-											</div>
-										</td>
-										<td>
-											<div><a class="text-info inline-block" data-role="ajax" href="#">暂停任务</a><a target="_blank" class="text-info inline-block" href="#">任务试民</a>
-											</div>
-										</td>
-									</tr>
-								</tbody>
+								
 							</table>
 							<div class="row-fluid">
 								<div class="span6 offset3"></div>
@@ -248,44 +190,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="siderbar">
-			<dl class="open">
-				<dt class="s_zhanghao">
-		        <span>活动准备</span>
-		      </dt>
-				<dd><a class="" href="#"><span>搜索管理</span></a></dd>
-				<dd><a class="" href="#"><span>评语库</span></a></dd>
-				<dd><a class="" href="#"><span>发布试福任务</span></a></dd>
-			</dl>
-			<dl class="open">
-				<dt class="s_task">
-		        <span>活动管理</span>
-		      </dt>
-				<dd><a class="active" href="{:U('Home/SJActivity/sj_tbhd')}"><span>淘宝活动</span></a></dd>
-				<dd><a class=" " href="#"><span>收藏活动</span></a></dd>
-			</dl>
-			<dl class="open">
-				<dt class="s_vip">
-		      <span>账号管理</span>
-		     </dt>
-				<dd><a class="" href="{:U('Home/Usersj/sj_zhxx')}"><span>账号信息</span></a>
-				</dd>
-				<dd><a class="" href="{:U('Home/Usersj/sj_zhaq')}"><span>账户安全</span></a>
-				</dd>
-				<dd><a class="" href="{:U('Home/Usersj/sj_xgmm')}"><span>修改密码</span></a>
-				</dd>
-			</dl>
-			<dl>
-				<dt> <a class="" href="{:U('Home/Usersj/sj_znxx')}">站内消息</a> </dt>
-				<dt class="s_money"> <a class="" href="{:U('Home/Usersj/sj_zjgl')}">资金管理</a> </dt>
-				<dt> <a class="" href="{:U('Home/Usersj/sj_viptd')}">VIP通道</a> </dt>
-				<dt> <a class="" href="{:U('Home/Usersj/sj_sfkt')}">试福课堂</a> </dt>
-			</dl>
-			</dt>
-
-			<div class="adorn_bottom"></div>
-		</div>
-	</div>
+		<include file='Widget/sjleft' />
 </block>
 
 <block name="area_footer">

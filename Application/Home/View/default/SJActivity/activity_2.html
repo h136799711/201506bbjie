@@ -119,6 +119,7 @@
 												<input type="hidden" name="bzj" id="bzj" value="" />
 												<input type="hidden" name="yj" id="yj" value="" />
 												<input type="hidden" name="xiadan" id="xiadan" value="" />
+												<input type="hidden" name="money" id="money" value="" />
 											</div>
 											
 										<select name="yhfs">
@@ -199,6 +200,7 @@
 			var ced=$('input:radio[name="yftype"]:checked').val();
 			var cedd=$('input:radio[name="fhtype"]:checked').val();
 			var renwu=$('.rwyj').text();var bzj=$('.bzj').text();var xiadan={$summ};
+			var money=$('.bzj').text();
 			if(cedd=='平台发货'){
 				if(ced=='包邮'){
 					$('#fhfs').val(1);
@@ -224,6 +226,7 @@
 					$('#yj').val(renwu);
 				}
 			}
+			$('#money').val(money)
 			$('#xiadan').val(xiadan);
 			$('#fm').submit();
 		})

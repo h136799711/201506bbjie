@@ -69,32 +69,33 @@
 								
 								$(".ystep4").setStep(3);
 							</script>
-							<table>
-								<tr>
-									<td width="15%" style="text-align:right;padding-top: 20px;">任务名称：</td>
-									<td style="padding-top: 20px;">
-										<input class="am-form-field am-radius" />
-									</td>
-								</tr>
-								<tr>
-									<td style="text-align:right;padding-top: 20px;">聊天暗语：</td>
-									<td style="padding-top: 20px;">
-										<input class="am-form-field am-radius" placeholder="无须暗语则不填写" />
-									</td>
-								</tr>
-								<tr>
-									<td style="text-align:right;padding-top: 20px;">订单留言：</td>
-									<td style="padding-top: 20px;">
-										<input placeholder="无须订单留言则不填写" class="am-form-field am-radius" />
-									</td>
-								</tr>
-								<volist name='tak' id='vo'>
-								<tr>
-									<td colspan="2" style="font-size: 14px; color:#666; text-align: center;">单份保证金：<font color="red">{$vo.task_gold}</font> 元 = 试民下单金额 <font color="red">{$xiadan}</font> 元 + 任务佣金 <font color="red">{$vo.task_brokerage}</font> 元 + 预收邮费 <font color="red">{$vo.task_postage}</font> 元 下载佣金表</td>
-								</tr>
-								</volist>
-
-							</table>
+							<form id="fm" action="{:U('Home/SJActivity/over')}" method="post">
+								<table>
+									<tr>
+										<td width="15%" style="text-align:right;padding-top: 20px;">任务名称：</td>
+										<td style="padding-top: 20px;">
+											<input name="taskname" class="am-form-field am-radius" />
+										</td>
+									</tr>
+									<tr>
+										<td style="text-align:right;padding-top: 20px;">聊天暗语：</td>
+										<td style="padding-top: 20px;">
+											<input name="liaotiantext" class="am-form-field am-radius" placeholder="无须暗语则不填写" />
+										</td>
+									</tr>
+									<tr>
+										<td style="text-align:right;padding-top: 20px;">订单留言：</td>
+										<td style="padding-top: 20px;">
+											<input name="dingdantext" placeholder="无须订单留言则不填写" class="am-form-field am-radius" />
+										</td>
+									</tr>
+									<volist name='tak' id='vo'>
+										<tr>
+											<td colspan="2" style="font-size: 14px; color:#666; text-align: center;">单份保证金：<font color="red">{$vo.task_gold}</font> 元 = 试民下单金额 <font color="red">{$xiadan}</font> 元 + 任务佣金 <font color="red">{$vo.task_brokerage}</font> 元 + 预收邮费 <font color="red">{$vo.task_postage}</font> 元 下载佣金表</td>
+										</tr>
+									</volist>
+								</table>
+							</form>
 							<center>
 								<button id="up" type="button" class="am-btn am-btn-secondary" style="margin-top: 5px;">上一步</button>
 								<button id="wc" type="button" class="am-btn am-btn-secondary" style="margin-top: 5px;">确认创建</button>
@@ -113,9 +114,11 @@
 <script type="text/javascript">
 	
 	$(function(){
-//		alert({$aaa});
 		$('#up').click(function(){
 			window.location.href="{:U('Home/SJActivity/activity_2')}";
+		})
+		$('#wc').click(function(){
+			$('#fm').submit();
 		})
 	})
 </script>

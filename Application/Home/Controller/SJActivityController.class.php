@@ -19,11 +19,27 @@ class SJActivityController extends HomeController {
 	 * 淘宝活动
 	 * */
 	public function sj_tbhd() {
+		$user = session('user');
+		$map = array('uid' => $user['info']['id'],'task_status'=>1);
+		$result = apiCall(HomePublicApi::Task_Query, array($map));
+		$id=session('pid');
+		$maps=array('task_id'=>$id);
+		$res=apiCall(HomePublicApi::TaskHasProduct_Query, array($maps));
 		$headtitle = "宝贝街-活动";
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
+		$geshu=session('shuliang');
+		$this->assign('task',$result['info']);
+		$this->assign('geshu',session('shuliang'));
 		$this -> assign('username', $user['info']['username']);
-		$this -> display();
+		for ($i=0; $i <$geshu ; $i++) {
+			$mapp=array('id'=>$res['info'][$i]['pid']) ;
+			$product[]=apiCall(HomePublicApi::Product_Query, array($mapp));
+			
+		}
+		$this->assign('pro',$product);
+//		dump($product);
+		$this->display();
 	}
 
 	/*
@@ -64,6 +80,7 @@ class SJActivityController extends HomeController {
 		 $pros=session('al');
 		 
 		 $geshu=count($pros['title']);
+		 session('shuliang',$geshu);
 		 $vip=$sj['info'][0]['vip_level'];
 		 $count = 0;
 		 $sum=0;
@@ -118,29 +135,34 @@ class SJActivityController extends HomeController {
 		$al = array('img' => I('img', ''), 'link'=>I('url',''), 'title' => I('title', ''), 'num' => I('num', 1), 'price' => I('price'), 'position' => I('guige', ''), );
 		session('al', $al);
 		$count = 0;$summ=0;
+		$map = array('uid' => $user['info']['id']);
+		$sj = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
+		
+		$entity = array('uid' => $user['info']['id'], 'aliwawa' => $sj['info'][0]['aliwawa'], 'delivery_mode' => '', 'create_time' => time(), 'task_gold' => '0.00', 'task_brokerage' => '0.00', 'task_postage' => '0.00', 'update_time' => time(), 'dtree_preferential' => '', 'task_name' =>'', 'notes' => '', 'chat_argot' => '', 'task_do_type' => '', 'task_status' => 1, );
+		$result1 = apiCall(HomePublicApi::Task_Add, array($entity));
 		foreach ($al as $key => $value) {
 			if ($count < count($al['title'])) {
-				$map = array('uid' => $user['info']['id']);
-				$sj = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
+				
 				if ($al['title'][$count] != '' || $al['title'][$count] != null  ) {
 					$pro = array('uid' => $user['info']['id'], 'link' =>$al['link'][$count], 'price' => $al['price'][$count], 'has_model_num' => 1, 'position' => '', 'title' => $al['title'][$count], 'main_img' => $al['img'][$count],
 		 			'wangwang' => $aliwawa, 'create_time' => time(), 'update_time' => time(), 'status' => 1, 'model_num_cfg' => $al['position'][$count], 'is_on_sale' => 1, );
 					$result = apiCall(HomePublicApi::Product_Add, array($pro));
 					if($result['status']){
-						$entity = array('uid' => $user['info']['id'], 'aliwawa' => $sj['info'][0]['aliwawa'], 'delivery_mode' => '', 'create_time' => time(), 'task_gold' => '0.00', 'task_brokerage' => '0.00', 'task_postage' => '0.00', 'update_time' => time(), 'dtree_preferential' => '', 'task_name' =>$al['title'][$count], 'notes' => '', 'chat_argot' => '', 'task_do_type' => '', 'task_status' => 1, );
+
 	//					dump($entity);
-						$result1 = apiCall(HomePublicApi::Task_Add, array($entity));
-						if ($result1['status']) {
+						
+						
 							session('pid',$result1['info']);
 							$task_has = array('task_id' => $result1['info'], 'pid' => $result['info'], 'num' => $al['num'][$count], 'sku' => $al['position'][$count], 'pname' => $al['title'][$count], 'create_time' => time(), );
 							$ret = apiCall(HomePublicApi::TaskHasProduct_Add, array($task_has));
 						    $summ=$summ+$al['price'][$count];
-						}
+						
 					}
 				}
 				$count = $count + 1;
 			}
 		}
+		
 		$this -> yongjin();
 		$this->assign('summ',$summ);
 		$headtitle = "宝贝街-创建任务";
@@ -170,6 +192,8 @@ class SJActivityController extends HomeController {
 		$user = session('user');
 		$this -> assign('username', $user['info']['username']);
 		$id=session('pid');
+		$money=I('money');
+		session('money',$money);
 		$entity=array(
 			'delivery_mode'=>I('fhfs',''),
 			'task_postage'=>I('by',''),
@@ -198,7 +222,64 @@ class SJActivityController extends HomeController {
 		$this -> assign('username', $user['info']['username']);
 		$this -> display();
 	}
+	
+	/*
+	 * 任务完成创建
+	 * */
+	public function over(){
+		$entity=array(
+			'task_name'=>I('taskname',''),
+			'chat_argot'=>I('liaotiantext',''),
+			'notes'=>I('dingdantext',''),
+		);
+		$id=session('pid');
+		$result = apiCall(HomePublicApi::Task_SaveByID, array($id,$entity));
+//		dump($result);
+		$money=session('money');
+		$user=session('user');
+		$uid=$user['info']['id'];
+		$map=array('uid'=>$uid);
+		$rets = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
+		if($result['status']){
+			$ap = array('coins' => $rets['info'][0]['coins'] - $money,);
+			$return = apiCall(HomePublicApi::Bbjmember_Seller_SaveByID, array($uid, $ap));
+			if ($return['status']) {
+				$entity = array('uid' => $user['info']['id'], 'defray' => $money . '.000', 'income' => '0.000', 'create_time' => time(), 'notes' => '任务冻结金额', 'dtree_type' => 5, 'status' => 3, );
+				$result1 = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entity));
+				if ($result1['status']) {
 
+					$this->success('任务创建完成',U('Home/SJActivity/sj_tbhd'));
+				}
+
+			}
+			
+		}
+//		dump($entity);
+	}
+	/*
+	 * 暂停任务
+	 * */
+	public function zanting(){
+		$id=I('id');
+		$entity=array('task_status'=>2);
+		$return = apiCall(HomePublicApi::Task_SaveByID, array($id, $entity));
+		if($return['status']){
+			$this->success('操作成功',U('Home/SJActivity/sj_tbhd'));
+		}
+	}
+	/*
+	 * 开启
+	 * */
+	 public function start(){
+	 	
+		$id=I('id');
+		$entity=array('task_status'=>1);
+		$return = apiCall(HomePublicApi::Task_SaveByID, array($id, $entity));
+		if($return['status']){
+			$this->success('操作成功',U('Home/SJActivity/sj_tbhd'));
+		}
+	
+	 }
 	/*
 	 * 商品管理
 	 * */
