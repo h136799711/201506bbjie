@@ -97,6 +97,24 @@ class HomePublicApi{
 	const TaskHasProduct_SaveByID='Home/TaskHasProduct/saveByID';
 	const TaskHasProduct_Add='Home/TaskHasProduct/add';
 	const TaskHasProduct_Del='Home/TaskHasProduct/delete';
+	
+	/*
+	 * 任务计划
+	 * */
+	const TaskPlan_QueryAll='Home/TaskPlan/query';
+	const TaskPlan_Query='Home/TaskPlan/queryNoPaging';
+	const TaskPlan_SaveByID='Home/TaskPlan/saveByID';
+	const TaskPlan_Add='Home/TaskPlan/add';
+	const TaskPlan_Del='Home/TaskPlan/delete';
+	
+	/*
+	 * 搜索管理
+	 * */
+	const ProductSearchWay_QueryAll='Home/ProductSearchWay/query';
+	const ProductSearchWay_Query='Home/ProductSearchWay/queryNoPaging';
+	const ProductSearchWay_SaveByID='Home/ProductSearchWay/saveByID';
+	const ProductSearchWay_Add='Home/ProductSearchWay/add';
+	const ProductSearchWay_Del='Home/ProductSearchWay/delete';
 }
 
 

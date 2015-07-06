@@ -79,7 +79,7 @@
 										<img width="100" height="100" src="{$vo}" />
 									</td>
 									<td>{$pros['title'][$k-1]}</td>
-									<td><font color='red'> X{$pros['num'][$k-1]}</font></td>
+									<td><font  color='red'> X</font><font class="nu" color='red'> {$pros['num'][$k-1]}</font></td>
 								</tr>
 								</volist>
 							</table>
@@ -107,7 +107,7 @@
 									<td width="20%" align="right" style="text-align: right;font-size: 14px; padding-top: 0;vertical-align: top; padding-top: 10px;">试民下单金额：</td>
 
 									<td style=" padding-top: 10px;">
-										<input value="{$summ}" class="pronum" style="padding:5px;width:50px; border-bottom-left-radius: 5px; border-top-left-radius: 5px;border: 1px solid #ccc;" />
+										<input value="" class="pronum" style="padding:5px;width:50px; border-bottom-left-radius: 5px; border-top-left-radius: 5px;border: 1px solid #ccc;" />
 										<input type="button" style="padding:5px;border-bottom-right-radius: 5px; border-top-right-radius: 5px; border: 1px solid #ccc;" disabled="disabled" value="元" /> + 任务佣金 <font class="rwyj" color="red">{$yongjin}</font> 元 + 预收邮费 <font class="yf" color="red">10</font> 元 = 单份任务保证金 <font class="bzj" color="red"></font> 元 <a href="javascript:void(0)">下载佣金表</a>
 										<br />任务金额必须大于等于试民的实付金额，不包邮的商品下单金额加邮费
 										<br />如果您所设的价格低于试民需支付的金额，请说明优惠方式
@@ -150,44 +150,48 @@
 <block name="area_footer">
 <script type="text/javascript">
 	$(function(){
+		var num=$('.nu').text();
+		$('.pronum').val(num*{$summ});
 		var youfei=$('.yf').text();
 		var renwu=$('.rwyj').text();
-		var goods={$summ};
-		var a=Number(youfei)+Number(renwu)+Number(goods);
+		var summ=$('.pronum').val();
+		var a=Number(youfei)+Number(renwu)+Number(summ);
+		
 		$('.bzj').text(a);
 		$('#a,#b').click(function(){
 			var ced=$('input:radio[name="fhtype"]:checked').val();
 			if(ced=='平台发货'){
 				$('.yf').text(10);
-				$('.bzj').text(Number($('.yf').text())+Number($('.rwyj').text())+Number({$summ}));
+				$('.bzj').text(Number($('.yf').text())+Number($('.rwyj').text())+Number(summ));
 			}else{
 				$('.yf').text(0);
-				$('.bzj').text(Number($('.yf').text())+Number($('.rwyj').text())+Number({$summ}));
+				$('.bzj').text(Number($('.yf').text())+Number($('.rwyj').text())+Number(summ));
 			}
 		})
 		$('#c,#d').click(function(){
 			var ced=$('input:radio[name="yftype"]:checked').val();
 			var cedd=$('input:radio[name="fhtype"]:checked').val();
 			var renwu=$('.rwyj').text();var bzj=$('.bzj').text();
+			var summ=$('.pronum').val();
 			if(cedd=='平台发货'){
 				if(ced=='包邮'){
 					
 					$('.yf').text(10);
-					$('.bzj').text(Number($('.yf').text())+Number($('.rwyj').text())+Number({$summ}));
+					$('.bzj').text(Number($('.yf').text())+Number($('.rwyj').text())+Number(summ));
 				}else{
 					
 					$('.yf').text(25);
-					$('.bzj').text(Number($('.yf').text())+Number($('.rwyj').text())+Number({$summ}));
+					$('.bzj').text(Number($('.yf').text())+Number($('.rwyj').text())+Number(summ));
 				}
 			}else{
 				if(ced=='包邮'){
 					
 					$('.yf').text(0);
-					$('.bzj').text(Number($('.yf').text())+Number($('.rwyj').text())+Number({$summ}));
+					$('.bzj').text(Number($('.yf').text())+Number($('.rwyj').text())+Number(summ));
 				}else{
 					
 					$('.yf').text(15);
-					$('.bzj').text(Number($('.yf').text())+Number($('.rwyj').text())+Number({$summ}));
+					$('.bzj').text(Number($('.yf').text())+Number($('.rwyj').text())+Number(summ));
 				}
 			}
 			
@@ -199,7 +203,7 @@
 		$('#down').click(function(){
 			var ced=$('input:radio[name="yftype"]:checked').val();
 			var cedd=$('input:radio[name="fhtype"]:checked').val();
-			var renwu=$('.rwyj').text();var bzj=$('.bzj').text();var xiadan={$summ};
+			var renwu=$('.rwyj').text();var bzj=$('.bzj').text();var xiadan=$('.pronum').val();
 			var money=$('.bzj').text();
 			if(cedd=='平台发货'){
 				if(ced=='包邮'){
