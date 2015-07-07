@@ -28,4 +28,6 @@ class AdminPublicApi {
 	
 	const Category_QueryNoPaging="Admin/Category/queryNoPaging";
 	const Category_Query="Admin/Category/query";
+	
+	
 }

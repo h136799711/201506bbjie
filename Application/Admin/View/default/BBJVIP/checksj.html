@@ -1,0 +1,117 @@
+<extend name="template/base_index" />
+
+
+<block name="area_header">
+
+	<link rel="stylesheet" type="text/css" media="all" href="__CDN__/jquery-datetimepicker/jquery.datetimepicker.css">
+	<script type="text/javascript" src="__CDN__/jquery-datetimepicker/jquery.datetimepicker.js"></script>
+</block>
+
+<block name="area_body">
+	{:W('Menus/topbar')}
+	<div class="admin-main container-fluid">
+		{:W('Menus/left')}
+		<div class="admin-main-content">
+			{:W('Menus/breadcrumb')}
+				<table class="table table-striped table table-hover  table-condensed">
+					<thead>
+						<tr>
+							<th>
+								<input type="checkbox" class="selectall" onclick="myUtils.selectall(this,'.selectitem');" />
+							</th>
+							<th>
+								用户ID
+							</th>
+							<th>
+								用户昵称
+							</th>
+							<th>
+								邮箱
+							</th>
+							<th>
+								手机
+							</th>
+							<th>
+								淘宝号
+							</th>
+							<th>
+								时间
+							</th>
+							
+							<th>
+								操作
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<empty name="jilu">
+							<tr>
+								<td colspan="7" class="text-center">{:L('NO_DATA')}</td>
+							</tr>
+							<else/>
+							<volist name="jilu" id="vo">
+								<tr>
+									<td>
+										<input type="checkbox" value="{$vo.id}" name="ids[]" class="selectitem" /></td>
+									<td>
+										{$vo.id}
+									</td>
+									
+									<td>
+										<volist name='user' id='v'>
+											<if condition="$vo['uid'] eq $v['id']">{$v.username}</if>
+										</volist>
+									</td>
+									<td>
+										<volist name='user' id='v'>
+											<if condition="$vo['uid'] eq $v['id']">{$v.email}</if>
+										</volist>
+									</td>
+									<td>
+										<volist name='user' id='v'>
+											<if condition="$vo['uid'] eq $v['id']">{$v.mobile}</if>
+										</volist>
+									</td>
+									<td>
+										{$vo.taobao_account}
+									</td>
+									<td>
+										{$vo.create_time|date='Y-m-d h:i:s',###}
+									</td>
+									
+									<td>
+										<a href="{:U('Admin/BBJVIP/checksuccesssj',array('id'=>$vo['id']))}"  class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>审核通过</a>
+										<a href="{:U('Admin/BBJVIP/checkf')}" class="ajax-get confirm btn btn-sm btn-danger"><i class="fa fa-trash"></i>审核失败</a>
+									</td>
+								</tr>
+
+							</volist>
+						</empty>
+					</tbody>
+				</table>
+				<div>{$show}</div>
+			</div>
+
+			<script type="text/javascript">
+				$(function() {
+						$('#startdatetime').datetimepicker({
+							lang: 'ch',
+							format:'Y-m-d',
+							timepicker:false,
+						});
+						$('#enddatetime').datetimepicker({
+							lang: 'ch',
+							format:'Y-m-d',
+							timepicker:false,
+						});
+				});
+			</script>
+		</div>
+		<!-- END admin-main-content -->
+	</div>
+		<!-- END admin-main-->
+</block>
+
+<block name="area_footer">
+
+</block>

@@ -2,7 +2,7 @@
 // .-----------------------------------------------------------------------------------
 // | WE TRY THE BEST WAY 杭州博也网络科技有限公司
 // |-----------------------------------------------------------------------------------
-// | Author: 贝贝 <hebiduhebi@163.com>
+// | Author: 青<99701759@qq.com>
 // | Copyright (c) 2013-2016, http://www.itboye.com. All Rights Reserved.
 // |-----------------------------------------------------------------------------------
 namespace Home\Api;
@@ -17,7 +17,7 @@ class HomePublicApi{
 	const Bbjmember_Query='Home/Bbjmember/queryNoPaging';
 	const Bbjmember_SaveByID='Home/Bbjmember/saveByIDd';
 	const Bbjmember_Add='Home/Bbjmember/add';
-	
+	const Bbjmember_Del='Home/Bbjmember/delete';
 	
 	
 	/**
@@ -26,7 +26,9 @@ class HomePublicApi{
 	const Bbjmember_Seller_SaveByID='Home/BbjmemberSeller/saveByID';
 	const Bbjmember_Seller_Add='Home/BbjmemberSeller/add';
 	const Bbjmember_Seller_Query='Home/BbjmemberSeller/queryNoPaging';
+	const Bbjmember_Seller_QueryAll='Home/BbjmemberSeller/query';
 	const Bbjmember_Seller_GetInfo='Home/BbjmemberSeller/getInfo';
+	const Bbjmember_Seller_Del='Home/BbjmemberSeller/delete';
 	/**
 	 * 提现账号
 	 */
@@ -60,9 +62,11 @@ class HomePublicApi{
 	 */
 	 
 	const UcenterUser_Query='Home/UcenterMember/queryNoPaging';
+	const UcenterUser_Del='Home/UcenterMember/delete';
 	const Member_Add='Admin/Member/add';
 	const Member_Query='Admin/Member/queryNoPaging';
 	const Member_QueryAll='Admin/Member/query';
+	const Member_Del='Admin/Member/delete';
 	const Member_SaveByID='Admin/Member/saveByIDd';
 	const Group_Add='Admin/AuthGroupAccess/add';
 	const Group_QueryNpPage='Admin/AuthGroupAccess/queryNoPaging';
