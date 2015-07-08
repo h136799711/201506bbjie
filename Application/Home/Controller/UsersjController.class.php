@@ -222,12 +222,13 @@ class UsersjController extends CheckLoginController {
 		$user=session('user');
 		$uid = $user['info']['id'];
 		$map = array('uid' => $uid, );
+		$mapv = array('uid' => $uid,'status'=>2 );
 		$info = apiCall(HomePublicApi::FinBankaccount_Query, array($map));
 		$result = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
 		$user = apiCall(HomePublicApi::User_GetUser, array($uid));
 		$page = array('curpage' => I('get.p', 0), 'size' => 6);
 		$jyjl = apiCall(HomePublicApi::FinAccountBalanceHis_QueryAll, array($map, $page));
-		$all = apiCall(HomePublicApi::FinAccountBalanceHis_Query, array($map));
+		$all = apiCall(HomePublicApi::FinAccountBalanceHis_Query, array($mapv));
 		$jilus = $all['info'];
 		foreach ($jilus as $key => $value) {
 			if ($value['dtree_type'] == 3) {
@@ -245,8 +246,11 @@ class UsersjController extends CheckLoginController {
 		$this -> assign('show', $jyjl['info']['show']);
 		$this -> assign('show2', $tixian['info']['show']);
 		$this -> assign('show3', $chongzhi['info']['show']);
-		$this -> assign('email', $user['info']['email']);
-		$this -> assign('phone', $user['info']['mobile']);
+		if($result['info'][0]['auth_status']==1){
+			$this -> assign('email', $user['info']['email']);
+			$this -> assign('phone', $user['info']['mobile']);
+		}
+		
 		$this -> assign('coins', $result['info'][0]['coins']);
 		$this -> assign('bank', $info['info'][0]);
 		$this->assign('username',$user['info']['username']);

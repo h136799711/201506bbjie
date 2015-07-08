@@ -324,7 +324,7 @@ class IndexController extends HomeController {
 					if($result3['status']){
 						$this->display('register_sj_kz');
 					}
-dump($result3);
+//dump($result3);
 				}
 			}
 		}
@@ -447,11 +447,19 @@ dump($result3);
 			$this->assign('sj',$sj['info']);
 			$this->display('Usersj/index');
 		}else{
+			$user=session('user');
+			$id=$user['info']['id'];
+			$map=array(
+				'uid'=>$id,
+			);	
+			$result1=apiCall(HomePublicApi::Bbjmember_Query, array($map));
 			$user=apiCall(HomePublicApi::User_GetUser, array($id));
 			$this->assign('username',$user['info']['username']);
 			$this->assign('phone',$user['info']['mobile']);
 			$order = " post_modified desc ";
 			$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
+			$this->assign('taobao',$result1['info'][0]['taobao_account']);
+			$this->assign('user',$result1['info'][0]);
 			$this->assign('zxgg',$result['info'][0]);
 			$this->assign('info',$result['info']);
 //			dump($result);

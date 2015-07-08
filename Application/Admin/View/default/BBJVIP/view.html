@@ -85,26 +85,4 @@
 </block>
 
 <block name="area_footer">
-
-<script>
-    var ue = UE.getEditor('ueditor',{
-    	toolbars:[
-        ['fullscreen', 'source', 'undo', 'redo', 'bold','italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', '|','lineheight'
-       , 'fontsize', 'insertimage','emotion','link', 'unlink', 'anchor', '|','map','print', 'preview',  'drafts'
-        ]
-    ]});
-    ue.ready(function(){
-    		var cont =  "{:htmlspecialchars_decode($vo['post_content'])}";
-    		ue.setContent(cont);
-    });
-	</script>
-	<script type="text/javascript">
-		
-		function getData(){
-			$("#main_img").val($(".wxuploaderimg img").attr("src"));		
-		}
-		$(function(){			
-			wxuploadimg.init({cont:".wxuploaderimg"});
-		})
-	</script>
 </block>

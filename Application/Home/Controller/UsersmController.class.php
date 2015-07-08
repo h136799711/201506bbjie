@@ -61,6 +61,7 @@ class UsersmController extends CheckLoginController {
 		$info = apiCall(HomePublicApi::FinBankaccount_Query, array($map));
 		$result = apiCall(HomePublicApi::Bbjmember_Query, array($map));
 		$user = apiCall(HomePublicApi::User_GetUser, array($uid));
+		$result1 = apiCall(HomePublicApi::Bbjmember_Query, array($map));
 		$page = array('curpage' => I('get.p', 0), 'size' => 6);
 		$jyjl = apiCall(HomePublicApi::FinAccountBalanceHis_QueryAll, array($map, $page));
 		$all = apiCall(HomePublicApi::FinAccountBalanceHis_Query, array($map));
@@ -76,13 +77,28 @@ class UsersmController extends CheckLoginController {
 		$this -> assign('jilu', $jyjl['info']['list']);
 		$this -> assign('sum', $sum);
 		$this -> assign('show', $jyjl['info']['show']);
-		$this -> assign('email', $user['info']['email']);
-		$this -> assign('phone', $user['info']['mobile']);
+		if($result['info'][0]['auth_status']==1){
+			$this -> assign('email', $user['info']['email']);
+			$this -> assign('phone', $user['info']['mobile']);
+		}
 		$this -> assign('cs_zj', 'sed');
 		$this -> assign('coins', $result['info'][0]['coins']);
 		$this -> assign('bank', $info['info'][0]);
 		$this -> assign('username', $user['info']['username']);
 		$this -> display();
+	}
+	/*
+	 * 设置淘宝账号
+	 * */
+	public function settaobao(){
+		$user = session('user');
+		$id=$user['info']['id'];
+		$entity=array('taobao_account'=>I('taobao','无'));
+		$result = apiCall(HomePublicApi::Bbjmember_SaveByID,array($id,$entity));
+		if($result['status']){
+			$this->success('绑定成功',U('Home/Index/sm_manager'));
+		}
+		
 	}
 	/*
 	 * 预定商品

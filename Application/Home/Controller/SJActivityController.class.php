@@ -33,15 +33,14 @@ class SJActivityController extends CheckLoginController {
 			$id=$result['info'][$i]['id'];
 			$map4=array('task_id'=>$id);
 			$results[]=apiCall(HomePublicApi::TaskHasProduct_Query, array($map4));
-			for ($j=0; $j <count($results[$i]['info']) ; $j++) {
-				$pid=array('id'=>$results[$i]['info'][$j]['pid']);
-				$producta[]=apiCall(HomePublicApi::Product_Query, array($pid));
-				
-			}
 			
 			
 		}
-		
+		for ($j=0; $j <count($results) ; $j++) {
+				$pid=array('id'=>$results[$j]['info'][0]['pid']);
+				$producta[]=apiCall(HomePublicApi::Product_Query, array($pid));
+				
+			}
 		$this->assign('task',$result['info']);
 		$this->assign('taskzt',$resultzt['info']);
 		$this->assign('taskjs',$resultjs['info']);
@@ -49,6 +48,7 @@ class SJActivityController extends CheckLoginController {
 		$this -> assign('username', $user['info']['username']);
 		$this->assign('jihuas',$results);
 		$this->assign('pro',$producta);
+//		dump($results);
 		$this->display();
 	}
 
@@ -84,15 +84,15 @@ class SJActivityController extends CheckLoginController {
 		$result=apiCall(HomePublicApi::TaskHasProduct_Query, array($map));
 		$mapp=array('id'=>$result['info'][0]['pid']);
 		$mapa=array('pid'=>$result['info'][0]['pid']);
+//		dump($mapa);
 		$return=apiCall(HomePublicApi::Product_Query, array($mapp));
-		
 		$returns=apiCall(HomePublicApi::ProductSearchWay_Query, array($mapa));
 		$this->assign('pd',$return['info'][0]);
 		$this->assign('search',$returns['info'][0]);
 		if($returns['info']==NULL){
 			$this->error('预览任务书，请先创建搜索',U('Home/SJActivity/sj_tbhd'));
 		}
-//		$this -> display();
+		$this -> display();
 	}
 
 	/*
@@ -386,7 +386,7 @@ class SJActivityController extends CheckLoginController {
 			//dump($entity);
 			$result = apiCall(HomePublicApi::Product_SaveByID, array($id, $entity));
 			if ($result['status']) {
-				$this -> success('更新成功', U('Home/SJActivity/productsele'));
+				$this -> success('更新成功', U('Home/SJActivity/productmanager'));
 			} else {
 				$this -> error($result['info']);
 			}

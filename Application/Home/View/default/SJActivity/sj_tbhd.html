@@ -168,10 +168,9 @@
 									<tr class="lbody-tr">
 										
 										<td colspan="3">
-											<volist name='jihuas' id='c' key='k'>
-												{$c['info'][$k-1]['task_id']}  {$vo['id']}
-												<if condition="$c['info'][$s-1]['task_id'] eq $vo['id']">
-											<volist name='pro' id='v' key='a' ><if condition="$c['info'][$s-1]['pid'] eq $v['info'][$a-1]['id']"><img width="75px" height="75px" src="{$v['info'][$a-1]['main_img']}" class="gray" id="" ></if></volist>
+											<volist name='jihuas' id='c' >
+												<if condition="$c['info'][0]['task_id'] eq $vo['id']">
+											<volist name='pro' id='v' key='a' ><if condition="$c['info'][0]['pid'] eq $v['info'][0]['id']"><img width="75px" height="75px" src="{$v['info'][0]['main_img']}" class="gray" id="" ></if></volist>
 											</if>
 											</volist>
 										</td>

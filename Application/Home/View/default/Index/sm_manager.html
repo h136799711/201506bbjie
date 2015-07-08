@@ -30,7 +30,7 @@
 									<td style="text-align: right;">江湖等级:</td>
 									<td style="padding:0;" valign="top">
 										<div class="am-progress am-progress-striped am-progress-sm am-active am-round" style="margin-top:25px;">
-											<div class="am-progress-bar am-progress-bar-secondary" style="width: 57%"></div>
+											<div class="am-progress-bar am-progress-bar-secondary" style="width: {$user['exp']}%; line-height:15px;"> {$user['exp']}%</div>
 										</div>
 									</td>
 								</tr>
@@ -51,13 +51,18 @@
 								</tr>
 								<tr>
 									<td style="text-align: right;">宝贝钱庄:</td>
-									<td><font color="#ec1c50">￥0.00 </font><a href="">查看详情</a>
+									<td><font color="#ec1c50">￥{$user['coins']} </font><a href="{:U('Home/Usersm/sm_bbqz')}">查看详情</a>
 									</td>
 								</tr>
 								<tr>
 									<td style="text-align: right;">任务状态:</td>
 									<td>
-										<button class="am-btn am-btn-danger am-btn-xs am-round">任务开启中(100元)</button>
+										<if condition="$user['task_status'] eq 1">
+											<button id="start" type="button" class="am-btn am-btn-primary am-active am-round">({$user['daily_task_money']}元)</button>
+											<else/>
+											<button id="start" type="button" class="am-btn am-btn-default am-active am-round">任务未开启</button>
+										</if>
+										
 									</td>
 								</tr>
 							</table>
@@ -71,7 +76,7 @@
 					<div class="am-panel-bd" style="height: 350px; font-size:12px;">
 						<ul>
 							<volist name="info" id="vo">
-							<li style="margin-top: 10px;">{$vo.post_title}</li>
+								<li style="margin-top: 10px;">{$vo.post_title}</li>
 							</volist>
 						</ul>
 					</div>
@@ -82,10 +87,10 @@
 						<div class="am-panel-bd" style="">
 							<table border="0" style="font-size: 12px;">
 								<tr>
-									<td width="300">淘宝账号: hbddingding <a href="">设置</a> </td>
+									<td width="300">淘宝账号: {$taobao} <a href="javascript:void(0)" data-am-modal="{target: '#my-alert'}">设置</a> </td>
 									<td>手机任务: 关闭 <a href="">设置</a> </td>
 									<td rowspan="2" style="">
-										<button class="am-btn am-btn-default am-btn-sm am-round" style="margin-left: 50px;">领取宝贝任务</button>
+										<button id="gettask" class="am-btn am-btn-default am-btn-sm am-round" style="margin-left: 50px;">领取宝贝任务</button>
 										<button class="am-btn am-btn-default am-btn-sm am-round">领取收藏任务</button>
 									</td>
 								</tr>
@@ -126,7 +131,7 @@
 								</ul>
 							</div>
 							<div style="font-size: 12px; margin-left: 210px; margin-top: 20px;">
-								宝贝街隶属于杭州凡鸟科技有限公司旗下网站，是目前所有服务于淘宝商家推广类网站中的佼佼者， 让商家借助宝贝街兴旺的人气安全、高效、轻松的实现店铺商品的推广和销量的提升！同时，宝贝街也是一个分类齐全、商品丰富的综合性网站， 通过提供海量的免费商品源源不断地吸引越来越多的网购消费者 <a href="">[查看详情]</a>
+								宝贝街隶属于杭州博也科技有限公司旗下网站，是目前所有服务于淘宝商家推广类网站中的佼佼者， 让商家借助宝贝街兴旺的人气安全、高效、轻松的实现店铺商品的推广和销量的提升！同时，宝贝街也是一个分类齐全、商品丰富的综合性网站， 通过提供海量的免费商品源源不断地吸引越来越多的网购消费者 <a href="">[查看详情]</a>
 							</div>
 						</div>
 					</div>
@@ -142,7 +147,7 @@
 									<li>
 										<i class="am-icon-phone" style="font-size: 14px; color: lightgreen;"></i> &nbsp;15653333333</li>
 									<li>
-										<i class="am-icon-qq" ></i>&nbsp; <a href="#">点击这里给我发消息</a> </li>
+										<i class="am-icon-qq"></i>&nbsp; <a href="#">点击这里给我发消息</a> </li>
 									<li><i class="am-icon-users"></i>官方群: 423332325</li>
 								</ul>
 							</div>
@@ -203,18 +208,42 @@
 			</div>
 		</div>
 	</div>
+	<div class="am-modal am-modal-alert" tabindex="-1" id="my-alert">
+		<form action="{:U('Home/Usersm/settaobao')}" method="post">
+		<div class="am-modal-dialog">
+			<div class="am-modal-hd" style="color: orangered;">设置淘宝账号</div>
+			<div class="am-modal-bd">
+				淘宝账号：<input type="text" name="taobao">
+			</div>
+			<div class="am-modal-footer">
+				<button style="margin-top: 10px; background-color: orangered; border: 0; color: #FFFFFF;" type="submit" >确定绑定</button>
+			</div>
+		</div>
+		</form>
+	</div>
 </block>
 
 <block name="area_footer">
-<script type="text/javascript">
-	$(function(){
-		$('.t2').css('background-color','');
-		$('.t2 a').css('color','#FFFFFF');
-		$('.t1').css('background-color','#FFFFFF');
-		$('.t1 a').css('color','#000000');
-		$('.t3').css('background-color','');
-		$('.t3 a').css('color','#FFFFFF');
-	})
-</script>
+	<script type="text/javascript">
+		$(function(){
+			$('.t2').css('background-color','');
+			$('.t2 a').css('color','#FFFFFF');
+			$('.t1').css('background-color','#FFFFFF');
+			$('.t1 a').css('color','#000000');
+			$('.t3').css('background-color','');
+			$('.t3 a').css('color','#FFFFFF');
+			$('#gettask').click(function(){
+				if("{$user['task_status']}"== 1){
+					window.location.href="{:U('Home/SMActivity/gettask')}";	
+				}else{
+					alert('请先开启任务状态');
+				}
+			})
+			$("#start").click(function(){
+				if("{$user['task_status']}"==1){
+					window.location.href="{:U('Home/SMActivity/gettask')})";
+				}
+			})
+		})
+	</script>
 </block>
-

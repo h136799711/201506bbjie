@@ -29,9 +29,7 @@ class SJMoneyController extends CheckLoginController {
 			$map = array('uid' => $user['info']['id'], );
 			$id = $user['info']['id'];
 			$rets = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
-			$ap = array('coins' => $rets['info'][0]['coins'] - $money, );
-			$return = apiCall(HomePublicApi::Bbjmember_Seller_SaveByID, array($id, $ap));
-			if ($return['status']) {
+			if ($rets['status']) {
 				$this -> success('你的充值请求已经提交，正在审核...', U('Home/Usersj/sj_zjgl'));
 			}
 			//
@@ -46,7 +44,6 @@ class SJMoneyController extends CheckLoginController {
 		$entity = array('uid' => $user['info']['id'], 'income' => I('post.money','').'.000' , 'defray' => '0.000', 'create_time' => time(), 'notes' => I('post.zhanghao','').'流水号：'.I("post.stnum",''), 'dtree_type' => 1, 'status' => 2, );
 		$result = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entity));
 		if ($result['status']) {
-			
 				$this -> success('你的充值请求已经提交，正在审核...', U('Home/Usersj/sj_zjgl'));
 			
 			//
@@ -69,7 +66,7 @@ class SJMoneyController extends CheckLoginController {
 		if ($password == $pp) {
 			$rets = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
 			$lv = I('lv', '1');
-			$ap = array('coins' => $rets['info'][0]['coins'] - $money, 'vip_level' => $lv, );
+			$ap = array('vip_level' => $lv, );
 			$return = apiCall(HomePublicApi::Bbjmember_Seller_SaveByID, array($id, $ap));
 			if ($return['status']) {
 				$entity = array('uid' => $user['info']['id'], 'defray' => $money . '.000', 'income' => '0.000', 'create_time' => time(), 'notes' => '用于开通会员', 'dtree_type' => 4, 'status' => 1, );
@@ -114,7 +111,7 @@ class SJMoneyController extends CheckLoginController {
 		}
 	}
 	/**
-	 * 
+	 * 图片上传
 	 * 
 	 */
 	public function upload(){
