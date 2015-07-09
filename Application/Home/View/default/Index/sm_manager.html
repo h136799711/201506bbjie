@@ -240,9 +240,7 @@
 				}
 			})
 			$("#start").click(function(){
-				if("{$user['task_status']}"==1){
-					window.location.href="{:U('Home/SMActivity/gettask')})";
-				}
+				window.location.href="{:U('Home/SMActivity/changestatus')}";
 			})
 		})
 	</script>

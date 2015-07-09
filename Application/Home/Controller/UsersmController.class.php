@@ -179,8 +179,14 @@ class UsersmController extends CheckLoginController {
 		$user = session('user');
 		$order = " post_modified desc ";
 		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
+		$map=array('uid'=>$user['info']['id']);
+		$result1=apiCall(HomePublicApi::TaskPlan_Query,array($map));
+		$mapp=array('id'=>$result1['info'][0]['task_id']);
+		$result2=apiCall(HomePublicApi::Task_Query,array($mapp));
 		$this->assign('zxgg',$result['info'][0]);
 		$this -> assign('username', $user['info']['username']);
+		$this->assign('tp',$result1['info'][0]);
+		$this->assign('task',$result2['info']);
 		$this -> display();
 	}
 	/*

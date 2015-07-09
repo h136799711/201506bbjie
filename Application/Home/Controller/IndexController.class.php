@@ -375,7 +375,13 @@ class IndexController extends HomeController {
 				if($groupid==14){
 					session('user',$users);
 					$order = " post_modified desc ";
+					$map=array(
+						'uid'=>$users['info']['id'],
+					);	
+					$result1=apiCall(HomePublicApi::Bbjmember_Query, array($map));
 					$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
+					$this->assign('taobao',$result1['info'][0]['taobao_account']);
+					$this->assign('user',$result1['info'][0]);
 					$this->assign('zxgg',$result['info'][0]);
 					$this->assign('info',$result['info']);
 					$this->assign('phone',$user['info']['mobile']);

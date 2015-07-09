@@ -22,24 +22,14 @@
 								<input style="border: 1px solid #ccc; border-bottom-left-radius:7px; border-top-left-radius:7px;" />
 								<input class="am-btn-default" type="button" value="活动搜索" style="border: 1px solid #ccc;border-bottom-right-radius:7px; border-top-right-radius:7px;" />
 								<span style="font-size: 12px; margin-left: 20px;">
-
-				<a href="#" style="color: red;">所有任务</a>
-
-				<a href="#" style="color: #999;">新任务<font color="red">0</font></a>
-
-				<a href="#" style="color: #999;">被驳回<font color="red">0</font></a>
-
-				<a href="#" style="color: #999;">等待审核<font color="red">0</font></a>
-
-				<a href="#" style="color: #999;">待确认收货<font color="red">0</font></a>
-
-				<a href="#" style="color: #999;">等待返款<font color="red">0</font></a>
-
-				<a href="#" style="color: #999;">任务完成</a>
-
-				<a href="#" style="color: #999;">取消/放弃</a>
-
-				</span>
+									<a href="#" style="color: red;">所有任务</a>
+									<a href="#" style="color: #999;">新任务<font color="red">0</font></a>
+									<a href="#" style="color: #999;">被驳回<font color="red">0</font></a>
+									<a href="#" style="color: #999;">等待审核<font color="red">0</font></a>
+									<a href="#" style="color: #999;">待确认收货<font color="red">0</font></a>
+									<a href="#" style="color: #999;">等待返款<font color="red">0</font></a>
+									<a href="#" style="color: #999;">取消/放弃</a>
+								</span>
 
 							</td>
 						</tr>
@@ -56,9 +46,11 @@
 
 						</tr>
 					</thead>
+					
 					<tbody style="font-size: 12px;">
+						<volist name="task" id="vo">
 						<tr style="border: 1px solid #ccc; background: #F5F5F5; height: 37px;">
-							<td style="padding-left: 20px;" colspan="6">编号:1806189试福时间:06-13 09:20商家:云东网te***r</td>
+							<td style="padding-left: 20px;" colspan="6">编号:{$vo.id}任务时间:{$tp.create_time|date='m-d H:i',###}商家:{$vo.aliwawa}</td>
 
 						</tr>
 						<tr style="border: 1px solid #ccc; height:100px; background:white;">
@@ -70,12 +62,12 @@
 							<td><font color="#999" style="text-decoration:line-through">当日完成: +3福币</font>
 								<br /> 小额任务: <font color="red">+3</font>福币</td>
 							<td>
-								<a href="">任务书</a>
+								<a href="{:U('Home/SMActivity/rws',array('id'=>$vo['id']))}">任务书</a>
 								<br />
-								<font color="red">￥38.00</font>
+								<font color="red">{$vo.task_gold}</font>
 							</td>
 							<td>
-								旺旺名：hbddingding
+								旺旺名：{$vo.aliwawa}
 								<br /> 订单：-
 								<br /> 返款：-
 								<br />
@@ -85,7 +77,7 @@
 							</td>
 							<td> 试福日志</td>
 						</tr>
-
+						</volist>
 					</tbody>
 				</table>
 				<div class="div_tishi" style=" height: 180px;">
