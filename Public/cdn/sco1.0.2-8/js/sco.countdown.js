@@ -95,6 +95,6 @@
 	};
 
 	$.fn[pluginName].defaults = {
-		strings: {d: 'd', h: 'h', m: 'm', s: 's'}
+		strings: {d: ' ', h: 'h', m: 'm', s: 's'}
 	};
 })(jQuery);

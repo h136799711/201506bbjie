@@ -37,32 +37,24 @@ class SMActivityController extends CheckLoginController {
 	
 	public function gettask(){
 		$user=session('user');
-		$mapa=array('task_do_type'=>1,'task_status'=>1,'task_succ_status'=>0);
+		$mapa=array('task_do_type'=>1,'task_status'=>1,);
 		$result=apiCall(HomePublicApi::Task_Query,array($mapa));
 		if($result['info']==NULL){
 			$this->error('暂无可接任务，请稍候再试',U('Home/Index/sm_manager'));
 		}else{
 			$entity=array(
-				'start_time'=>time(),
-				'enter_way'=>0,
-				'task_cnt'=>1,
+				'get_task_time'=>time(),
+				'do_status'=>1,
 				'create_time'=>time(),
-				'search_way_id'=>0,
+				'tb_orderid'=>'',
+				'tb_address'=>'',
+				'tb_price'=>'',
 				'task_id'=>$result['info'][0]['id'],
 				'uid'=>$user['info']['id'],
 			);
-			$result3=apiCall(HomePublicApi::TaskPlan_Add,array($entity));
+			$result3=apiCall(HomePublicApi::Task_His_Add,array($entity));
 			if($result3['status']){
-				$id=$result['info'][0]['id'];
-				$map=array('id'=>$result['info']);
-				$en=array('task_succ_status'=>1);
-				
-				$a=apiCall(HomePublicApi::Task_SaveByID,array($id,$en));
-				if($a['status']){
-				
-					$this->success('成功接收任务，正在跳转任务界面',U('Home/Usersm/sm_bbhd'));
-				}
-				
+				$this->success('成功接收任务，正在跳转任务界面',U('Home/Usersm/sm_bbhd'));
 			}
 		}
 		
@@ -71,16 +63,26 @@ class SMActivityController extends CheckLoginController {
 		$headtitle = "宝贝街-任务书";
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
+		$uid=array('uid'=>$user['info']['id']);
+		$address=apiCall(HomePublicApi::Address_Query, array($uid));
+		$this->assign('address',$address['info']);
+		$result_user=apiCall(HomePublicApi::Bbjmember_Query, array($uid));
+		$this->assign('user',$result_user['info'][0]);
 		$this -> assign('username', $user['info']['username']);
 		$id=I('id',0);
+		$tk=array('id'=>$id);
 		$map=array('task_id'=>$id);
+		$task=apiCall(HomePublicApi::Task_Query, array($tk));
+		$this->assign('task',$task['info'][0]);
 		$result=apiCall(HomePublicApi::TaskHasProduct_Query, array($map));
+		$this->assign('jianshu',$result['info'][0]['num']);
 		$mapp=array('id'=>$result['info'][0]['pid']);
 		$mapa=array('pid'=>$result['info'][0]['pid']);
 		$return=apiCall(HomePublicApi::Product_Query, array($mapp));
 		$returns=apiCall(HomePublicApi::ProductSearchWay_Query, array($mapa));
 		$this->assign('pd',$return['info'][0]);
 		$this->assign('search',$returns['info'][0]);
+//		dump($task);''
 		$this->display();
 	}
 	

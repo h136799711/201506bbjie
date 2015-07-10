@@ -614,8 +614,8 @@ class SJActivityController extends CheckLoginController {
 		//'link'=>array('like', "%" . I('q', '', 'trim') . "%"),
 		//'_logic' =>'OR',
 		);
-	
-		$result = apiCall(HomePublicApi::Product_QueryAll, array($map));
+		$page = array('curpage' => I('get.p', 0), 'size' => 200);
+		$result = apiCall(HomePublicApi::Product_QueryAll, array($map,$page));
 		$this -> success($result['info']['list']);
 
 		/*

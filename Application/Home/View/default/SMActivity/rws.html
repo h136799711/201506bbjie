@@ -176,23 +176,23 @@
 										<li>
 											<div class="item clearfix">
 												<div class="img">
-													<img src="__IMG__/TB1aiRFIXXXXXbcXVXXXXXXXXXX_!!0-item_pic.jpg_220x220.jpg">
+													<img src="{$pd.main_img}">
 												</div>
 												<div class="bd">
 													<div class="t">
-														奥迪***槛条A1A3A4LA5A6LA7Q3Q
-														<br> 规格:试民自由选择 </div>
+														{$pd.title}
+														<br> 规格:{$pd.model_num_cfg} </div>
 													<div class="sx">
-														单价：20.00元
+														单价：{$pd.price} 元
 														<br> 件数：
-														<span>1</span>
+														<span>{$jianshu}</span>
 														<br>
 													</div>
 
 												</div>
 												<div class="weizhi">
 													<span class="muted">位置信息：</span>
-													<br> 首页 </div>
+													<br> {$search.search_condition}-{$search.search_order} </div>
 											</div>
 										</li>
 									</ul>
@@ -203,7 +203,7 @@
 								<span style="vertical-align:5px;">
         预期支付金额:<span style="font-size: 18px;">≤</span>
 								</span>
-								<span class="shuliang price">￥20.00</span>
+								<span class="shuliang price">￥{$pd.price}</span>
 							</div>
 
 							<div class="shuoming">
@@ -217,8 +217,7 @@
 								旺旺暗语: 聊天时使用可提示商家试民身份
 
 								<div class="input-append" style="margin:0;">
-									<input readonly="readonly" type="text" value="亲，门槛条有优惠吗？" name="" id="">
-									<button controller="extend/clipboard" data-clipboard-text="亲，门槛条有优惠吗？" class="btn" name="yt0" type="button">复制</button>
+									<input readonly="readonly" type="text" value="{$task['chat_argot']}" name="" id="">
 								</div>
 							</div>
 
@@ -260,12 +259,12 @@
 										<tr>
 											<td>
 												<div class="tijiao-form">
-													<form task_price="20.00" class="shifu form-horizontal ng-invalid ng-invalid-required ng-dirty" id="yw0" action="http://www.shifujie.net/person/shifu/order_submit_db?id=1845670" method="post" novalidate="novalidate">
+													<form  class="shifu form-horizontal ng-invalid ng-invalid-required ng-dirty" id="yw0" action="" method="post" novalidate="novalidate">
 														<fieldset>
 															<div class="control-group">
 																<label class="control-label" for="order_taobao">任务淘宝号：</label>
 																<div class="controls">
-																	<input required="required" maxlength="25" readonly="readonly" type="text" value="hbddingding" name="order_taobao" id="order_taobao"><span class="help-inline"><span class="muted">不允许自行更换下单淘宝号</span></span>
+																	<input required="required" maxlength="25" readonly="readonly" type="text" value="{$user.taobao_account}" name="order_taobao" id="order_taobao"><span class="help-inline"><span class="muted">不允许自行更换下单淘宝号</span></span>
 																</div>
 															</div>
 															<div class="control-group">
@@ -274,8 +273,6 @@
 																	<input required="required" maxlength="16" type="text" value="" name="order_num" id="order_num">
 																</div>
 															</div>
-														
-			
 																</label>
 																</p>
 
@@ -285,8 +282,8 @@
 																<label class="control-label" for="zhifu_price">订单支付金额：</label>
 																<div class="controls">
 																	<div class="input-append">
-																		<input required="required" ng-model="zhifu_price" max="20.00" ng-init="zhifu_price=&quot;&quot;" class="span2 ng-pristine ng-invalid ng-invalid-required" type="text" value="" name="zhifu_price" id="zhifu_price"><span class="add-on">元</span>
-																	</div><span class="help-inline">请确保订单支付金额不超过<span class="price">￥20.00</span></span>
+																		<input class="span2 ng-pristine ng-invalid ng-invalid-required" type="text" value="" name="zhifu_price" id="zhifu_price"><span style="height: 30px;" class="add-on">元</span>
+																	</div><span class="help-inline">请确保订单支付金额不超过<span class="price">￥{$pd['price']}</span></span>
 																</div>
 															</div>
 															
@@ -319,20 +316,23 @@
 
 																<div class="controls">
 																	<div id="address">
-																		<span id="address_id"><label class="radio"><input class="radio" value="15193" id="address_id_0" type="radio" name="address_id"> 王福瑞，13465987845，，北京 北京市 西城区 月坛街道，订单，32</label></span>
-																		<div class="ng-hide" ng-show="show_addr_list" ng-init="show_addr_list=false">
-																			<span id="address_id"><label class="radio"><input class="radio" value="15192" id="address_id_0" type="radio" name="address_id"> 王福瑞，13465987845，，北京 北京市 西城区 月坛街道，订单，32</label></span> </div>
-
+																		<empty name="address">
+																			<font color="red">暂无收货地址，请在<a style="color: darkgreen;" href="{:U('Home/Usersm/address')}">收货地址管理</a>处添加</font>
+																			<else/>
+																			
+																		<volist name="address" id="add">
+																		<span id="address_id"><label class="radio"><input class="radio" value="15193" id="address_id_0" type="radio" name="address_id"> {$add['contect_name']}，{$add['mobile']}，{$add['province']} {$add['city']} {$add['detail']} </label></span>
+																		<!--<a class="showaddress" href="javascript:;">∨展开已有地址</a>-->
+																		</volist>
+																		</empty>
 																	</div>
 
-																	<a class="use_new_address" ng-click="show_addr_list=!show_addr_list" ng-hide="show_addr_list" href="javascript:;">∨展开已有地址</a>
-																	<a data-toggle="modal2" modal-title="收货地址" class="use_new_address" href="">使用新地址</a> </div>
+																	
 															</div>
 
 															<div class="control-group">
-																<label style="margin-right:20px;" class="control-label" for="check_fb">我的试福选择：</label>
-																<div class="controls"><span id="check_fb"><label class="radio"><input value="2" id="check_fb_0" checked="checked" type="radio" name="check_fb"> 我要福币<i class="mjz">(8福币+试福面巾纸)</i></label> <label class="radio"><input value="0" id="check_fb_1" type="radio" name="check_fb"> <a data-toggle="modal2" class="update_goods" href="http://www.shifujie.net/person/shifu/goods_select?id=1845670">更换福商品</a></label></span>
-																</div>
+																<label style="margin-right:20px;" class="control-label" for="check_fb">我的试福选择：</label><br>
+																<div class="controls"><span id="check_fb"><label class="radio"><input value="2" id="check_fb_0" checked="checked" type="radio" name="check_fb"> 我要福币<i class="mjz">(8福币+精美小礼品)</i></label> </div>
 															</div>
 															<input type="hidden" name="select_goods_id" id="select_goods_id" value="">
 															<input type="hidden" name="select_id" value="0">
@@ -349,7 +349,7 @@
 																</div>
 															</div>
 															<div class="form-actions">
-																<button class="btn btn-primary" type="submit" name="yt1">确认无误并提交</button>
+																<button style="background-color: orangered;color: #FFFFFF;" class="btn " type="submit" name="yt1">确认无误并提交</button>
 																<button onclick="window.close();return false;" class="btn" name="yt2" type="button">取消</button>
 															</div>
 														</fieldset>
@@ -413,7 +413,6 @@
 </block>
 
 <block name="area_footer">
-
+ 
 </block>
 
-/html>

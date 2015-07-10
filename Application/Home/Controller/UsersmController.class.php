@@ -180,12 +180,20 @@ class UsersmController extends CheckLoginController {
 		$order = " post_modified desc ";
 		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
 		$map=array('uid'=>$user['info']['id']);
-		$result1=apiCall(HomePublicApi::TaskPlan_Query,array($map));
+		$result1=apiCall(HomePublicApi::Task_His_Query,array($map));
 		$mapp=array('id'=>$result1['info'][0]['task_id']);
 		$result2=apiCall(HomePublicApi::Task_Query,array($mapp));
 		$this->assign('zxgg',$result['info'][0]);
+		for ($i=0; $i <count($result2['info']) ; $i++) {
+			$map3=array('task_id'=>$result2['info'][$i]['id']);
+			$result3[]=apiCall(HomePublicApi::TaskHasProduct_Query,array($map3));
+		}
+		$time=$result1['info'][0]['start_time'];
 		$this -> assign('username', $user['info']['username']);
-		$this->assign('tp',$result1['info'][0]);
+		$goods=apiCall(HomePublicApi::Product_Query,array($ddd));
+		$this->assign('goods',$goods['info']);
+		$this->assign('tspro',$result3);
+		$this->assign('tp',$result1['info']);
 		$this->assign('task',$result2['info']);
 		$this -> display();
 	}

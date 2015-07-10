@@ -92,7 +92,14 @@ class HomePublicApi{
 	const Task_SaveByID='Home/Task/saveByID';
 	const Task_Add='Home/Task/add';
 	const Task_Del='Home/Task/delete';
-	
+	/*
+	 * 接受任务信息
+	 * */
+	const Task_His_QueryAll='Home/TaskHis/query';
+	const Task_His_Query='Home/TaskHis/queryNoPaging';
+	const Task_His_SaveByID='TaskHis/Task/saveByID';
+	const Task_His_Add='Home/TaskHis/add';
+	const Task_His_Del='Home/TaskHis/delete';
 	/*
 	 * 任务关联表
 	 * */
