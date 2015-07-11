@@ -1,0 +1,69 @@
+<extend name="template/base_index" />
+
+<block name="area_header">
+
+	<link rel="stylesheet" href="__CSS__/shangjia2.css">
+
+</block>
+
+<block name="area_body">
+
+	<include file='Widget/sjtop' />
+	<div class="seller_main clearfix" controller="seller/common">
+		<div class="seller_content_wrap">
+			<div class="seller_content" style="padding-top: 10px;">
+
+				<div class="task-head">
+					<div class="breadcrumbs">
+						<a href="/seller">商家中心</a>><a href="/seller/sf/task/index">试福管理</a>><span>审批试民:qqq</span>
+					</div>
+				</div>
+
+				<div class="content" controller="seller/shenpi">
+					
+					<div style="height: 120px;" class="renwu-head">
+						<ul class="product-image">
+							<li>
+								<img width="75px" height="75px;" src="http://gd1.alicdn.com/bao/uploaded/i1/TB1f6s9HpXXXXX3XpXXXXXXXXXX_!!0-item_pic.jpg_220x220.jpg" alt="儿童爵士舞服幼儿园表演舞蹈服架子鼓街舞T台走秀服装男童演出服" />
+							</li>
+						</ul>
+						<div class="task-tongji">
+							<div class="tongji" style="margin-top: 20px; font-family: '微软雅黑';">
+								<span>总份数:<i>0</i></span>
+								<span>任务中:<i>0</i></span>
+								<span>已完成:<i>0</i></span>
+								<span style="margin-left: 20px;">单份任务金:<i>6.00</i>元</span>
+							</div>
+
+						</div>
+
+					</div>
+
+					<div>
+						<ul class="nav nav-tabs" role="menu">
+							<li class="active" role="menuitem"><a tabindex="-1" href="/seller/sf/apply/index?id=55007">待审核</a>
+							</li>
+							<li role="menuitem"><a tabindex="-1" href="/seller/sf/apply/index?status=2&amp;id=55007">任务中</a>
+							</li>
+							<li role="menuitem"><a tabindex="-1" href="/seller/sf/apply/index?status=3&amp;id=55007">放弃/取消</a>
+							</li>
+						</ul>
+						<div class="well">
+							钱庄可用余额不足，不能分配任务，您当前的钱庄可用余额为：
+							<span class="price">￥0.00</span>
+							<p class="muted small">如果您有可分配的任务份数可以选择“停止领取”操作来解冻任务金额</p>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<include file='Widget/sjleft' />
+	</div>
+
+</block>
+
+<block name="area_footer">
+
+</block>
