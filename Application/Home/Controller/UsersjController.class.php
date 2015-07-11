@@ -17,7 +17,7 @@ use Admin\Api\AdminPublicApi;
 class UsersjController extends CheckLoginController {
 	/*
 	 * 商家中心
-	 * TODO:访问验证session
+	 * 
 	 * */
 	public function index(){
 		$headtitle="宝贝街-商家中心";
@@ -29,12 +29,11 @@ class UsersjController extends CheckLoginController {
 		);					
 		$order = " post_modified desc ";
 		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
-		
 		$this->assign('info',$result['info']);
 		$sj=apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
 		$this->assign('money',$sj['info'][0]['coins']);
 		$this->assign('username',$user['info']['username']);
-		$this->assign('sj',$sj['info']);
+		$this->assign('sj',$sj['info'][0]);
 		$this->display();
 	}
 	/*
@@ -64,7 +63,6 @@ class UsersjController extends CheckLoginController {
 			'store_url'=>I('store_url',''),
 			'address'=>$sheng.$shi.$qu.$address,
 		);
-//		dump($id);dump($entity);
 		$result=apiCall(HomePublicApi::Bbjmember_Seller_SaveByID, array($id,$entity));
 		if($result['status']){
 			$this->success('修改成功',U('Home/Usersj/sj_zhxx'));
@@ -83,7 +81,6 @@ class UsersjController extends CheckLoginController {
 			'task_linkman_qq'=>I('fzrqq',''),
 			'waybill_show'=>I('ydxs'),
 		);
-//		dump($entity);
 		$result=apiCall(HomePublicApi::Bbjmember_Seller_SaveByID, array($id,$entity));
 		if($result['status']){
 			$this->success('修改成功',U('Home/Usersj/sj_zhxx'));

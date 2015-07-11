@@ -10,23 +10,7 @@
 	<include file='Widget/sjtop' />
 	<div class="seller_main clearfix" controller="seller/common">
 		<div class="seller_content_wrap">
-			<div class="am-modal am-modal-no-btn" tabindex="-1" id="doc-modal-1">
-						<div class="am-modal-dialog" style="border-radius: 5px;">
-							<div class="am-modal-hd" style="border-bottom: 1px solid #ccc; text-align: left;font-size:18px;">
-								选择试民
-								<a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>
-									&times;
-								</a>
-							</div>
-							<div>
-								<ul class="am-list am-list-static am-list-border">
-								  <li>姓名：张三&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 等级：1 <a class="btn"  >确定</a></li>
-								 
-								</ul>
-								
-							</div>
-						</div>
-					</div>
+			
 			<div class="seller_content" style="padding-top: 10px;">
 
 				<div class="content">
@@ -36,26 +20,14 @@
 							<div class="pull-right btn-group"><a data-toggle="modal2" modal-title="创建淘宝活动" style="background-color: #1D99D5; color: #FFFFFF;" class="btn " href="#">创建试福任务</a>
 							</div>
 							<ul class="shifu_nav clearfix" style="position: relative;left: 0;width: 600px;">
-								<li>
-									<a href="#">任务试民</a> </li>
-
-								<li>
-									<a href="#">审核订单</a> </li>
-
-								<li>
-									<a href="#">确认还款</a> </li>
-
-								<li>
-									<a href="#">挂起中</a> </li>
-
-								<li>
-									<a href="#">平台发货</a> </li>
-								<li>
-									<a href="#">试民收货</a> </li>
-								<li>
-									<a href="#">未开始</a> </li>
-								<li>
-									<a href="#">已驳回</a> </li>
+								<li><a href="#">任务试民</a> </li>
+								<li><a href="#">审核订单</a> </li>
+								<li><a href="#">确认还款</a> </li>
+								<li><a href="#">挂起中</a> </li>
+								<li><a href="#">平台发货</a> </li>
+								<li><a href="#">试民收货</a> </li>
+								<li><a href="#">未开始</a> </li>
+								<li><a href="#">已驳回</a> </li>
 							</ul>
 
 							<div class="clear"></div>
@@ -152,16 +124,7 @@
 										</td>
 										<td>
 											<div class="am-btn-group">
-											  <button   class="am-btn am-btn-secondary">选择任务方式</button>
-											  <div  class="am-dropdown" data-am-dropdown>
-											    <button  class="am-btn am-btn-secondary am-dropdown-toggle" data-am-dropdown-toggle> <span class="am-icon-caret-down"></span></button>
-											    <ul class="am-dropdown-content">
-											      
-											      <li><a href="{:U('Home/SJActivity/zzxz',array('taskid'=>$vo['id']))}">试民自主选择</a></li>
-											      <li ><a href="javascript:void(0)" data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 750, height:500}">指定试民领取</a></li>
-											      
-											    </ul>
-											  </div>
+											  <button style="background-color: #1D99D5; color: #FFFFFF;"  class="am-btn ">选择任务方式</button>
 											</div>
 										</td>
 									</tr>

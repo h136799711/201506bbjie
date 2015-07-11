@@ -95,6 +95,6 @@
 	};
 
 	$.fn[pluginName].defaults = {
-		strings: {d: ' ', h: 'h', m: 'm', s: 's'}
+		strings: {d: '天', h: '时', m: '分', s: '秒'}
 	};
 })(jQuery);

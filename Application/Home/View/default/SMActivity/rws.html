@@ -122,7 +122,7 @@
 											<div class="row-1">
 												<span class="pull-right">XX人付款</span>
 												<span class="price">
-                									<span>¥</span> {$pd.price} 
+                									<span>¥</span> {$task.task_gold} 
 												</span>
 											</div>
 											<div class="row-2"><i class="title_msk"></i> {$pd.title} </div>
@@ -183,7 +183,7 @@
 														{$pd.title}
 														<br> 规格:{$pd.model_num_cfg} </div>
 													<div class="sx">
-														单价：{$pd.price} 元
+														单价：{$task.task_gold} 元
 														<br> 件数：
 														<span>{$jianshu}</span>
 														<br>
@@ -203,7 +203,7 @@
 								<span style="vertical-align:5px;">
         预期支付金额:<span style="font-size: 18px;">≤</span>
 								</span>
-								<span class="shuliang price">￥{$pd.price}</span>
+								<span class="shuliang price">￥{$task.task_gold}</span>
 							</div>
 
 							<div class="shuoming">
@@ -259,7 +259,7 @@
 										<tr>
 											<td>
 												<div class="tijiao-form">
-													<form  class="shifu form-horizontal ng-invalid ng-invalid-required ng-dirty" id="yw0" action="" method="post" novalidate="novalidate">
+													<form  class="shifu form-horizontal ng-invalid ng-invalid-required ng-dirty" id="" action="{:U('Home/SMActivity/savedd')}" method="post" novalidate="novalidate">
 														<fieldset>
 															<div class="control-group">
 																<label class="control-label" for="order_taobao">任务淘宝号：</label>
@@ -283,7 +283,6 @@
 																<div class="controls">
 																	<div class="input-append">
 																		<input class="span2 ng-pristine ng-invalid ng-invalid-required" type="text" value="" name="zhifu_price" id="zhifu_price"><span style="height: 30px;" class="add-on">元</span>
-																	</div><span class="help-inline">请确保订单支付金额不超过<span class="price">￥{$pd['price']}</span></span>
 																</div>
 															</div>
 															
@@ -313,15 +312,15 @@
 
 															<div class="control-group">
 																<label for="address_id" class="control-label">淘宝下单地址：</label>
-
+																<input type="hidden" name="address" id="address" value="" />
+																<input type="hidden" name="hsid" id="hsid" value="{$hsid}" />
 																<div class="controls">
 																	<div id="address">
 																		<empty name="address">
 																			<font color="red">暂无收货地址，请在<a style="color: darkgreen;" href="{:U('Home/Usersm/address')}">收货地址管理</a>处添加</font>
 																			<else/>
-																			
 																		<volist name="address" id="add">
-																		<span id="address_id"><label class="radio"><input class="radio" value="15193" id="address_id_0" type="radio" name="address_id"> {$add['contect_name']}，{$add['mobile']}，{$add['province']} {$add['city']} {$add['detail']} </label></span>
+																		<span id="address_id"><label class="radio"><input class="radio" value="{$add['contact_name']}，{$add['mobile']}，{$add['province']} {$add['city']} {$add['detail']}" id="address_id_0" type="radio" name="address_id"> {$add['contact_name']}，{$add['mobile']}，{$add['province']} {$add['city']} {$add['detail']} </label></span>
 																		<!--<a class="showaddress" href="javascript:;">∨展开已有地址</a>-->
 																		</volist>
 																		</empty>
@@ -413,6 +412,14 @@
 </block>
 
 <block name="area_footer">
- 
+ <script type="text/javascript">
+ 	$(function(){
+ 		$(".radio").click(function(){
+ 			var val=$('input:radio[name="address_id"]:checked').val();
+ 			$('#address').val(val);
+ 		})
+ 		 
+ 	})
+ </script>
 </block>
 

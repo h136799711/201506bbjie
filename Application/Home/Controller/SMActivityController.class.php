@@ -48,7 +48,7 @@ class SMActivityController extends CheckLoginController {
 				'create_time'=>time(),
 				'tb_orderid'=>'',
 				'tb_address'=>'',
-				'tb_price'=>'',
+				'tb_price'=>'0.00',
 				'task_id'=>$result['info'][0]['id'],
 				'uid'=>$user['info']['id'],
 			);
@@ -80,11 +80,31 @@ class SMActivityController extends CheckLoginController {
 		$mapa=array('pid'=>$result['info'][0]['pid']);
 		$return=apiCall(HomePublicApi::Product_Query, array($mapp));
 		$returns=apiCall(HomePublicApi::ProductSearchWay_Query, array($mapa));
+		$taskhisid=I('taskhisid');
+		$this->assign('hsid',$taskhisid);
 		$this->assign('pd',$return['info'][0]);
 		$this->assign('search',$returns['info'][0]);
-//		dump($task);''
+//		dump($task);
 		$this->display();
 	}
-	
+	/*
+	 * 保存任务订单号
+	 * */
+	public function savedd(){
+		$id=I('hsid','');
+		$entity=array(
+			'tb_orderid'=>I('order_num',''),
+			'tb_address'=>I('address',''),
+			'tb_price'=>I('zhifu_price','0.00'),
+		);
+		
+		$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$entity));
+//		dump($result);
+		if($result['status']){
+			$this->success('提交成功！！，请关注任务动态',U('Home/Usersm/sm_bbhd'));
+		}else{
+			$this->error($result['info']);
+		}
+	}
 
 }

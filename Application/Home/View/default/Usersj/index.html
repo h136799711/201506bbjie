@@ -31,41 +31,43 @@
 														</div>
 													</td>
 													<td style="vertical-align: top;">
-														<volist name="sj" id="vo">
+														
 															<div style="margin: 30px 20px;">
 																<p>
 																	{$username} </p>
 																<p>
-																	<if condition="$vo.vip_level eq 1">
+																	<if condition="$sj.vip_level eq 1">
 																		会员等级 : vip会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">续费或开通超级会员</a> ]
-																		
+
 																	</if>
-																	<if condition="$vo.vip_level eq 2">
+																	<if condition="$sj.vip_level eq 2">
 																		会员等级 : 超级会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">续费超级会员</a> ]
-																		<else/>
-																		会员等级 : 普通会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">开通会员</a> ]
+																		<else/> 会员等级 : 普通会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">开通会员</a> ]
 																	</if>
-																	
+
 																</p>
 
 																<p>
-																	可用余额 : <span class="number"><span class="price">{$vo.coins}</span>元</span>
+																	可用余额 : <span class="number"><span class="price">{$sj.coins}</span>元</span>
 																	[ <a class="text-link small" href="{:U('Home/Usersj/sj_zjgl')}">查看试福钱庄</a> ]
 																</p>
 
 																<p>
-																	绑定旺旺 :{$vo.aliwawa} </p>
+																	绑定旺旺 :{$sj.aliwawa} </p>
 
 																<p>
-																	店铺名 : {$vo.store_name} </p>
+																	店铺名 : {$sj.store_name} </p>
 
 																<p>
-																	联系人 : {$vo.linkman} <a class="text-link small" href="#">修改</a> </p>
-
-																<div class="alert alert-warning in fade"><a href="#" class="close" data-dismiss="alert" type="button">×</a>您还没有对您的主旺旺进行认证，请先认证您的主旺旺 <a class="text-info" href="#">前往验证</a>
+																	联系人 : {$sj.linkman} <a class="text-link small" href="#">修改</a> </p>
+																<if condition="$sj['aliwawa'] eq ''">
+																	
+																<else/>
+																<div class="alert alert-warning in fade"><a href="#" class="close" data-dismiss="alert" type="button">×</a>您还没有对您的主旺旺进行认证，请先认证您的主旺旺 <a class="text-info" href="{:U('Home/Usersj/sj_zjgl')}">前往验证</a>
+																</if>
 																</div>
 															</div>
-														</volist>
+													
 													</td>
 												</tr>
 											</tbody>
@@ -84,10 +86,10 @@
 									<div style="height:270px;padding:30px 15px 0;line-height: 28px;">
 										<ul class="gg">
 											<volist name="info" id="vo">
-											<li>
-												<span class="pull-right muted"><span title="{$vo.post_date|date='m-d h:i',###}">{$vo.post_date|date='m-d h:i',###}</span></span>
-												<a class="" href="{:U('Home/Index/gfggxx',array('id'=>$vo['id']))}" target="_blank"><span title="{$vo.post_title}">{$vo.post_title}</span></a>
-											</li>
+												<li>
+													<span class="pull-right muted"><span title="{$vo.post_date|date='m-d h:i',###}">{$vo.post_date|date='m-d h:i',###}</span></span>
+													<a class="" href="{:U('Home/Index/gfggxx',array('id'=>$vo['id']))}" target="_blank"><span title="{$vo.post_title}">{$vo.post_title}</span></a>
+												</li>
 											</volist>
 										</ul>
 									</div>
@@ -98,6 +100,33 @@
 
 					<div class="row-fluid">
 						<div class="span9">
+							<div class="widget-box">
+								<div class="widget-title">
+									<h5>任务设置</h5>
+								</div>
+								<div class="widget-content">
+									<div style="padding:10px 20px 0;">
+										<div class="row-fluid" style="padding:15px 0;">
+											<table style="width: 100%;">
+												<col width="30%">
+													<col width="30%">
+														<col width="30%">
+															<tr>
+																<td>
+																	<span class="small">自助选择任务试民:</span>
+																	<if condition="$sj['task_gettype'] eq 1">
+																	<a style="color: red;" class="text-info small" tooltip="开启之后您的任务试民将由您自己审核通过"  href="{:U('Home/SJActivity/changestatus',array('id'=>$sj['id'],'status'=>1))}">已关闭</a> 
+																	<else/>
+																	<a style="color: darkgreen;" class="text-info small" tooltip="关闭之后您的任务试民将由试民自己领取"  href="{:U('Home/SJActivity/changestatus',array('id'=>$sj['id'],'status'=>2))}">已开启</a> 
+																	</if>
+																</td>                                                                                                                                                    </td>
+															</tr>
+											</table>
+										</div>
+									</div>
+
+								</div>
+							</div>
 
 							<div class="widget-box">
 								<div class="widget-title">
@@ -138,7 +167,7 @@
 								</div>
 							</div>
 
-							<div class="widget-box">
+							<!--<div class="widget-box">
 								<div class="widget-title">
 									<h5>试福助手</h5>
 									<div class="sub_title">v1.2</div>
@@ -147,7 +176,8 @@
 									<div class="clearfix index_sfzs" style="padding:10px 0;">
 										<div style="float:left;width:305px;padding:0 20px 0 10px;border-right: 1px solid #dddbdc;">
 											<span class="fen">试福助手</span> 是试福街专门为<span class="vip number">vip、svip</span>商家开发的一款高效精准的核对审核通过试民下单状况的帮手，商家只需轻松安装即可将试福街试民所下订单与真实淘宝买家订单区别开
-											<button style="height: 28px; width: 70px; border-radius:5px ; font-size: 12px ; text-align: center;" class="am-btn am-btn-primary am-btn-xs" >立即下载</button> </div>
+											<button style="height: 28px; width: 70px; border-radius:5px ; font-size: 12px ; text-align: center;" class="am-btn am-btn-primary am-btn-xs">立即下载</button>
+										</div>
 										<div style="margin-left: 350px;">
 											<form controller="extend/ajax_form" id="yw0" class="form-horizontal jquery-once-1-processed" action="#" method="post" novalidate="novalidate">
 												<input type="hidden" value="miyao" name="form-id" id="form-id">
@@ -161,7 +191,7 @@
 													请复制密钥后前往插件选项中直接设置
 												</p>
 												<p style="text-indent: 5em;margin-top: 20px;">
-													<button style="height: 28px; width: 70px; border-radius:5px ; font-size: 12px ; text-align: center;" class="am-btn am-btn-primary am-btn-xs" >重新生成</button> <small>
+													<button style="height: 28px; width: 70px; border-radius:5px ; font-size: 12px ; text-align: center;" class="am-btn am-btn-primary am-btn-xs">重新生成</button> <small>
                 该操作将使当前的密钥失效，供回收权限使用
 
                 </small>
@@ -172,7 +202,7 @@
 									</div>
 
 								</div>
-							</div>
+							</div>-->
 
 						</div>
 

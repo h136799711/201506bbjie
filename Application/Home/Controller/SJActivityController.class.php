@@ -53,6 +53,41 @@ class SJActivityController extends CheckLoginController {
 	}
 
 	/*
+	 * 改变任务状态
+	 * */
+	public function changestatus(){
+		$id=I('id',0);
+		$status=I('status');
+		$user=session('user');
+		$uid=array('uid'=>$user['info']['id']);
+		if($status==1){
+			$ma=array('task_gettype'=>2);
+			$mm=array('task_do_type'=>2);
+			$result_tast=apiCall(HomePublicApi::Task_Save, array($uid,$mm));
+			$result=apiCall(HomePublicApi::Bbjmember_Seller_SaveByID, array($id,$ma));
+//			dump($result_tast);
+			if($result['status'] && $result_tast['status']){
+				$this->success('任务领取状态修改成功',U('Home/Usersj/index'));
+			}else{
+				$this->error($result['info']);
+			}
+		}else if($status==2){
+			$ma=array('task_gettype'=>1);
+			$mm=array('task_do_type'=>1);
+			$result_tast=apiCall(HomePublicApi::Task_Save, array($uid,$mm));
+			$result=apiCall(HomePublicApi::Bbjmember_Seller_SaveByID, array($id,$ma));
+//			dump($result_tast);
+			if($result['status'] && $result_tast['status']){
+				$this->success('任务领取状态修改成功',U('Home/Usersj/index'));
+			}else{
+				$this->error($result['info']);
+			}
+		}else{
+			$this->error('任务状态异常，请联系我们');
+		}
+		
+	}
+	/*
 	 * 试民自主选择
 	 * */
 	public function zzxz(){

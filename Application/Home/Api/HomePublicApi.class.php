@@ -90,6 +90,7 @@ class HomePublicApi{
 	const Task_QueryAll='Home/Task/query';
 	const Task_Query='Home/Task/queryNoPaging';
 	const Task_SaveByID='Home/Task/saveByID';
+	const Task_Save='Home/Task/save';
 	const Task_Add='Home/Task/add';
 	const Task_Del='Home/Task/delete';
 	/*
@@ -97,7 +98,7 @@ class HomePublicApi{
 	 * */
 	const Task_His_QueryAll='Home/TaskHis/query';
 	const Task_His_Query='Home/TaskHis/queryNoPaging';
-	const Task_His_SaveByID='TaskHis/Task/saveByID';
+	const Task_His_SaveByID='Home/TaskHis/saveByID';
 	const Task_His_Add='Home/TaskHis/add';
 	const Task_His_Del='Home/TaskHis/delete';
 	/*
