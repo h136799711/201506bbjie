@@ -19,13 +19,20 @@
 						<div style="position: relative">
 							<div class="pull-right btn-group"><a data-toggle="modal2" modal-title="创建淘宝活动" style="background-color: #1D99D5; color: #FFFFFF;" class="btn " href="#">创建试福任务</a>
 							</div>
-							
-<include file="Widget/li" />
+							<include file="Widget/li" />
 							<div class="clear"></div>
 
-							
+							<ul id="ul_rw" class="nav nav-tabs nav-store" role="menu">
+								<li class="active" role="menuitem"><a tabindex="-1" href="#">待审核任务</a>
+								</li>
+								<!--<li role="menuitem"><a tabindex="-1" href="#">已结算任务</a>
+								</li>
+								<li role="menuitem"><a tabindex="-1" href="#">暂停任务</a>
+								</li>-->
+							</ul>
 						</div>
-						<script type="text/javascript">
+						<!--<script type="text/javascript">
+						
 							$(function(){
 								$("#ul_rw li").click(function(){
 									
@@ -34,7 +41,8 @@
 								})
 								
 							})
-						</script>
+							
+						</script>-->
 						<div>
 						<div class="grid-view" controller="extend/gridview,person/renwu" >
 							<table class="items table table-seller">
@@ -75,13 +83,12 @@
 									<tr>
 										<th width="60" id="task-grid_c0"><a class="sort-link" href="#">ID<span class="caret"></span></a>
 										</th>
-										<th width="300" id="task-grid_c1">任务名称</th>
-										<th width="120" id="task-grid_c2">发货模式</th>
-										<th width="60" id="task-grid_c3"><a class="sort-link" href="#">链接数<span class="caret"></span></a>
+										<th width="200" id="task-grid_c1">任务名称</th>
+										<th width="180" id="task-grid_c2">发货模式</th>
+										<th width="100" id="task-grid_c3"><a class="sort-link" href="#">淘宝订单号<span class="caret"></span></a>
 										</th>
-										<th width="100" id="task-grid_c4"><a class="sort-link" href="#">单份任务金<span class="caret"></span></a>
+										<th width="100" id="task-grid_c4"><a class="sort-link" href="#">淘宝交易金<span class="caret"></span></a>
 										</th>
-										<th width="100" id="task-grid_c5">冻结金额</th>
 										<th width="120" id="task-grid_c6"><a class="sort-link" href="#">任务状态<span class="caret"></span></a>
 										</th>
 										<th width="100" id="task-grid_c7"><a class="sort-link desc" href="#">创建时间<span class="caret"></span></a>
@@ -91,51 +98,32 @@
 								</thead>
 								<tbody class="item odd">
 									<tr class="padding-tr"></tr>
-									<volist name='task' id='vo' key='s'>
-									<tr class="list-tr">
-										<td>{$vo.id}</td>
-										<td>{$vo.task_name}</td>
-										<td><if condition="$vo['delivery_mode'] eq 1">平台发货</if><if condition="$vo['delivery_mode'] eq 2">自主发货</if></td>
-										<td>{$geshu}</td>
-										<td><span class="price"  title="">{$vo.task_brokerage}</span>
-										</td>
-										<td><span class="muted">{$vo.task_gold}</span>
-										</td>
-										<td>启用</td>
-										<td><span title="">{$vo.create_time|date='m-d H:i',###}</span>
-										</td>
-										<td>
-											<div class="am-btn-group">
-											  <button style="background-color: #1D99D5; color: #FFFFFF;"  class="am-btn ">选择任务方式</button>
-											</div>
-										</td>
-									</tr>
-									<tr class="lbody-tr">
-										
-										<td colspan="3">
-											<volist name='jihuas' id='c' >
-												<if condition="$c['info'][0]['task_id'] eq $vo['id']">
-											<volist name='pro' id='v' key='a' ><if condition="$c['info'][0]['pid'] eq $v['info'][0]['id']"><img width="75px" height="75px" src="{$v['info'][0]['main_img']}" class="gray" id="" ></if></volist>
+									<volist name="tshis" id="q">
+										<foreach name='task' item='vo' >
+											<if condition="$vo['id'] eq $q['task_id']">
+												<tr class="list-tr">
+													<td>{$vo.id}</td>
+													<td>{$vo.task_name}</td>
+													<td><if condition="$vo['delivery_mode'] eq 1">平台发货</if><if condition="$vo['delivery_mode'] eq 2">自主发货</if></td>
+													<td>{$q.tb_orderid}</td>
+													<td><span class="price"  title="">{$q.tb_price}</span>
+													</td>
+													<td><span class="muted" style="color: green;">
+														<if condition="$q['do_status'] eq 1">任务进行中</if>
+														<if condition="$q['do_status'] eq 2">已完成</if>
+														<if condition="$q['do_status'] eq 3">待订单确认</if>
+														<if condition="$q['do_status'] eq 4">待确认返款</if>
+														<if condition="$q['do_status'] eq 8">驳回</if>
+													</span>
+													</td>
+													
+													<td><span title="">{$q.create_time|date='m-d H:i',###}</span>
+													</td>
+													<td><a class="text-info inline-block"  href="{:U('Home/SJActivity/qrhk',array('id'=>$vo['id']))}">确认返款</a></td>
+												</tr>
+												
 											</if>
-											</volist>
-										</td>
-										<td colspan="2"><a class="text-info" target="_blank" href="{:U('Home/SJActivity/rws',array('id'=>$vo['id']))}">预览任务书</a>
-										</td>
-										<td colspan="3">
-											<div>
-												<div>总份数：<i>0</i>
-												</div>
-												<div>任务中：<i>0</i>
-												</div>
-												<div>已完成：<i>0</i>
-												</div>
-											</div>
-										</td>
-										<td>
-											<div><a class="text-info inline-block" data-role="ajax" href="{:U('Home/SJActivity/zanting',array('id'=>$vo['id']))}">暂停任务</a><br><a target="_blank" class="text-info inline-block" href="#">任务试民</a>
-											</div>
-										</td>
-									</tr>
+										</foreach>
 									</volist>
 								</tbody>
 								

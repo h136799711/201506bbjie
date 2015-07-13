@@ -54,21 +54,19 @@
 						<volist name="tp" id="v">
 							<volist name="task" id="vo">
 								<if condition="$v['task_id'] eq $vo['id']">
+									<input type="hidden" name="" id="thid" value="{$v['id']}" />
 									<tr style="border: 1px solid #ccc; background: #F5F5F5; height: 37px;">
 										<td style="padding-left: 20px;" colspan="6">编号:{$vo.id}任务时间:{$v.get_task_time	|date='m-d H:i',###}商家:{$vo.aliwawa}</td>
 
 									</tr>
 									<tr style="border: 1px solid #ccc; height:100px; background:white;">
 										<td>
-
 											<volist name="tspro" id="t" key="k">
-
 												<foreach name="goods" item="c">
 													<if condition="$t['info'][$k-1]['pid'] eq $c['id']">
 														<img src="{$c['main_img']}" style="float: left; height: 50px; width: 70px; margin-left: 10px;" />
 													</if>
 												</foreach>
-
 											</volist>
 											<div style="margin-left:90px;"><font color="red">13</font>福币
 												<br /> 超时由系统取消</div>
@@ -82,19 +80,24 @@
 										</td>
 										<td>
 											旺旺名：{$vo.aliwawa}
-											<br /> 订单：-
-											<br /> 返款：-
+											<br /> 订单：{$v['tb_orderid']}
+											<br /> 返款：{$v['tb_price']}
 											<br />
 										</td>
 										<td>
 											<if condition="$v['do_status'] eq 1">
 												距离任务完成剩余：<span class="js_countdownwn" data-until="{$v['get_task_time'] + 2*3600}"></span>
-												<br><font color="forestgreen">任务正在进行中...</font>
+												<br><font class="task_status" color="forestgreen">任务正在进行中...</font><br>
+												<if condition="$v['tb_orderid'] eq ''">
+													<a style="background-color: orangered; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/qxtask',array('id'=>$v['id']))}">取消任务</a>
+													<else/>
+													<a style="background-color: orangered; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/qxtask',array('id'=>$v['id']))} ">放弃任务</a><a style="background-color:forestgreen; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/qrtask',array('id'=>$v['id']))}">确认任务</a>
+												</if>
 											</if>
 											<if condition="$v['do_status'] eq 2"><font color="forestgreen">任务已完成...</font>
 											</if>
 										</td>
-										<td> 试福日志</td>
+										<td><a target="_blank" style="background-color:forestgreen; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/rws',array('id'=>$vo['id'],'taskhisid'=>$v['id']))}">开始任务</a> </td>
 									</tr>
 								</if>
 							</volist>
@@ -106,7 +109,7 @@
 						<li style="font-size:16px; font-weight: bold;color: black;">温馨提示：</li>
 						<li>1:在与商家旺旺聊天时，请勿使用”试用“、“试福”、“还款”等字眼！！！</li>
 						<li>2:请严格按照任务书要求做任务，收到货后请先在淘宝平台对您提交的订单进行确认收货并5分好评哦！！！</li>
-						<li>3:任务过程中有任务问题（包括但不限于返款问题）请联系试福街客服进行处理，勿在旺旺上催促商家审核订单、确认返款！！！</li>
+						<li>3:任务过程中有任务问题（包括但不限于返款问题）请联系宝贝街客服进行处理，勿在旺旺上催促商家审核订单、确认返款！！！</li>
 						<li>4:在淘宝上下单时，请一定要用在本站申请活动的时候提交的淘宝帐号下单哦！！！</li>
 					</ul>
 				</div>
@@ -122,10 +125,13 @@
 		$(function(){  
 		   
 		    $(".js_countdownwn").each(function(index,item){
+		    	var thid = $('#thid').val();
 		    	var until = $(item).data("until");
 		    	until = parseInt(until);
-		    	$(item).scojs_countdown({until: until});
+		    	thid = parseInt(thid);
+		    	$(item).scojs_countdown({until: until,id:thid});
 		    });
+		    
 		});
 	</script>
 </block>

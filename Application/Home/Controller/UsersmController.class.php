@@ -179,7 +179,7 @@ class UsersmController extends CheckLoginController {
 		$user = session('user');
 		$order = " post_modified desc ";
 		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
-		$map=array('uid'=>$user['info']['id']);
+		$map=array('uid'=>$user['info']['id'],'do_status'=>1);
 		$result1=apiCall(HomePublicApi::Task_His_Query,array($map));
 		$mapp=array('id'=>$result1['info'][0]['task_id']);
 		$result2=apiCall(HomePublicApi::Task_Query,array($mapp));
@@ -188,7 +188,6 @@ class UsersmController extends CheckLoginController {
 			$map3=array('task_id'=>$result2['info'][$i]['id']);
 			$result3[]=apiCall(HomePublicApi::TaskHasProduct_Query,array($map3));
 		}
-		$time=$result1['info'][0]['start_time'];
 		$this -> assign('username', $user['info']['username']);
 		$goods=apiCall(HomePublicApi::Product_Query,array($ddd));
 		$this->assign('goods',$goods['info']);
@@ -288,6 +287,10 @@ class UsersmController extends CheckLoginController {
 	public function address() {
 		$user = session('user');
 		if (IS_GET) {
+			$headtitle = "宝贝街-收货地址";
+			$this -> assign('head_title', $headtitle);
+			$this -> assign('username', $user['info']['username']);
+			$user = session('user');
 			$uid = $user['info']['id'];
 			$map = array('uid' => $uid, );
 			$result = apiCall(HomePublicApi::Address_Query, array($map));
@@ -371,6 +374,18 @@ class UsersmController extends CheckLoginController {
 		//		dump($map);
 		$result = apiCall(HomePublicApi::Address_Del, array($map));
 		$this -> success("删除成功！", U('Home/Usersm/address'));
+	}
+	
+	/*
+	 * 计时器改变任务状态
+	 * */
+	public function tasktimeover(){
+		$id=I('id');
+		$entity=array('do_status'=>0);
+		$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$entity));
+		if($result['status']){
+			$this->success('时间超时，由系统取消',U('Home/Usersm/sm_bbhd'));
+		}
 	}
 
 }

@@ -1,0 +1,163 @@
+<extend name="template/base_index" />
+
+<block name="area_header">
+	<link rel="stylesheet" href="__CSS__/shangjia.css">
+
+</block>
+
+<block name="area_body">
+
+	<include file='Widget/sjtop' />
+	<div class="seller_main clearfix" controller="seller/common">
+		<div class="seller_content_wrap">
+
+			<div class="seller_content" style="padding-top: 10px;">
+
+				<div class="content">
+					<div class="jquery-once-1-processed">
+
+						<div style="position: relative">
+							<div class="pull-right btn-group"><a data-toggle="modal2" modal-title="创建淘宝活动" style="background-color: #1D99D5; color: #FFFFFF;" class="btn " href="#">创建试福任务</a>
+							</div>
+							<include file="Widget/li" />
+
+							<div class="clear"></div>
+
+							<ul id="ul_rw" class="nav nav-tabs nav-store" role="menu">
+								<li class="active" role="menuitem"><a tabindex="-1" href="#">待审核任务</a>
+								</li>
+								<!--<li role="menuitem"><a tabindex="-1" href="#">已结算任务</a>
+								</li>
+								<li role="menuitem"><a tabindex="-1" href="#">暂停任务</a>
+								</li>-->
+							</ul>
+						</div>
+						<!--<script type="text/javascript">
+						
+							$(function(){
+								$("#ul_rw li").click(function(){
+									
+									$(this).addClass('active').siblings().removeClass('active');
+									$(".grid-view").eq($("#ul_rw li").index($(this))).show().siblings().hide();
+								})
+								
+							})
+							
+						</script>-->
+						<div>
+							<div class="grid-view" controller="extend/gridview,person/renwu">
+								<table class="items table table-seller">
+									<thead>
+										<tr class="filters">
+											<td>
+												<div class="filter-container">
+													<input name="RenWu[task_id]" id="RenWu_task_id" type="text">
+												</div>
+											</td>
+											<td>
+												<div class="filter-container">
+													<input name="RenWu[task_name]" id="RenWu_task_name" type="text">
+												</div>
+											</td>
+											<td>
+												<div class="filter-container">&nbsp;</div>
+											</td>
+											<td>
+												<div class="filter-container">&nbsp;</div>
+											</td>
+											<td>
+												<div class="filter-container">&nbsp;</div>
+											</td>
+											<td>
+												<div class="filter-container">&nbsp;</div>
+											</td>
+											<td>
+												<div class="filter-container">&nbsp;</div>
+											</td>
+											<td>
+												<div class="filter-container">&nbsp;</div>
+											</td>
+											<td>
+												<div class="filter-container">&nbsp;</div>
+											</td>
+										</tr>
+										<tr>
+											<th width="60" id="task-grid_c0"><a class="sort-link" href="#">ID<span class="caret"></span></a>
+											</th>
+											<th width="200" id="task-grid_c1">任务名称</th>
+											<th width="180" id="task-grid_c2">发货模式</th>
+											<th width="100" id="task-grid_c3"><a class="sort-link" href="#">淘宝订单号<span class="caret"></span></a>
+											</th>
+											<th width="100" id="task-grid_c4"><a class="sort-link" href="#">淘宝交易金<span class="caret"></span></a>
+											</th>
+											<th width="120" id="task-grid_c6"><a class="sort-link" href="#">任务状态<span class="caret"></span></a>
+											</th>
+											<th width="100" id="task-grid_c7"><a class="sort-link desc" href="#">创建时间<span class="caret"></span></a>
+											</th>
+											<th width="130" id="task-grid_c9">操作</th>
+										</tr>
+									</thead>
+									<tbody class="item odd">
+										<tr class="padding-tr"></tr>
+										<volist name="tshis" id="q">
+											<volist name='task' id='vo'>
+												<if condition="$vo['id'] eq $q['task_id']">
+													<tr class="list-tr">
+														<td>{$vo.id}</td>
+														<td>{$vo.task_name}</td>
+														<td>
+															<if condition="$vo['delivery_mode'] eq 1">平台发货</if>
+															<if condition="$vo['delivery_mode'] eq 2">自主发货</if>
+														</td>
+														<td>{$q.tb_orderid}</td>
+														<td><span class="price" title="">{$q.tb_price}</span>
+														</td>
+														<td><span class="muted" style="color: green;">
+														<if condition="$q['do_status'] eq 1">任务进行中</if>
+														<if condition="$q['do_status'] eq 2">已完成</if>
+														<if condition="$q['do_status'] eq 3">待订单确认</if>
+														<if condition="$q['do_status'] eq 4">待确认返款</if>
+														<if condition="$q['do_status'] eq 8">驳回</if>
+													</span>
+														</td>
+
+														<td><span title="">{$q.create_time|date='m-d H:i',###}</span>
+														</td>
+														<td>
+															<a class="text-info inline-block" href="{:U('Home/SJActivity/qrdd',array('id'=>$vo['id']))}">审核通过</a>
+															<br><a class="text-info inline-block" href="{:U('Home/SJActivity/rt',array('id'=>$vo['id']))}">驳回</a>
+														</td>
+													</tr>
+
+												</if>
+											</volist>
+										</volist>
+									</tbody>
+
+								</table>
+								<div class="row-fluid">
+									<div class="span6 offset3"></div>
+									<div class="span3">
+									</div>
+								</div>
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<include file='Widget/sjleft' />
+</block>
+
+<block name="area_footer">
+
+</block>
+
+<!--[if IEMobile 7]><body class="iem7" ><![endif]-->
+<!--[if lte IE 6]><body class="lt-ie9 lt-ie8 lt-ie7" ><![endif]-->
+<!--[if (IE 7)&(!IEMobile)]><body class="lt-ie9 lt-ie8" ><![endif]-->
+<!--[if IE 8]><body class="lt-ie9" ><![endif]-->
+<!--[if (gte IE 9)|(gt IEMobile 7)]><!-->
+<!--<![endif]-->

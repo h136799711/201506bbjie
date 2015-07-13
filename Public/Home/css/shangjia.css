@@ -6045,7 +6045,7 @@ label {
 	border-top: none
 }
 .table-seller tbody {
-	border-bottom: 1px solid #def3fd
+	 
 }
 .table-seller tr td:first-child,
 .table-seller tr th:first-child {
@@ -6071,8 +6071,7 @@ label {
 }
 .table-seller tbody.item tr {
 	font-size: 12px;
-	border-left: 1px solid #def3fd;
-	border-right: 1px solid #def3fd
+	
 }
 .table-seller tbody.item tr td {
 	font-size: 12px;
@@ -6082,7 +6081,7 @@ label {
 	height: 50px
 }
 .table-seller tbody.item tr.list-tr {
-	border-top: 1px solid #def3fd
+
 }
 .table-seller tbody.item tr.list-tr td {
 	padding-top: 10px;
@@ -6119,7 +6118,7 @@ label {
 	color: #666
 }
 .table-seller tbody.item.wancheng {
-	border-bottom: 1px solid #e8e8e8
+	
 }
 .table-seller tbody.item.wancheng tr {
 	border-color: #e8e8e8
@@ -6134,7 +6133,7 @@ label {
 	border-color: #08c
 }
 .table-seller tbody.item:hover {
-	border-bottom: 1px solid #08c
+	
 }
 .table-seller tbody.item:hover tr {
 	border-color: #08c

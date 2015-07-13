@@ -371,36 +371,53 @@ class IndexController extends HomeController {
 				$userid=$users['info']['id'];
 				$map="uid=".$userid;					
 				$group=apiCall(HomePublicApi::Group_QueryNpPage, array($map));
-				$groupid=$group['info'][0]['group_id'];
-				if($groupid==14){
-					session('user',$users);
-					$order = " post_modified desc ";
-					$map=array(
-						'uid'=>$users['info']['id'],
-					);	
-					$result1=apiCall(HomePublicApi::Bbjmember_Query, array($map));
-					$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
-					$this->assign('taobao',$result1['info'][0]['taobao_account']);
-					$this->assign('user',$result1['info'][0]);
-					$this->assign('zxgg',$result['info'][0]);
-					$this->assign('info',$result['info']);
-					$this->assign('phone',$user['info']['mobile']);
-					$this->assign('username',$users['info']['username']);
-					$this -> display('sm_manager');
-				}else{
-					session('user',$users);
-					$user=session('user');
-					$id=$user['info']['id'];
-					$map=array(
-						'uid'=>$id,
-					);					
-					$sj=apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
-					$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
-					$this->assign('info',$result['info']);
-					$this->assign('sj',$sj['info']);
-					$this->assign('username',$users['info']['username']);
-					$this->display('Usersj/index');
+				if($group['status']){
+					$groupid=$group['info'][0]['group_id'];
+					if($groupid==14){
+						session('user',$users);
+						$users=session('user');
+						$uid=$users['info']['id'];
+						$id=$uid;
+						$mapp="uid=".$uid;					
+						$group=apiCall(HomePublicApi::Group_QueryNpPage, array($mapp));
+						$groupid=$group['info'][0]['group_id'];
+						$user=session('user');
+						$id=$user['info']['id'];
+						$map=array(
+							'uid'=>$id,
+						);	
+						$result1=apiCall(HomePublicApi::Bbjmember_Query, array($map));
+						$user=apiCall(HomePublicApi::User_GetUser, array($id));
+						$this->assign('username',$user['info']['username']);
+						$this->assign('phone',$user['info']['mobile']);
+						$order = " post_modified desc ";
+						$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
+						$this->assign('taobao',$result1['info'][0]['taobao_account']);
+						$this->assign('user',$result1['info'][0]);
+						$this->assign('zxgg',$result['info'][0]);
+						$this->assign('info',$result['info']);
+				//		dump($result);
+						$this->display('sm_manager');
+					}else{
+						session('user',$users);
+						$headtitle="宝贝街-商家中心";
+						$this->assign('head_title',$headtitle);
+						$user=session('user');
+						$id=$user['info']['id'];
+						$map=array(
+							'uid'=>$id,
+						);					
+						$order = " post_modified desc ";
+						$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
+						$this->assign('info',$result['info']);
+						$sj=apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
+						$this->assign('money',$sj['info'][0]['coins']);
+						$this->assign('username',$user['info']['username']);
+						$this->assign('sj',$sj['info'][0]);
+						$this->display('Usersj/index');
+					}
 				}
+				
 			} else{
 				$this->assign('error','请仔细核对您的账号和密码');
 				$this -> display('login');
@@ -437,40 +454,24 @@ class IndexController extends HomeController {
 		$mapp="uid=".$uid;					
 		$group=apiCall(HomePublicApi::Group_QueryNpPage, array($mapp));
 		$groupid=$group['info'][0]['group_id'];
-		if($groupid==15){
-			$user=session('user');
-			$id=$user['info']['id'];
-			$map=array(
-				'uid'=>$id,
-			);	
-			$user=apiCall(HomePublicApi::User_GetUser, array($id));
-			$sj=apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
-			$order = " post_modified desc ";
-			$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
-			$this->assign('info',$result['info']);
-			$this->assign('money',$sj['info'][0]['coins']);
-			$this->assign('username',$user['info']['username']);
-			$this->assign('sj',$sj['info']);
-			$this->display('Usersj/index');
-		}else{
-			$user=session('user');
-			$id=$user['info']['id'];
-			$map=array(
-				'uid'=>$id,
-			);	
-			$result1=apiCall(HomePublicApi::Bbjmember_Query, array($map));
-			$user=apiCall(HomePublicApi::User_GetUser, array($id));
-			$this->assign('username',$user['info']['username']);
-			$this->assign('phone',$user['info']['mobile']);
-			$order = " post_modified desc ";
-			$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
-			$this->assign('taobao',$result1['info'][0]['taobao_account']);
-			$this->assign('user',$result1['info'][0]);
-			$this->assign('zxgg',$result['info'][0]);
-			$this->assign('info',$result['info']);
-//			dump($result);
-			$this->display();
-		}
+		$user=session('user');
+		$id=$user['info']['id'];
+		$map=array(
+			'uid'=>$id,
+		);	
+		$result1=apiCall(HomePublicApi::Bbjmember_Query, array($map));
+		$user=apiCall(HomePublicApi::User_GetUser, array($id));
+		$this->assign('username',$user['info']['username']);
+		$this->assign('phone',$user['info']['mobile']);
+		$order = " post_modified desc ";
+		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
+		$this->assign('taobao',$result1['info'][0]['taobao_account']);
+		$this->assign('user',$result1['info'][0]);
+		$this->assign('zxgg',$result['info'][0]);
+		$this->assign('info',$result['info']);
+//		dump($result);
+		$this->display();
+		
 		
 	}       
 	

@@ -24,7 +24,7 @@
 
 	var pluginName = 'scojs_countdown';
 
-	function doit($elem, data, until) {
+	function doit($elem, data, until,id) {
 		var str = ''
 			,started = false
 			,left = {d: 0, h: 0, m: 0, s: 0}
@@ -35,6 +35,7 @@
 
 		if (left.s < 0) {
 			return;
+			window.location.href()="U('Home/Usersm/tasktimeover',array('id'=>id))";
 		}
 		if (Math.floor(left.s / 86400) > 0) {
 			left.d = Math.floor(left.s / 86400);

@@ -14,7 +14,9 @@ use Admin\Api\AdminPublicApi;
 
 class SMActivityController extends CheckLoginController {
 
-	
+	/*
+	 * 改变状态
+	 * */
 	public function changestatus(){
 		$user=session('user');
 		$map=array('uid'=>$user['info']['id']);
@@ -34,7 +36,35 @@ class SMActivityController extends CheckLoginController {
 			}
 		}
 	}
-	
+	/*
+	 * 取消任务
+	 * */
+	public function qxtask(){
+		$id=I('id',0);
+		$map=array('do_status'=>0);
+		$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$map));
+		if($result['status']){
+			$this->success('任务操作成功',U('Home/Usersm/sm_bbhd'));
+		}else{
+			$this->error('系统未知错误',U('Home/Usersm/sm_bbhd'));
+		}
+	}
+	/*
+	 * 确认任务
+	 * */
+	public function qrtask(){
+		$id=I('id',0);
+		$map=array('do_status'=>3);
+		$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$map));
+		if($result['status']){
+			$this->success('任务操作成功',U('Home/Usersm/sm_bbhd'));
+		}else{
+			$this->error('系统未知错误',U('Home/Usersm/sm_bbhd'));
+		}
+	}
+	/**
+	 * 领取任务
+	 * */
 	public function gettask(){
 		$user=session('user');
 		$mapa=array('task_do_type'=>1,'task_status'=>1,);
@@ -106,5 +136,7 @@ class SMActivityController extends CheckLoginController {
 			$this->error($result['info']);
 		}
 	}
+	
+	
 
 }
