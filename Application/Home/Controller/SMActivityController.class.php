@@ -103,6 +103,7 @@ class SMActivityController extends CheckLoginController {
 		$tk=array('id'=>$id);
 		$map=array('task_id'=>$id);
 		$task=apiCall(HomePublicApi::Task_Query, array($tk));
+	
 		$this->assign('task',$task['info'][0]);
 		$result=apiCall(HomePublicApi::TaskHasProduct_Query, array($map));
 		$this->assign('jianshu',$result['info'][0]['num']);

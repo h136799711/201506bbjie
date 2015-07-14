@@ -141,7 +141,7 @@
 								<div>5、核对旺旺号</div>
 								<div>
 									<div class="input-append">
-										<input placeholder="请在这里输入找到的旺旺号" type="text" value="" name="" id=""><a id="queren_btn" onclick="return false;" class="btn" href="#">确认掌柜旺旺号</a>
+										<input placeholder="请在这里输入找到的旺旺号" type="text" value="" name="" id="wawa"><a id="queren_btn" onclick="return false;" class="btn" href="javascript:void(0)">确认掌柜旺旺号</a>
 									</div>
 								</div>
 							</div>
@@ -417,6 +417,15 @@
  		$(".radio").click(function(){
  			var val=$('input:radio[name="address_id"]:checked').val();
  			$('#address').val(val);
+ 		})
+ 		$("#queren_btn").click(function(){
+ 			var ww=$('#wawa').val();
+ 			var wangwang="{$pd['wangwang']}".trim();
+   			if(wangwang==ww){
+   				alert('恭喜您，这个就是铺主的旺旺');
+   			}else{
+   				alert('抱歉，这不是铺主的旺旺，再找一张');
+   			}
  		})
  		 
  	})

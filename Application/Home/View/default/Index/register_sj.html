@@ -66,13 +66,12 @@
 								<span> </span>
 							</DIV>
 						</DIV>
-
 						<DIV class="control-group">
 							<LABEL class="control-label" for="yaoqingren">邀请人：</LABEL>
 							<DIV class="controls">
 								<INPUT name="yaoqingren" class="input-large" id="yaoqingren" type="text" placeholder="请填写邀你注册者的用户名，这样他能获得经验值奖励哦！" value="test1">
+							<span> </span>
 							</DIV>
-
 						</DIV>
 
 						<DIV class="control-group">
@@ -128,6 +127,22 @@
 					d = 0;
 					$(this).parent().find("span").html("<font size='-2' color='red'>字母开头的数字组合！</font>");
 				}
+				
+			});
+			$('#yaoqingren').blur(function() {
+				
+				if (name.test($('#yaoqingren').val())) {
+					d = 1;
+					$.getJSON("{:U('Home/Index/checkname')}",{name:$("#yaoqingren").val()},function(json){ 
+							if(json!=1){
+								d = 0;
+								$('#yaoqingren').parent().find("span").html("<font size='-2' color='green'>正确</font>");
+							}else{
+								d = 1;
+								$('#yaoqingren').parent().find("span").html("<font size='-2' color='red'>邀请人不存在</font>");
+							}
+				}); 
+				} 
 				
 			});
 			var a = 0;

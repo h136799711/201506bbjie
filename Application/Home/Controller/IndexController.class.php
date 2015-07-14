@@ -215,6 +215,10 @@ class IndexController extends HomeController {
 		$email=$username."@qq.com";
 		$yqr=I('post.yaoqingren');
 		$result = apiCall(HomePublicApi::User_Register, array($username, $password, $email,$mobile));
+		$where="username ='$yqr'";
+		$fu=M('ucenterMember')->where($where)->select();
+		$id=$fu[0]['id'];
+		$fus=M('bbjmember')->where('uid='.$id)->setInc('fucoin','2');
 //		dump($result);
 		if($result['status']){
 			$uid=$result['info'];
@@ -234,6 +238,7 @@ class IndexController extends HomeController {
 				'coins'=>0,
 				'fucoin'=>0,
 			);
+			
 			$result1 = apiCall(HomePublicApi::Bbjmember_Add, array($entity));
 //			dump($result1);
 			if($result1['status']){
@@ -245,6 +250,7 @@ class IndexController extends HomeController {
 					'idnumber'=>'',
 					'update_time'=>time(),
 				);
+				
 				$result2 = apiCall(HomePublicApi::Member_Add, array($user));
 //				dump($result2);
 				if($result2['status']){
@@ -273,9 +279,12 @@ class IndexController extends HomeController {
 		$email=$username."@qq.com";
 		$yqr=I('post.yaoqingren');
 		$result = apiCall(HomePublicApi::User_Register, array($username, $password, $email,$mobile));
+		$where="username ='$yqr'";
+		$fu=M('ucenterMember')->where($where)->select();
+		$id=$fu[0]['id'];
+		$fus=M('bbjmember')->where('uid='.$id)->setInc('fucoin','2');
 		if($result['status']){
 			$uid=$result['info'];
-			//TODO :处理邀请人
 			$entity=array(
 				'uid'=>$uid,
 				'referrer_id'=>1,
@@ -361,7 +370,6 @@ class IndexController extends HomeController {
 			//检测用户
 			$username = I('post.username', '', 'trim');
 			$password = I('post.password', '', 'trim');
-			
 			$result = apiCall(HomePublicApi::User_Login, array('username' => $username, 'password' => $password));
 //			dump($result);
 			//调用成功
@@ -374,12 +382,8 @@ class IndexController extends HomeController {
 				if($group['status']){
 					$groupid=$group['info'][0]['group_id'];
 					if($groupid==14){
+						$return=M('bbjmember')->where('uid='.$uid)->setInc('exp','4');
 						session('user',$users);
-						$users=session('user');
-						$uid=$users['info']['id'];
-						$id=$uid;
-						$mapp="uid=".$uid;					
-						$group=apiCall(HomePublicApi::Group_QueryNpPage, array($mapp));
 						$groupid=$group['info'][0]['group_id'];
 						$user=session('user');
 						$id=$user['info']['id'];
@@ -396,9 +400,10 @@ class IndexController extends HomeController {
 						$this->assign('user',$result1['info'][0]);
 						$this->assign('zxgg',$result['info'][0]);
 						$this->assign('info',$result['info']);
-				//		dump($result);
+						$this->checklevel();
 						$this->display('sm_manager');
 					}else{
+						$return=M('bbjmemberSeller')->where('uid='.$uid)->setInc('exp','4');
 						session('user',$users);
 						$headtitle="宝贝街-商家中心";
 						$this->assign('head_title',$headtitle);
@@ -414,6 +419,7 @@ class IndexController extends HomeController {
 						$this->assign('money',$sj['info'][0]['coins']);
 						$this->assign('username',$user['info']['username']);
 						$this->assign('sj',$sj['info'][0]);
+						$this->checklevel();
 						$this->display('Usersj/index');
 					}
 				}
@@ -430,6 +436,8 @@ class IndexController extends HomeController {
 	  * */
 	public function exits(){
 		session('[destroy]'); // 删除session
+
+		
 		$this->display('login');
 	}
 	/*
@@ -440,7 +448,6 @@ class IndexController extends HomeController {
 		if(isset($username)){ 
 			$results = apiCall(HomePublicApi::User_CheckUserName,array($username));
 		}	
-//
 		$this->ajaxReturn($results['info'],'json');
 	 }
 	
@@ -473,13 +480,50 @@ class IndexController extends HomeController {
 		$this->display();
 		
 		
-	}       
-	
-	
-	
-	
-	
-	
-	
+	}   
+	public function checklevel(){
+		$user=session('user');
+		$map=array('uid'=>$user['info']['id']);
+		$result=apiCall(HomePublicApi::Bbjmember_Query,array($map));
+		if($result['status']){
+			$exp=$result['info'][0]['exp'];
+			if($exp<100){
+				$this->assign('level',1);
+			}else if($exp>=100 && $exp<200){
+				$this->assign('level',2);
+			}else if($exp>=200 && $exp<300){
+				$this->assign('level',3);
+			}else if($exp>=300 && $exp<400){
+				$this->assign('level',4);
+			}else if($exp>=400 && $exp<500){
+				$this->assign('level',5);
+			}else if($exp>=500 && $exp<600){
+				$this->assign('level',6);
+			}else if($exp>=600 && $exp<700){
+				$this->assign('level',7);
+			}
+		}else{
+			$result=apiCall(HomePublicApi::Bbjmember_Query,array($map));
+			if($result['status']){
+			$exp=$result['info'][0]['exp'];
+			if($exp<100){
+				$this->assign('level',1);
+				}else if($exp>=100 && $exp<200){
+					$this->assign('level',2);
+				}else if($exp>=200 && $exp<300){
+					$this->assign('level',3);
+				}else if($exp>=300 && $exp<400){
+					$this->assign('level',4);
+				}else if($exp>=400 && $exp<500){
+					$this->assign('level',5);
+				}else if($exp>=500 && $exp<600){
+					$this->assign('level',6);
+				}else if($exp>=600 && $exp<700){
+					$this->assign('level',7);
+				}
+			
+			}
+		}
+	}    
 }
 

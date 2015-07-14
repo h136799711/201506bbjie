@@ -499,20 +499,21 @@ class SJActivityController extends CheckLoginController {
 		$map = array('uid' => $user['info']['id'], 'status' => 1);
 		$mapp = array('uid' => $user['info']['id']);
 		$mwe = array('uid' => $user['info']['id'], 'status' => 0);
+		$page = array('curpage' => I('get.p', 0), 'size' => 6);
 		//dump($user['info']['id']);
-		$product = apiCall(HomePublicApi::Product_QueryAll, array($map));
-		$pro = apiCall(HomePublicApi::Product_QueryAll, array($mapp));
+		$product = apiCall(HomePublicApi::Product_QueryAll, array($map,$page));
+		$pro = apiCall(HomePublicApi::Product_QueryAll, array($mapp,$page));
 		$pros = apiCall(HomePublicApi::ProductSearchWay_QueryAll, array());
-		$prduct = apiCall(HomePublicApi::Product_QueryAll, array($mwe));
+		$prduct = apiCall(HomePublicApi::Product_QueryAll, array($mwe,$page));
 		$this -> assign('prduct', $prduct['info']['list']);
-		$this -> assign('prshow', $prduct['show']);
+		$this -> assign('prshow', $prduct['info']['show']);
 		$this -> assign('product', $product['info']['list']);
-		$this -> assign('prooshow', $product['show']);
-		$this -> assign('proshow', $pro['show']);
+		$this -> assign('prooshow', $product['info']['show']);
+		$this -> assign('proshow', $pro['info']['show']);
 		$this -> assign('pro', $pro['info']['list']);
 		$this -> assign('pros', $pros['info']['list']);
 		$this -> assign('username', $user['info']['username']);
-
+//		dump($product);
 		$this -> display();
 	}
 
