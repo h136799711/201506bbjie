@@ -24,6 +24,7 @@ class HomePublicApi{
 	 * 商家
 	 */
 	const Bbjmember_Seller_SaveByID='Home/BbjmemberSeller/saveByID';
+	const Bbjmember_Seller_SaveByUID='Home/BbjmemberSeller/saveByIDd';
 	const Bbjmember_Seller_Add='Home/BbjmemberSeller/add';
 	const Bbjmember_Seller_Query='Home/BbjmemberSeller/queryNoPaging';
 	const Bbjmember_Seller_QueryAll='Home/BbjmemberSeller/query';

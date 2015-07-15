@@ -476,6 +476,7 @@ class IndexController extends HomeController {
 		$this->assign('user',$result1['info'][0]);
 		$this->assign('zxgg',$result['info'][0]);
 		$this->assign('info',$result['info']);
+		$this->getcount();
 //		dump($result);
 		$this->display();
 		
@@ -524,6 +525,31 @@ class IndexController extends HomeController {
 			
 			}
 		}
-	}    
+	} 
+/*
+	 * 获取统计数据
+	 * */
+	public function getcount(){
+		$user=session('user');
+		$count_bh=0;$count_zajx=0;$count_qx=0;
+		$map=array('uid'=>$user['info']['id']);
+		$result=apiCall(HomePublicApi::Task_His_Query, array($map));
+		for ($i=0; $i <count($result['info']) ; $i++) {
+			
+			if($result['info'][$i]['do_status']==8){
+				$count_bh=$count_bh+1;
+			}
+			if($result['info'][$i]['do_status']==1){
+				$count_zajx=$count_zajx+1;
+			}
+			if($result['info'][$i]['do_status']==0){
+				$count_qx=$count_qx+1;
+			}
+		}
+		$this->assign('bh',$count_bh);
+		$this->assign('za',$count_zajx);
+		$this->assign('qx',$count_qx);
+		 
+	}   
 }
 

@@ -26,10 +26,10 @@
 								<input class="am-btn-default" type="button" value="活动搜索" style="border: 1px solid #ccc;border-bottom-right-radius:7px; border-top-right-radius:7px;" />
 								<span style="font-size: 12px; margin-left: 20px;">
 									<a href="#" style="color: red;">所有任务</a>
-									<a href="#" style="color: #999;">新任务<font color="red">0</font></a>
+									<!--<a href="#" style="color: #999;">新任务<font color="red">0</font></a>-->
 									<a href="#" style="color: #999;">被驳回<font color="red">0</font></a>
 									<a href="#" style="color: #999;">等待审核<font color="red">0</font></a>
-									<a href="#" style="color: #999;">待确认收货<font color="red">0</font></a>
+									<!--<a href="#" style="color: #999;">待确认收货<font color="red">0</font></a>-->
 									<a href="#" style="color: #999;">等待返款<font color="red">0</font></a>
 									<a href="#" style="color: #999;">取消/放弃</a>
 								</span>
@@ -89,15 +89,15 @@
 												距离任务完成剩余：<span class="js_countdownwn" data-until="{$v['get_task_time'] + 2*3600}"></span>
 												<br><font class="task_status" color="forestgreen">任务正在进行中...</font><br>
 												<if condition="$v['tb_orderid'] eq ''">
-													<a style="background-color: orangered; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/qxtask',array('id'=>$v['id']))}">取消任务</a>
+													<a id='anm1' style="background-color: orangered; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/qxtask',array('id'=>$v['id']))}">取消任务</a>
 													<else/>
-													<a style="background-color: orangered; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/qxtask',array('id'=>$v['id']))} ">放弃任务</a><a style="background-color:forestgreen; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/qrtask',array('id'=>$v['id']))}">确认任务</a>
+													<a id='anm2'  style="background-color: orangered; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/qxtask',array('id'=>$v['id']))} ">放弃任务</a><a id="anm4" style="background-color:forestgreen; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/qrtask',array('id'=>$v['id']))}">确认任务</a>
 												</if>
 											</if>
 											<if condition="$v['do_status'] eq 2"><font color="forestgreen">任务已完成...</font>
 											</if>
 										</td>
-										<td><a target="_blank" style="background-color:forestgreen; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/rws',array('id'=>$vo['id'],'taskhisid'=>$v['id']))}">开始任务</a> </td>
+										<td><a id='anm3' target="_blank" style="background-color:forestgreen; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/rws',array('id'=>$vo['id'],'taskhisid'=>$v['id']))}">开始任务</a> </td>
 									</tr>
 								</if>
 							</volist>
@@ -131,6 +131,12 @@
 		    	thid = parseInt(thid);
 		    	$(item).scojs_countdown({until: until,id:thid});
 		    });
+		    if($(item).data("until")==null ||$(item).data("until")==''){
+		    	$('.js_countdownwn').text('已超时！！');
+		    	$('.task_status').css('color','red');
+		    	$('.task_status').text('超时由系统取消！！');
+		    	$('#anm1,#anm2,#anm3,#anm4').hide();
+		    }
 		    
 		});
 	</script>

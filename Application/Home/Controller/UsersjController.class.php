@@ -34,8 +34,24 @@ class UsersjController extends CheckLoginController {
 		$this->assign('money',$sj['info'][0]['coins']);
 		$this->assign('username',$user['info']['username']);
 		$this->assign('sj',$sj['info'][0]);
+		$this->assign('head_img',$sj['info'][0]['head_img']);
+		$this->checklevel();
+		$this->getcount();
 		$this->display();
 	}
+	/*
+	 * 用户头像上传
+	 * */
+	public function uploadheadimg(){
+		$user=session('user');
+		$id=$user['info']['id'];
+		$entity=array('head_img'=>I('picurl',''));
+		$result=apiCall(HomePublicApi::Bbjmember_Seller_SaveByUID, array($id,$entity));
+		if($result['status']){
+			$this->success('用户头像修改成功',U('Home/Usersj/index'));
+		}
+	}
+	
 	/*
 	 * 商家账号信息
 	 * */
@@ -247,7 +263,6 @@ class UsersjController extends CheckLoginController {
 			$this -> assign('email', $user['info']['email']);
 			$this -> assign('phone', $user['info']['mobile']);
 		}
-		
 		$this -> assign('coins', $result['info'][0]['coins']);
 		$this -> assign('bank', $info['info'][0]);
 		$this->assign('username',$user['info']['username']);
@@ -260,5 +275,85 @@ class UsersjController extends CheckLoginController {
 		session('[destroy]'); // 删除session
 		$this->display('Index/login');
 	}
+	/*
+	 * 获取统计数据
+	 * */
+	public function getcount(){
+		$user=session('user');
+		$count_wtj=0;$count_ddsh=0;$count_qrhk=0;
+		$map=array('uid'=>$user['info']['id']);
+		$result=apiCall(HomePublicApi::Task_Query, array($map));
+		for ($i=0; $i <count($result['info']) ; $i++) {
+			//订单未提交 
+			$map1=array('task_id'=>$result['info'][$i]['id'],'do_status'=>1);
+			$result1[]=apiCall(HomePublicApi::Task_His_Query, array($map1));
+			//待订单审核
+			$map2=array('task_id'=>$result['info'][$i]['id'],'do_status'=>3);
+			$result2[]=apiCall(HomePublicApi::Task_His_Query, array($map2));
+			//待确认还款
+			$map3=array('task_id'=>$result['info'][$i]['id'],'do_status'=>4);
+			$result3[]=apiCall(HomePublicApi::Task_His_Query, array($map3));
+			if(count($result1[$i]['info'])!=0){
+				$count_wtj=count($result1[$i]['info']);
+			}
+			if(count($result2[$i]['info'])!=0){
+				$count_ddsh=count($result2[$i]['info']);
+			}
+			if(count($result3[$i]['info'])!=0){
+				$count_qrhk=count($result3[$i]['info']);
+			}
+		}
+		$this->assign('wtj',$count_wtj);
+		$this->assign('ddsh',$count_ddsh);
+		$this->assign('qrhk',$count_qrhk);
+		 
+	}
+	/*
+	 * 检测用户vip等级
+	 * */
+	public function checklevel(){
+		$user=session('user');
+		$map=array('uid'=>$user['info']['id']);
+		$result=apiCall(HomePublicApi::Bbjmember_Query,array($map));
+		if($result['status']){
+			$exp=$result['info'][0]['exp'];
+			if($exp<100){
+				$this->assign('level',1);
+			}else if($exp>=100 && $exp<200){
+				$this->assign('level',2);
+			}else if($exp>=200 && $exp<300){
+				$this->assign('level',3);
+			}else if($exp>=300 && $exp<400){
+				$this->assign('level',4);
+			}else if($exp>=400 && $exp<500){
+				$this->assign('level',5);
+			}else if($exp>=500 && $exp<600){
+				$this->assign('level',6);
+			}else if($exp>=600 && $exp<700){
+				$this->assign('level',7);
+			}
+		}else{
+			$result=apiCall(HomePublicApi::Bbjmember_Query,array($map));
+			if($result['status']){
+			$exp=$result['info'][0]['exp'];
+			if($exp<100){
+				$this->assign('level',1);
+				}else if($exp>=100 && $exp<200){
+					$this->assign('level',2);
+				}else if($exp>=200 && $exp<300){
+					$this->assign('level',3);
+				}else if($exp>=300 && $exp<400){
+					$this->assign('level',4);
+				}else if($exp>=400 && $exp<500){
+					$this->assign('level',5);
+				}else if($exp>=500 && $exp<600){
+					$this->assign('level',6);
+				}else if($exp>=600 && $exp<700){
+					$this->assign('level',7);
+				}
+			
+			}
+		}
+	}    
 	
 }

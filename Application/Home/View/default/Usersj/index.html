@@ -2,6 +2,9 @@
 
 <block name="area_header">
 	<link rel="stylesheet" href="__CSS__/shangjia.css">
+	
+	<link type="text/css" rel="stylesheet" src="__CDN__/jquery-uploadify/3.2.1/uploadify.css" />
+	<script type="text/javascript" src="__CDN__/jquery-uploadify/3.2.1/jquery.uploadify.min.js"></script>
 
 </block>
 
@@ -10,9 +13,7 @@
 	<div class="seller_main clearfix" controller="seller/common">
 		<div class="seller_content_wrap">
 			<div class="seller_content" style="padding-top: 10px;">
-
 				<div class="content">
-
 					<div class="row-fluid">
 						<div class="span6">
 							<div class="widget-box">
@@ -26,49 +27,55 @@
 												<tr>
 													<td style="vertical-align: top;width:160px;">
 														<div class="page_head_img">
-															<a class="index_touxiang" href="#">
-																<img src="__IMG__/default_user_portrait.gif" alt=""> <i class="icon-edit"></i> </a>
-																<br><span class="am-badge am-badge-success am-round" style="font-size: 12px;">等级：{$level}级</span>
+															<a class="index_touxiang" href="javascript:void(0)">
+																<if condition="$head_img eq '' ">
+																	<img src="__IMG__/default_user_portrait.gif" alt="">
+																	<else/>
+																	<img src="{$head_img}" alt="">
+																</if>
+																<button style="height: 25%; width: 100%; font-size: 13px; opacity: 0.2;" type="button" value="" data-am-modal="{target: '#doc-modal-2', closeViaDimmer: 0, width:600, height: 300}" class="icon-edit">点此更换头像</button>
+															</a>
+															<br><span class="am-badge am-badge-success am-round" style="font-size: 12px;">等级：{$level}级</span>
 														</div>
 													</td>
 													<td style="vertical-align: top;">
-														
-															<div style="margin: 30px 20px;">
-																<p>
-																	{$username} </p>
-																<p>
-																	<if condition="$sj.vip_level eq 1">
-																		会员等级 : vip会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">续费或开通超级会员</a> ]
 
-																	</if>
-																	<if condition="$sj.vip_level eq 2">
-																		会员等级 : 超级会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">续费超级会员</a> ]
-																		<else/> 会员等级 : 普通会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">开通会员</a> ]
-																	</if>
+														<div style="margin: 30px 20px;">
+															<p>
+																{$username} </p>
+															<p>
+																<if condition="$sj.vip_level eq 1">
+																	会员等级 : vip会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">续费或开通超级会员</a> ]
 
-																</p>
+																</if>
+																<if condition="$sj.vip_level eq 2">
+																	会员等级 : 超级会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">续费超级会员</a> ]
+																	<else/> 会员等级 : 普通会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">开通会员</a> ]
+																</if>
 
-																<p>
-																	可用余额 : <span class="number"><span class="price">{$sj.coins}</span>元</span>
-																	[ <a class="text-link small" href="{:U('Home/Usersj/sj_zjgl')}">查看试福钱庄</a> ]
-																</p>
+															</p>
 
-																<p>
-																	绑定旺旺 :{$sj.aliwawa} </p>
+															<p>
+																可用余额 : <span class="number"><span class="price">{$sj.coins}</span>元</span>
+																[ <a class="text-link small" href="{:U('Home/Usersj/sj_zjgl')}">查看试福钱庄</a> ]
+															</p>
 
-																<p>
-																	店铺名 : {$sj.store_name} </p>
+															<p>
+																绑定旺旺 :{$sj.aliwawa} </p>
 
-																<p>
-																	联系人 : {$sj.linkman} <a class="text-link small" href="#">修改</a> </p>
-																<if condition="$sj['aliwawa'] eq ''">
-																	
+															<p>
+																店铺名 : {$sj.store_name} </p>
+
+															<p>
+																联系人 : {$sj.linkman} <a class="text-link small" href="#">修改</a> </p>
+															<if condition="$sj['aliwawa'] eq ''">
+
 																<else/>
 																<div class="alert alert-warning in fade"><a href="#" class="close" data-dismiss="alert" type="button">×</a>您还没有对您的主旺旺进行认证，请先认证您的主旺旺 <a class="text-info" href="{:U('Home/Usersj/sj_zjgl')}">前往验证</a>
-																</if>
-																</div>
+															</if>
 															</div>
-													
+														</div>
+
 													</td>
 												</tr>
 											</tbody>
@@ -116,11 +123,12 @@
 																<td>
 																	<span class="small">自助选择任务试民:</span>
 																	<if condition="$sj['task_gettype'] eq 1">
-																	<a style="color: red;" class="text-info small" tooltip="开启之后您的任务试民将由您自己审核通过"  href="{:U('Home/SJActivity/changestatus',array('id'=>$sj['id'],'status'=>1))}">已关闭</a> 
-																	<else/>
-																	<a style="color: darkgreen;" class="text-info small" tooltip="关闭之后您的任务试民将由试民自己领取"  href="{:U('Home/SJActivity/changestatus',array('id'=>$sj['id'],'status'=>2))}">已开启</a> 
+																		<a style="color: red;" class="text-info small" tooltip="开启之后您的任务试民将由您自己审核通过" href="{:U('Home/SJActivity/changestatus',array('id'=>$sj['id'],'status'=>1))}">已关闭</a>
+																		<else/>
+																		<a style="color: darkgreen;" class="text-info small" tooltip="关闭之后您的任务试民将由试民自己领取" href="{:U('Home/SJActivity/changestatus',array('id'=>$sj['id'],'status'=>2))}">已开启</a>
 																	</if>
-																</td>                                                                                                                                                    </td>
+																</td>
+																</td>
 															</tr>
 											</table>
 										</div>
@@ -137,19 +145,19 @@
 									<div style="padding:10px 20px 0;">
 										<div class="row-fluid" style="padding:15px 0;">
 											<div class="span2">试福任务</div>
-											<div class="span2">待确认还款： <span class="number text-error">0</span>
+											<div class="span2">待确认还款： <span class="number text-error">{$wtj}</span>
 											</div>
-											<div class="span2">待审核订单： <span class="number text-error">0</span>
+											<div class="span2">待审核订单： <span class="number text-error">{$ddsh}</span>
 											</div>
-											<div class="span2">订单未提交： <span class="number text-info">0</span>
+											<div class="span2">订单未提交： <span class="number text-info">{$qrhk}</span>
 											</div>
-											<div class="span2">挂起： <span class="number">0</span>
-											</div>
-											<div class="span2 text-right"><a class="text-info" target="_blank" href="#">查看详细&gt;&gt;</a>
+											<!--<div class="span2">挂起： <span class="number">0</span>
+											</div>-->
+											<div class="span2 text-right"><a class="text-info" target="_blank" href="{:U('Home/SJActivity/sj_tbhd')}">查看详细&gt;&gt;</a>
 											</div>
 										</div>
 
-										<div class="muted" style="border-top:1px solid #ccc;padding:5px 0 0;"></div>
+										<!--<div class="muted" style="border-top:1px solid #ccc;padding:5px 0 0;"></div>
 										<div class="row-fluid" style="padding:15px 0;">
 											<div class="span2">淘福任务</div>
 											<div class="span2">待确认还款： <span class="number text-error">0</span>
@@ -162,52 +170,67 @@
 											</div>
 											<div class="span2 text-right"><a class="text-info" target="_blank" href="#">查看详细&gt;&gt;</a>
 											</div>
-										</div>
+										</div>-->
 									</div>
 
 								</div>
 							</div>
 
-							<!--<div class="widget-box">
-								<div class="widget-title">
-									<h5>试福助手</h5>
-									<div class="sub_title">v1.2</div>
-								</div>
-								<div class="widget-content">
-									<div class="clearfix index_sfzs" style="padding:10px 0;">
-										<div style="float:left;width:305px;padding:0 20px 0 10px;border-right: 1px solid #dddbdc;">
-											<span class="fen">试福助手</span> 是试福街专门为<span class="vip number">vip、svip</span>商家开发的一款高效精准的核对审核通过试民下单状况的帮手，商家只需轻松安装即可将试福街试民所下订单与真实淘宝买家订单区别开
-											<button style="height: 28px; width: 70px; border-radius:5px ; font-size: 12px ; text-align: center;" class="am-btn am-btn-primary am-btn-xs">立即下载</button>
-										</div>
-										<div style="margin-left: 350px;">
-											<form controller="extend/ajax_form" id="yw0" class="form-horizontal jquery-once-1-processed" action="#" method="post" novalidate="novalidate">
-												<input type="hidden" value="miyao" name="form-id" id="form-id">
-												<p>
-													<label class="pull-left" style="margin-top: 5px;">当前密钥：</label>
-												</p>
-												<div style="margin-left:5em;margin-right:20px;">
-													<input style="width:100%;" readonly="readonly" onclick="this.select()" type="text" value="dsf|0d60026bdfd" name="" id=""> </div>
-												<p></p>
-												<p class="muted" style="text-indent: 5em;">
-													请复制密钥后前往插件选项中直接设置
-												</p>
-												<p style="text-indent: 5em;margin-top: 20px;">
-													<button style="height: 28px; width: 70px; border-radius:5px ; font-size: 12px ; text-align: center;" class="am-btn am-btn-primary am-btn-xs">重新生成</button> <small>
-                该操作将使当前的密钥失效，供回收权限使用
-
-                </small>
-												</p>
-
-											</form>
-										</div>
+							<div class="am-modal am-modal-no-btn" tabindex="-1" id="doc-modal-2">
+								<div class="am-modal-dialog" style="border-radius:12px ;">
+									<div class="am-modal-hd" style="text-align: left; border-bottom: 1px solid #ccc; font-weight: bold;">
+										<a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>头像上传
 									</div>
+									<div class="am-modal-bd" style="text-align: center;">
+										<div style=" background: lightgoldenrodyellow; margin-top: 5px; color: red;">用户头像上传</div>
+										<form action="{:U('Home/Usersj/uploadheadimg')}" method="post">
+											<div class="controls">
+												<input type="file" id="upload_picture">
+												<input type="hidden" name="picurl" id="cover_id" value="" />
+												<div class="upload-img-box">
+												</div>
+												<button class="btn-success" type="submit">确认上传</button>
+											</div>
+										</form>
+										<script type="text/javascript">
+											 //上传图片
+											/* 初始化上传插件  */
+											$("#upload_picture").uploadify({
+												"height": 30,
+												"swf": "__CDN__/jquery-uploadify/3.2.1/uploadify.swf",
+												"fileObjName": "download",
+												"buttonText": "上传头像",
+												"uploader": "{:U('Admin/File/uploadPicture',array('session_id'=>session_id()))}",
+												"width": 120,
+												'removeTimeout': 1,
+												'fileTypeExts': '*.jpg; *.png; *.gif;',
+												"onUploadSuccess": uploadPicture
+											});
 
+											function uploadPicture(file, data) {
+												var data = $.parseJSON(data);
+												var src = '';
+												if (data.status) {
+													$("#cover_id").val('http://localhost/github/201506bbjie' + data.path);
+													src = data.url || '__ROOT__' + data.path;
+													$("#cover_id").parent().find('.upload-img-box').html(
+														'<div class="upload-pre-item"><img width=' + 100 + ' height=' + 100 + ' src="' + src + '"/></div>'
+													);
+													//console.info('http://localhost/github/201506bbjie'+data.path);
+													//alert($("#cover_id").val());
+												} else {
+													//alert(data.status);
+													$.scojs_message(data.info, $.scojs_message.TYPE_OK);
+												}
+											}
+										</script>
+
+									</div>
 								</div>
-							</div>-->
-
+							</div>
 						</div>
 
-						<div class="span3">
+						<!--<div class="span3">
 
 							<div class="widget-box">
 								<div class="widget-title">
@@ -249,7 +272,7 @@
 								</div>
 							</div>
 
-						</div>
+						</div>-->
 
 					</div>
 				</div>
@@ -260,5 +283,32 @@
 </block>
 
 <block name="area_footer">
-
+<script type="text/javascript">
+		$(function() {
+			//图片上传
+		//	wxuploadimg.init({cont:".wxuploaderimg"});
+			//
+			$(".js_frm_gp_buylimit input[type=radio]").click(function(){
+				console.log($(this).val());
+				console.log($(".js_frm_gp_buylimit input[type=text]"));
+				if($(this).val() == 1){
+					$(".js_frm_gp_buylimit input[type=text]").removeClass("hidden");
+				}else{
+					$(".js_frm_gp_buylimit input[type=text]").addClass("hidden");
+				}
+			});
+			
+//			$(".has_sku").click(function(ev){
+//				if($(this).val() == 1){
+//					//多规格
+//					$(".js_frm_gp_sku").hide();
+//					$(".js_sku_list").show();
+//				}else{
+//					//
+//					$(".js_frm_gp_sku").show();
+//					$(".js_sku_list").hide();
+//				}
+//			})
+		})
+	</script>
 </block>
