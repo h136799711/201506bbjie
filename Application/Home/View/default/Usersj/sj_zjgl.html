@@ -16,7 +16,164 @@
 		.am-modal-bd span{ font-size: 10px; }
 		.bank tr td{font-size: 13px;}
 		.am-icon-mobile{padding-left: 10px;}
+		
+		
+		
+		
+		
+		
+		
+		/**
+ * 图片上传样式
+ */
+
+.modal-dialog {
+	z-index: 10000000;
+	width: 760px;
+}
+.imgs-container {
+	margin: 10px 0px;
+	width: 100%;
+}
+.imgs-container .imgs-list{
+	border: 1px solid #EAEAEA;
+	overflow-y: scroll;
+	max-height: 400px;
+}
+.imgs-container .imgs-list .img-item img {
+	width: 125px;
+	height: 120px;
+	cursor: pointer;
+	margin-bottom: 0px;
+	position: relative;
+}
+.img-selected:after {
+	content: "\f00c";
+	font-family: FontAwesome;
+	font-size: 46px;
+	position: absolute;
+	left: 0%;
+	top: 0%;
+	background: rgba(0, 0, 0, 0.7);
+	color: #fff;
+	width: 125px;
+	height: 120px;
+	margin-top: 5px;
+	margin-left: 5px;
+	text-align: center;
+	line-height: 120px;
+}
+.imgs-container .imgs-list .img-item img:hover {
+	border: 1px solid #006699;
+}
+.imgs-container .imgs-list .img-item {
+	float: left;
+	width: 20%;
+	padding: 5px;
+	position: relative;
+	cursor: pointer;
+}
+.imgs-container .imgs-list .img-item .img-desc {
+	border: 1px solid #dddddd;
+	border-top: 0px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	padding: 5px; 
+	 height: 30px;
+}
+.wxuploaderimg{
+	width: 100%;
+	background: red;
+}
+.wxuploaderimg .add {
+	display: inline-block;
+	border: 2px dotted #d9dadc;
+	line-height: 60px;
+	font-size: 16px;
+	text-align: center;
+	margin-bottom: 20px;
+	width: 96px;
+	line-height: 96px;
+	color: #d9dadc;
+	cursor: pointer;
+	float: left;
+}
+.wxuploaderimg .img-preview{
+	display: none;
+  border: 0px solid #d9dadc;
+  line-height: 60px;
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 20px;
+  /*width: 96px;*/
+  line-height: 96px;
+  color: #d9dadc;
+  width: auto;  
+  float: left;
+}
+.wxuploaderimg .img-preview div{
+	position: relative;
+	cursor: pointer;
+	margin: 0px 10px 0px 0px;
+}
+.wxuploaderimg .img-preview img{
+	width: 96px;
+	height: 100px;
+	margin-bottom: 0px;
+}
+.wxuploaderimg .img-preview div:hover .edit_pic_wrp{
+	display:block;
+}
+.wxuploaderimg .img-preview .edit_pic_wrp{
+	position:absolute;
+	color:#d9dadc;
+  width: 100%;
+  height: 25px;
+  background: rgba(229,229,229,0.9)!important;
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#e6e5e5e5',endcolorstr = '#e6e5e5e5');
+  text-align: center;
+  display: none;
+  left: 0;
+  bottom: 0;
+}
+
+.wxuploaderimg .img-preview .edit_pic_wrp a{
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  margin-left: -10px;
+}
+.wxuploaderimg .add:hover {
+	border-color: #b3b3b3;
+	color: #b3b3b3;
+}
+.wxuploaderimg.checked .add {
+	display: none;
+}
+.wxuploaderimg.checked .img-preview{
+	display:block;
+}
+		
+		
+		
+		
+		
+		
+		
+		
 	</style>
+	<link type="text/css" rel="stylesheet" href="__CDN__/comp/wxuploader.css?v=__APP_VERSION__" />
+	<link rel="stylesheet" type="text/css" href="__CDN__/nprogress/nprogress.css" />
+
+	<script type="text/javascript" src="__CDN__/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+		<link type="text/css" rel="stylesheet" src="__CDN__/jquery-uploadify/3.2.1/uploadify.css" />
+	<script type="text/javascript" src="__CDN__/jquery-uploadify/3.2.1/jquery.uploadify.min.js"></script>
+
+	
+
+
+
+
 </block>
 
 <block name="area_body">
@@ -154,7 +311,7 @@
 										<th width="150" id="goodsorder-grid_c2">名称｜备注</th>
 										<th width="100" id="goodsorder-grid_c3">收入</th>
 										<th width="100" id="goodsorder-grid_c4">支出</th>
-										<th width="100" id="goodsorder-grid_c5">余额</th>
+										<th width="100" id="goodsorder-grid_c5">余额<img src="../../../Uploads/Picture/2015-07-15/55a5c8c863e8c.png"/></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -322,7 +479,7 @@
 			</div>
 			<div class="am-modal-bd" style="text-align: center;">
 				<div style=" background: lightgoldenrodyellow; margin-top: 5px; color: red;">转账时请备注你的宝贝街账号 "{$username}"</div>
-				<form action="{:U('Home/SJMoney/recharge')}" method="post" > 
+				<form action="{:U('Home/SJMoney/recharge')}" method="post" enctype="multipart/form-data"> 
 				<table style=" width: 100%;color: #666;">
 					<tr>
 						<td style="width: 20%;" align="right">收款帐号:</td>
@@ -352,14 +509,56 @@
 					<tr>
 						<td align="right">交易凭证:</td>
 						<td align="left" style="padding: 10px;">
+							
+						<div class="controls">
+							<input type="file" id="upload_picture">
+							<input type="hidden" name="picurl" id="cover_id" value="" />
+							<div class="upload-img-box">
+							</div>
+						</div>
+						<script type="text/javascript">
+											//上传图片
+										    /* 初始化上传插件  */
+											$("#upload_picture").uploadify({
+										        "height"          : 30,
+										        "swf"             : "__CDN__/jquery-uploadify/3.2.1/uploadify.swf",
+										        "fileObjName"     : "download",
+										        "buttonText"      : "上传图片",
+										        "uploader"        : "{:U('Admin/File/uploadPicture',array('session_id'=>session_id()))}",
+										        "width"           : 120,
+										        'removeTimeout'	  : 1,
+										        'fileTypeExts'	  : '*.jpg; *.png; *.gif;',
+										        "onUploadSuccess" : uploadPicture
+										    });
+											function uploadPicture(file, data){
+										    	var data = $.parseJSON(data);
+										    	var src = '';
+										        if(data.status){
+										        	
+										        	$("#cover_id").val('http://localhost/github/201506bbjie'+data.path);
+										        	src = data.url || '__ROOT__' + data.path;
+										        	$("#cover_id").parent().find('.upload-img-box').html(
+										        		'<div class="upload-pre-item"><img width='+50+' height='+50+' src="' + src + '"/></div>'
+										        	);
+										        	//console.info('http://localhost/github/201506bbjie'+data.path);
+										        	//alert($("#cover_id").val());
+										        } else {
+										        	//alert(data.status);
+													$.scojs_message(data.info , $.scojs_message.TYPE_OK);
+										        	
+										        }
+										    }
+						</script>
+							
+							<!--
 							<div class="am-form-group am-form-file">
-
+									
 								<div class="am-form-group am-form-file">
 									<button type="button" class="am-btn am-btn-danger am-btn-sm">
 										<i class="am-icon-cloud-upload"></i> 选择要上传的文件</button>
-									<input enctype="multipart/form-data" id="doc-form-file" type="file" >
+									<input enctype="multipart/form-data" name="doc_form_file" id="doc-form-file" type="file" >
 								</div>
-								<div id="file-list"></div>
+								<div id="file-list"></div>-->
 						</td>
 					</tr>
 					<tr>
@@ -446,5 +645,33 @@
 				
 			})
 	</script>
-
+	
+	<script type="text/javascript">
+		$(function() {
+			//图片上传
+		//	wxuploadimg.init({cont:".wxuploaderimg"});
+			//
+			$(".js_frm_gp_buylimit input[type=radio]").click(function(){
+				console.log($(this).val());
+				console.log($(".js_frm_gp_buylimit input[type=text]"));
+				if($(this).val() == 1){
+					$(".js_frm_gp_buylimit input[type=text]").removeClass("hidden");
+				}else{
+					$(".js_frm_gp_buylimit input[type=text]").addClass("hidden");
+				}
+			});
+			
+//			$(".has_sku").click(function(ev){
+//				if($(this).val() == 1){
+//					//多规格
+//					$(".js_frm_gp_sku").hide();
+//					$(".js_sku_list").show();
+//				}else{
+//					//
+//					$(".js_frm_gp_sku").show();
+//					$(".js_sku_list").hide();
+//				}
+//			})
+		})
+	</script>
 </block>
