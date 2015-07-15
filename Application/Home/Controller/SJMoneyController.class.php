@@ -41,8 +41,10 @@ class SJMoneyController extends CheckLoginController {
 	 */
 	public function recharge(){
 		$user = session('user');
-		$entity = array('uid' => $user['info']['id'], 'income' => I('post.money','').'.000' , 'defray' => '0.000', 'create_time' => time(), 'notes' => I('post.zhanghao','').'流水号：'.I("post.stnum",''), 'dtree_type' => 1, 'status' => 2, );
-		$result = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entity));
+		
+		$entity = array('uid' => $user['info']['id'],'imgurl'=>I('picurl'),'income' => I('post.money','').'.000' , 'defray' => '0.000', 'create_time' => time(), 'notes' => I('post.zhanghao','').'流水号：'.I("post.stnum",''), 'dtree_type' => 1, 'status' => 2, );
+		//dump($entity);
+		 $result = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entity));
 		if ($result['status']) {
 				$this -> success('你的充值请求已经提交，正在审核...', U('Home/Usersj/sj_zjgl'));
 			
