@@ -1,0 +1,126 @@
+<extend name="template/base_index" />
+
+<block name="area_header">
+	<link rel="stylesheet" href="__CSS__/manager.css" />
+	<style type="text/css">
+		#b,#d,#c{color: orangered;}
+	</style>
+</block>
+
+<block name="area_body">
+	<div class="div_all">
+		<include file="Widget/top_left" />
+		<div class="div_right">
+
+			<div class="div_minTitle">
+				<h3>宝贝活动</h3>
+			</div>
+			<div class="div_minContent" style="padding: 20px;">
+				<a href="" style="text-decoration: none;color: white; background: #d1343e; padding:10px; border-top-left-radius: 3px; border-top-right-radius: 3px;">全部任务</a>
+				<table style="border-top: 1px solid #ccc; width: 1100px; margin-top: 9px;">
+					<thead>
+						<tr>
+							<td colspan="6" style=" height: 120px; ">
+
+								<input style="border: 1px solid #ccc; border-bottom-left-radius:7px; border-top-left-radius:7px;" />
+								<input class="am-btn-default" type="button" value="活动搜索" style="border: 1px solid #ccc;border-bottom-right-radius:7px; border-top-right-radius:7px;" />
+								<span style="font-size: 12px; margin-left: 20px;">
+									<a href="{:U('Home/Usersm/sm_bbhd')}" style="color: red;">所有任务</a>
+									<!--<a href="#" style="color: #999;">新任务<font color="red">0</font></a>-->
+									<a href="{:U('Home/SMActivity/hd_bh')}" style="color: #999;">被驳回<font color="red">{$bh}</font></a>
+									<a href="{:U('Home/SMActivity/hd_waiting')}" style="color: #999;">等待审核<font color="red">{$sh}</font></a>
+									<!--<a href="#" style="color: #999;">待确认收货<font color="red">0</font></a>-->
+									<a href="{:U('Home/SMActivity/hd_remoney')}" style="color: #999;">等待返款<font color="red">{$fk}</font></a>
+									<a href="{:U('Home/SMActivity/hd_quxiao')}" style="color: #999;">取消/放弃</a><font color="red">{$qx}</font></a>
+								</span>
+
+							</td>
+						</tr>
+						<tr style="border: 1px solid #ccc; background: #F5F5F5; height: 37px;">
+							<td style="padding-left: 20px;">宝贝街信息</td>
+							<td>额外奖励</td>
+							<td>任务金额</td>
+							<td>淘宝帐号/订单号</td>
+							<td>任务步骤</td>
+							<td>操作
+							</td>
+							
+						</tr>
+						<tr style=" height: 5px;">
+							<td colspan="6"></td>
+
+						</tr>
+					</thead>
+
+					<tbody style="font-size: 12px;">
+						<foreach name="tp" item="v">
+							<volist name="task" id="vo">
+								<if condition="$v['task_id'] eq $vo['id']">
+									<input type="hidden" name="" id="thid" value="{$v['id']}" />
+									<tr style="border: 1px solid #ccc; background: #F5F5F5; height: 37px;">
+										<td style="padding-left: 20px;" colspan="6">编号:{$vo.id}任务时间:{$v.get_task_time	|date='m-d H:i',###}商家:{$vo.aliwawa}</td>
+
+									</tr>
+									<tr style="border: 1px solid #ccc; height:100px; background:white;">
+										<td>
+											<volist name="tspro" id="t" key="k">
+												<foreach name="goods" item="c">
+													<if condition="$t['info'][$k-1]['pid'] eq $c['id']">
+														<img src="{$c['main_img']}" style="float: left; height: 50px; width: 70px; margin-left: 10px;" />
+													</if>
+												</foreach>
+											</volist>
+											<div style="margin-left:90px;"><font color="red">13</font>福币
+												<br /> 超时由系统取消</div>
+										</td>
+										<td><font color="#999" style="text-decoration:line-through">当日完成: +3福币</font>
+											<br /> 小额任务: <font color="red">+3</font>福币</td>
+										<td>
+											<a target="_blank" href="{:U('Home/SMActivity/rws',array('id'=>$vo['id'],'taskhisid'=>$v['id']))}">任务书</a>
+											<br />
+											<font color="red">￥{$vo.task_gold}</font>
+										</td>
+										<td>
+											旺旺名：{$vo.aliwawa}
+											<br /> 订单：{$v['tb_orderid']}
+											<br /> 返款：{$v['tb_price']}
+											<br />
+										</td>
+										<td>
+											任务已取消
+										</td>
+										<td> 请领取其他任务</td>
+									</tr>
+								</if>
+							</volist>
+						</foreach>
+						
+					</tbody>
+				</table>
+				{$show}
+				<div class="div_tishi" style=" height: 180px;">
+					<ul>
+						<li style="font-size:16px; font-weight: bold;color: black;">温馨提示：</li>
+						<li>1:在与商家旺旺聊天时，请勿使用”试用“、“宝贝街”、“还款”等字眼！！！</li>
+						<li>2:请严格按照任务书要求做任务，收到货后请先在淘宝平台对您提交的订单进行确认收货并5分好评哦！！！</li>
+						<li>3:任务过程中有任务问题（包括但不限于返款问题）请联系宝贝街客服进行处理，勿在旺旺上催促商家审核订单、确认返款！！！</li>
+						<li>4:在淘宝上下单时，请一定要用在本站申请活动的时候提交的淘宝帐号下单哦！！！</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</block>
+
+<block name="area_footer">
+	<script type="text/javascript" src="__CDN__/sco1.0.2-8/js/sco.countdown.js"></script>
+	<script type="text/javascript">
+		$(function(){  
+		  $('#tixing').click(function(){
+		  	alert('提醒成功！请等待卖家确认');
+		  })
+		    
+		});
+	</script>
+</block>
