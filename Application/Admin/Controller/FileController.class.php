@@ -21,7 +21,6 @@ class FileController extends AdminController{
 	
 	public function uploadPicture(){
 		if(IS_POST){
-			
 	        /* 返回标准数据 */
 	        $return  = array('status' => 1, 'info' => '上传成功', 'data' => '');
 	

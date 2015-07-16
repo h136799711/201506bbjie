@@ -67,7 +67,7 @@
 																店铺名 : {$sj.store_name} </p>
 
 															<p>
-																联系人 : {$sj.linkman} <a class="text-link small" href="#">修改</a> </p>
+																联系人 : {$sj.linkman} </p>
 															<if condition="$sj['aliwawa'] eq ''">
 
 																<else/>
@@ -200,7 +200,7 @@
 												"swf": "__CDN__/jquery-uploadify/3.2.1/uploadify.swf",
 												"fileObjName": "download",
 												"buttonText": "上传头像",
-												"uploader": "{:U('Admin/File/uploadPicture',array('session_id'=>session_id()))}",
+												"uploader": "{:U('Home/Index/uploadPicture',array('session_id'=>session_id()))}",
 												"width": 120,
 												'removeTimeout': 1,
 												'fileTypeExts': '*.jpg; *.png; *.gif;',
@@ -283,32 +283,4 @@
 </block>
 
 <block name="area_footer">
-<script type="text/javascript">
-		$(function() {
-			//图片上传
-		//	wxuploadimg.init({cont:".wxuploaderimg"});
-			//
-			$(".js_frm_gp_buylimit input[type=radio]").click(function(){
-				console.log($(this).val());
-				console.log($(".js_frm_gp_buylimit input[type=text]"));
-				if($(this).val() == 1){
-					$(".js_frm_gp_buylimit input[type=text]").removeClass("hidden");
-				}else{
-					$(".js_frm_gp_buylimit input[type=text]").addClass("hidden");
-				}
-			});
-			
-//			$(".has_sku").click(function(ev){
-//				if($(this).val() == 1){
-//					//多规格
-//					$(".js_frm_gp_sku").hide();
-//					$(".js_sku_list").show();
-//				}else{
-//					//
-//					$(".js_frm_gp_sku").show();
-//					$(".js_sku_list").hide();
-//				}
-//			})
-		})
-	</script>
 </block>

@@ -25,13 +25,13 @@
 								<input style="border: 1px solid #ccc; border-bottom-left-radius:7px; border-top-left-radius:7px;" />
 								<input class="am-btn-default" type="button" value="活动搜索" style="border: 1px solid #ccc;border-bottom-right-radius:7px; border-top-right-radius:7px;" />
 								<span style="font-size: 12px; margin-left: 20px;">
-									<a href="#" style="color: red;">所有任务</a>
+									<a href="{:U('Home/Usersm/sm_bbhd')}" style="color: red;">所有任务</a>
 									<!--<a href="#" style="color: #999;">新任务<font color="red">0</font></a>-->
-									<a href="#" style="color: #999;">被驳回<font color="red">0</font></a>
-									<a href="#" style="color: #999;">等待审核<font color="red">0</font></a>
+									<a href="{:U('Home/SMActivity/hd_bh')}" style="color: #999;">被驳回<font color="red">{$bh}</font></a>
+									<a href="{:U('Home/SMActivity/hd_waiting')}" style="color: #999;">等待审核<font color="red">{$sh}</font></a>
 									<!--<a href="#" style="color: #999;">待确认收货<font color="red">0</font></a>-->
-									<a href="#" style="color: #999;">等待返款<font color="red">0</font></a>
-									<a href="#" style="color: #999;">取消/放弃</a>
+									<a href="{:U('Home/SMActivity/hd_remoney')}" style="color: #999;">等待返款<font color="red">{$fk}</font></a>
+									<a href="{:U('Home/SMActivity/hd_quxiao')}" style="color: #999;">取消/放弃</a><font color="red">{$qx}</font></a>
 								</span>
 
 							</td>
@@ -85,8 +85,9 @@
 											<br />
 										</td>
 										<td>
+											<input type="hidden" value="{$v.id}">
 											<if condition="$v['do_status'] eq 1">
-												距离任务完成剩余：<span class="js_countdownwn" data-until="{$v['get_task_time'] + 2*3600}"></span>
+												距离任务完成剩余：<span class="js_countdownwn"  data-until="{$v['get_task_time'] + 2*3600}"></span>
 												<br><font class="task_status" color="forestgreen">任务正在进行中...</font><br>
 												<if condition="$v['tb_orderid'] eq ''">
 													<a id='anm1' style="background-color: orangered; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/qxtask',array('id'=>$v['id']))}">取消任务</a>
@@ -123,20 +124,36 @@
 	<script type="text/javascript" src="__CDN__/sco1.0.2-8/js/sco.countdown.js"></script>
 	<script type="text/javascript">
 		$(function(){  
-		   
 		    $(".js_countdownwn").each(function(index,item){
 		    	var thid = $('#thid').val();
 		    	var until = $(item).data("until");
 		    	until = parseInt(until);
 		    	thid = parseInt(thid);
 		    	$(item).scojs_countdown({until: until,id:thid});
+		    	if($('.js_countdownwn').text()==null ||$('.js_countdownwn').text()==''){
+		    		$('.js_countdownwn').text('已超时！！');
+		    		$('.task_status').css('color','red');
+		    		$('.task_status').text('超时由系统取消！！');
+		    		$('#anm1,#anm2,#anm3,#anm4').hide();
+		    	}else{
+		    		$('.task_status').css('color','green');
+		    		$('.task_status').text('超时由系统取消！！');
+		    		$('#anm1,#anm2,#anm3,#anm4').show();
+		    	}
+		    	
+		    	
 		    });
-		    if($(item).data("until")==null ||$(item).data("until")==''){
-		    	$('.js_countdownwn').text('已超时！！');
-		    	$('.task_status').css('color','red');
-		    	$('.task_status').text('超时由系统取消！！');
-		    	$('#anm1,#anm2,#anm3,#anm4').hide();
-		    }
+		   
+		   	$('.js_countdownwn').each(function(index,item){
+		   		
+		   		if($(item).text()=='已超时！！'){
+		   			var aaid= $(this).parent().find('input').val();
+		   			$.getJSON("{:U('Home/SMActivity/timeout')}",{id:aaid},function(json){ 
+							alert('任务超时已由系统取消');
+				}); 
+		   		}
+		   	})
+		   	
 		    
 		});
 	</script>

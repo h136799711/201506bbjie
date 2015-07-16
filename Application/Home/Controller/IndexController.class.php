@@ -398,9 +398,11 @@ class IndexController extends HomeController {
 						$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
 						$this->assign('taobao',$result1['info'][0]['taobao_account']);
 						$this->assign('user',$result1['info'][0]);
+						$this->assign('head_img',$result1['info'][0]['head_img']);
 						$this->assign('zxgg',$result['info'][0]);
 						$this->assign('info',$result['info']);
 						$this->checklevel();
+						$this->getcount();
 						$this->display('sm_manager');
 					}else{
 						$return=M('bbjmemberSeller')->where('uid='.$uid)->setInc('exp','4');
@@ -418,8 +420,11 @@ class IndexController extends HomeController {
 						$sj=apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
 						$this->assign('money',$sj['info'][0]['coins']);
 						$this->assign('username',$user['info']['username']);
+						$this->assign('head_img',$sj['info'][0]['head_img']);
 						$this->assign('sj',$sj['info'][0]);
-						$this->checklevel();
+						$sj=A('Usersj');
+						$sj->getcount();
+						$sj->checklevel();
 						$this->display('Usersj/index');
 					}
 				}
@@ -450,7 +455,40 @@ class IndexController extends HomeController {
 		}	
 		$this->ajaxReturn($results['info'],'json');
 	 }
+	 
+	 
+	 /*
+	  * 上传头像
+	  * */
+	public function uploadPicture(){
+		if(IS_POST){
+	        /* 返回标准数据 */
+	        $return  = array('status' => 1, 'info' => '上传成功', 'data' => '');
 	
+	        /* 调用文件上传组件上传文件 */
+	        $Picture = D('Picture');
+	        $pic_driver = C('PICTURE_UPLOAD_DRIVER');
+	        $info = $Picture->upload(
+	            $_FILES,
+	            C('PICTURE_UPLOAD'),
+	            C('PICTURE_UPLOAD_DRIVER'),
+	            C("UPLOAD_{$pic_driver}_CONFIG")
+	        ); //TODO:上传到远程服务器
+	
+	        /* 记录图片信息 */
+	        if($info){
+	            $return['status'] = 1;
+	            $return = array_merge($info['download'], $return);
+	        } else {
+	            $return['status'] = 0;
+	            $return['info']   = $Picture->getError();
+	        }
+	
+	        /* 返回JSON数据 */
+	        $this->ajaxReturn($return);
+		}
+		
+	}
 	/*
 	  * 试民首页
 	  * */
@@ -474,10 +512,11 @@ class IndexController extends HomeController {
 		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
 		$this->assign('taobao',$result1['info'][0]['taobao_account']);
 		$this->assign('user',$result1['info'][0]);
+		$this->assign('head_img',$result1['info'][0]['head_img']);
 		$this->assign('zxgg',$result['info'][0]);
 		$this->assign('info',$result['info']);
 		$this->getcount();
-//		dump($result);
+		$this->checklevel();
 		$this->display();
 		
 		
@@ -490,39 +529,25 @@ class IndexController extends HomeController {
 			$exp=$result['info'][0]['exp'];
 			if($exp<100){
 				$this->assign('level',1);
+				$this->assign('exp',$exp-0);
 			}else if($exp>=100 && $exp<200){
 				$this->assign('level',2);
+				$this->assign('exp',$exp-100);
 			}else if($exp>=200 && $exp<300){
 				$this->assign('level',3);
+				$this->assign('exp',$exp-200);
 			}else if($exp>=300 && $exp<400){
 				$this->assign('level',4);
+				$this->assign('exp',$exp-300);
 			}else if($exp>=400 && $exp<500){
 				$this->assign('level',5);
+				$this->assign('exp',$exp-400);
 			}else if($exp>=500 && $exp<600){
 				$this->assign('level',6);
+				$this->assign('exp',$exp-500);
 			}else if($exp>=600 && $exp<700){
 				$this->assign('level',7);
-			}
-		}else{
-			$result=apiCall(HomePublicApi::Bbjmember_Query,array($map));
-			if($result['status']){
-			$exp=$result['info'][0]['exp'];
-			if($exp<100){
-				$this->assign('level',1);
-				}else if($exp>=100 && $exp<200){
-					$this->assign('level',2);
-				}else if($exp>=200 && $exp<300){
-					$this->assign('level',3);
-				}else if($exp>=300 && $exp<400){
-					$this->assign('level',4);
-				}else if($exp>=400 && $exp<500){
-					$this->assign('level',5);
-				}else if($exp>=500 && $exp<600){
-					$this->assign('level',6);
-				}else if($exp>=600 && $exp<700){
-					$this->assign('level',7);
-				}
-			
+				$this->assign('exp',$exp-600);
 			}
 		}
 	} 
@@ -531,11 +556,16 @@ class IndexController extends HomeController {
 	 * */
 	public function getcount(){
 		$user=session('user');
-		$count_bh=0;$count_zajx=0;$count_qx=0;
+		$count_bh=0;$count_zajx=0;$count_qx=0;$count_sh=0;$count_fk=0;
 		$map=array('uid'=>$user['info']['id']);
 		$result=apiCall(HomePublicApi::Task_His_Query, array($map));
 		for ($i=0; $i <count($result['info']) ; $i++) {
-			
+			if($result['info'][$i]['do_status']==4){
+				$count_fk=$count_fk+1;
+			}
+			if($result['info'][$i]['do_status']==3){
+				$count_sh=$count_sh+1;
+			}
 			if($result['info'][$i]['do_status']==8){
 				$count_bh=$count_bh+1;
 			}
@@ -549,6 +579,8 @@ class IndexController extends HomeController {
 		$this->assign('bh',$count_bh);
 		$this->assign('za',$count_zajx);
 		$this->assign('qx',$count_qx);
+		$this->assign('sh',$count_sh);
+		$this->assign('fk',$count_fk);
 		 
 	}   
 }

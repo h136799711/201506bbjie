@@ -314,45 +314,31 @@ class UsersjController extends CheckLoginController {
 	public function checklevel(){
 		$user=session('user');
 		$map=array('uid'=>$user['info']['id']);
-		$result=apiCall(HomePublicApi::Bbjmember_Query,array($map));
+		$result=apiCall(HomePublicApi::Bbjmember_Seller_Query,array($map));
 		if($result['status']){
 			$exp=$result['info'][0]['exp'];
 			if($exp<100){
-				$this->assign('level',1);
-			}else if($exp>=100 && $exp<200){
-				$this->assign('level',2);
-			}else if($exp>=200 && $exp<300){
-				$this->assign('level',3);
-			}else if($exp>=300 && $exp<400){
-				$this->assign('level',4);
-			}else if($exp>=400 && $exp<500){
-				$this->assign('level',5);
-			}else if($exp>=500 && $exp<600){
-				$this->assign('level',6);
-			}else if($exp>=600 && $exp<700){
-				$this->assign('level',7);
-			}
-		}else{
-			$result=apiCall(HomePublicApi::Bbjmember_Query,array($map));
-			if($result['status']){
-			$exp=$result['info'][0]['exp'];
-			if($exp<100){
-				$this->assign('level',1);
+					$this->assign('level',1);
+					$this->assign('exp',$exp-0);
 				}else if($exp>=100 && $exp<200){
 					$this->assign('level',2);
+					$this->assign('exp',$exp-100);
 				}else if($exp>=200 && $exp<300){
 					$this->assign('level',3);
+					$this->assign('exp',$exp-200);
 				}else if($exp>=300 && $exp<400){
 					$this->assign('level',4);
+					$this->assign('exp',$exp-300);
 				}else if($exp>=400 && $exp<500){
 					$this->assign('level',5);
+					$this->assign('exp',$exp-400);
 				}else if($exp>=500 && $exp<600){
 					$this->assign('level',6);
+					$this->assign('exp',$exp-500);
 				}else if($exp>=600 && $exp<700){
 					$this->assign('level',7);
+					$this->assign('exp',$exp-600);
 				}
-			
-			}
 		}
 	}    
 	

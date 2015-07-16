@@ -2,6 +2,8 @@
 
 <block name="area_header">
 	<link rel="stylesheet" href="__CSS__/manager.css" />
+	<link type="text/css" rel="stylesheet" src="__CDN__/jquery-uploadify/3.2.1/uploadify.css" />
+	<script type="text/javascript" src="__CDN__/jquery-uploadify/3.2.1/jquery.uploadify.min.js"></script>
 </block>
 
 <block name="area_body">
@@ -15,12 +17,19 @@
 				<div class="am-panel am-panel-default" style="width: 60%; float: left; border-radius:5px;">
 					<div class="am-panel-hd">账户管理>账户概览</div>
 					<div class="am-panel-bd" style="height:350px;">
-						<div style="margin-left: 30px; margin-top: 50px; float: left;">
-							<img src="__IMG__/default_user_portrait.gif" width="100" height="100" style="border:1px solid #999 ;" />
-							<br />
+						<div style="margin-left: 30px; margin-top: 50px; width: 100px; float: left;">
+							<a class="index_touxiang" href="javascript:void(0)">
+								<if condition="$head_img eq '' ">
+								<img height="80px" width="80px" src="__IMG__/default_user_portrait.gif" alt="">
+								<else/>
+									<img height="100px" width="100%" src="{$head_img}" alt="">
+								</if>
+								<button style="height: 25%; width: 100%; font-size: 13px; opacity: 0.2;" type="button" 
+								value="" data-am-modal="{target: '#doc-modal-2', closeViaDimmer: 0, width:600, height: 300}" class="icon-edit">点此更换头像</button>
+							</a>
 							<span class="am-badge am-badge-success am-round" style="margin-top: 5px; margin-left: 10px;">等级：{$level}级</span>
 						</div>
-						<div style=" float: left; font-size: 12px; margin-left: 20px;  width: 70%;">
+						<div style=" float: left; font-size: 12px; margin-left: 20px; margin-top: 56px;  width: 70%;">
 							<table style="width: 100%;">
 								<tr>
 									<td width="20%" style="text-align: right;">{$username}</td>
@@ -30,7 +39,7 @@
 									<td style="text-align: right;">江湖等级:</td>
 									<td style="padding:0;" valign="top">
 										<div class="am-progress am-progress-striped am-progress-sm am-active am-round" style="margin-top:25px;">
-											<div class="am-progress-bar am-progress-bar-secondary" style="width: {$user['exp']}%; line-height:15px;"> {$user['exp']}%</div>
+											<div class="am-progress-bar am-progress-bar-secondary" style="width: {$exp}%; line-height:15px;"> {$exp}%</div>
 										</div>
 									</td>
 								</tr>
@@ -157,6 +166,60 @@
 							</div>
 						</div>
 					</div>
+					
+					
+					<div class="am-modal am-modal-no-btn" tabindex="-1" id="doc-modal-2">
+								<div class="am-modal-dialog" style="border-radius:12px ;">
+									<div class="am-modal-hd" style="text-align: left; border-bottom: 1px solid #ccc; font-weight: bold;">
+										<a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>头像上传
+									</div>
+									<div class="am-modal-bd" style="text-align: center;">
+										<div style=" background: lightgoldenrodyellow; margin-top: 5px; color: red;">用户头像上传</div>
+										<form action="{:U('Home/Usersm/uploadheadimg')}" method="post">
+											<div class="controls">
+												<input type="file" id="upload_picture">
+												<input type="hidden" name="picurl" id="cover_id" value="" />
+												<div class="upload-img-box">
+												</div>
+												<button class="btn-success" type="submit">确认上传</button>
+											</div>
+										</form>
+										<script type="text/javascript">
+											 //上传图片
+											/* 初始化上传插件  */
+											$("#upload_picture").uploadify({
+												"height": 30,
+												"swf": "__CDN__/jquery-uploadify/3.2.1/uploadify.swf",
+												"fileObjName": "download",
+												"buttonText": "上传头像",
+												"uploader": "{:U('Home/Index/uploadPicture',array('session_id'=>session_id()))}",
+												"width": 120,
+												'removeTimeout': 1,
+												'fileTypeExts': '*.jpg; *.png; *.gif;',
+												"onUploadSuccess": uploadPicture
+											});
+
+											function uploadPicture(file, data) {
+												var data = $.parseJSON(data);
+												var src = '';
+												if (data.status) {
+													$("#cover_id").val('http://localhost/github/201506bbjie' + data.path);
+													src = data.url || '__ROOT__' + data.path;
+													$("#cover_id").parent().find('.upload-img-box').html(
+														'<div class="upload-pre-item"><img width=' + 100 + ' height=' + 100 + ' src="' + src + '"/></div>'
+													);
+													//console.info('http://localhost/github/201506bbjie'+data.path);
+													//alert($("#cover_id").val());
+												} else {
+													//alert(data.status);
+													$.scojs_message(data.info, $.scojs_message.TYPE_OK);
+												}
+											}
+										</script>
+
+									</div>
+								</div>
+							</div>
 					<!--<div class="am-panel am-panel-default" style="border-radius:5px;">
 						<div class="am-panel-hd">任务指数</div>
 						<div class="am-panel-bd" style="font-size: 12px;">
@@ -242,6 +305,15 @@
 			$("#start").click(function(){
 				window.location.href="{:U('Home/SMActivity/changestatus')}";
 			})
+//			$(".js_frm_gp_buylimit input[type=radio]").click(function(){
+//				console.log($(this).val());
+//				console.log($(".js_frm_gp_buylimit input[type=text]"));
+//				if($(this).val() == 1){
+//					$(".js_frm_gp_buylimit input[type=text]").removeClass("hidden");
+//				}else{
+//					$(".js_frm_gp_buylimit input[type=text]").addClass("hidden");
+//				}
+//			});
 		})
 	</script>
 </block>
