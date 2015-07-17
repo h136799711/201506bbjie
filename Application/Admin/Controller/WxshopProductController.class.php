@@ -479,7 +479,7 @@ class WxshopProductController extends AdminController {
 				$this -> error("缺少商铺ID参数");
 			}*/
 
-			$attrext = array('isPostFree' => 1, 'isHasReceipt' => I('post.ishasreceipt', 0), 'isUnderGuaranty' => I('post.isunderguaranty', 0), 'isSupportReplace' => I('post.issupportreplace', 0), 'location' => array('country' => '中国', 'province' => '四川省', 'city' => '内江市', 'address' => '威远县'));
+			$attrext = array('isPostFree' => 1, 'isHasReceipt' => I('post.ishasreceipt', 0), 'isUnderGuaranty' => I('post.isunderguaranty', 0), 'isSupportReplace' => I('post.issupportreplace', 0), 'location' => array('country' => '中国', 'province' => '四川省', 'city' => '内江市', 'address' => '威远县'),'start_sale_time'=>time(),);
 			$sku_list = $this -> getSKUList();
 			
 			$product = array('product_base' => $base_attr, 'attrext' => $attrext, 'sku_list' => $sku_list);

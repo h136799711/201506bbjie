@@ -49,22 +49,25 @@ class SMActivityController extends CheckLoginController {
 		$map=array('uid'=>$user['info']['id'],'do_status'=>3);
 		$page = array('curpage' => I('get.p', 0), 'size' => 5);
 		$result1=apiCall(HomePublicApi::Task_His_QueryAll,array($map,$page));
-		$mapp=array('id'=>$result1['info']['list'][0]['task_id']);
-		$result2=apiCall(HomePublicApi::Task_Query,array($mapp));
-		$this->assign('zxgg',$result['info'][0]);
-		for ($i=0; $i <count($result2['info']) ; $i++) {
-			$map3=array('task_id'=>$result2['info'][$i]['id']);
+		
+		for ($i=0; $i <count($result1['info']['list']) ; $i++) { 
+			$mapp=array('id'=>$result1['info']['list'][$i]['task_id']);
+			$result2[]=apiCall(HomePublicApi::Task_Query,array($mapp));
+			$map3=array('task_id'=>$result2[$i]['info'][0]['id']);
 			$result3[]=apiCall(HomePublicApi::TaskHasProduct_Query,array($map3));
 		}
+		$tp=$result1['info']['list'];
+		$this->assign('zxgg',$result['info'][0]);
 		$this -> assign('username', $user['info']['username']);
 		$goods=apiCall(HomePublicApi::Product_Query,array($ddd));
 		$this->assign('goods',$goods['info']);
 		$this->assign('tspro',$result3);
 		$this->assign('tp',$result1['info']['list']);
 		$this->assign('show',$result1['info']['show']);
-		$this->assign('task',$result2['info']);
+		$this->assign('task',$result2);
 		$index=A('Index');
 		$index->getcount();
+//		dump($result2);
 		$this -> display();
 	}
 
@@ -81,20 +84,23 @@ class SMActivityController extends CheckLoginController {
 		$map=array('uid'=>$user['info']['id'],'do_status'=>4);
 		$page = array('curpage' => I('get.p', 0), 'size' => 5);
 		$result1=apiCall(HomePublicApi::Task_His_QueryAll,array($map,$page));
-		$mapp=array('id'=>$result1['info']['list'][0]['task_id']);
-		$result2=apiCall(HomePublicApi::Task_Query,array($mapp));
-		$this->assign('zxgg',$result['info'][0]);
-		for ($i=0; $i <count($result2['info']) ; $i++) {
-			$map3=array('task_id'=>$result2['info'][$i]['id']);
+		
+		for ($i=0; $i <count($result1['info']['list']) ; $i++) { 
+			$mapp=array('id'=>$result1['info']['list'][$i]['task_id']);
+			$result2[]=apiCall(HomePublicApi::Task_Query,array($mapp));
+			$map3=array('task_id'=>$result2[$i]['info'][0]['id']);
 			$result3[]=apiCall(HomePublicApi::TaskHasProduct_Query,array($map3));
+			
 		}
+		$tp=$result1['info']['list'];
+		$this->assign('zxgg',$result['info'][0]);
 		$this -> assign('username', $user['info']['username']);
 		$goods=apiCall(HomePublicApi::Product_Query,array($ddd));
 		$this->assign('goods',$goods['info']);
 		$this->assign('tspro',$result3);
 		$this->assign('tp',$result1['info']['list']);
 		$this->assign('show',$result1['info']['show']);
-		$this->assign('task',$result2['info']);
+		$this->assign('task',$result2);
 		$index=A('Index');
 		$index->getcount();
 		$this -> display();
@@ -113,20 +119,24 @@ class SMActivityController extends CheckLoginController {
 		$map=array('uid'=>$user['info']['id'],'do_status'=>8);
 		$page = array('curpage' => I('get.p', 0), 'size' => 5);
 		$result1=apiCall(HomePublicApi::Task_His_QueryAll,array($map,$page));
-		$mapp=array('id'=>$result1['info']['list'][0]['task_id']);
-		$result2=apiCall(HomePublicApi::Task_Query,array($mapp));
+		
 		$this->assign('zxgg',$result['info'][0]);
-		for ($i=0; $i <count($result2['info']) ; $i++) {
-			$map3=array('task_id'=>$result2['info'][$i]['id']);
+		for ($i=0; $i <count($result1['info']['list']) ; $i++) { 
+			$mapp=array('id'=>$result1['info']['list'][$i]['task_id']);
+			$result2[]=apiCall(HomePublicApi::Task_Query,array($mapp));
+			$map3=array('task_id'=>$result2[$i]['info'][0]['id']);
 			$result3[]=apiCall(HomePublicApi::TaskHasProduct_Query,array($map3));
+			
 		}
+		$tp=$result1['info']['list'];
+		$this->assign('zxgg',$result['info'][0]);
 		$this -> assign('username', $user['info']['username']);
 		$goods=apiCall(HomePublicApi::Product_Query,array($ddd));
 		$this->assign('goods',$goods['info']);
 		$this->assign('tspro',$result3);
 		$this->assign('tp',$result1['info']['list']);
 		$this->assign('show',$result1['info']['show']);
-		$this->assign('task',$result2['info']);
+		$this->assign('task',$result2);
 		$index=A('Index');
 		$index->getcount();
 		$this -> display();
@@ -136,7 +146,7 @@ class SMActivityController extends CheckLoginController {
 	 * 取消放弃
 	 * */
 	public function hd_quxiao(){
-		$headtitle = "宝贝街-等待审核";
+		$headtitle = "宝贝街-取消放弃";
 		$this -> assign('cs_sf', 'sed');
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
@@ -145,22 +155,22 @@ class SMActivityController extends CheckLoginController {
 		$map=array('uid'=>$user['info']['id'],'do_status'=>0);
 		$page = array('curpage' => I('get.p', 0), 'size' => 5);
 		$result1=apiCall(HomePublicApi::Task_His_QueryAll,array($map,$page));
-		//dump($result1);
-		$mapp=array('id'=>$result1['info']['list'][0]['task_id']);
-		$result2=apiCall(HomePublicApi::Task_Query,array($mapp));
-		$this->assign('zxgg',$result['info'][0]);
-		for ($i=0; $i <count($result2['info']) ; $i++) {
-			$map3=array('task_id'=>$result2['info'][$i]['id']);
+		for ($i=0; $i <count($result1['info']['list']) ; $i++) { 
+			$mapp=array('id'=>$result1['info']['list'][$i]['task_id']);
+			$result2[]=apiCall(HomePublicApi::Task_Query,array($mapp));
+			$map3=array('task_id'=>$result2[$i]['info'][0]['id']);
 			$result3[]=apiCall(HomePublicApi::TaskHasProduct_Query,array($map3));
+			
 		}
+		$tp=$result1['info']['list'];
+		$this->assign('zxgg',$result['info'][0]);
 		$this -> assign('username', $user['info']['username']);
 		$goods=apiCall(HomePublicApi::Product_Query,array($ddd));
 		$this->assign('goods',$goods['info']);
 		$this->assign('tspro',$result3);
-//		dump($result3);
 		$this->assign('tp',$result1['info']['list']);
 		$this->assign('show',$result1['info']['show']);
-		$this->assign('task',$result2['info']);
+		$this->assign('task',$result2);
 		$index=A('Index');
 		$index->getcount();
 		$this -> display();

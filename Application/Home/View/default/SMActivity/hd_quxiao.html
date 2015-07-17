@@ -25,7 +25,7 @@
 								<input style="border: 1px solid #ccc; border-bottom-left-radius:7px; border-top-left-radius:7px;" />
 								<input class="am-btn-default" type="button" value="活动搜索" style="border: 1px solid #ccc;border-bottom-right-radius:7px; border-top-right-radius:7px;" />
 								<span style="font-size: 12px; margin-left: 20px;">
-									<a href="{:U('Home/Usersm/sm_bbhd')}" style="color: red;">所有任务</a>
+									<a href="{:U('Home/Usersm/sm_bbhd')}" style="color: red;">进行中任务</a>
 									<!--<a href="#" style="color: #999;">新任务<font color="red">0</font></a>-->
 									<a href="{:U('Home/SMActivity/hd_bh')}" style="color: #999;">被驳回<font color="red">{$bh}</font></a>
 									<a href="{:U('Home/SMActivity/hd_waiting')}" style="color: #999;">等待审核<font color="red">{$sh}</font></a>
@@ -54,11 +54,11 @@
 
 					<tbody style="font-size: 12px;">
 						<foreach name="tp" item="v">
-							<volist name="task" id="vo">
-								<if condition="$v['task_id'] eq $vo['id']">
+							<volist name="task" id="vo" key='aa'>
+								<if condition="$v['task_id'] eq $vo['info'][$aa-1]['id']">
 									<input type="hidden" name="" id="thid" value="{$v['id']}" />
 									<tr style="border: 1px solid #ccc; background: #F5F5F5; height: 37px;">
-										<td style="padding-left: 20px;" colspan="6">编号:{$vo.id}任务时间:{$v.get_task_time	|date='m-d H:i',###}商家:{$vo.aliwawa}</td>
+										<td style="padding-left: 20px;" colspan="6">编号:{$vo['info'][$aa-1]['id']} 任务时间:{$v.get_task_time|date='m-d H:i',###}商家:{$vo['info'][$aa-1]['aliwawa']}</td>
 
 									</tr>
 									<tr style="border: 1px solid #ccc; height:100px; background:white;">
@@ -74,16 +74,16 @@
 												<br /> 超时由系统取消</div>
 										</td>
 										<td><font color="#999" style="text-decoration:line-through">当日完成: +3福币</font>
-											<br /> 小额任务: <font color="red">+3</font>福币</td>
+											<br /> 小额任务: <font color="red">+{$vo['info'][$aa-1]['coin']}</font>福币</td>
 										<td>
-											<a target="_blank" href="{:U('Home/SMActivity/rws',array('id'=>$vo['id'],'taskhisid'=>$v['id']))}">任务书</a>
+											<a target="_blank" href="{:U('Home/SMActivity/rws',array('id'=>$vo['info'][$aa-1]['id'],'taskhisid'=>$v['id']))}">任务书</a>
 											<br />
-											<font color="red">￥{$vo.task_gold}</font>
+											<font color="red">￥{$vo['info'][$aa-1]['task_gold']}</font>
 										</td>
 										<td>
-											旺旺名：{$vo.aliwawa}
+											旺旺名：{$vo['info'][$aa-1]['aliwawa']}
 											<br /> 订单：{$v['tb_orderid']}
-											<br /> 返款：{$v['tb_price']}
+											<br /> 返款：{$vo['info'][$aa-1]['task_gold']}
 											<br />
 										</td>
 										<td>

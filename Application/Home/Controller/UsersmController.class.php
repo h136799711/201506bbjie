@@ -85,12 +85,12 @@ class UsersmController extends CheckLoginController {
 			}
 		}
 		$order = " post_modified desc ";
-		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
-		$this->assign('zxgg',$result['info'][0]);
+		$resulta = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
+		$this->assign('zxgg',$resulta['info'][0]);
 		$this -> assign('jilu', $jyjl['info']['list']);
 		$this -> assign('sum', $sum);
 		$this -> assign('show', $jyjl['info']['show']);
-		if($result['info'][0]['auth_status']==1){
+		if($resulta['info'][0]['auth_status']==1){
 			$this -> assign('email', $user['info']['email']);
 			$this -> assign('phone', $user['info']['mobile']);
 		}
@@ -98,6 +98,7 @@ class UsersmController extends CheckLoginController {
 		$this -> assign('coins', $result['info'][0]['coins']);
 		$this -> assign('bank', $info['info'][0]);
 		$this -> assign('username', $user['info']['username']);
+//		dump($result['info'][0]['coins']);
 		$this -> display();
 	}
 	/*

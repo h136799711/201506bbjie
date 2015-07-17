@@ -74,19 +74,19 @@
 									<tr>
 										<td width="15%" style="text-align:right;padding-top: 20px;">任务名称：</td>
 										<td style="padding-top: 20px;">
-											<input name="taskname" class="am-form-field am-radius" />
+											<input id="taskname" name="taskname" class="am-form-field am-radius" />
 										</td>
 									</tr>
 									<tr>
 										<td style="text-align:right;padding-top: 20px;">聊天暗语：</td>
 										<td style="padding-top: 20px;">
-											<input name="liaotiantext" class="am-form-field am-radius" placeholder="无须暗语则不填写" />
+											<input id="liaotiananyu" name="liaotiantext" class="am-form-field am-radius" placeholder="无须暗语则不填写" />
 										</td>
 									</tr>
 									<tr>
 										<td style="text-align:right;padding-top: 20px;">订单留言：</td>
 										<td style="padding-top: 20px;">
-											<input name="dingdantext" placeholder="无须订单留言则不填写" class="am-form-field am-radius" />
+											<input id="dingdanliuyan" name="dingdantext" placeholder="无须订单留言则不填写" class="am-form-field am-radius" />
 										</td>
 									</tr>
 									<volist name='tak' id='vo'>
@@ -118,7 +118,15 @@
 			window.location.href="{:U('Home/SJActivity/activity_2')}";
 		})
 		$('#wc').click(function(){
-			$('#fm').submit();
+			var name=$('#taskname').val();
+			var anyu=$('#liaotiananyu').val();
+			var liuyan=$('#dingdanliuyan').val();
+			if(name==''||anyu==''||liuyan==''){
+				alert('请填写完整的订单信息');
+			}else{
+				$('#fm').submit();
+			}
+			
 		})
 	})
 </script>

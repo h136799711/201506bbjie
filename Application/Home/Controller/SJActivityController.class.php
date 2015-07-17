@@ -282,7 +282,7 @@ class SJActivityController extends CheckLoginController {
 		$summ = 0;
 		$map = array('uid' => $user['info']['id']);
 		$sj = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
-
+		
 		$entity = array('uid' => $user['info']['id'], 'aliwawa' => $sj['info'][0]['aliwawa'], 'delivery_mode' => '', 'create_time' => time(), 'task_gold' => '0.00', 'task_brokerage' => '0.00', 'task_postage' => '0.00', 'update_time' => time(), 'dtree_preferential' => '', 'task_name' => '', 'notes' => '', 'chat_argot' => '', 'task_do_type' => '', 'task_status' => 1, );
 		$result1 = apiCall(HomePublicApi::Task_Add, array($entity));
 		foreach ($al as $key => $value) {
@@ -332,8 +332,21 @@ class SJActivityController extends CheckLoginController {
 		$this -> assign('username', $user['info']['username']);
 		$id = session('pid');
 		$money = I('money');
+		$bzj=I('bzj', '');
+		$coin=0;
+		if($bzj<100){
+			$coin=2;
+		}else if($bzj<200 && $bzj>=100){
+			$coin=3;
+		}else if($bzj<300 && $bzj>=200){
+			$coin=4;
+		}else if($bzj<400 && $bzj>=300){
+			$coin=5;
+		}else if($bzj>500){
+			$coin=6;
+		}
 		session('money', $money);
-		$entity = array('delivery_mode' => I('fhfs', ''), 'task_postage' => I('by', ''), 'task_gold' => I('bzj', ''), 'task_brokerage' => I('yj', ''), 'dtree_preferential' => I('yhfs', ''), );
+		$entity = array('delivery_mode' => I('fhfs', ''), 'task_postage' => I('by', ''), 'task_gold' => $bzj, 'task_brokerage' => I('yj', ''), 'dtree_preferential' => I('yhfs', ''),'coin'=>$coin, );
 		$map = array('id' => $id);
 		$result = apiCall(HomePublicApi::Task_SaveByID, array($id, $entity));
 		$tak = apiCall(HomePublicApi::Task_Query, array($map));
