@@ -14,28 +14,38 @@
 		</div>
 		<div class="div_minContent" style="padding: 20px; ">
 			<a href="" style="text-decoration: none;color: white; background: #d1343e; padding:10px; border-top-left-radius: 3px; border-top-right-radius: 3px;">全部预定</a><a href="" style="text-decoration: none;background:#f6dfe5;padding:10px;  border-top-left-radius: 3px; border-top-right-radius: 3px; margin-left: 5px; color: #848383;">取消</a>
-			<table style="border-top: 1px solid #ccc; width: 1100px; margin-top: 9px;">
+			<table style="border-top: 1px solid #ccc; width: 1100px; margin-top: 9px; text-align: center;">
 				<tr>
 					<td colspan="6" style=" height: 5px; "></td>
 				</tr>
 				<tr style="border: 1px solid #ccc; background: white; height: 37px;">
 					<td style="padding-left: 20px; width: 80px;">编号</td>
-					<td style="width: 50%;">商品名称</td>
+					<td></td>
+					<td style="width: 30%;">商品名称</td>
 					<td>产品规格</td>
 					<td>兑换状态</td>
 					<td>预定时间</td>
 					<td>操作</td>
 
 				</tr>
-				<tr style="border: 1px solid #ccc; height: 37px; ">
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-
-				</tr>
+				<volist name='exchange' id="vo"></volist>
+					<tr style="border: 1px solid #ccc; height: 37px; ">
+						<td>{$vo.id}</td>
+						<volist name="product" id="v">
+							<if condition="$vo['p_id'] eq $v['id']">
+						<td>
+							<img height="80" width="100" src="{$v['main_img']}">
+						</td>
+						<td>
+							{$v.name}
+						</td>
+						</if>
+						</volist>
+						<td>{$vo.sku_notes}</td>
+						<td>未兑换</td>
+						<td>{$vo.create_time}</td>
+						<td><a class="btn" style="background-color: orangered; color: #FFFFFF;">确定兑换</a></td>
+					</tr>
 
 			</table>
 

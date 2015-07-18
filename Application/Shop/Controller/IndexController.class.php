@@ -493,18 +493,15 @@ class IndexController extends ShopController{
 		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
 		$this->assign('zxgg',$result['info'][0]);
 		
-		
 		$id=I("id");
 		//dump($id);
 		$map['id']=$id;
 		$result = apiCall('Admin/Wxproduct/queryNoPaging',array($map));
 		$detail=$result['info'][0];
-		//dump($detail['img']);
 		$detail['img']=explode(',',$detail['img']); //分割字符串成数组
 		array_pop($detail['img']);//删除最后一个空元素
-		//dump($detail);
+//		dump($detail);
 		$this->assign('detail',$detail);
-		
 		$map=array();
 		$map['product_id']=$id;
 		$result = apiCall('Admin/WxproductSku/queryNoPaging',array($map));
@@ -514,27 +511,35 @@ class IndexController extends ShopController{
 			$skuIds=explode(';',$skus['sku_id']);
 			array_pop($skuIds);
 			foreach($skuIds as $sku){
+				
 				$skuId=explode(':',$sku);
 				$map=array();
 				$map['id']=$skuId[0];
 				$result1 = apiCall('Admin/Sku/queryNoPaging',array($map));
-				
 				$skuInfo[$result1['info'][0]['id']]['name']=$result1['info'][0]['name'];
 				
 				$map=array();
 				$map['id']=$skuId[1];
 				$result2 = apiCall('Admin/Skuvalue/queryNoPaging',array($map));
+				
 				$skus['sku']=$skus['sku'].';'.$result1['info'][0]['name'].':'.$result2['info'][0]['name'];
+				$skuInfo[$result1['info'][0]['id']]['key']=$result1['info'][0]['id'];
 				if(!in_array($result2['info'][0]['name'], $skuInfo[$result1['info'][0]['id']]['value'])){
-					$skuInfo[$result1['info'][0]['id']]['value'][]=$result2['info'][0]['name'];
+					
+					$skuInfo[$result1['info'][0]['id']]['value'][$result2['info'][0]['id']]=array(
+						'key'=>$result2['info'][0]['id'],
+						'value'=>$result2['info'][0]['name'],
+					);
 				}
 				
 			}
 			$skuList[$key]=$skus;
+			
 		}
 		
 		$this->assign('skuInfo',$skuInfo);
-		$this->assign('skuList',$skuList);
+		//dump($skuInfo);
+		$this->assign(' ',$skuList);
 		$headtitle="宝贝街-商品详情";
 		$this->assign('head_title',$headtitle);
 		$users=$_SESSION["Home"]['user'];
@@ -551,6 +556,7 @@ class IndexController extends ShopController{
 		
 		//dump($result);
 		$this->assign('group',$result['info'][0]['group_id']);
+		
 		$this->display();
 	}
 	

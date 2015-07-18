@@ -146,6 +146,11 @@ function outSku(font){
 	}
 }
 
+
+/**
+ * 
+ * @param {Object} font
+ */
 function selectSku(font){
 	$(font).siblings().removeClass("sku_style");
 	$(font).siblings().attr("index",0);
@@ -157,8 +162,10 @@ function selectSku(font){
 			var skuValues="";
 			$(".sku_style").each(function(i,n){
 				skuValues+=";"+$(n).parent().siblings().eq(0).html()+$(n).html();
+				
 			});
-			
+			var sky=skuValues;
+			$('#sinfo').val(sky);
 			$("input[name='skuList']").each(function(i,n){
 				if($(n).val()==skuValues){
 					$("#img_main").attr('src',$(n).attr('data_url'));
@@ -167,7 +174,8 @@ function selectSku(font){
 			})
 			
 		}
-		//alert();
+//		var a=$(font).attr('sid');
+//		if(a<4)
 	}
 }
 

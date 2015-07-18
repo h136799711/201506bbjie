@@ -19,7 +19,14 @@ class HomePublicApi{
 	const Bbjmember_Add='Home/Bbjmember/add';
 	const Bbjmember_Del='Home/Bbjmember/delete';
 	
-	
+	/*
+	 * 兑换商品ExchangeProduct
+	 * */
+	const ExchangeProduct_QueryAll='Home/ExchangeProduct/query';
+	const ExchangeProduct_Query='Home/ExchangeProduct/queryNoPaging';
+	const ExchangeProduct_SaveByID='Home/ExchangeProduct/saveByID';
+	const ExchangeProduct_Add='Home/ExchangeProduct/add';
+	const ExchangeProduct_Del='Home/ExchangeProduct/delete';
 	/**
 	 * 商家
 	 */

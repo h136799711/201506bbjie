@@ -20,6 +20,10 @@
 					<div style="border-top: 1px dashed #ccc; padding: 10px;">
 						<img width="400" height="450" id="img_main" src="{$detail.main_img}" style=" border:1px solid #ccc;padding: 1px;float: left;"/>
 						<div style="margin-left:420px;">
+							<form id="ec" action="{:U('Home/SMActivity/exchange')}">
+							<input type="hidden" name="pid" id="pid" value="{$detail.id}">
+							<input type="hidden" name="sinfo" id="sinfo" value="">
+							</form>
 							
 							<h3>{$detail.name}</h3>
 							<div style="background: #EC2B59;height: 80px; line-height: 80px; padding-left: 20px;color: white;font-size: 12px;">价值:<font size="+2" id="font_price">{:number_format($detail['price']/100,0)}</font>福币<a class="am-badge am-badge-danger am-round" style="margin-left: 20px;">免费</a><a class="am-badge am-badge-warning am-round" style="margin-left: 20px;">全国包邮</a></div>
@@ -49,10 +53,10 @@
 								
 								<volist name="skuInfo" id="si">
 									<tr class="tr_sku">
-										<td style="padding-top: 20px;">{$si.name}:</td>
+										<td style="padding-top: 20px;" sid="{$si.key}" >{$si.name}:</td>
 										<td style="padding-top: 20px;">
 											<volist name="si.value" id="sv">
-												<font class="font_sku" index="0" onmouseover="overSku(this)" onclick="selectSku(this)" onmouseout="outSku(this)">{$sv}</font>
+												<font class="font_sku" index="0" sid="{$sv.key}" onmouseover="overSku(this)" onclick="selectSku(this)" onmouseout="outSku(this)">{$sv.value}</font>
 											</volist>
 											<!--<font class="font_sku" index="0" onmouseover="overSku(this)" onclick="selectSku(this)" onmouseout="outSku(this)">红色</font>-->
 										</td>
@@ -65,7 +69,7 @@
 								<tr>
 									<td colspan="2" style="padding-top: 10px;">
 										<button type="button" class="am-btn am-btn-danger" style="width:120px; height: 50px;border-radius: 10px;"><font size="+1">我要收藏></font></button>
-										<button type="button" class="am-btn am-btn-warning" style="width:120px; height: 50px;border-radius: 10px;"><font size="+1">我要兑换></font></button>
+										<button id="duihuan" type="button" class="am-btn am-btn-warning" style="width:120px; height: 50px;border-radius: 10px;"><font size="+1">我要兑换></font></button>
 									</td>
 								</tr>
 								<tr>
@@ -140,7 +144,7 @@
 									<li>返款试福钱庄</li>
 									<li><font class="am-icon-chevron-down" color="#999"></font></li>
 									<li>随时提现 </li>
-								</ul>
+								</ul> 
 							</div>
 						</div>
 						<div class="am-panel am-panel-default">
@@ -165,3 +169,12 @@
 </block>
 
 <block name="area_footer">
+	<script type="text/javascript">
+		$(function(){
+			$('#duihuan').click(function(){
+				$('#ec').submit();
+			})
+			
+		})
+	</script>
+</block>

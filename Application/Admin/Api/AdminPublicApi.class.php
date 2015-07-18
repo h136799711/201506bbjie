@@ -29,5 +29,8 @@ class AdminPublicApi {
 	const Category_QueryNoPaging="Admin/Category/queryNoPaging";
 	const Category_Query="Admin/Category/query";
 	
-	
+	/*
+	 * 商品
+	 * */
+	const Wxproduct_QueryNoPaging="Admin/Wxproduct/queryNoPaging";
 }

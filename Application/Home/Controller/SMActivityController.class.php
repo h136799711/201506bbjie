@@ -37,6 +37,19 @@ class SMActivityController extends CheckLoginController {
 		}
 	}
 	/*
+	 * 兑换商品
+	 * */
+	public function exchange(){
+		$user=session('user');
+		$pid=I('pid');
+		$entity=array('create_time'=>time(),'update_time'=>time(),'p_id'=>$pid,'uid'=>$user['info']['id'],'sku_notes'=>I('sinfo',''));
+		$result=apiCall(HomePublicApi::ExchangeProduct_Add,array($entity));
+		if($result['status']){
+			$this->success('兑换成功！正在前往个人中心！',U('Home/Usersm/sm_dhsp'));
+		}
+		
+	}
+	/*
 	 * 等待确认订单
 	 * */
 	public function hd_waiting(){
