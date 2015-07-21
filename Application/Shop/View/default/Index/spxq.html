@@ -162,17 +162,20 @@
 				</div>
 			</div>
 		</div>
-		
-		
-		
 		<include file="partials/footer" />
 </block>
 
 <block name="area_footer">
 	<script type="text/javascript">
 		$(function(){
+			var price=$('#font_price').text();
 			$('#duihuan').click(function(){
-				$('#ec').submit();
+				if({$fubi}>=price){
+					$('#ec').submit();
+				}else{
+					alert('您的福币不足，无法兑换！！');
+				}
+				
 			})
 			
 		})

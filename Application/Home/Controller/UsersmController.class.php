@@ -39,6 +39,12 @@ class UsersmController extends CheckLoginController {
 		$user = session('user');
 		$this -> assign('username', $user['info']['username']);
 		$headtitle = "试民中心-任务";
+		$map=array('uid'=>$user['info']['id']);$map1=array('id'=>$user['info']['id']);
+		$result = apiCall(HomePublicApi::Bbjmember_Query, array($map));
+		$result1 = apiCall(HomePublicApi::UcenterUser_Query, array($map1));
+//		dump($result1);
+		$this->assign('member',$result['info'][0]);
+		$this->assign('user',$result1['info'][0]);
 		$this->posts();
 		$this -> assign('head_title', $headtitle);
 		$this -> assign('cs_rw', 'sed');
@@ -167,7 +173,7 @@ class UsersmController extends CheckLoginController {
 		$result=apiCall(AdminPublicApi::Wxproduct_QueryNoPaging,array($map));
 		$this->assign('product',$result['info']);
 		$this->assign('exchange',$re['info']);
-//		dump($result);
+//		dump($re);
 		$this->posts();
 		$this -> assign('username', $user['info']['username']);
 		$this -> display();

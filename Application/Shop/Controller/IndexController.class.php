@@ -32,17 +32,9 @@ class IndexController extends ShopController{
 			}
 			
 			$this->assign("showstartpage",$showStartPage);
-		
-			
 		}else{
 			//电脑端访问
-			
-			
-			
 		}
-		
-		
-		
 	}
 	
 	/**
@@ -492,7 +484,6 @@ class IndexController extends ShopController{
 		$order = " post_modified desc ";
 		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
 		$this->assign('zxgg',$result['info'][0]);
-		
 		$id=I("id");
 		//dump($id);
 		$map['id']=$id;
@@ -534,18 +525,18 @@ class IndexController extends ShopController{
 				
 			}
 			$skuList[$key]=$skus;
-			
 		}
+		$user=$_SESSION["Home"]['user'];
+		$maps=array('uid'=>$user['info']['id']);
+		$results=apiCall(HomePublicApi::Bbjmember_Query,array($maps));
+		$this->assign('fubi',$results['info'][0]['fucoin']);
 		
 		$this->assign('skuInfo',$skuInfo);
 		//dump($skuInfo);
 		$this->assign(' ',$skuList);
 		$headtitle="宝贝街-商品详情";
 		$this->assign('head_title',$headtitle);
-		$users=$_SESSION["Home"]['user'];
-		$this->assign('username',$users['info']['username']);
-		
-		
+		$this->assign('username',$user['info']['username']);
 		$id=$users['info']['id'];
 			
 		$map = array(

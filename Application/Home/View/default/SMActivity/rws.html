@@ -375,19 +375,38 @@
 												</script>
 
 												<div>
-
+													<if condition="$task['delivery_mode'] eq 1">
+														<if condition="$exchange['id'] eq ''">
+															<div class="sp sp_shifu">
+																<div class="img">
+																	<img src="__IMG__/zhijing.jpg" alt=""> </div>
+																<div class="xuanze"><i></i>已选择福币，包裹里还有小惊喜，一定要签收呦~</div>
+															</div>
+															<else/>
+															<div class="sp sp_shifu">
+																<div class="img">
+																	<volist name='product' id='w'>
+																		<if condition="$exchange['p_id'] eq $w['id']">
+																			<img src="{$w['main_img']}" alt=""> </div>
+																			<div class="xuanze"><i></i>已选择福币，包裹里还有小惊喜，一定要签收呦~</div>
+																		</if>
+																	</volist>
+																	
+															</div>
+														</if>
+														
+													<else/>
 													<div class="sp sp_shifu">
 														<div class="img">
 															<img src="__IMG__/zhijing.jpg" alt=""> </div>
 														<div class="xuanze"><i></i>已选择福币，包裹里还有小惊喜，一定要签收呦~</div>
 													</div>
-
+													</if>
 													<div class="sp sp_shifu hide" id="shifu_goods">
 														<div class="old">
 															<a href="" target="_blank" class="img">
 																<i></i>
 																<img src="__IMG__/shiyong_default.jpg" alt=""> </a>
-
 															<p>
 																<a target="_blank" href=""></a>
 															</p>
