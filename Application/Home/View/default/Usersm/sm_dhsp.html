@@ -13,7 +13,7 @@
 			<h3>兑换商品</h3>
 		</div>
 		<div class="div_minContent" style="padding: 20px; ">
-			<a href="" style="text-decoration: none;color: white; background: #d1343e; padding:10px; border-top-left-radius: 3px; border-top-right-radius: 3px;">全部预定</a><a href="" style="text-decoration: none;background:#f6dfe5;padding:10px;  border-top-left-radius: 3px; border-top-right-radius: 3px; margin-left: 5px; color: #848383;">取消</a>
+			<a href="" style="text-decoration: none;color: white; background: #d1343e; padding:10px; border-top-left-radius: 3px; border-top-right-radius: 3px;">全部确定兑换</a><a href="" style="text-decoration: none;background:#f6dfe5;padding:10px;  border-top-left-radius: 3px; border-top-right-radius: 3px; margin-left: 5px; color: #848383;">取消</a>
 			<table style="border-top: 1px solid #ccc; width: 1100px; margin-top: 9px; text-align: center;">
 				<tr>
 					<td colspan="6" style=" height: 5px; "></td>
@@ -21,32 +21,47 @@
 				<tr style="border: 1px solid #ccc; background: white; height: 37px;">
 					<td style="padding-left: 20px; width: 80px;">编号</td>
 					<td></td>
-					<td style="width: 30%;">商品名称</td>
+					<td style="width: 25%;">商品名称</td>
 					<td>产品规格</td>
 					<td>兑换状态</td>
 					<td>预定时间</td>
 					<td>操作</td>
 
 				</tr>
-				<volist name='exchange' id="vo"></volist>
+				<volist name='exchange' id="vo">
 					<tr style="border: 1px solid #ccc; height: 37px; ">
 						<td>{$vo.id}</td>
 						<volist name="product" id="v">
 							<if condition="$vo['p_id'] eq $v['id']">
 						<td>
-							<img height="80" width="100" src="{$v['main_img']}">
+							<img height="60" width="80" src="{$v['main_img']}">
 						</td>
 						<td>
 							{$v.name}
 						</td>
 						</if>
 						</volist>
-						<td>{$vo.sku_notes}</td>
-						<td>未兑换</td>
-						<td>{$vo.create_time}</td>
-						<td><a class="btn" style="background-color: orangered; color: #FFFFFF;">确定兑换</a></td>
+						<td><if condition="$vo['sku_notes'] eq ''">
+								无
+							</if>
+							<if condition="$vo['exchange_status'] eq 0">
+								{$vo.sku_notes}
+							</if></td>
+						<td><if condition="$vo['exchange_status'] eq 0">未兑换</if><if condition="$vo['exchange_status'] eq 1"><font color="darkgreen">兑换成功</font></if><if condition="$vo['exchange_status'] eq 2"><font color="red">已取消兑换</font></if></td>
+						<td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+						<td><if condition="$vo['exchange_status'] eq 0">
+								<a class="btn" href="{:U('Home/SMActivity/duihuanok',array('id'=>$vo['id']))}" style="background-color: orangered; color: #FFFFFF;">确定兑换</a>
+								<a class="btn" href="{:U('Home/SMActivity/quxiaodh',array('id'=>$vo['id']))}" style="background-color: gray; color: #FFFFFF;">取消兑换</a>
+							</if>
+							<if condition="$vo['exchange_status'] eq 1">
+								请等待分配任务...
+							</if>
+							<if condition="$vo['exchange_status'] eq 2">
+								请选择其他商品
+							</if>
+						</td>
 					</tr>
-
+				</volist>
 			</table>
 
 			<div class="div_tishi" style=" ">
@@ -55,14 +70,13 @@
 					<li>1:如果有两个或两个以上的兑换商品没有被领取走，不能再兑换其他的商品哦！！！</li>
 					<li>2:如果10天之内您还没有领走您的兑换商品，系统将自动取消您的资格！！！</li>
 					<li>3:如果取消了您的资格，我们会在第一时间就返还您所耗费的福币，请记得查收哦！！！</li>
-
 				</ul>
 			</div>
 		</div>
 	</div>
 	</div>
 
-	< </block>
+	 </block>
 
 		<block name="area_footer">
 

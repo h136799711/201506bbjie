@@ -303,6 +303,9 @@ class UsersjController extends CheckLoginController {
 				$count_qrhk=count($result3[$i]['info']);
 			}
 		}
+//dump($count_wtj);
+//dump($result2);
+//dump($count_qrhk);
 		$this->assign('wtj',$count_wtj);
 		$this->assign('ddsh',$count_ddsh);
 		$this->assign('qrhk',$count_qrhk);

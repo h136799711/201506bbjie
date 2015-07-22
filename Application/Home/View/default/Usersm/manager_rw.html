@@ -16,64 +16,72 @@
 			<div class="div_minContent" style="padding: 20px;">
 				<div style="background: white; width: 1000px; height: 100px; border-radius:9px; border: 1px solid #ccc;">
 					<div style="line-height: 60px; margin-left:50px;">
-						当前任务状态：<a href="" style="text-decoration: none;  background: #ff698e; padding: 5px; color: white; border-radius: 5px;">任务开启中（100元）</a>日任务金额：<font color="#b94a48" style="font-family: Verdana,Tahoma,arial;">￥100</font>
+						当前任务状态：<if condition="$member['task_status'] eq 1"><a href="" style="text-decoration: none;  background: #ff698e; padding: 5px; color:
+						 white; border-radius: 5px;">任务开启中（{$member['daily_task_money']}元）</a>日任务金额：
+						 <font color="#b94a48" style="font-family: Verdana,Tahoma,arial;">￥{$member['daily_task_money']}</font><else/>
+						任务未开启<a href="{:U('Home/SMActivity/changestatus')}" style="background-color: orangered; color: #FFFFFF; height: 20px; width: 30px; padding: 3px; cursor: pointer;">点击开启</a> 
+						</if>
+						
 					</div>
 					<div style="margin-left:100px;font-size: 12px;">
-						您如果有事不能接试福活动，请及时 <a href="#" style="text-decoration: none; color: #b94a48;">关闭任务状态</a>
+						您如果有事不能接宝贝活动，请及时 <a href="{:U('Home/SMActivity/changestatus')}" style="text-decoration: none; color: #b94a48;">关闭任务状态</a>
 					</div>
 
 				</div>
 
 				<div class="div_minSet">
 					<ul>
-						<li class="li_first">已设置</li>
+						<if condition="$member['daily_task_money'] eq '' "><li id="tsz" class="li_first">未设置</li><else/><li id="tsz" class="li_first">已设置</li></if>
 						<li class="li_title">日任务金额 </li>
-						<li style="width:70%; text-align: center;"><font color="red">100</font>元(每天接受任务的总金额，限额越高机会越多)</li>
-						<li class="li_last"><a href="#">收起</a>
+						<li style="width:70%; text-align: center;"><font color="red">{$member['daily_task_money']}</font>元(每天接受任务的总金额，限额越高机会越多)</li>
+						<li class="li_last"><a id="sqtask" href="javascript:void(0)">收起</a>
 						</li>
 					</ul>
 				</div>
-				<div class="div_minSetInfo">
+				<div class="div_minSetInfo" id="task_money">
+					<form id="tkform" action="{:U('Home/SMActivity/taskmoney')}" method="post">
 					日任务金额
-					<input style=" list-style: none; margin-left: 10px; border-bottom-left-radius: 3px; border-top-left-radius: 3px; border: 1px solid #ccc; " />
-					<input type="button" style=" list-style: none;border-bottom-right-radius: 3px; border-top-right-radius: 3px; border: 1px solid #ccc;" disabled="disabled" value="元" />
-					<input type="button" value="确认修改" style="list-style:none; background: #d13f3a; margin-left: 10px; border:none; color: white; border-radius: 3px; font-size: 14px; padding:5px; " />
+					
+					<input id="tmoney" name="tmoney" style=" list-style: none; margin-left: 10px; border-bottom-left-radius: 3px; border-top-left-radius: 3px; border: 1px solid #ccc; " />
+					<input type="button"  style=" list-style: none;border-bottom-right-radius: 3px; border-top-right-radius: 3px; border: 1px solid #ccc;" disabled="disabled" value="元" />
+					<input type="button" id="taskmoneychange" value="确认修改" style="list-style:none; background: #d13f3a; margin-left: 10px; border:none; color: white; border-radius: 3px; font-size: 14px; padding:5px; " />
+					</form>
 				</div>
 
 				<div class="div_minSet" style="">
 					<ul>
-						<li class="li_first">未设置</li>
+						<if condition="$member['taobao_account'] eq '' "><li id="tbsz" class="li_first">未设置</li><else/><li id="tbsz" class="li_first">已设置</li></if>
+						
 						<li class="li_title">淘宝账号 </li>
-						<li style="width:70%; text-align: center;">hbddingding 实名认证</li>
-						<li class="li_last"><a href="#">收起</a>
+						<li style="width:70%; text-align: center;">{$member['taobao_account']} 实名认证</li>
+						<li class="li_last"><a id="sqtb" href="javascript:void(0)">收起</a>
+						
 						</li>
 					</ul>
 				</div>
-				<div class="div_minSetInfo">
+				<div class="div_minSetInfo" id="tb">
+					<form id="tbform" action="{:U('Home/SMActivity/settaobao')}" method="post">
 					淘宝账号
-					<input style=" list-style: none; margin-left: 10px; border-bottom-left-radius: 3px; border-top-left-radius: 3px; border: 1px solid #ccc; " />
-					<input type="button" value="设置" style="list-style:none; background: #d13f3a; border:none; color: white; border-bottom-right-radius: 3px;border-top-right-radius:3px; font-size: 14px; padding:3px; " /> <a href="" style="text-decoration: none; margin-left: 20px;">管理淘宝号</a>
-
+					
+					<input name="taobao" style=" list-style: none; margin-left: 10px; border-bottom-left-radius: 3px; border-top-left-radius: 3px; border: 1px solid #ccc; " />
+					<input type="button" id="settaobao" value="设置" style="list-style:none; background: #d13f3a; border:none; color: white; border-bottom-right-radius: 3px;border-top-right-radius:3px; font-size: 14px; padding:3px; " /> <a href="" style="text-decoration: none; margin-left: 20px;">管理淘宝号</a>
+					</form>
 				</div>
 
 				<div class="div_minSet" style="">
 					<ul>
-						<li class="li_first">未设置</li>
+						<if condition="($user['email'] eq '') && ($user['mobile'] eq '') "><li id="psz" class="li_first">未设置</li><else/><li id="psz" class="li_first">已设置</li></if>
 						<li class="li_title">联系方式</li>
-						<li style="width:70%; text-align: center;">手机号: 13477923813 QQ号: 136399388</li>
-						<li class="li_last"><a href="#">收起</a>
+						<li style="width:70%; text-align: center;">邮箱: {$user['email']} 手机号: {$user['mobile']}</li>
+						<li class="li_last"><a id="sqphone" href="javascript:void(0)">收起</a>
 						</li>
 					</ul>
 				</div>
-				<div class="div_minSetInfo" style="line-height: 40px;">
-					<div>更换联系手机
-						<input style=" list-style: none; margin-left: 10px; border-bottom-left-radius: 3px; border-top-left-radius: 3px; border: 1px solid #ccc; " />
-						<input type="button" value="设置" style="list-style:none; background: #d13f3a; border:none; color: white; border-bottom-right-radius: 3px;border-top-right-radius:3px; font-size: 14px; padding:3px; " />
-					</div>
+				<div class="div_minSetInfo" style="line-height: 40px;" id="sqpho">
 					<div>
-						更换联系QQ
-						<input style=" list-style: none; margin-left: 10px; border-bottom-left-radius: 3px; border-top-left-radius: 3px; border: 1px solid #ccc; " />
-						<input type="button" value="设置" style="list-style:none; background: #d13f3a; border:none; color: white; border-bottom-right-radius: 3px;border-top-right-radius:3px; font-size: 14px; padding:3px; " />
+						<font style="margin-left: 40px;" color="green">请到个人中心设置个人信息！！！！！</font>
+						<!--<input style=" list-style: none; margin-left: 10px; border-bottom-left-radius: 3px; border-top-left-radius: 3px; border: 1px solid #ccc; " />
+						<input type="button" value="设置" style="list-style:none; background: #d13f3a; border:none; color: white; border-bottom-right-radius: 3px;border-top-right-radius:3px; font-size: 14px; padding:3px; " />-->
 					</div>
 				</div>
 
@@ -86,14 +94,14 @@
 						</li>
 					</ul>
 				</div>
-				<div class="div_minSetInfo" style="line-height: 40px; text-align: left;">
+				<div class="div_minSetInfo" style="line-height: 40px; text-align: left;" id="taofu">
 					<div style="font-size: 12px; margin-left: 50px;">
 						关闭淘福任务 <font color="#b94a48" style="font-size: 14px; margin-left: 5px;">停止接受淘福任务,同时失去淘福勋章</font>
 						<input type="button" value="暂停淘福" style="list-style:none; background: #f9a732; border:none; color: white; border-radius: 3px;  padding:2px; margin-left: 20px; "
 						/>
 					</div>
 					<div style="font-size: 12px; color: #CCCCCC; padding-left:120px;">
-						你可以接收由商家发布的淘福任务，此任务由商家发出物流，所以不能选择兑换试福商品，但是，可以获取全额的福币。同时，还可以获得【淘福章】一枚!
+						你可以接收由商家发布的淘福任务，此任务由商家发出物流，所以不能选择兑换宝贝商品，但是，可以获取全额的福币。同时，还可以获得【淘福章】一枚!
 					</div>
 				</div>
 
@@ -102,12 +110,12 @@
 					<dl>
 						<dt>1、任务设置</dt>
 						<dd>试民中心-任务设置</dd>
-						<dd class="dd_last">设置好任务参数，并且是开启状态，即可正常接收试福任务。</dd>
+						<dd class="dd_last">设置好任务参数，并且是开启状态，即可正常接收宝贝任务。</dd>
 					</dl>
 					<dl>
 						<dt>2、按任务书下单</dt>
-						<dd>试民中心-试福管理</dd>
-						<dd class="dd_last">按任务书要求到淘宝下单，并及时试福街提交订单。</dd>
+						<dd>试民中心-宝贝管理</dd>
+						<dd class="dd_last">按任务书要求到淘宝下单，并及时宝贝街提交订单。</dd>
 					</dl>
 					<dl>
 						<dt>3、淘宝收货</dt>
@@ -115,18 +123,18 @@
 						<dd class="dd_last">收到货后，查看物流信息已签，然后，五星+10字以上的评语。</dd>
 					</dl>
 					<dl>
-						<dt>4、试福街收货</dt>
-						<dd>试民中心-试福管理</dd>
-						<dd class="dd_last">淘宝收货后，请及时到试福街后台确认收货。不要忘记了哦~</dd>
+						<dt>4、宝贝街收货</dt>
+						<dd>试民中心-宝贝管理</dd>
+						<dd class="dd_last">淘宝收货后，请及时到宝贝街后台确认收货。不要忘记了哦~</dd>
 					</dl>
 					<dl>
 						<dt>5、等待商家返款</dt>
-						<dd>试民中心-试福钱庄</dd>
-						<dd class="dd_last">商家确认后，钱会返至试福钱庄。</dd>
+						<dd>试民中心-宝贝钱庄</dd>
+						<dd class="dd_last">商家确认后，钱会返至宝贝钱庄。</dd>
 					</dl>
 					<dl>
 						<dt>6、钱庄提现</dt>
-						<dd>试民中心-试福钱庄</dd>
+						<dd>试民中心-宝贝钱庄</dd>
 						<dd class="dd_last">您可以提现至已绑定账号，会在1-2个工作日内到账。</dd>
 					</dl>
 				</div>
@@ -136,10 +144,52 @@
 </block>
 
 <block name="area_footer">
-	<div id="foot">
-		杭州博也科技有限公司，保留一切权利。
-		<br> 浙ICP备13025642号-2 ©2013 shifujie.net 版权所有
-		<br>
-	</div>
+	<script type="text/javascript">
+		$(function(){
+			$('#task_money').hide();
+			$('#sqtask').click(function(){
+				$('#task_money').toggle(function(){
+//					$('#task_money').hide();
+				});
+			})
+			$('#tb').hide();
+			$('#sqtb').click(function(){
+				$('#tb').toggle(function(){
+//					$('#task_money').hide();
+				});
+			})
+			$('#sqpho').hide();
+			$('#sqphone').click(function(){
+				$('#sqpho').toggle(function(){
+				});
+			})
+			$('#taofu').hide();
+			if($('#tsz').text()=='未设置'){
+				$('#task_money').show();
+			}else{
+				$('#task_money').hide();
+				$('#sqtask').text('展开');
+			}
+			if($('#tbsz').text()=='未设置'){
+				$('#tb').show();
+			}else{
+				$('#tb').hide();
+				$('#sqtb').text('展开');
+			}
+			if($('#psz').text()=='未设置'){
+				$('#sqpho').show();
+			}else{
+				$('#sqpho').hide();
+				$('#sqphone').text('展开');
+			}
+			
+			$('#settaobao').click(function(){
+				$('#tbform').submit();
+			})
+			$('#taskmoneychange').click(function(){
+				$('#tkform').submit();
+			})
+		})
+	</script>
 
 </block>

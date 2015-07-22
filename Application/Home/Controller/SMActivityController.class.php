@@ -37,6 +37,30 @@ class SMActivityController extends CheckLoginController {
 		}
 	}
 	/*
+	 * 改变任务金
+	 * */
+	public function taskmoney(){
+		$user = session('user');
+		$id=$user['info']['id'];
+		$entity=array('daily_task_money'=>I('tmoney','0'));
+		$result = apiCall(HomePublicApi::Bbjmember_SaveByID,array($id,$entity));
+		if($result['status']){
+			$this->success('修改成功',U('Home/Usersm/manager_rw'));
+		}
+	}
+	/*
+	 * */
+	public function settaobao(){
+		$user = session('user');
+		$id=$user['info']['id'];
+		$entity=array('taobao_account'=>I('taobao','无'));
+		$result = apiCall(HomePublicApi::Bbjmember_SaveByID,array($id,$entity));
+		if($result['status']){
+			$this->success('修改成功',U('Home/Usersm/manager_rw'));
+		}
+		
+	}
+	/*
 	 * 兑换商品
 	 * */
 	public function exchange(){
@@ -48,6 +72,17 @@ class SMActivityController extends CheckLoginController {
 			$this->success('兑换成功！正在前往个人中心！',U('Home/Usersm/sm_dhsp'));
 		}
 		
+	}
+	/*
+	 * 取消兑换
+	 * */
+	public function quxiaodh(){
+		$id=I('id',0);
+		$map=array('exchange_status'=>2);
+		$result=apiCall(HomePublicApi::ExchangeProduct_SaveByID,array($id,$map));
+		if($result['status']){
+			$this->success('已取消兑换，请选择其他商品',U('Home/Usersm/sm_dhsp'));
+		}
 	}
 	/*
 	 * 等待确认订单
@@ -239,6 +274,7 @@ class SMActivityController extends CheckLoginController {
 				);
 				$id=$result['info'][0]['id'];
 				$et=array('task_status'=>4);
+//				$this->assign('dts',$result['info'][0]['list']);
 				$tesk=apiCall(HomePublicApi::Task_SaveByID,array($id,$et));
 				$result3=apiCall(HomePublicApi::Task_His_Add,array($entity));
 				if($result3['status']){
@@ -264,8 +300,8 @@ class SMActivityController extends CheckLoginController {
 		$id=I('id',0);
 		$tk=array('id'=>$id);
 		$map=array('task_id'=>$id);
+		
 		$task=apiCall(HomePublicApi::Task_Query, array($tk));
-	
 		$this->assign('task',$task['info'][0]);
 		$result=apiCall(HomePublicApi::TaskHasProduct_Query, array($map));
 		$this->assign('jianshu',$result['info'][0]['num']);
@@ -278,7 +314,25 @@ class SMActivityController extends CheckLoginController {
 		$this->assign('pd',$return['info'][0]);
 		$this->assign('search',$returns['info'][0]);
 //		dump($task);
+
+		$map=array('uid'=>$user['info']['id'],'exchange_status'=>1);
+		$re=apiCall(HomePublicApi::ExchangeProduct_Query,array($map));
+		$this->assign('exchange',$re['info'][0]);
+		$maps=array('uid'=>$user['info']['id']);
+		$results=apiCall(AdminPublicApi::Wxproduct_QueryNoPaging,array($maps));
+		$this->assign('product',$results['info']);
 		$this->display();
+	}
+	/*
+	 * 确定兑换
+	 * */
+	public function duihuanok(){
+		$id=I('id',0);
+		$map=array('exchange_status'=>1);
+		$result=apiCall(HomePublicApi::ExchangeProduct_SaveByID,array($id,$map));
+		if($result['status']){
+			$this->success('兑换已确认，请等待分配任务。。',U('Home/Usersm/sm_dhsp'));
+		}
 	}
 	/*
 	 * 保存任务订单号
