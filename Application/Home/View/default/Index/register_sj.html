@@ -130,8 +130,8 @@
 				
 			});
 			$('#yaoqingren').blur(function() {
-				
-				if (name.test($('#yaoqingren').val())) {
+//				alert(name.test($('#yaoqingren').val()));
+//				if (name.test($('#yaoqingren').val())) {
 					d = 1;
 					$.getJSON("{:U('Home/Index/checkname')}",{name:$("#yaoqingren").val()},function(json){ 
 							if(json!=1){
@@ -142,7 +142,7 @@
 								$('#yaoqingren').parent().find("span").html("<font size='-2' color='red'>邀请人不存在</font>");
 							}
 				}); 
-				} 
+//				} 
 				
 			});
 			var a = 0;

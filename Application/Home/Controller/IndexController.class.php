@@ -309,6 +309,7 @@ class IndexController extends HomeController {
 				'create_time'=>time(),
 				'update_time'=>time(),
 			);
+//			dump($entity);
 			$result1 = apiCall(HomePublicApi::Bbjmember_Seller_Add, array($entity));
 //			
 			session('sjid',$result1['info']);

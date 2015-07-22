@@ -103,7 +103,7 @@ class SJActivityController extends CheckLoginController {
 	 * */
 	public function sj_waiting() {
 		$user = session('user');
-		$map1 = array('uid' => $user['info']['id'], 'task_status' => 1);
+		$map1 = array('uid' => $user['info']['id'], 'task_status' => 4);
 		$result = apiCall(HomePublicApi::Task_Query, array($map1));
 		$whe = array('do_status' => 3);
 		$taskhis = apiCall(HomePublicApi::Task_His_Query, array($whe));

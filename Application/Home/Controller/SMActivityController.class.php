@@ -74,6 +74,17 @@ class SMActivityController extends CheckLoginController {
 		
 	}
 	/*
+	 * 取消兑换
+	 * */
+	public function quxiaodh(){
+		$id=I('id',0);
+		$map=array('exchange_status'=>2);
+		$result=apiCall(HomePublicApi::ExchangeProduct_SaveByID,array($id,$map));
+		if($result['status']){
+			$this->success('已取消兑换，请选择其他商品',U('Home/Usersm/sm_dhsp'));
+		}
+	}
+	/*
 	 * 等待确认订单
 	 * */
 	public function hd_waiting(){
@@ -263,6 +274,7 @@ class SMActivityController extends CheckLoginController {
 				);
 				$id=$result['info'][0]['id'];
 				$et=array('task_status'=>4);
+//				$this->assign('dts',$result['info'][0]['list']);
 				$tesk=apiCall(HomePublicApi::Task_SaveByID,array($id,$et));
 				$result3=apiCall(HomePublicApi::Task_His_Add,array($entity));
 				if($result3['status']){
