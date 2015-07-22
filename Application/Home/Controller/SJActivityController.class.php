@@ -112,7 +112,7 @@ class SJActivityController extends CheckLoginController {
 		$this -> assign('head_title', $headtitle);
 		$this -> assign('task', $result['info']);
 		$this -> assign('username', $user['info']['username']);
-//		dump($result);
+//		dump($taskhis);
 		$this -> display();
 	}
 	/*
@@ -120,7 +120,7 @@ class SJActivityController extends CheckLoginController {
 	 * */
 	public function sj_qrhk(){
 		$user = session('user');
-		$map1 = array('uid' => $user['info']['id'], 'task_status' => 1);
+		$map1 = array('uid' => $user['info']['id'], 'task_status' => 4);
 		$result = apiCall(HomePublicApi::Task_Query, array($map1));
 		$whe = array('do_status' => 4);
 		$taskhis = apiCall(HomePublicApi::Task_His_Query, array($whe));
@@ -139,6 +139,7 @@ class SJActivityController extends CheckLoginController {
 		$id=I('id','');
 		$entity=array('do_status'=>4);
 		$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$entity));
+//		dump($id);dump($entity);
 		if($result['status']){
 			$this->success('任务操作成功',U('Home/SJActivity/sj_tbhd'));
 		}else{
@@ -383,7 +384,7 @@ class SJActivityController extends CheckLoginController {
 		$map = array('uid' => $uid);
 		$rets = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
 		if ($result['status']) {
-			$ap = array('coins' => $rets['info'][0]['coins'] - $money, );
+			$ap = array('coins' => $rets['info'][0]['coins'] - $money,'frozen_money'=>$rets['info'][0]['coins']+$money );
 			$return = apiCall(HomePublicApi::Bbjmember_Seller_SaveByID, array($uid, $ap));
 			if ($return['status']) {
 				$entity = array('uid' => $user['info']['id'], 'defray' => $money, 'income' => '0.000', 'create_time' => time(), 'notes' => '任务冻结金额', 'dtree_type' => 5, 'status' => 3, );
@@ -586,115 +587,7 @@ class SJActivityController extends CheckLoginController {
 		//		dump($entity);
 	}
 
-	/**
-	 * 读取商品页面信息
-	 */
-	public function read() {
-		if (IS_POST) {
-			$url = I('post.url', '', 'urldecode');
-			$which = $this -> whichUrl($url);
-			switch($which) {
-				case 1 :
-					$return_info = $this -> getTaobao($url);
-					break;
-				case 2 :
-					$return_info = $this -> getTmall($url);
-					break;
-				default :
-					$this -> error("请输入正确的淘宝商品详情页地址!");
-					break;
-			}
-			if (empty($return_info['title']) || empty($return_info['main_img']) || empty($return_info['wangwang'])) {
-				$this -> error("无法识别此链接!");
-			}
-
-			$this -> success($return_info);
-
-		} else {
-			$this -> display();
-		}
-	}
-
-	/*
-	 * */
-
-	/**
-	 * 判断是什么链接，淘宝？天猫？
-	 * 检测规则
-	 * 1. 域名 是否taobao.com|tmall.com
-	 * 2. ...
-	 * 3. ...
-	 */
-	private function whichUrl($url) {
-		//TODO: 是否为合法的淘宝商品详情页链接
-		if (!(strpos($url, "tmall.com") === false)) {
-			return 2;
-		}
-		if (!(strpos($url, "taobao.com") === false)) {
-			return 1;
-		}
-
-		//
-		return 0;
-	}
-
-	private function getTmall($url) {
-		$html = file_get_contents($url);
-		$html = iconv("gb2312", "utf-8//IGNORE", $html);
-		$match = array();
-		//			dump($html);
-		$return_info = array('title' => '', 'main_img' => '', 'wangwang' => '', );
-
-		$wangwang_pattern = '/<li class="shopkeeper"(.*?)>(.*?)<a(.*?)>(.*?)<\/a>?/is';
-		preg_match($wangwang_pattern, $html, $match);
-
-		//			var_dump($match);
-		$return_info['wangwang'] = $match[4];
-
-		$title_pattern = '/<meta name="keywords" content="(.*?)"(.*?)\/>/is';
-		//			dump($html);
-		preg_match($title_pattern, $html, $match);
-		//			if($match){
-		$return_info['title'] = $match[1];
-
-		$mainimg_pattern = '/<img id="J_ImgBooth"(.*?)src="(.*?)"(.*?)>/is';
-
-		preg_match($mainimg_pattern, $html, $match);
-		$return_info['main_img'] = $match[2];
-
-		return $return_info;
-
-	}
-
-	private function getTaobao($url) {
-
-		$html = file_get_contents($url);
-		$html = iconv("gb2312", "utf-8//IGNORE", $html);
-		//			var_dump($html);
-		$match = array();
-
-		$return_info = array('title' => '', 'main_img' => '', 'wangwang' => '', );
-		$wangwang_pattern = '/<a class="tb-seller-name" (.*?)>(.*?)<\/a>/is';
-		//echo $html;
-		preg_match($wangwang_pattern, $html, $match);
-
-		//var_dump($match[2]);
-		$return_info['wangwang'] = $match[2];
-		$mainimg_pattern = '/<img id="J_ImgBooth"(.*?)data-src="(.*?)"(.*?)>/is';
-
-		preg_match($mainimg_pattern, $html, $match);
-		$return_info['main_img'] = $match[2];
-
-		//			$title_pattern = '/<h3 class="tb-main-title" data-title="(.*?)"(.*?)>/is';
-		$title_pattern = '/<meta name="keywords" content="(.*?)"(.*?)\/>/is';
-		//			dump($html);
-		preg_match($title_pattern, $html, $match);
-
-		$return_info['title'] = $match[1];
-
-		return $return_info;
-	}
-
+	
 	//创建搜索
 	public function createsearch() {
 		$headtitle = "宝贝街-创建搜索";

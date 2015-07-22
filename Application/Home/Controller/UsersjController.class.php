@@ -241,13 +241,7 @@ class UsersjController extends CheckLoginController {
 		$user = apiCall(HomePublicApi::User_GetUser, array($uid));
 		$page = array('curpage' => I('get.p', 0), 'size' => 6);
 		$jyjl = apiCall(HomePublicApi::FinAccountBalanceHis_QueryAll, array($map, $page));
-		$all = apiCall(HomePublicApi::FinAccountBalanceHis_Query, array($mapv));
-		$jilus = $all['info'];
-		foreach ($jilus as $key => $value) {
-			if ($value['dtree_type'] == 3) {
-				$sum += $value['defray'];
-			}
-		}
+		
 		$we=array('uid' => $uid, 'dtree_type'=>1);$where=array('uid' => $uid, 'dtree_type'=>3);
 		$chongzhi = apiCall(HomePublicApi::FinAccountBalanceHis_QueryAll, array($we));
 		$tixian = apiCall(HomePublicApi::FinAccountBalanceHis_QueryAll, array($where));
@@ -264,6 +258,7 @@ class UsersjController extends CheckLoginController {
 			$this -> assign('phone', $user['info']['mobile']);
 		}
 		$this -> assign('coins', $result['info'][0]['coins']);
+		$this -> assign('djcoins', $result['info'][0]['frozen_money']);
 		$this -> assign('bank', $info['info'][0]);
 		$this->assign('username',$user['info']['username']);
 		$this->display();

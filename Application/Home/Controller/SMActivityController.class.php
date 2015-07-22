@@ -241,9 +241,14 @@ class SMActivityController extends CheckLoginController {
 	 * */
 	public function qrtask(){
 		$id=I('id',0);
+		$task_map=array('id'=>$id);
 		$map=array('do_status'=>3);
+		$task=apiCall(HomePublicApi::Task_His_Query,array($task_map));
 		$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$map));
-		if($result['status']){
+		$ids=$task['info'][0]['task_id'];
+		$map2=array('task_status'=>4);
+		$result2=apiCall(HomePublicApi::Task_SaveByID,array($ids,$map2));
+		if($result['status'] &&$result2['status'] ){
 			$this->success('任务操作成功',U('Home/Usersm/sm_bbhd'));
 		}else{
 			$this->error('系统未知错误',U('Home/Usersm/sm_bbhd'));

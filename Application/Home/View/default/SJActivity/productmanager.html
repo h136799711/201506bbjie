@@ -215,7 +215,7 @@
 					<!--更新商品窗口-->
 					<h1 style="height: 40px;">
 						<div class="pull-right btn-group">
-							<button id="luruBtn" class="am-btn am-btn-primary am-btn-xs" style="height: 30px;width: 80px; padding: 0;border-radius: 5px;" data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 750, height:500}">
+							<button id="luruBtn" class="am-btn am-btn-primary am-btn-xs" style="height: 30px;width: 70px; font-size: 12px; padding: 0;border-radius: 5px;" data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 750, height:500}">
 								录入商品
 							</button>
 						</div>
@@ -517,7 +517,7 @@ function showLoading() {
 			$.ajax({
 				cache: false,
 				method: "post",
-				url: "{:U('Home/SJActivity/read',array('r'=>time()))}",
+				url: "{:U('Tool/RemoteProductParser/read',array('r'=>time()))}",
 				data: {
 					url: encodeURI(param_url)
 				},

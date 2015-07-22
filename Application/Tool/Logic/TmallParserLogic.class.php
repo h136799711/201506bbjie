@@ -24,7 +24,10 @@ class TmallParserLogic implements IParserLogic {
      * @see IParseLogic
      */
     public function read_detail() {
+
         $html = file_get_contents($this -> url);
+		
+
         $html = iconv("gb2312", "utf-8//IGNORE", $html);
 
         $match = array();
@@ -42,7 +45,7 @@ class TmallParserLogic implements IParserLogic {
         $mainimg_pattern = '/<img id="J_ImgBooth"(.*?)src="(.*?)"(.*?)>/is';
         preg_match($mainimg_pattern, $html, $match);
         $return_info['main_img'] = $match[2];
-
+		
         return $return_info;
     }
 
