@@ -132,22 +132,22 @@
 				
 			});
 			
-			$('#yaoqingren').blur(function() {
-				
-				if (name.test($('#yaoqingren').val())) {
-					d = 1;
-					$.getJSON("{:U('Home/Index/checkname')}",{name:$("#yaoqingren").val()},function(json){ 
-							if(json!=1){
-								d = 0;
-								$('#yaoqingren').parent().find("span").html("<font size='-2' color='red'>用户名已存在</font>");
-							}else{
-								d = 1;
-								$('#yaoqingren').parent().find("span").html("<font size='-2' color='green'>正确！</font>");
-							}
-				}); 
-				} 
-				
-			});
+//			$('#yaoqingren').blur(function() {
+//
+//				if (name.test($('#yaoqingren').val())) {
+//					d = 1;
+//					$.getJSON("{:U('Home/Index/checkname')}",{name:$("#yaoqingren").val()},function(json){
+//							if(json!=1){
+//								d = 0;
+//								$('#yaoqingren').parent().find("span").html("<font size='-2' color='red'>用户名已存在</font>");
+//							}else{
+//								d = 1;
+//								$('#yaoqingren').parent().find("span").html("<font size='-2' color='green'>正确！</font>");
+//							}
+//				});
+//				}
+//
+//			});
 			var a = 0;
 			var b = 0;
 			var c = 0;
