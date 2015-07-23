@@ -49,7 +49,55 @@ class SJActivityController extends CheckLoginController {
 		//		dump($results);
 		$this -> display();
 	}
-
+	/**
+	 * 任务计划
+	 * */
+	 public function task_play(){
+	 	$mm = array('id' => I('id',0));
+		$result_tast = apiCall(HomePublicApi::Task_Query, array($mm));
+		$result_play = apiCall(HomePublicApi::TaskPlan_Query, array($mm));
+		for ($i = 0; $i < count($result_tast['info']); $i++) {
+			$id = $result_tast['info'][$i]['id'];
+			$map4 = array('task_id' => $id);
+			$results[] = apiCall(HomePublicApi::TaskHasProduct_Query, array($map4));
+		}
+		for ($j = 0; $j < count($results); $j++) {
+			$pid = array('id' => $results[$j]['info'][0]['pid']);
+			$producta[] = apiCall(HomePublicApi::Product_Query, array($pid));
+		}
+		$user = session('user');
+		$uid = array('uid' => $user['info']['id']);
+		$result = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($uid));
+		$page = array('curpage' => I('get.p', 0), 'size' => 6);
+		$map=array('uid'=>$user['info']['id']);
+		$resultAll = apiCall(HomePublicApi::TaskPlan_QueryAll, array($map,$page));
+		$this->assign('tp',$resultAll['info']['list']);
+		$this->assign('money',$result['info'][0]['coins']);
+		$this->assign('task_play',$result_play['info'][0]);
+		$this->assign('task',$result_tast['info'][0]);
+		$this -> assign('jihuas', $results);
+		$this -> assign('pro', $producta);
+	 	$this->display();
+	 }
+	 /*
+	  * 发放任务
+	  * */
+	public function create_tp(){
+		$user=session('user');
+		$entity=array(
+			'uid'=>$user['info']['id'],
+			'start_time'=>I('begin_time',0),
+			'enter_way'=>I('sele_type',0),
+			'task_cnt'=>I('count',0),
+			'create_time'=>time(),
+			'search_way_id'=>0,
+			'task_id'=>I('tid',0),
+		);
+		$result = apiCall(HomePublicApi::TaskPlan_Add, array($entity));
+		if($result['status']){
+			$this->success('发放成功！',U('Home/SJActivity/sj_tbhd'));
+		}
+	}
 	/*
 	 * 改变任务状态
 	 * */
@@ -63,7 +111,6 @@ class SJActivityController extends CheckLoginController {
 			$mm = array('task_do_type' => 2);
 			$result_tast = apiCall(HomePublicApi::Task_Save, array($uid, $mm));
 			$result = apiCall(HomePublicApi::Bbjmember_Seller_SaveByID, array($id, $ma));
-			//			dump($result_tast);
 			if ($result['status'] && $result_tast['status']) {
 				$this -> success('任务领取状态修改成功', U('Home/Usersj/index'));
 			} else {
@@ -288,7 +335,6 @@ class SJActivityController extends CheckLoginController {
 		$result1 = apiCall(HomePublicApi::Task_Add, array($entity));
 		foreach ($al as $key => $value) {
 			if ($count < count($al['title'])) {
-
 				if ($al['title'][$count] != '' || $al['title'][$count] != null) {
 					$pro = array('uid' => $user['info']['id'], 'link' => $al['link'][$count], 'price' => $al['price'][$count], 'has_model_num' => 1, 'position' => '', 'title' => $al['title'][$count], 'main_img' => $al['img'][$count], 'wangwang' => $aliwawa, 'create_time' => time(), 'update_time' => time(), 'status' => 1, 'model_num_cfg' => $al['position'][$count], 'is_on_sale' => 1, );
 					$result = apiCall(HomePublicApi::Product_Add, array($pro));
@@ -302,7 +348,7 @@ class SJActivityController extends CheckLoginController {
 				$count = $count + 1;
 			}
 		}
-
+//		dump($summ);
 		$this -> yongjin();
 		$this -> assign('summ', $summ);
 		$headtitle = "宝贝街-创建任务";
@@ -318,7 +364,6 @@ class SJActivityController extends CheckLoginController {
 		$headtitle = "宝贝街-创建任务";
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
-
 		$this -> assign('username', $user['info']['username']);
 		$this -> display();
 	}
@@ -438,7 +483,6 @@ class SJActivityController extends CheckLoginController {
 		$sj = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
 		$pro = apiCall(HomePublicApi::Product_QueryAll, array($map));
 		$prduct = apiCall(HomePublicApi::Product_QueryAll, array($mwe));
-
 		$this -> assign('id', 0);
 		$this -> assign('downpro', $prduct['info']['list']);
 		$this -> assign('showdown', $product['show']);

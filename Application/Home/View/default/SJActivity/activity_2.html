@@ -150,12 +150,12 @@
 <block name="area_footer">
 <script type="text/javascript">
 	$(function(){
-		var num=$('.nu').text();
-		$('.pronum').val(num*{$summ});
+		var price=Number({$summ});
+		$('.pronum').val(price);
 		var youfei=$('.yf').text();
 		var renwu=$('.rwyj').text();
 		var summ=$('.pronum').val();
-		var a=Number(youfei)+Number(renwu)+Number(summ);
+		var a=Number(youfei)+Number(renwu)+Number(price);
 		
 		$('.bzj').text(a);
 		$('#a,#b').click(function(){
@@ -175,7 +175,6 @@
 			var summ=$('.pronum').val();
 			if(cedd=='平台发货'){
 				if(ced=='包邮'){
-					
 					$('.yf').text(10);
 					$('.bzj').text(Number($('.yf').text())+Number($('.rwyj').text())+Number(summ));
 				}else{

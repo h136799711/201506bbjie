@@ -1,0 +1,220 @@
+<extend name="template/base_index" />
+
+<block name="area_header">
+	<link rel="stylesheet" href="__CSS__/shangjia2.css">
+	<style type="text/css">
+		#begin_time,#end_time,#count{ height: 30px;}
+	</style>
+</block>
+
+<block name="area_body">
+
+	<include file='Widget/sjtop' />
+	<div class="seller_main clearfix" controller="seller/common">
+		<div class="seller_content_wrap">
+
+			<div class="seller_content" style="padding-top: 10px;">
+
+					<div class="task-head">
+						<div class="breadcrumbs">
+							<a href="http://www.shifujie.net/seller/sf/seller/sf">淘宝活动</a>&gt;<span>任务计划管理：{$task['task_name']}</span>
+						</div><a class="look-other" href="#">查看任务试民</a>
+					</div>
+
+					<div class="content">
+
+						<div class="renwu-head">
+							<ul class="product-image">
+								<volist name='jihuas' id='c' >
+									<if condition="$c['info'][0]['task_id'] eq $task['id']">
+									<volist name='pro' id='v' key='a' ><if condition="$c['info'][0]['pid'] eq $v['info'][0]['id']"><li><img width="75px" height="75px" src="{$v['info'][0]['main_img']}" class="gray" id="" ></li></if></volist>
+									</if>
+								</volist>
+							</ul>
+							<div class="task-tongji">
+								<div class="tongji">
+									<span>总份数:<i><empty name="$task_play['task_cut']">0<else/>{$task_play['task_cut']}</empty></i></span>
+									<span>任务中:<i>0</i></span>
+									<span>已完成:<i>0</i></span>
+									<span style="margin-left: 20px;">单份任务金:<i>{$task['task_gold']}</i>元</span>
+								</div>
+								
+							</div>
+
+							<div class="option">
+								<a class="btn btn-renwu" modal-title="发放任务" data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 750, height:500}" href="javascriot:void(0)">发放任务</a> </div>
+
+						</div>
+
+						<div class="renwuku jquery-once-1-processed">
+							<div id="yw1" class="grid-view" controller="extend/gridview" data-options="{&#39;ajaxUpdate&#39;:[&#39;yw1&#39;],&#39;ajaxVar&#39;:&#39;ajax&#39;,&#39;pagerClass&#39;:&#39;pagination text-center&#39;,&#39;loadingClass&#39;:&#39;grid-view-loading&#39;,&#39;filterClass&#39;:&#39;filters&#39;,&#39;tableClass&#39;:&#39;items table table-hover&#39;,&#39;selectableRows&#39;:1,&#39;enableHistory&#39;:false,&#39;updateSelector&#39;:&#39;{page}, {sort}&#39;,&#39;filterSelector&#39;:&#39;{filter}&#39;,&#39;pageVar&#39;:&#39;Renwuku_page&#39;,&#39;arg_id&#39;:&#39;Renwuku&#39;}">
+								<table class="items table table-hover">
+									<thead>
+										<tr>
+											<th width="80" id="yw1_c0">搜索商品</th>
+											<th id="yw1_c1">关键字/搜索名称</th>
+											<th width="160" class="text-center" id="yw1_c2">模式限定</th>
+											<th width="100" id="yw1_c3">任务状态</th>
+											<th width="160" class="text-center" id="yw1_c4">领取状况</th>
+											<th class="text-center" width="200" id="yw1_c5"><a class="sort-link" href="http://www.shifujie.net/seller/sf/renwuku/index?task_id=59739&Renwuku_sort=start_time">任务时间<span class="caret"></span></a>
+											</th>
+											<th width="80" id="yw1_c6">操作</th>
+										</tr>
+									</thead>
+									<tbody>
+										<volist name='tp' id='tp'>
+										<tr class="odd">
+											<td>
+												<volist name='jihuas' id='c' >
+													<if condition="$c['info'][0]['task_id'] eq $task['id']">
+													<volist name='pro' id='v' key='a' ><if condition="$c['info'][0]['pid'] eq $v['info'][0]['id']"><li><img width="75px" height="75px" src="{$v['info'][0]['main_img']}" class="gray" id="" ></li></if></volist>
+													</if>
+												</volist>
+											</td>
+											<td>CK圆领修身长袖T恤男jeans
+												<br><a data-toggle="modal2" class="text-info small" modal-title="更改搜索设置" href="">更改搜索设置</a>
+											</td>
+											<td class="text-center">普通搜索</td>
+											<td class="text-center">
+												<div>
+													<div class="small muted">已分配：<i>1</i>
+													</div>
+													<div class="small muted">未分配：<i>0</i>
+													</div>
+													<div class="small muted">总份数：<i>{$tp['task_cut']}</i>
+													</div>
+												</div>&nbsp;</td>
+											<td class="text-center">
+												<div class="small">
+													<div class="inline-block" style="width:80px;">07-16 08:00</div>&nbsp;~&nbsp;
+													<div class="inline-block" style="width:80px;">07-16 21:00</div>
+													<div class="inline-block" style="vertical-align:-3px;"><a data-toggle="modal2" modal-title="更新任务时间" href="http://www.shifujie.net/seller/sf/renwuku/shijian?id=31834"><i class="s_icon edit1"></i></a>
+													</div>
+												</div>
+											</td>
+											<td>
+												<div class="renwu-caozuo small"><a target="_blank" href="http://www.shifujie.net/seller/work/shifu?renwuku_id=31834&step=all">查看试民</a>
+													<br><a data-toggle="modal2" modal-title="修改份数" href="http://www.shifujie.net/seller/sf/renwuku/fenshu?id=31834">修改份数</a>
+													<br><a data-role="ajax" href="http://www.shifujie.net/seller/sf/renwuku/stop?id=31834" id="yt1">暂停任务</a>
+												</div>&nbsp;</td>
+										</tr>
+										</volist>
+									</tbody>
+								</table>
+								<div class="row-fluid">
+									<div class="span6 offset3"></div>
+									<div class="span3">
+										<div class="summary">第 1-1 条, 共 1 条.</div>
+									</div>
+								</div>
+								<div class="keys" style="display:none" title=""><span>31834</span>
+								</div>
+							</div>
+						</div>
+	
+					</div>
+				</div>
+			</div>
+			<include file='Widget/sjleft' />
+		</div>
+		<div class="am-modal am-modal-no-btn" tabindex="-1" id="doc-modal-1">
+						<div class="am-modal-dialog" style="border-radius: 5px;">
+							<div class="am-modal-hd" style="border-bottom: 1px solid #ccc; text-align: left;font-size:18px;">
+								<font color="orangered">发放任务</font>
+								<a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>
+									&times;
+								</a>
+							</div>
+							<div class="am-modal-bd">
+								<form action="{:U('Home/SJActivity/create_tp')}" method="post">
+									<input type="hidden" name="tid" id="tid" value="{$task['id']}" />
+								<table style="margin-left: 160px; line-height:50px;" cellspacing="" cellpadding="" style="margin-top: 10px;">
+									<tr>
+										<td width="20%" style="text-align: right; padding-right: 5px; padding-top: 10px;">
+											对应任务：
+										</td>
+										<td style="padding-top: 10px;">
+											{$task['task_name']}
+										</td>
+									</tr>
+									<tr>
+										<td style="text-align: right;padding-right: 5px;padding-top: 10px;">
+											
+										</td>
+										<td style="font-size: 12px;padding-top: 10px;">
+											任务金试民<font id="zrwj" color="orangered">{$task['task_gold']}</font>=试民下单金额：<font id="xdje" color="orangered"></font> + 邮费：<font id="ysyf" color="orangered">{$task['task_postage']}</font>
+										</td>
+									</tr>
+									<tr>
+										<td style="text-align: right;padding-right: 5px;padding-top: 10px;">
+											进店方式：
+										</td>
+										<td style="font-size: 12px;padding-top: 10px;">
+											<select name="sele_type">
+												<option value="0">不限</option>
+												<option value="1">搜索模式（试民通过搜索进入店铺）</option>
+												<option value="2">老客户模式（试民通过收藏夹或购物车进入店铺）</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td style="text-align: right;padding-right: 5px;padding-top: 10px;">
+											发放时间：
+										</td>
+										<td style="padding-top: 10px;">
+											<input type="date" name="begin_time" id="begin_time"  />
+										</td>
+									</tr>
+									<tr>
+										<td style="padding-top: 10px;">
+											发放份数：
+										</td>
+										<td style="font-size: 12px;padding-top: 10px;">
+											<input type="number" name="count" id="count" value="" />&nbsp;&nbsp;您的账户余额：<font color="orangered">{$money}</font>
+										</td>
+									</tr>
+									
+									<tr>
+										<td style="padding-top: 10px;">
+										</td>
+										<td style="padding-top: 10px;">
+											<button type="submit" class="am-btn am-btn-primary am-btn-xs" style="width: 80px; height:30px;padding: 0;border-radius: 5px; ">
+												保存
+											</button>
+										</td>
+									</tr>
+								</table>
+								</form>
+							</div>
+						</div>
+					</div>
+</block>
+
+<block name="area_footer">
+	<script type="text/javascript">
+		$(function(){
+			var zrwj= $('#zrwj').text();
+			var ysyf= $('#ysyf').text();
+			var xdje= Number(zrwj)-Number(ysyf);
+			$('#xdje').text(xdje);
+			$("button[type='submit']").click(function(){
+				var btime=$('#begin_time').val();
+				var etime=$('#end_time').val();
+				var count=$('#count').val();
+				var sum=Number(count)*Number(zrwj);
+				if(count=='' || btime=='' || etime==''){
+					alert('请填写完整信息！');
+					return false;
+				}else{
+					if('{$money}'<sum){
+						alert('您的余额不足以支付任务佣金');
+						return false;
+					}else{
+						return true;
+					}
+				}
+			})
+		})
+	</script>
+</block>
+

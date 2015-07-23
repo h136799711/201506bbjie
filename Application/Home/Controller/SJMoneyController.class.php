@@ -32,7 +32,7 @@ class SJMoneyController extends CheckLoginController {
 			if ($rets['status']) {
 				$this -> success('你的充值请求已经提交，正在审核...', U('Home/Usersj/sj_zjgl'));
 			}
-			//
+			
 		}
 	}
 	/**
@@ -41,7 +41,6 @@ class SJMoneyController extends CheckLoginController {
 	 */
 	public function recharge(){
 		$user = session('user');
-		
 		$entity = array('uid' => $user['info']['id'],'imgurl'=>I('picurl'),'income' => I('post.money','').'.000' , 'defray' => '0.000', 'create_time' => time(), 'notes' => I('post.zhanghao','').'流水号：'.I("post.stnum",''), 'dtree_type' => 1, 'status' => 2, );
 		//dump($entity);
 		 $result = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entity));
@@ -69,15 +68,14 @@ class SJMoneyController extends CheckLoginController {
 			$rets = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
 			$lv = I('lv', '1');
 			$ap = array('vip_level' => $lv, );
-			$return = apiCall(HomePublicApi::Bbjmember_Seller_SaveByID, array($id, $ap));
+			$return = apiCall(HomePublicApi::Bbjmember_Seller_SaveByUID, array($id, $ap));
 			if ($return['status']) {
-				$entity = array('uid' => $user['info']['id'], 'defray' => $money . '.000', 'income' => '0.000', 'create_time' => time(), 'notes' => '用于开通会员', 'dtree_type' => 4, 'status' => 1, );
-				$result = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entity));
-				if ($result['status']) {
-
+				$entity = array('uid' => $id, 'defray' => $money . '.000', 'income' => '0.000', 'create_time' => time(), 'notes' => '用于开通会员', 'dtree_type' => 4, 'status' => 1, );
+				$resulta = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entity));
+				if ($resulta['status']) {
+					$return1=M('bbjmemberSeller')->where('uid='.$id)->setDec('coins',$money);
 					$this -> success('恭喜！你的服务已经成功开通...', U('Home/Usersj/index'));
 				}
-
 			}
 		} else {
 			$this -> error('密码错误  ，无法进行此操作');
@@ -112,22 +110,6 @@ class SJMoneyController extends CheckLoginController {
 			$this -> error('登录密码错误！', U('Home/Usersj/sj_zjgl'));
 		}
 	}
-	/**
-	 * 图片上传
-	 * 
-	 */
-	public function upload(){
-	    $upload = new \Think\Upload();// 实例化上传类
-	    $upload->maxSize   =     3145728 ;// 设置附件上传大小
-	    $upload->exts      =     array('jpg', 'gif', 'png', 'jpeg');// 设置附件上传类型
-	    $upload->rootPath  =     '../../Uploads/'; // 设置附件上传根目录
-	    $upload->savePath  =     'JYPZ'; // 设置附件上传（子）目录
-	    // 上传文件 
-	    $info   =   $upload->upload();
-	    if(!$info) {// 上传错误提示错误信息
-	        $this->error($upload->getError());
-	    }else{// 上传成功
-	    }
-	}
+	
 
 }

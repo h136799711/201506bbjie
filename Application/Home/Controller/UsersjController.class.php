@@ -248,7 +248,6 @@ class UsersjController extends CheckLoginController {
 		$this->assign('chongzhi',$chongzhi['info']['list']);
 		$this->assign('tixian',$tixian['info']['list']);
 		$this->assign('all',$jyjl['info']['list']);
-		$this -> assign('jilu', $jyjl['info']['list']);
 		$this -> assign('sum', $sum);
 		$this -> assign('show', $jyjl['info']['show']);
 		$this -> assign('show2', $tixian['info']['show']);

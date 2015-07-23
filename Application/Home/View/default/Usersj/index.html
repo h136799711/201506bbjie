@@ -46,11 +46,12 @@
 															<p>
 																<if condition="$sj.vip_level eq 1">
 																	会员等级 : vip会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">续费或开通超级会员</a> ]
-
 																</if>
 																<if condition="$sj.vip_level eq 2">
 																	会员等级 : 超级会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">续费超级会员</a> ]
-																	<else/> 会员等级 : 普通会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">开通会员</a> ]
+																</if>
+																<if condition="$sj.vip_level eq 0">
+																	会员等级 : 普通会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">开通会员</a> ]
 																</if>
 
 															</p>

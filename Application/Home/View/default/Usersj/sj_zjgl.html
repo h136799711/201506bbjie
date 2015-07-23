@@ -185,11 +185,13 @@
 											</tr>
 										</volist>
 									</empty>
+									
 								</tbody>
 								
 							</div>
-							</table>
 							
+							</table>
+							{$show}
 							<table class="price-table table table-hover" style="display: none;">
 								<thead>
 									<tr>
@@ -230,21 +232,21 @@
 										</volist>
 									</empty>
 								</tbody>
-								
 							</table>
-							
+														
 							<table class="price-table table table-hover" style="display: none;">
 								<thead>
 									<tr>
 										<th width="60" id="goodsorder-grid_c0">
 											<a class="sort-link" href="#">编号<span class="caret"></span></a>
 										</th>
-										<th width="220" id="goodsorder-grid_c1">收款帐号</th>
+										<th width="100" id="goodsorder-grid_c1">收款帐号</th>
 										<th width="80" id="goodsorder-grid_c2"><a class="sort-link" href="#">充值金额<span class="caret"></span></a>
 										</th>
-										<th width="100" id="goodsorder-grid_c3">流水号</th>
-										<th width="80" id="goodsorder-grid_c4">提交时间</th>
-										<th width="160" id="goodsorder-grid_c5">处理结果</th>
+										
+										<th width="200" id="goodsorder-grid_c4">提交时间</th>
+										<th width="100" id="goodsorder-grid_c5">处理结果</th>
+										<th width="100" id="goodsorder-grid_c3">变动原因</th>
 										<th id="goodsorder-grid_c6">系统备注</th>
 									</tr>
 								</thead>
@@ -260,7 +262,7 @@
 												<td>{$v.id}</td>
 												<td>{$username}</td>
 												<td>{$v.income}</td>
-												<td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+												<td>{$v.create_time|date='Y-m-d H:i:s',###}</td>
 												<td><if condition="$v.status eq 1">正常</if><if condition="$v.status eq 2">审核中</if><if condition="$v.status eq 3">冻结中</if></td>
 												<td><if condition="$v.dtree_type eq 1">后台充值</if><if condition="$v.dtree_type eq 2">系统奖励</if><if condition="$v.dtree_type eq 3">提现</if></td>
 												<td>{$v.notes}</td>
