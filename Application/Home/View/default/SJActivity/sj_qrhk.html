@@ -97,9 +97,10 @@
 									</tr>
 								</thead>
 								<tbody class="item odd">
-									<tr class="padding-tr"></tr>
 									<volist name="tshis" id="q">
 										<foreach name='task' item='vo' >
+									<tr class="padding-tr"></tr>
+									
 											<if condition="$vo['id'] eq $q['task_id']">
 												<tr class="list-tr">
 													<td>{$vo.id}</td>
