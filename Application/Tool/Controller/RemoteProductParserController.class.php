@@ -31,7 +31,6 @@ class RemoteProductParserController extends Controller{
                     $this->error("请输入正确的商品详情页地址!");
                     break;
             }
-
             $return_info = $parser->read_search();
 
             if(is_null($return_info)){
