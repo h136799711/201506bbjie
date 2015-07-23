@@ -116,7 +116,7 @@ class OrdersController extends AdminController {
 		//		}
 
 		//
-		$result = apiCall('Admin/OrdersInfoView/query', array($map, $page, $order, $params));
+		$result = apiCall('Shop/OrdersInfoView/query', array($map, $page, $order, $params));
 
 		//
 		if ($result['status']) {
@@ -158,12 +158,16 @@ class OrdersController extends AdminController {
 			$params['orderid'] = $orderid;
 		}
 		if ($userid > 0) {
-			$map['wxuser_id'] = $userid;
+			$map['user_id'] = $userid;
 			$params['uid'] = $userid;
 		}
-
-		//
-		$result = apiCall('Admin/OrdersInfoView/query', array($map, $page, $order, $params));
+		
+		/*dump($map);
+		dump($page);
+		dump($order);
+		dump($params);*/
+		
+		$result = apiCall('Shop/OrdersInfoView/query', array($map, $page, $order, $params));
 
 		//
 		if ($result['status']) {
@@ -214,7 +218,7 @@ class OrdersController extends AdminController {
 		}
 
 		//
-		$result = apiCall('Admin/OrdersInfoView/query', array($map, $page, $order, $params));
+		$result = apiCall('Shop/OrdersInfoView/query', array($map, $page, $order, $params));
 
 		//
 		if ($result['status']) {
@@ -366,7 +370,7 @@ class OrdersController extends AdminController {
 			}
 
 			//
-			$result = apiCall('Admin/OrdersInfoView/query', array($map, $page, $order, $params));
+			$result = apiCall('Shop/OrdersInfoView/query', array($map, $page, $order, $params));
 
 			//
 			if ($result['status']) {

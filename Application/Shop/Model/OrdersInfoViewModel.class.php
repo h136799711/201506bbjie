@@ -7,14 +7,14 @@
 // |-----------------------------------------------------------------------------------
 
 
-namespace Common\Model;
+namespace Shop\Model;
 
 use Think\Model\ViewModel;
 
 class OrdersInfoViewModel extends ViewModel{
 	
 	public $viewFields = array(
-		"Orders"=>array('_table'=>'__ORDERS__','_type'=>'LEFT','id','orderid','createtime','updatetime','user_id','price','items','status','pay_status','order_status'),
+		"Orders"=>array('_table'=>'__ORDERS__','_type'=>'LEFT','id','orderid','createtime','updatetime','user_id','price','status','pay_status','order_status'),
 		"OrderInfo"=>array("_on"=>"Orders.orderid=OrderInfo.orderid","_table"=>"__ORDERS_CONTACTINFO__",'_type'=>'LEFT','wxno','contactname','country','city','province','detailinfo','area','mobile')
 	);
 }

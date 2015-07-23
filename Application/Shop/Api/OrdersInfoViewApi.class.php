@@ -9,7 +9,7 @@
 
   namespace Shop\Api;
   use Common\Api\Api;
-  use Common\Model\OrdersInfoViewModel;
+  use Shop\Model\OrdersInfoViewModel;
   
   class OrdersInfoViewApi extends Api{
   	
