@@ -162,25 +162,25 @@ class OrdersController extends AdminController {
 			$params['uid'] = $userid;
 		}
 		
-		/*dump($map);
-		dump($page);
-		dump($order);
-		dump($params);*/
+//		dump($map);
+//		dump($page);
+//		dump($order);
+//		dump($params);
 		
 		$result = apiCall('Shop/OrdersInfoView/query', array($map, $page, $order, $params));
-
+		dump($result);
 		//
-		if ($result['status']) {
-			$this -> assign('orderid', $orderid);
-			$this -> assign('payStatus', $payStatus);
-			$this -> assign('orderStatus', $orderStatus);
-			$this -> assign('show', $result['info']['show']);
-			$this -> assign('list', $result['info']['list']);
-			$this -> display();
-		} else {
-			LogRecord('INFO:' . $result['info'], '[FILE] ' . __FILE__ . ' [LINE] ' . __LINE__);
-			$this -> error($result['info']);
-		}
+//		if ($result['status']) {
+//			$this -> assign('orderid', $orderid);
+//			$this -> assign('payStatus', $payStatus);
+//			$this -> assign('orderStatus', $orderStatus);
+//			$this -> assign('show', $result['info']['show']);
+//			$this -> assign('list', $result['info']['list']);
+//			$this -> display();
+//		} else {
+//			LogRecord('INFO:' . $result['info'], '[FILE] ' . __FILE__ . ' [LINE] ' . __LINE__);
+//			$this -> error($result['info']);
+//		}
 	}
 
 	/**

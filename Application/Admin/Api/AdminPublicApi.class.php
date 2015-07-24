@@ -33,4 +33,16 @@ class AdminPublicApi {
 	 * 商品
 	 * */
 	const Wxproduct_QueryNoPaging="Admin/Wxproduct/queryNoPaging";
+	
+	/*
+	 * 地址管理
+	 * */
+	const Address_Add="Admin/OrdersInfoView/add";
+	const Address_Query="Admin/OrdersInfoView/queryNoPaging";
+	const Address_saveByID="Admin/OrdersInfoView/saveByID";
+	const Address_Del="Admin/OrdersInfoView/delete";
+	/*
+	 * 订单
+	 * */
+	const Orders_Add="Admin/Orders/add";
 }

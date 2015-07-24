@@ -56,47 +56,75 @@ class SJActivityController extends CheckLoginController {
 	 	$mm = array('id' => I('id',0));
 		$result_tast = apiCall(HomePublicApi::Task_Query, array($mm));
 		$result_play = apiCall(HomePublicApi::TaskPlan_Query, array($mm));
-		for ($i = 0; $i < count($result_tast['info']); $i++) {
-			$id = $result_tast['info'][$i]['id'];
-			$map4 = array('task_id' => $id);
-			$results[] = apiCall(HomePublicApi::TaskHasProduct_Query, array($map4));
-		}
-		for ($j = 0; $j < count($results); $j++) {
-			$pid = array('id' => $results[$j]['info'][0]['pid']);
-			$producta[] = apiCall(HomePublicApi::Product_Query, array($pid));
-		}
+		$results = apiCall(HomePublicApi::TaskHasProduct_Query, array($map4));
+		$producta = apiCall(HomePublicApi::Product_Query, array($pid));
 		$user = session('user');
 		$uid = array('uid' => $user['info']['id']);
 		$result = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($uid));
 		$page = array('curpage' => I('get.p', 0), 'size' => 6);
 		$map=array('uid'=>$user['info']['id']);
 		$resultAll = apiCall(HomePublicApi::TaskPlan_QueryAll, array($map,$page));
+		$fenpeimap=array('task_id'=>I('id',0));
+		$wanchengmap=array('task_id'=>I('id',0),'do_status'=>2);
+		$fcount=apiCall(HomePublicApi::Task_His_Query, array($fenpeimap));
+		$scount=apiCall(HomePublicApi::Task_His_Query, array($fenpeimap));
+		$this->assign('fcount',count($fcount['info']));
+		$this->assign('scount',count($scount['info']));
 		$this->assign('tp',$resultAll['info']['list']);
+		$this->assign('show',$resultAll['info']['show']);
 		$this->assign('money',$result['info'][0]['coins']);
 		$this->assign('task_play',$result_play['info'][0]);
 		$this->assign('task',$result_tast['info'][0]);
-		$this -> assign('jihuas', $results);
-		$this -> assign('pro', $producta);
+		$this -> assign('jihuas', $results['info']);
+		$this -> assign('pro', $producta['info']);
+//		dump($resulta);
 	 	$this->display();
 	 }
+	/*
+	 * 平台发货
+	 * */
+	public function sj_pingtai(){
+		
+		$user = session('user');
+		$map1 = array('uid' => $user['info']['id'], 'delivery_mode' => 1);
+		$result = apiCall(HomePublicApi::Task_Query, array($map1));
+		
+		$taskhis = apiCall(HomePublicApi::Task_His_Query, array($whe));
+		$this -> assign('tshis', $taskhis['info']);
+		$headtitle = "宝贝街-活动";
+		$this -> assign('head_title', $headtitle);
+		$this -> assign('task', $result['info']);
+		$this -> assign('username', $user['info']['username']);
+//		dump($taskhis);
+		$this -> display();
+	}
 	 /*
 	  * 发放任务
 	  * */
 	public function create_tp(){
 		$user=session('user');
+		$zongjia=I('zong','0.00');
 		$entity=array(
 			'uid'=>$user['info']['id'],
-			'start_time'=>I('begin_time',0),
+			'start_time'=>strtotime(I('begin_time',0)),
 			'enter_way'=>I('sele_type',0),
 			'task_cnt'=>I('count',0),
 			'create_time'=>time(),
 			'search_way_id'=>0,
 			'task_id'=>I('tid',0),
 		);
+//		dump($zongjia);
 		$result = apiCall(HomePublicApi::TaskPlan_Add, array($entity));
-		if($result['status']){
-			$this->success('发放成功！',U('Home/SJActivity/sj_tbhd'));
+		$entitya = array('uid' => $user['info']['id'], 'defray' => $zongjia . '.000', 'income' => '0.000', 'create_time' => time(), 'notes' => '冻结任务佣金', 'dtree_type' => 5, 'status' => 3, );
+		$resulta = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entitya));
+		if ($resulta['status']) {
+			$return1=M('bbjmemberSeller')->where('uid='.$user['info']['id'])->setDec('coins',$zongjia);
+			$return2=M('bbjmemberSeller')->where('uid='.$user['info']['id'])->setInc('frozen_money',$zongjia);
+			if($return1 && $return2){
+				$this->success('发放成功！',U('Home/SJActivity/sj_tbhd'));
+			}
 		}
+		
 	}
 	/*
 	 * 改变任务状态

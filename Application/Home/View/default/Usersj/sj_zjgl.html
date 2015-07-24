@@ -23,9 +23,8 @@
 	</style>
 	<link type="text/css" rel="stylesheet" href="__CDN__/comp/wxuploader.css?v=__APP_VERSION__" />
 	<link rel="stylesheet" type="text/css" href="__CDN__/nprogress/nprogress.css" />
-
 	<script type="text/javascript" src="__CDN__/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-		<link type="text/css" rel="stylesheet" src="__CDN__/jquery-uploadify/3.2.1/uploadify.css" />
+	<link type="text/css" rel="stylesheet" src="__CDN__/jquery-uploadify/3.2.1/uploadify.css" />
 	<script type="text/javascript" src="__CDN__/jquery-uploadify/3.2.1/jquery.uploadify.min.js"></script>
 </block>
 
@@ -141,6 +140,7 @@
 					<script type="text/javascript">
 						function changeBB(i){
 							$(".bb ul li").eq(i).addClass("active").siblings().removeClass("active");
+							//$(".bb div table").eq(i).append("<div>{$show}</div>");
 							$(".bb div table").eq(i).show().siblings().hide();
 						}
 					</script>
@@ -182,8 +182,11 @@
 												<td>{$v.income}</td>
 												<td>{$v.defray}</td>
 												<td>{$coins}</td>
+										
 											</tr>
 										</volist>
+										<tr><td colspan="6">{$show}</td></tr>
+										
 									</empty>
 									
 								</tbody>
@@ -191,7 +194,7 @@
 							</div>
 							
 							</table>
-							{$show}
+							
 							<table class="price-table table table-hover" style="display: none;">
 								<thead>
 									<tr>
@@ -230,6 +233,7 @@
 												<td>{$v.notes}</td>
 											</tr>
 										</volist>
+										<tr><td colspan="6">{$show2}</td></tr>
 									</empty>
 								</tbody>
 							</table>
@@ -256,6 +260,7 @@
 											<td colspan="6" class="empty"><span class="empty">没有找到数据.</span>
 											</td>
 										</tr>
+										
 										<else />
 										<volist name="chongzhi" id="v">
 											<tr>
@@ -268,6 +273,7 @@
 												<td>{$v.notes}</td>
 											</tr>
 										</volist>
+										<tr><td colspan="6">{$show3}</td></tr>
 									</empty>
 								</tbody>
 							</table>

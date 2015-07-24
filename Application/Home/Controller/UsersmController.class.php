@@ -294,16 +294,21 @@ class UsersmController extends CheckLoginController {
 			$this -> assign('username', $user['info']['username']);
 			$user = session('user');
 			$uid = $user['info']['id'];
-			$map = array('uid' => $uid, );
-			$result = apiCall(HomePublicApi::Address_Query, array($map));
+			$map = array('wxuser_id' => $uid, );
+			$result = apiCall(AdminPublicApi::Address_Query, array($map));
 			$this -> assign('address', $result['info']);
 			$this->posts();
 			$this -> assign('cs_dz', 'sed');
 			$this -> display('manager_address');
 		} else {
-			$ars = array('uid' => $user['info']['id'], 'country' => "中国", 'province' => I('sheng'), 'city' => I('shi'), 'area' => I('qu'), 'detail' => I('address', ''), 'contact_name' => I('name', ''), 'mobile' => I('mobile', ''), 'telphone' => I('phone', ''), 'post_code' => I('yb', ''), 'create_time' => time(), );
-			$result = apiCall(HomePublicApi::Address_Add, array($ars));
-
+			$ars = array('wxuser_id' => $user['info']['id'], 'country' => "中国",
+			 'province' => I('sheng'), 'city' => I('shi'), 'area' => I('qu'),
+			  'detailinfo' => I('address', ''), 'contactname' => I('name', ''), 
+			  'mobile' => I('mobile', ''), 
+			  'notes'=>'','wxno'=>'','orderid'=>'');
+//			  dump($ars);
+			$result = apiCall(AdminPublicApi::Address_Add, array($ars));
+			dump($result);
 			if ($result['status']) {
 				$this -> success("操作成功！", U('Home/Usersm/address'));
 			}

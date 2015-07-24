@@ -4,6 +4,7 @@
 	<link rel="stylesheet" href="__CSS__/shangjia2.css">
 	<style type="text/css">
 		#begin_time,#end_time,#count{ height: 30px;}
+		#yw1 li{list-style-type: none;}
 	</style>
 </block>
 
@@ -17,7 +18,7 @@
 
 					<div class="task-head">
 						<div class="breadcrumbs">
-							<a href="http://www.shifujie.net/seller/sf/seller/sf">淘宝活动</a>&gt;<span>任务计划管理：{$task['task_name']}</span>
+							<a href="">淘宝活动</a>&gt;<span>任务计划管理：{$task['task_name']}</span>
 						</div><a class="look-other" href="#">查看任务试民</a>
 					</div>
 
@@ -26,16 +27,16 @@
 						<div class="renwu-head">
 							<ul class="product-image">
 								<volist name='jihuas' id='c' >
-									<if condition="$c['info'][0]['task_id'] eq $task['id']">
-									<volist name='pro' id='v' key='a' ><if condition="$c['info'][0]['pid'] eq $v['info'][0]['id']"><li><img width="75px" height="75px" src="{$v['info'][0]['main_img']}" class="gray" id="" ></li></if></volist>
+									<if condition="$c['task_id'] eq $task['id']">
+									<volist name='pro' id='v' key='a' ><if condition="$c['pid'] eq $v['id']"><li><img width="75px" height="75px" src="{$v['main_img']}" class="gray" id="" ></li></if></volist>
 									</if>
 								</volist>
 							</ul>
 							<div class="task-tongji">
 								<div class="tongji">
 									<span>总份数:<i><empty name="$task_play['task_cut']">0<else/>{$task_play['task_cut']}</empty></i></span>
-									<span>任务中:<i>0</i></span>
-									<span>已完成:<i>0</i></span>
+									<span>任务中:<i>{$fcount}</i></span>
+									<span>已完成:<i>{$scount}</i></span>
 									<span style="margin-left: 20px;">单份任务金:<i>{$task['task_gold']}</i>元</span>
 								</div>
 								
@@ -56,7 +57,7 @@
 											<th width="160" class="text-center" id="yw1_c2">模式限定</th>
 											<th width="100" id="yw1_c3">任务状态</th>
 											<th width="160" class="text-center" id="yw1_c4">领取状况</th>
-											<th class="text-center" width="200" id="yw1_c5"><a class="sort-link" href="http://www.shifujie.net/seller/sf/renwuku/index?task_id=59739&Renwuku_sort=start_time">任务时间<span class="caret"></span></a>
+											<th class="text-center" width="100" id="yw1_c5"><a class="sort-link" href="">任务时间<span class="caret"></span></a>
 											</th>
 											<th width="80" id="yw1_c6">操作</th>
 										</tr>
@@ -66,28 +67,32 @@
 										<tr class="odd">
 											<td>
 												<volist name='jihuas' id='c' >
-													<if condition="$c['info'][0]['task_id'] eq $task['id']">
-													<volist name='pro' id='v' key='a' ><if condition="$c['info'][0]['pid'] eq $v['info'][0]['id']"><li><img width="75px" height="75px" src="{$v['info'][0]['main_img']}" class="gray" id="" ></li></if></volist>
+													<if condition="$c['task_id'] eq $tp['task_id']">
+													<volist name='pro' id='v' key='a' ><if condition="$c['pid'] eq $v['id']"><li><img width="75px" height="75px" src="{$v['main_img']}" class="gray" id="" ></li></if></volist>
 													</if>
 												</volist>
 											</td>
-											<td>CK圆领修身长袖T恤男jeans
-												<br><a data-toggle="modal2" class="text-info small" modal-title="更改搜索设置" href="">更改搜索设置</a>
+											<td><volist name='jihuas' id='c' >
+													<if condition="$c['task_id'] eq $tp['task_id']">
+													<volist name='pro' id='v' key='a' ><if condition="$c['pid'] eq $v['id']"><li>{$c['pname']}</li><br></if></volist>
+													</if>
+												</volist>
+												<a data-toggle="modal2" class="text-info small" modal-title="更改搜索设置" href="">更改搜索设置</a>
 											</td>
 											<td class="text-center">普通搜索</td>
+											<td class="text-center"> </td>
 											<td class="text-center">
 												<div>
-													<div class="small muted">已分配：<i>1</i>
+													<div class="small muted">已分配：<i>{$fcount}</i>
 													</div>
-													<div class="small muted">未分配：<i>0</i>
+													<div class="small muted">未分配：<i>{$fcount}</i>
 													</div>
-													<div class="small muted">总份数：<i>{$tp['task_cut']}</i>
+													<div class="small muted">总份数：<i>{$tp.task_cnt}</i>
 													</div>
 												</div>&nbsp;</td>
 											<td class="text-center">
 												<div class="small">
-													<div class="inline-block" style="width:80px;">07-16 08:00</div>&nbsp;~&nbsp;
-													<div class="inline-block" style="width:80px;">07-16 21:00</div>
+													<div class="inline-block" style="width:80px;">{$tp.start_time|date='m-d H:i',###}</div>&nbsp;&nbsp;
 													<div class="inline-block" style="vertical-align:-3px;"><a data-toggle="modal2" modal-title="更新任务时间" href="http://www.shifujie.net/seller/sf/renwuku/shijian?id=31834"><i class="s_icon edit1"></i></a>
 													</div>
 												</div>
@@ -104,7 +109,7 @@
 								<div class="row-fluid">
 									<div class="span6 offset3"></div>
 									<div class="span3">
-										<div class="summary">第 1-1 条, 共 1 条.</div>
+										<div class="summary">{$show}</div>
 									</div>
 								</div>
 								<div class="keys" style="display:none" title=""><span>31834</span>
@@ -128,6 +133,7 @@
 							<div class="am-modal-bd">
 								<form action="{:U('Home/SJActivity/create_tp')}" method="post">
 									<input type="hidden" name="tid" id="tid" value="{$task['id']}" />
+									<input type="hidden" name="zong" id="zong" value="" />
 								<table style="margin-left: 160px; line-height:50px;" cellspacing="" cellpadding="" style="margin-top: 10px;">
 									<tr>
 										<td width="20%" style="text-align: right; padding-right: 5px; padding-top: 10px;">
@@ -202,6 +208,7 @@
 				var etime=$('#end_time').val();
 				var count=$('#count').val();
 				var sum=Number(count)*Number(zrwj);
+				
 				if(count=='' || btime=='' || etime==''){
 					alert('请填写完整信息！');
 					return false;
@@ -210,6 +217,7 @@
 						alert('您的余额不足以支付任务佣金');
 						return false;
 					}else{
+						$('#zong').val(sum);
 						return true;
 					}
 				}

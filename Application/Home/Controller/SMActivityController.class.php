@@ -344,19 +344,43 @@ class SMActivityController extends CheckLoginController {
 	 * */
 	public function savedd(){
 		$id=I('hsid','');
-		$entity=array(
-			'tb_orderid'=>I('order_num',''),
-			'tb_address'=>I('address',''),
-			'tb_price'=>I('zhifu_price','0.00'),
-		);
-		
-		$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$entity));
-//		dump($result);
-		if($result['status']){
-			$this->success('提交成功！！，请关注任务动态',U('Home/Usersm/sm_bbhd'));
+		$user=session('user');
+		$spid=I('pid',0);
+		if($spid==0){
+			$entity=array(
+				'tb_orderid'=>I('order_num',''),
+				'tb_address'=>I('address',''),
+				'tb_price'=>I('zhifu_price','0.00'),
+			);
+			$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$entity));
+//			dump($result);
+			if($result['status']){
+				$this->success('提交成功！！，请关注任务动态',U('Home/Usersm/sm_bbhd'));
+			}else{
+				$this->error($result['info']);
+			}
 		}else{
-			$this->error($result['info']);
+			$entity=array(
+				'user_id'=>$user['info']['id'],
+				'orderid'=>'',
+				'price'=>'0.00',
+				'note'=>I('notes','无'),
+				'status'=>2,
+				'par_status'=>1,
+				'order_status'=>0,
+				'createtime'=>time(),
+				'updatetime'=>time(),
+				'exchange_id'=>$spid,
+				'wxaccountid'=>0,
+				'comment_status'=>1,
+				
+			);
+			$result=apiCall(AdminPublicApi::Orders_Add,array($entity));
+			if($result['status']){
+				$this->success('提交成功！！，已提交后台审核',U('Home/Usersm/sm_bbhd'));
+			}
 		}
+		
 	}
 	
 	/*

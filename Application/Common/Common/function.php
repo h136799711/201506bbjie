@@ -123,6 +123,26 @@ function getDataRange($type) {
 }
 
 /**
+ * 获取支付状态的文字描述
+ */
+function getPayStatus($status) {
+	switch($status) {
+		case \Common\Model\OrdersModel::ORDER_PAID :
+			return "已支付";
+		case \Common\Model\OrdersModel::ORDER_TOBE_PAID :
+			return "待支付";
+		case \Common\Model\OrdersModel::ORDER_REFUND :
+			return "已退款";
+		case \Common\Model\OrdersModel::ORDER_CASH_ON_DELIVERY :
+			return "货到付款";
+			
+		default :
+			return "未知";
+	}
+}
+
+
+/**
  * 返回 是|否
  * @param $param 一个值|对象等
  * @return 空|false|0 时返回否，否则返回是

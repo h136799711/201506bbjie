@@ -314,6 +314,7 @@
 																<label for="address_id" class="control-label">淘宝下单地址：</label>
 																<input type="hidden" name="address" id="address" value="" />
 																<input type="hidden" name="hsid" id="hsid" value="{$hsid}" />
+																<input type="hidden" name="pid" id="spid" value="">
 																<div class="controls">
 																	<div id="address">
 																		<empty name="address">
@@ -321,6 +322,7 @@
 																			<else/>
 																		<volist name="address" id="add">
 																		<span id="address_id"><label class="radio"><input class="radio" value="{$add['contact_name']}，{$add['mobile']}，{$add['province']} {$add['city']} {$add['detail']}" id="address_id_0" type="radio" name="address_id"> {$add['contact_name']}，{$add['mobile']}，{$add['province']} {$add['city']} {$add['detail']} </label></span>
+																		
 																		<!--<a class="showaddress" href="javascript:;">∨展开已有地址</a>-->
 																		</volist>
 																		</empty>
@@ -333,10 +335,9 @@
 																<label style="margin-right:20px;" class="control-label" for="check_fb">我的试福选择：</label><br>
 																<div class="controls"><span id="check_fb"><label class="radio"><input value="2" id="check_fb_0" checked="checked" type="radio" name="check_fb"> 我要福币<i class="mjz">(8福币+精美小礼品)</i></label> </div>
 															</div>
-															<input type="hidden" name="select_goods_id" id="select_goods_id" value="">
-															<input type="hidden" name="select_id" value="">
-															<input type="hidden" name="select_type" value="">
-															<input type="hidden" name="apply_id" id="apply_id" value="1845670">
+															
+															
+															
 															<div style="margin-top:-10px;line-height:1.2em;margin-left:22px;" class="control-group clearfix">
 																<div class="controls small" id="goods_specs"></div>
 															</div>
@@ -344,7 +345,7 @@
 															<div class="control-group">
 																<label class="control-label" for="submit_beizhu">相关备注：</label>
 																<div class="controls">
-																	<textarea placeholder="如果有需要给商家留言的话，可以在这里备注" style="width:300px;height:50px;" name="submit_beizhu" id="submit_beizhu"></textarea>
+																	<textarea placeholder="如果有需要给商家留言的话，可以在这里备注" style="width:300px;height:50px;"  name="notes" id="submit_beizhu"></textarea>
 																</div>
 															</div>
 															<div class="form-actions">
@@ -388,6 +389,7 @@
 																	<volist name='product' id='w'>
 																		<if condition="$exchange['p_id'] eq $w['id']">
 																			<img src="{$w['main_img']}" alt=""> </div>
+																			<input type="hidden" name="pid" id="pid" value="{$exchange['id']}" />
 																			<div class="xuanze"><i></i>已选择福币，包裹里还有小惊喜，一定要签收呦~</div>
 																		</if>
 																	</volist>
@@ -433,6 +435,8 @@
 <block name="area_footer">
  <script type="text/javascript">
  	$(function(){
+ 		var a=$('#pid').val();
+ 		$('#spid').val(a);
  		$(".radio").click(function(){
  			var val=$('input:radio[name="address_id"]:checked').val();
  			$('#address').val(val);
