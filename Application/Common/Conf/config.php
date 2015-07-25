@@ -6,7 +6,7 @@
 
 return array(
 
-	'LOAD_EXT_CONFIG' => 'datatree,auth', 
+	'LOAD_EXT_CONFIG' => 'datatree,auth,express', 
 	'AUTOLOAD_NAMESPACE'=>array(
 		'Modules'=>__ROOT__.'/Modules'
 	),

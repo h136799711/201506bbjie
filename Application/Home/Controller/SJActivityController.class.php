@@ -225,11 +225,27 @@ class SJActivityController extends CheckLoginController {
 	 * 订单确认
 	 * */
 	public function qrhk(){
-		$id=I('id','');
+		$id=I('id',0);
+		$umap=array('id'=>$id);
+		$tid=I('tid',0);
+		$smap=array('id'=>$tid);
 		$entity=array('do_status'=>2);
 		$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$entity));
 		if($result['status']){
-			$this->success('任务操作成功',U('Home/SJActivity/sj_tbhd'));
+			$us=apiCall(HomePublicApi::Task_His_Query,array($umap));
+			$uid=$us['info'][0]['uid'];
+			$sel=apiCall(HomePublicApi::Task_Query,array($smap));
+			$money=$sel['info'][0]['task_gold'];
+			$sid=$sel['info'][0]['uid'];
+//			dump($uid);dump($sid);dump($money);
+			$return=M('bbjmember')->where('uid='.$uid)->setInc('coins',$money);
+			$return1=M('bbjmemberSeller')->where('uid='.$sid)->setDec('frozen_money',$money);
+			if($return!=0 &&$return1 !=0){
+				$entity = array('uid' => $sid, 'defray' => $money, 'income' => '0.000', 'create_time' => time(), 'notes' => '任务结算返还试民', 'dtree_type' => 6, 'status' => 1, );
+				$result1 = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entity));
+				$this->success('任务操作成功',U('Home/SJActivity/sj_tbhd'));
+			}
+			
 		}else{
 			$this->error('系统未知错误',U('Home/SJActivity/sj_tbhd'));
 		}
@@ -359,7 +375,7 @@ class SJActivityController extends CheckLoginController {
 		$map = array('uid' => $user['info']['id']);
 		$sj = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
 		
-		$entity = array('uid' => $user['info']['id'], 'aliwawa' => $sj['info'][0]['aliwawa'], 'delivery_mode' => '', 'create_time' => time(), 'task_gold' => '0.00', 'task_brokerage' => '0.00', 'task_postage' => '0.00', 'update_time' => time(), 'dtree_preferential' => '', 'task_name' => '', 'notes' => '', 'chat_argot' => '', 'task_do_type' => '', 'task_status' => 1, );
+		$entity = array('uid' => $user['info']['id'], 'aliwawa' => $sj['info'][0]['aliwawa'], 'delivery_mode' => '', 'create_time' => time(), 'task_gold' => '0.00', 'task_brokerage' => '0.00', 'task_postage' => '0.00', 'update_time' => time(), 'dtree_preferential' => '', 'task_name' => '', 'notes' => '', 'chat_argot' => '', 'task_do_type' => 1, 'task_status' => 1, );
 		$result1 = apiCall(HomePublicApi::Task_Add, array($entity));
 		foreach ($al as $key => $value) {
 			if ($count < count($al['title'])) {
@@ -457,7 +473,7 @@ class SJActivityController extends CheckLoginController {
 		$map = array('uid' => $uid);
 		$rets = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
 		if ($result['status']) {
-			$ap = array('coins' => $rets['info'][0]['coins'] - $money,'frozen_money'=>$rets['info'][0]['coins']+$money );
+			$ap = array('coins' => $rets['info'][0]['coins'] - $money,'frozen_money'=>$rets['info'][0]['frozen_money']+$money );
 			$return = apiCall(HomePublicApi::Bbjmember_Seller_SaveByID, array($uid, $ap));
 			if ($return['status']) {
 				$entity = array('uid' => $user['info']['id'], 'defray' => $money, 'income' => '0.000', 'create_time' => time(), 'notes' => '任务冻结金额', 'dtree_type' => 5, 'status' => 3, );

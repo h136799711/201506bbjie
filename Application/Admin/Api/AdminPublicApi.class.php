@@ -37,12 +37,14 @@ class AdminPublicApi {
 	/*
 	 * 地址管理
 	 * */
-	const Address_Add="Admin/OrdersInfoView/add";
-	const Address_Query="Admin/OrdersInfoView/queryNoPaging";
-	const Address_saveByID="Admin/OrdersInfoView/saveByID";
-	const Address_Del="Admin/OrdersInfoView/delete";
+	const Order_Address_Add="Admin/OrdersContactinfo/add";
+	const Order_Address_Query="Admin/OrdersContactinfo/queryNoPaging";
+	const Order_Address_saveByID="Admin/OrdersContactinfo/saveByID";
+	const Order_Address_Del="Admin/OrdersContactinfo/delete";
 	/*
 	 * 订单
 	 * */
 	const Orders_Add="Admin/Orders/add";
+	const Orders_SaveByID="Admin/Orders/saveByID";
+	const Orders_Query="Admin/Orders/queryNoPaging";
 }

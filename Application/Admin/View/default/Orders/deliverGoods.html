@@ -70,11 +70,12 @@
 							用户ID
 						</th>
 						<th>
-							联系电话
+							联系人
 						</th>
 						<th>
-							总价格(元)
+							联系电话
 						</th>
+						
 						<th>
 							邮寄地址
 						</th>
@@ -104,18 +105,19 @@
 									<a href="{:U('Admin/Orders/view',array('id'=>$vo['id']))}">{$vo.orderid}</a>
 								</td>
 								<td>
-									{$vo.wxuser_id}
+									{$vo.user_id}
+								</td>
+								<td>
+									{$vo.contactname}
 								</td>
 								<td>
 									{$vo.mobile}
 								</td>
-								<td>
-									{:number_format($vo['price']/100.0,1)}
-								</td>
+								
 								<td>{$vo.province},{$vo.city},{$vo.area},{$vo.detailinfo}
 								</td>
 								<td>
-									[{$vo.pay_status|getPayStatus}]
+									[已发货]
 								</td>
 								<td>
 									{$vo.createtime|date='Y-m-d h:i:s',###}

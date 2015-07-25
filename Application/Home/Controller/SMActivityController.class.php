@@ -273,7 +273,7 @@ class SMActivityController extends CheckLoginController {
 					'create_time'=>time(),
 					'tb_orderid'=>'',
 					'tb_address'=>'',
-					'tb_price'=>'0.00',
+					'tb_price'=>$result['info'][0]['task_gold'],
 					'task_id'=>$result['info'][0]['id'],
 					'uid'=>$user['info']['id'],
 				);
@@ -305,7 +305,6 @@ class SMActivityController extends CheckLoginController {
 		$id=I('id',0);
 		$tk=array('id'=>$id);
 		$map=array('task_id'=>$id);
-		
 		$task=apiCall(HomePublicApi::Task_Query, array($tk));
 		$this->assign('task',$task['info'][0]);
 		$result=apiCall(HomePublicApi::TaskHasProduct_Query, array($map));
@@ -318,8 +317,6 @@ class SMActivityController extends CheckLoginController {
 		$this->assign('hsid',$taskhisid);
 		$this->assign('pd',$return['info'][0]);
 		$this->assign('search',$returns['info'][0]);
-//		dump($task);
-
 		$map=array('uid'=>$user['info']['id'],'exchange_status'=>1);
 		$re=apiCall(HomePublicApi::ExchangeProduct_Query,array($map));
 		$this->assign('exchange',$re['info'][0]);
@@ -346,40 +343,68 @@ class SMActivityController extends CheckLoginController {
 		$id=I('hsid','');
 		$user=session('user');
 		$spid=I('pid',0);
-		if($spid==0){
-			$entity=array(
-				'tb_orderid'=>I('order_num',''),
-				'tb_address'=>I('address',''),
-				'tb_price'=>I('zhifu_price','0.00'),
-			);
-			$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$entity));
-//			dump($result);
-			if($result['status']){
-				$this->success('提交成功！！，请关注任务动态',U('Home/Usersm/sm_bbhd'));
-			}else{
-				$this->error($result['info']);
-			}
+		$addid=array('id'=>I('address',0));
+		$result_address=apiCall(HomePublicApi::Address_Query, array($addid));
+		if($result_address['info']==null){
+			$this->error('无法获取地址信息，请重试或确认你的地址信息');
 		}else{
-			$entity=array(
-				'user_id'=>$user['info']['id'],
-				'orderid'=>'',
-				'price'=>'0.00',
-				'note'=>I('notes','无'),
-				'status'=>2,
-				'par_status'=>1,
-				'order_status'=>0,
-				'createtime'=>time(),
-				'updatetime'=>time(),
-				'exchange_id'=>$spid,
-				'wxaccountid'=>0,
-				'comment_status'=>1,
-				
-			);
-			$result=apiCall(AdminPublicApi::Orders_Add,array($entity));
-			if($result['status']){
-				$this->success('提交成功！！，已提交后台审核',U('Home/Usersm/sm_bbhd'));
+			$address=$result_address['info'][0];
+			if($spid==0){
+				$entity=array(
+					'tb_orderid'=>I('order_num',0),
+					'tb_address'=>$address['province'].$address['city'].$address['detail'].$address['area'].$address['detail'].$address['contact_name'].$address['mobile'],
+					'tb_price'=>I('zhifu_price','0.00'),
+				);
+				$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$entity));
+	//			dump($result);
+				if($result['status']){
+					$this->success('提交成功！！，请关注任务动态',U('Home/Usersm/sm_bbhd'));
+				}else{
+					$this->error($result['info']);
+				}
+			}else{
+				$entity=array(
+					'tb_orderid'=>I('order_num',0),
+					'tb_address'=>$address['province'].$address['city'].$address['detail'].$address['area'].$address['detail'].$address['contact_name'].$address['mobile'],
+					'tb_price'=>I('zhifu_price','0.00'),
+				);
+				$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$entity));
+				$entity=array(
+					'user_id'=>$user['info']['id'],
+					'orderid'=>I('order_num',''),
+					'price'=>'0.00',
+					'note'=>I('notes','无'),
+					'status'=>2,
+					'pay_status'=>1,
+					'order_status'=>2,
+					'createtime'=>time(),
+					'updatetime'=>time(),
+					'exchange_id'=>$spid,
+					'wxaccountid'=>1,
+					'comment_status'=>1,
+				);
+				$result=apiCall(AdminPublicApi::Orders_Add,array($entity));
+				$ads=array(
+					'contactname'=>$address['contact_name'],
+					'wxuser_id'=>$address['uid'],
+					'country'=>$address['country'],
+					'province'=>$address['province'],
+					'detailinfo'=>$address['detail'],
+					'area'=>$address['area'],
+					'mobile'=>$address['mobile'],
+					'notes'=>I('notes','无'),
+					'wxno'=>1,
+					'orderid'=>I('order_num',''),
+					'city'=>$address['city'],
+				);
+				$results=apiCall(AdminPublicApi::Order_Address_Add,array($ads));
+				if($result['status'] && $results['status']){
+					$this->success('提交成功！！，已提交后台审核',U('Home/Usersm/sm_bbhd'));
+				}
 			}
+			
 		}
+		
 		
 	}
 	

@@ -158,7 +158,7 @@
 									<a href="{:U('Admin/Orders/view',array('id'=>$vo['id']))}">{$vo.orderid}</a>
 								</td>
 								<td>
-									{$vo.wxuser_id}
+									{$vo.user_id}
 								</td>
 								<td>
 									{$vo.mobile}
@@ -176,7 +176,7 @@
 									{$vo.createtime|date='Y-m-d H:i:s',###}
 								</td>
 								<td>
-									<a href="{:U('Admin/Wxpay/orderQuery',array('orderid'=>$vo['orderid']))}" class="btn btn-default btn-sm "><i class="fa fa-credit-card"></i>查询订单支付记录</a>
+									<!--<a href="{:U('Admin/Wxpay/orderQuery',array('orderid'=>$vo['orderid']))}" class="btn btn-default btn-sm "><i class="fa fa-credit-card"></i>查询订单支付记录</a>-->
 								</td>
 							</tr>
 

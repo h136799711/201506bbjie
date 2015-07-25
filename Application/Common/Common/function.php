@@ -658,7 +658,32 @@ function get_nickname($uid = 0){
     }
     return $name;
 }
+/**
+ * 获取订单状态的文字描述
+ */
+function getOrderStatus($status) {
 
+	switch($status) {
+		case \Common\Model\OrdersModel::ORDER_COMPLETED :
+			return "已完成";
+		case \Common\Model\OrdersModel::ORDER_RETURNED :
+			return "已退货";
+		case \Common\Model\OrdersModel::ORDER_SHIPPED :
+			return "已发货";
+		case \Common\Model\OrdersModel::ORDER_TOBE_CONFIRMED :
+			return "待确认";
+		case \Common\Model\OrdersModel::ORDER_TOBE_SHIPPED :
+			return "待发货";
+		case \Common\Model\OrdersModel::ORDER_CANCEL :
+			return "订单已关闭";
+		case \Common\Model\OrdersModel::ORDER_RECEIPT_OF_GOODS :
+			return "已收货";
+		case \Common\Model\OrdersModel::ORDER_BACK :
+			return "卖家退回";
+		default :
+			return "未知";
+	}
+}
 
 /**
  * 获取行为数据

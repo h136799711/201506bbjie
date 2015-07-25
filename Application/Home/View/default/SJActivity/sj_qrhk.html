@@ -120,7 +120,7 @@
 													
 													<td><span title="">{$q.create_time|date='m-d H:i',###}</span>
 													</td>
-													<td><a class="text-info inline-block"  href="{:U('Home/SJActivity/qrhk',array('id'=>$vo['id']))}">确认返款</a></td>
+													<td><a class="text-info inline-block"  href="{:U('Home/SJActivity/qrhk',array('id'=>$q['id'],'tid'=>$vo['id']))}">确认返款</a></td>
 												</tr>
 												
 											</if>

@@ -11,7 +11,7 @@ use Common\Api\Api;
 use Common\Model\WxproductModel;
 
 class WxproductApi extends Api{
-	
+	const SET_DEC='Admin/Wxproduct/setDec';
 	protected function _init(){
 		$this->model = new WxproductModel();
 	}

@@ -7,6 +7,7 @@
 // |-----------------------------------------------------------------------------------
 
 namespace Admin\Controller;
+use Admin\Api\AdminPublicApi;
 
 class OrdersController extends AdminController {
 	/**
@@ -168,19 +169,19 @@ class OrdersController extends AdminController {
 //		dump($params);
 		
 		$result = apiCall('Shop/OrdersInfoView/query', array($map, $page, $order, $params));
-		dump($result);
+//		dump($result);
 		//
-//		if ($result['status']) {
-//			$this -> assign('orderid', $orderid);
-//			$this -> assign('payStatus', $payStatus);
-//			$this -> assign('orderStatus', $orderStatus);
-//			$this -> assign('show', $result['info']['show']);
-//			$this -> assign('list', $result['info']['list']);
-//			$this -> display();
-//		} else {
-//			LogRecord('INFO:' . $result['info'], '[FILE] ' . __FILE__ . ' [LINE] ' . __LINE__);
-//			$this -> error($result['info']);
-//		}
+		if ($result['status']) {
+			$this -> assign('orderid', $orderid);
+			$this -> assign('payStatus', $payStatus);
+			$this -> assign('orderStatus', $orderStatus);
+			$this -> assign('show', $result['info']['show']);
+			$this -> assign('list', $result['info']['list']);
+			$this -> display();
+		} else {
+			LogRecord('INFO:' . $result['info'], '[FILE] ' . __FILE__ . ' [LINE] ' . __LINE__);
+			$this -> error($result['info']);
+		}
 	}
 
 	/**
@@ -273,6 +274,8 @@ class OrdersController extends AdminController {
 	 */
 	public function deliver() {
 		$expresslist = C("CFG_EXPRESS");
+		//dump($expresslist);
+		
 		if (IS_GET) {
 			$id = I('get.id',0);
 			$map = array('id'=>$id);
@@ -324,21 +327,19 @@ class OrdersController extends AdminController {
 			
 			
 			if($result['status']){
-				
-				// 1. 修改订单状态为已发货
-				$result = ServiceCall("Common/Order/shipped", array($orderOfid,false,UID));				
-				if(!$result){
-					ifFailedLogRecord($result['info'], __FILE__.__LINE__);
+				$map=array('orderid'=>$orderid);
+				$results=apiCall(AdminPublicApi::Orders_Query,array($map));
+				$id=$results['info'][0]['id'];
+				$od=array('order_status'=>4);
+				$resulta = apiCall(AdminPublicApi::Orders_SaveByID, array($id,$od));
+//				dump($od);
+				if($resulta['status']){
+					$this->success('发货信息添加完成',U('Admin/Orders/deliverGoods'));
 				}
-				$text = "亲，您订单($orderid)已经发货，快递单号：$expressno,快递公司：".$expresslist[$expresscode].",请注意查收";
-				//DONE:
-				// 2.发送提醒信息给指定用户
-				$this->sendTextTo($wxuserid,$text);
-				
-				$this->success(L('RESULT_SUCCESS'),U('Admin/Orders/deliverGoods'));
+//				
 			}else{
 				$this->error($result['info']);
-			}
+			} 
 		}
 	}
 	
@@ -431,7 +432,7 @@ class OrdersController extends AdminController {
 			if ($ids === -1) {
 				$this -> error(L('ERR_PARAMETERS'));
 			}
-			
+			dump('A');
 //			$ids = implode(',', $ids);
 //			$map = array('id' => array('in', $ids));
 //			$entity = array('order_status' => \Common\Model\OrdersModel::ORDER_TOBE_SHIPPED);
@@ -439,16 +440,17 @@ class OrdersController extends AdminController {
 			
 			
 			foreach($ids as $id){
-				$result = apiCall("Admin/Orders/sureOrder", array($id , false , UID));
+				$result = apiCall("Admin/Orders/confirmOrder", array($id , false , UID));
 				if (!$result['status']) {
 					$this -> error($result['info']);
 				}
 			}
-			
+			dump('B');
 			
 			if ($result['status']) {
 				$this -> success(L('RESULT_SUCCESS'), U('Admin/Orders/sure'));
 			} else {
+				dump('C');
 				$this -> error($result['info']);
 			}
 		}
