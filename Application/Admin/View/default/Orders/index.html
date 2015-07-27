@@ -123,9 +123,7 @@
 						<th>
 							用户ID
 						</th>
-						<th>
-							联系号码
-						</th>
+						
 						<th>
 							总价格(元)
 						</th>
@@ -155,28 +153,28 @@
 									<input type="checkbox" value="{$vo.id}" name="ids[]" class="selectitem" />
 								</td>
 								<td>
-									<a href="{:U('Admin/Orders/view',array('id'=>$vo['id']))}">{$vo.orderid}</a>
+									<a href="{:U('Admin/Orders/view',array('id'=>$vo['id']))}">{$vo.tb_orderid}</a>
 								</td>
 								<td>
-									{$vo.user_id}
+									{$vo.uid}
 								</td>
 								<td>
-									{$vo.mobile}
+									{:number_format($vo['tb_price']/100.0,1)}
 								</td>
 								<td>
-									{:number_format($vo['price']/100.0,1)}
+									{$vo.tb_address}
 								</td>
 								<td>
-									{$vo.country},{$vo.province},{$vo.city},{$vo.area},{$vo.detailinfo}
+									<if condition="$vo.order_status eq 3">[待发货]</if><if condition="$vo.order_status eq 1">[已完成]</if>
+									<if condition="$vo.order_status eq 4">[已发货]</if><if condition="$vo.order_status eq 8">[订单取消]</if>
+									<if condition="$vo.order_status eq 5">[已收货]</if><if condition="$vo.order_status eq 12">[订单退回 原因：{$vo['notes']}]</if>
+									<if condition="$vo.order_status eq 6">[已退货]</if><if condition="$vo.order_status eq 2">[待确认]</if>
 								</td>
 								<td>
-									[{$vo.pay_status|getPayStatus}]|[{$vo.order_status|getOrderStatus}]
+									{$vo.create_time|date='Y-m-d H:i:s',###}
 								</td>
 								<td>
-									{$vo.createtime|date='Y-m-d H:i:s',###}
-								</td>
-								<td>
-									<!--<a href="{:U('Admin/Wxpay/orderQuery',array('orderid'=>$vo['orderid']))}" class="btn btn-default btn-sm "><i class="fa fa-credit-card"></i>查询订单支付记录</a>-->
+									<a href="{:U('Admin/Orders/view',array('orderid'=>$vo['tb_orderid']))}" class="btn btn-default btn-sm "><i class="fa fa-credit-card"></i>查询订单记录</a>
 								</td>
 							</tr>
 

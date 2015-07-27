@@ -88,7 +88,8 @@ class SJActivityController extends CheckLoginController {
 		$user = session('user');
 		$map1 = array('uid' => $user['info']['id'], 'delivery_mode' => 1);
 		$result = apiCall(HomePublicApi::Task_Query, array($map1));
-		
+		$resultaa = apiCall('Shop/OrdersInfoView/query', array($map, $page, $order, $params));
+		dump($resultaa);
 		$taskhis = apiCall(HomePublicApi::Task_His_Query, array($whe));
 		$this -> assign('tshis', $taskhis['info']);
 		$headtitle = "宝贝街-活动";
@@ -96,7 +97,7 @@ class SJActivityController extends CheckLoginController {
 		$this -> assign('task', $result['info']);
 		$this -> assign('username', $user['info']['username']);
 //		dump($taskhis);
-		$this -> display();
+//		$this -> display();
 	}
 	 /*
 	  * 发放任务

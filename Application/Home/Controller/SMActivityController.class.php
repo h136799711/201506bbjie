@@ -369,35 +369,43 @@ class SMActivityController extends CheckLoginController {
 					'tb_price'=>I('zhifu_price','0.00'),
 				);
 				$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$entity));
-				$entity=array(
-					'user_id'=>$user['info']['id'],
-					'orderid'=>I('order_num',''),
-					'price'=>'0.00',
-					'note'=>I('notes','无'),
-					'status'=>2,
-					'pay_status'=>1,
-					'order_status'=>2,
-					'createtime'=>time(),
-					'updatetime'=>time(),
-					'exchange_id'=>$spid,
-					'wxaccountid'=>1,
-					'comment_status'=>1,
-				);
-				$result=apiCall(AdminPublicApi::Orders_Add,array($entity));
-				$ads=array(
-					'contactname'=>$address['contact_name'],
-					'wxuser_id'=>$address['uid'],
-					'country'=>$address['country'],
-					'province'=>$address['province'],
-					'detailinfo'=>$address['detail'],
-					'area'=>$address['area'],
-					'mobile'=>$address['mobile'],
-					'notes'=>I('notes','无'),
-					'wxno'=>1,
-					'orderid'=>I('order_num',''),
-					'city'=>$address['city'],
-				);
-				$results=apiCall(AdminPublicApi::Order_Address_Add,array($ads));
+				$usersmap=array('id'=>$id);
+				$users=apiCall(HomePublicApi::Task_His_Query,array($usersmap));
+				$uid=$users['info'][0]['uid'];
+				$map=array('uid'=>$uid);
+				$exchange=apiCall(HomePublicApi::ExchangeProduct_Query,array($map));
+				$ord=array('orderid'=>I('order_num',0));
+				$exid=$exchange['info'][0]['id'];
+				$exchanges=apiCall(HomePublicApi::ExchangeProduct_SaveByID,array($exid,$ord));
+//				$entity=array(
+//					'user_id'=>$user['info']['id'],
+//					'orderid'=>I('order_num',''),
+//					'price'=>'0.00',
+//					'note'=>I('notes','无'),
+//					'status'=>2,
+//					'pay_status'=>1,
+//					'order_status'=>2,
+//					'createtime'=>time(),
+//					'updatetime'=>time(),
+//					'exchange_id'=>$spid,
+//					'wxaccountid'=>1,
+//					'comment_status'=>1,
+//				);
+//				$result=apiCall(AdminPublicApi::Orders_Add,array($entity));
+//				$ads=array(
+//					'contactname'=>$address['contact_name'],
+//					'wxuser_id'=>$address['uid'],
+//					'country'=>$address['country'],
+//					'province'=>$address['province'],
+//					'detailinfo'=>$address['detail'],
+//					'area'=>$address['area'],
+//					'mobile'=>$address['mobile'],
+//					'notes'=>I('notes','无'),
+//					'wxno'=>1,
+//					'orderid'=>I('order_num',''),
+//					'city'=>$address['city'],
+//				);
+//				$results=apiCall(AdminPublicApi::Order_Address_Add,array($ads));
 				if($result['status'] && $results['status']){
 					$this->success('提交成功！！，已提交后台审核',U('Home/Usersm/sm_bbhd'));
 				}

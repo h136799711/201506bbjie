@@ -71,23 +71,25 @@
 											<th width="60" id="task-grid_c0"><a class="sort-link" href="#">ID<span class="caret"></span></a>
 											</th>
 											<th width="200" id="task-grid_c1">任务名称</th>
-											<th width="180" id="task-grid_c2">发货模式</th>
+											<th width="100" id="task-grid_c2">发货模式</th>
 											<th width="100" id="task-grid_c3"><a class="sort-link" href="#">淘宝订单号<span class="caret"></span></a>
 											</th>
 											<th width="100" id="task-grid_c4"><a class="sort-link" href="#">淘宝交易金<span class="caret"></span></a>
 											</th>
 											<th width="120" id="task-grid_c6"><a class="sort-link" href="#">任务状态<span class="caret"></span></a>
 											</th>
+											<th width="180" id="task-grid_c6"><a class="sort-link" href="#">运单号<span class="caret"></span></a>
+											</th>
 											<th width="100" id="task-grid_c7"><a class="sort-link desc" href="#">创建时间<span class="caret"></span></a>
 											</th>
-											<th width="130" id="task-grid_c9">操作</th>
+											<th width="80" id="task-grid_c9">操作</th>
 										</tr>
 									</thead>
 									<tbody class="item odd">
-										<tr class="padding-tr"></tr>
 										<volist name="tshis" id="q">
 											<volist name='task' id='vo'>
 												<if condition="$vo['id'] eq $q['task_id']">
+													<tr class="padding-tr"></tr>
 													<tr class="list-tr">
 														<td>{$vo.id}</td>
 														<td>{$vo.task_name}</td>
@@ -104,9 +106,8 @@
 														<if condition="$q['do_status'] eq 3">待订单确认</if>
 														<if condition="$q['do_status'] eq 4">待确认返款</if>
 														<if condition="$q['do_status'] eq 8">驳回</if>
-													</span>
-														</td>
-
+														</span></td>
+														<td>运单</td>
 														<td><span title="">{$q.create_time|date='m-d H:i',###}</span>
 														</td>
 														<td>

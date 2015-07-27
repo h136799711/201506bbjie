@@ -5,6 +5,9 @@
 
 	<link rel="stylesheet" type="text/css" media="all" href="__CDN__/jquery-datetimepicker/jquery.datetimepicker.css">
 	<script type="text/javascript" src="__CDN__/jquery-datetimepicker/jquery.datetimepicker.js"></script>
+	<style type="text/css">
+		.form-group{ margin-left: 10%;}
+	</style>
 </block>
 
 <block name="area_body">
@@ -15,35 +18,37 @@
 			{:W('Menus/breadcrumb')}
 			
 			<div class="h4">订单基本信息</div>
-			<form>
+			<form >
 			  <a href="javascript:history.back(-1);" class="btn btn-default btn-sm"><i class="fa fa-reply"></i>返回</a>
 			  <div class="form-group">
 			    <label class="control-label" >订单编号</label>
-			    <div class="control-label " >{$order.orderid}</div>
+			    <div class="control-label " >{$taskhis['tb_orderid']}</div>
 			  </div> 
 			  <div class="form-group">
 			    <label class="control-label" >订单总价</label>
-			    <div class="control-label " >{:number_format($order['price']/100.0,1)}元</div>
+			    <div class="control-label " >{:number_format($taskhis['tb_price']/100.0,1)}元</div>
 			  </div>
 			  <div class="form-group">
 			    <label class="control-label" >订单状态</label>
-			    <div class="control-label " >{$order.order_status|getOrderStatus}</div>
+			   	 <div class="control-label " >
+			   	 	<if condition="$taskhis.order_status eq 3">[待发货]</if><if condition="$taskhis.order_status eq 1">[已完成]</if>
+					<if condition="$taskhis.order_status eq 4">[已发货]</if><if condition="$taskhis.order_status eq 8">[订单取消]</if>
+					<if condition="$taskhis.order_status eq 5">[已收货]</if><if condition="$taskhis.order_status eq 12">[订单退回 原因：{$vo['notes']}]</if>
+					<if condition="$taskhis.order_status eq 6">[已退货]</if><if condition="$taskhis.order_status eq 2">[待确认]</if>
+			   	 </div>
 			  </div>
-			  <div class="form-group">
-			    <label class="control-label" >支付状态</label>
-			    <div class="control-label " >{$order.pay_status|getPayStatus}</div>
-			  </div>
+			  
 			  <div class="form-group">
 			    <label class="control-label" >联系地址</label>
-			    <div class="control-label " >{$order.country},{$order.province},{$order.city},{$order.area},{$order.detailinfo}</div>
+			    <div class="control-label " >{$taskhis.tb_address}</div>
 			  </div>
 			   <div class="form-group">
 			    <label class="control-label" >下单时间</label>
-			    <div class="control-label " >{$order.createtime|date='Y-m-d',###}</div>
+			    <div class="control-label " >{$taskhis.create_time|date='Y-m-d',###}</div>
 			  </div>
 			 <div class="form-group">
 			    <label class="control-label" >备注</label>
-			    <div class="control-label" >{$order.note}</div>
+			    <div class="control-label" >{$taskhis.notes}</div>
 			  </div>
 			  
 			  
@@ -53,13 +58,13 @@
 			<table class="table">
 				<tr>
 					<th>序号</th>
-					<th>商品名称</th>
 					<th>商品主图</th>
-					<th>购买价格</th>
-					<th>购买数量</th>
+					<th>商品名称</th>
+					<td>订单状态</td>
+					<td>创建时间</td>
 				</tr>
 				
-				<empty name="items">
+				<empty name="product">
 					<tr>
 						<td colspan="5" class="text-center">
 							没有相关信息
@@ -67,13 +72,18 @@
 					</tr>
 				<else/>
 				
-				<volist name="items" id="vo">
+				<volist name="product" id="vo">
 					<tr>
-						<td>{$key+1}</td>
+						<td>{$vo.id}</td>
+						<td><a href="{$vo.main_img}" target="_blank"><img src="{$vo.main_img}" alt="商品图片" style="width:60px;"/></a></td>
 						<td>{$vo.name}</td>
-						<td><a href="{$vo.img}" target="_blank"><img src="{$vo.img}" alt="商品图片" style="width:60px;"/></a></td>
-						<td>{:number_format($vo['price']/100.0,1)}元</td>
-						<td>{$vo.count}</td>
+						<td>
+							<if condition="$taskhis.order_status eq 3">[待发货]</if><if condition="$taskhis.order_status eq 1">[已完成]</if>
+							<if condition="$taskhis.order_status eq 4">[已发货]</if><if condition="$taskhis.order_status eq 8">[订单取消]</if>
+							<if condition="$taskhis.order_status eq 5">[已收货]</if><if condition="$taskhis.order_status eq 12">[订单退回 原因：{$vo['notes']}]</if>
+							<if condition="$taskhis.order_status eq 6">[已退货]</if><if condition="$taskhis.order_status eq 2">[待确认]</if>
+						</td>
+						<td>{$taskhis.create_time|date='Y-m-d',###}</td>
 					</tr>
 				</volist>
 				
@@ -81,7 +91,7 @@
 				
 			</table>
 			<hr />
-			<div class="h4">订单状态变更历史</div>
+			<!--<div class="h4">订单状态变更历史</div>
 			<table class="table">
 				<tbody>
 					<tr>
@@ -108,7 +118,7 @@
 				</volist>
 				
 				</empty>
-			</table>
+			</table>-->
 		</div>
 		<!-- END admin-main-content -->
 	</div>

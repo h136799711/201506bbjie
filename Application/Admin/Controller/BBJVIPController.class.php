@@ -178,8 +178,45 @@ class BBJVIPController extends AdminController{
 			$this->assign('entity',$result['info'][0]);
 			$this->display();
 		}
-		
-		
 	}
-	
+	/*
+	 * 所有任务
+	 * */
+	public function alltask(){
+		$taskname=I('taskname','');
+		if (!empty($taskname)) {
+			$map['task_name'] = array('like','%'. $taskname . '%');
+		}
+		$page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));
+//		$order = " create_time desc ";
+		$result = apiCall(HomePublicApi::Task_QueryAll, array($map, $page, $order));
+//		dump($result);
+		$this->assign('list',$result['info']['list']);
+		$this->assign('show',$result['info']['show']);
+		$this->display();
+	}
+	/*
+	 * 任务领取管理
+	 * */
+	public function taskgetview(){
+		$map=array('task_id'=>I('id',0));
+		$page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));
+//		$order = " create_time desc ";
+		$result = apiCall(HomePublicApi::Task_His_QueryAll, array($map, $page, $order));
+		$result1 = apiCall(HomePublicApi::Task_Query, array());
+//		dump($result);dump($result1);
+		$this->assign('list',$result['info']['list']);
+		$this->assign('task',$result1['info']);
+		$this->assign('show',$result['info']['show']);
+		$this->display();
+	}
+	/*
+	 * 删除任务
+	 * */
+	public function delete(){
+		$id=I('id',0);
+		$map=array('order_status'=>0);
+		$result = apiCall(HomePublicApi::Task_SaveByID, array($id,$map));
+		dump($result);
+	}
 }

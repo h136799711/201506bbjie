@@ -8,6 +8,7 @@
 
 namespace Admin\Controller;
 use Admin\Api\AdminPublicApi;
+use Home\Api\HomePublicApi;
 
 class OrdersController extends AdminController {
 	/**
@@ -90,26 +91,23 @@ class OrdersController extends AdminController {
 		}
 
 		$map = array();
-		$map['wxaccountid'] = getWxAccountID();
+
 		if (!empty($orderid)) {
-			$map['orderid'] = array('like', $orderid . '%');
+			$map['tb_orderid'] = array('like', $orderid . '%');
 
 		}
-		if ($payStatus != '') {
-			$map['pay_status'] = $payStatus;
-			$params['paystatus'] = $payStatus;
-		}
+		
 		if ($orderStatus != '') {
 			$map['order_status'] = $orderStatus;
-			$params['orderstatus'] = $orderStatus;
+			$params['order_status'] = $orderStatus;
 		}
-		$map['createtime'] = array( array('EGT', $startdatetime), array('elt', $enddatetime), 'and');
+		$map['create_time'] = array( array('EGT', $startdatetime), array('elt', $enddatetime), 'and');
 
 		$page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));
-		$order = " createtime desc ";
+		$order = " create_time desc ";
 
 		if ($userid > 0) {
-			$map['wxuser_id'] = $userid;
+			$map['uid'] = $userid;
 		}
 		//		$result = apiCall("Admin/Wxuser/queryNoPaging", array(array(),false,"id,nickname,avatar") );
 		//		if($result['status']){
@@ -117,8 +115,7 @@ class OrdersController extends AdminController {
 		//		}
 
 		//
-		$result = apiCall('Shop/OrdersInfoView/query', array($map, $page, $order, $params));
-
+		$result = apiCall(HomePublicApi::Task_His_QueryAll, array($map, $page, $order, $params));
 		//
 		if ($result['status']) {
 			$this -> assign('orderid', $orderid);
@@ -140,36 +137,23 @@ class OrdersController extends AdminController {
 	 */
 	public function sure() {
 		$orderid = I('orderid', '');
-		$payStatus = I('payStatus', \Common\Model\OrdersModel::ORDER_PAID);
-		
 		$userid = I('uid', 0);
 		$params = array();
 		$map = array();
 		$map['order_status'] = \Common\Model\OrdersModel::ORDER_TOBE_CONFIRMED;
-		if(!empty($payStatus)){
-			$map['pay_status'] = $payStatus;			
-		}
-		
-		$map['wxaccountid']=getWxAccountID();
 		$page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));
-		$order = " createtime desc ";
+		$order = " create_time desc ";
 
 		if (!empty($orderid)) {
 			$map['orderid'] = array('like', $orderid . '%');
 			$params['orderid'] = $orderid;
 		}
 		if ($userid > 0) {
-			$map['user_id'] = $userid;
+			$map['uid'] = $userid;
 			$params['uid'] = $userid;
 		}
-		
-//		dump($map);
-//		dump($page);
-//		dump($order);
-//		dump($params);
-		
-		$result = apiCall('Shop/OrdersInfoView/query', array($map, $page, $order, $params));
-//		dump($result);
+		$result = apiCall(HomePublicApi::Task_His_QueryAll, array($map, $page, $order, $params));
+//		dump($map);dump($params);dump($order);
 		//
 		if ($result['status']) {
 			$this -> assign('orderid', $orderid);
@@ -177,6 +161,7 @@ class OrdersController extends AdminController {
 			$this -> assign('orderStatus', $orderStatus);
 			$this -> assign('show', $result['info']['show']);
 			$this -> assign('list', $result['info']['list']);
+//			dump($result);
 			$this -> display();
 		} else {
 			LogRecord('INFO:' . $result['info'], '[FILE] ' . __FILE__ . ' [LINE] ' . __LINE__);
@@ -194,7 +179,6 @@ class OrdersController extends AdminController {
 		$params = array();
 
 		$map = array();
-		$map['wxaccountid']=getWxAccountID();
 		$params['wxaccountid'] = $map['wxaccountid'];
 		if (!empty($orderid)) {
 			$map['orderid'] = array('like', $orderid . '%');
@@ -209,17 +193,16 @@ class OrdersController extends AdminController {
 		}
 //		$map['order_status'] = \Common\Model\OrdersModel::ORDER_TOBE_SHIPPED;
 		//		$map['createtime'] = array( array('EGT', $startdatetime), array('elt', $enddatetime), 'and');
-		$map['pay_status'] = \Common\Model\OrdersModel::ORDER_PAID;
-
+		
 		$page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));
-		$order = " createtime desc ";
+		$order = " create_time desc ";
 
 		if ($userid > 0) {
-			$map['wxuser_id'] = $userid;
+			$map['uid'] = $userid;
 		}
 
 		//
-		$result = apiCall('Shop/OrdersInfoView/query', array($map, $page, $order, $params));
+			$result = apiCall(HomePublicApi::Task_His_QueryAll, array($map, $page, $order, $params));
 
 		//
 		if ($result['status']) {
@@ -238,35 +221,22 @@ class OrdersController extends AdminController {
 	 * 查看
 	 */
 	public function view() {
-		if (IS_GET) {
-			$id = I('get.id', 0);
-			$map = array('id' => $id);
-			$result = apiCall("Admin/OrdersInfoView/getInfo", array($map));
-			if ($result['status']) {
-				$orderid = $result['info']['orderid'];			
-				$this -> assign("order", $result['info']);
-				$result = apiCall("Admin/OrdersItem/queryNoPaging", array(array('orders_id'=>$id)));
-				if(!$result['status']){
-					ifFailedLogRecord($result, __FILE__.__LINE__);
-					$this->error($result['info']);
-				}
-//				dump($result);
-				$this -> assign("items", $result['info']);
-				
-				//查询订单状态变更纪录				
-				$result = apiCall("Admin/OrderStatusHistory/queryNoPaging", array(array('orders_id'=>$orderid),"create_time desc"));
-				
-				if(!$result['status']){
-					ifFailedLogRecord($result, __FILE__.__LINE__);
-					$this->error($result['info']);
-				}
-				
-				$this -> assign("statushistory", $result['info']);
-				$this -> display();
-			} else {
-				$this -> error($result['info']);
-			}
+		
+//	
+		$id = I('get.orderid', 0);
+		if($id !=0){
+			$map = array('tb_orderid' => $id);
+			$result = apiCall(HomePublicApi::Task_His_Query, array($map));
+			$maps = array('orderid' => $id);
+			$result1 = apiCall(HomePublicApi::ExchangeProduct_Query, array($maps));
+			$this->assign('taskhis',$result['info'][0]);	
+			$pid=array('id'=>$result1['info'][0]['p_id']);
+			$result2 = apiCall(AdminPublicApi::Wxproduct_QueryNoPaging, array($pid));
+			$this->assign('product',$result2['info']);
+			
 		}
+		$this->display();
+		
 	}
 
 	/**
@@ -279,22 +249,22 @@ class OrdersController extends AdminController {
 		if (IS_GET) {
 			$id = I('get.id',0);
 			$map = array('id'=>$id);
-			$result = apiCall("Admin/OrdersInfoView/getInfo", array($map));
+			$result = apiCall(HomePublicApi::Task_His_Query, array($map));
 			if($result['status']){
-				$this->assign("order",$result['info']);
+				$this->assign("order",$result['info'][0]);
 			}else{
 				$this->error("订单信息获取失败！");
 			}
 			
-			$map = array('orderid'=>$result['info']['orderid']);
-			$result = apiCall("Admin/OrdersExpress/getInfo", array($map));
-			if($result['status'] && is_array($result['info'])){
-				$this->assign("express",$result['info']);
+			$map = array('orderid'=>$result['info'][0]['tb_orderid']);
+			$result1 = apiCall("Admin/OrdersExpress/getInfo", array($map));
+			if($result1['status'] && is_array($result1['info'])){
+				$this->assign("express",$result1['info']);
 			}
+//			dump($result1);
 			$this->assign("expresslist",$expresslist);
 			$this->display();
 		} elseif (IS_POST) {
-			
 			$expresscode = I('post.expresscode','');
 			$expressno = I('post.expressno','');
 			$wxuserid = I('post.wxuserid',0);
@@ -313,12 +283,13 @@ class OrdersController extends AdminController {
 				  'expressno'=>$expressno,
 				  'note'=>I('post.note',''),
 				  'orderid'=>$orderid,
-				  'wxuserid'=>$wxuserid,
+				  'wxuserid'=>$wxuserid,orderOfid
 			);
 			
 			if(empty($entity['orderid'])){
 				$this->error("订单编号不能为空");
 			}
+//			dump($entity);
 			if(empty($id) || $id <= 0){
 				$result = apiCall("Admin/OrdersExpress/add", array($entity));
 			}else{
@@ -327,11 +298,8 @@ class OrdersController extends AdminController {
 			
 			
 			if($result['status']){
-				$map=array('orderid'=>$orderid);
-				$results=apiCall(AdminPublicApi::Orders_Query,array($map));
-				$id=$results['info'][0]['id'];
 				$od=array('order_status'=>4);
-				$resulta = apiCall(AdminPublicApi::Orders_SaveByID, array($id,$od));
+				$resulta = apiCall(HomePublicApi::Task_His_SaveByID, array($orderOfid,$od));
 //				dump($od);
 				if($resulta['status']){
 					$this->success('发货信息添加完成',U('Admin/Orders/deliverGoods'));
@@ -432,25 +400,25 @@ class OrdersController extends AdminController {
 			if ($ids === -1) {
 				$this -> error(L('ERR_PARAMETERS'));
 			}
-			dump('A');
+			
 //			$ids = implode(',', $ids);
 //			$map = array('id' => array('in', $ids));
 //			$entity = array('order_status' => \Common\Model\OrdersModel::ORDER_TOBE_SHIPPED);
 //			$result = apiCall("Admin/Orders/save", array($map, $entity));
 			
-			
+			$map=array('order_status'=>3);
 			foreach($ids as $id){
-				$result = apiCall("Admin/Orders/confirmOrder", array($id , false , UID));
+				$result = apiCall(HomePublicApi::Task_His_SaveByID, array($id,$map));
 				if (!$result['status']) {
 					$this -> error($result['info']);
 				}
 			}
-			dump('B');
+			
 			
 			if ($result['status']) {
 				$this -> success(L('RESULT_SUCCESS'), U('Admin/Orders/sure'));
 			} else {
-				dump('C');
+				
 				$this -> error($result['info']);
 			}
 		}
