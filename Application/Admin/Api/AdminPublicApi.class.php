@@ -13,6 +13,8 @@ namespace Admin\Api;
 class AdminPublicApi {
 	const WxshopPicture_Query='Admin/WxshopPicture/query';
 	
+	const OrderExpress_Query='Admin/OrdersExpress/queryNoPaging';
+	const OrderExpress_QueryAll='Admin/OrdersExpress/query';
 	/**
 	 * 公告文章
 	 */

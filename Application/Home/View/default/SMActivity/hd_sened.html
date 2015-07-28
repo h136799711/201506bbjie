@@ -42,7 +42,9 @@
 							<td>任务金额</td>
 							<td>淘宝帐号/订单号</td>
 							<td>任务步骤</td>
-							<td>操作</td>
+							<td>操作
+							</td>
+							
 						</tr>
 						<tr style=" height: 5px;">
 							<td colspan="6"></td>
@@ -51,12 +53,12 @@
 					</thead>
 
 					<tbody style="font-size: 12px;">
-						<foreach name="tp" item="v">
+						<foreach name="tshis" item="v">
 							<volist name="task" id="vo" key='aa'>
-								<if condition="$v['task_id'] eq $vo['info'][$aa-1]['id']">
+								<if condition="$v['task_id'] eq $vo['id']">
 									<input type="hidden" name="" id="thid" value="{$v['id']}" />
 									<tr style="border: 1px solid #ccc; background: #F5F5F5; height: 37px;">
-										<td style="padding-left: 20px;" colspan="6">编号:{$vo['info'][$aa-1]['id']} 任务时间:{$v.get_task_time|date='m-d H:i',###}商家:{$vo['info'][$aa-1]['aliwawa']}</td>
+										<td style="padding-left: 20px;" colspan="6">编号:{$vo['id']} 任务时间:{$v.get_task_time|date='m-d H:i',###}商家:{$vo['aliwawa']}</td>
 
 									</tr>
 									<tr style="border: 1px solid #ccc; height:100px; background:white;">
@@ -68,29 +70,28 @@
 													</if>
 												</foreach>
 											</volist>
-											<div style="margin-left:90px;"><font color="red">13</font>福币
+											<div style="margin-left:90px;"><font color="red">{$vo['coin']}</font>福币
 												<br /> 超时由系统取消</div>
 										</td>
 										<td><font color="#999" style="text-decoration:line-through">当日完成: +3福币</font>
-											<br /> 小额任务: <font color="red">+{$vo['info'][$aa-1]['coin']}</font>福币</td>
+											<br /> 小额任务: <font color="red">+{$vo['coin']}</font>福币</td>
 										<td>
-											<font color="red">￥{$vo['info'][$aa-1]['task_gold']}</font>
+											<font color="red">￥{$vo['task_gold']}</font>
 										</td>
 										<td>
-											旺旺名：{$vo['info'][$aa-1]['aliwawa']}
+											旺旺名：{$vo['aliwawa']}
 											<br /> 订单：{$v['tb_orderid']}
-											<br /> 返款：{$vo['info'][$aa-1]['task_gold']}
+											<br /> 返款：{$vo['task_gold']}
 											<br />
 										</td>
 										<td>
-											等待返款中。。。
+											已发货
 										</td>
-										<td><a id="tixing" href='javascript:void(0)'>提醒卖家</a></td>
+										<td><a class="btn" style="background-color: orangered; color: #FFFFFF;"  href="{:U('Home/SMActivity/sure',array('id'=>$v['id']))}">确认收货</a> </td>
 									</tr>
 								</if>
 							</volist>
 						</foreach>
-						
 					</tbody>
 				</table>
 				{$show}

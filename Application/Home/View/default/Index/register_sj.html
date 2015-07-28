@@ -70,7 +70,7 @@
 							<LABEL class="control-label" for="yaoqingren">邀请人：</LABEL>
 							<DIV class="controls">
 								<INPUT name="yaoqingren" class="input-large" id="yaoqingren" type="text" placeholder="请填写邀你注册者的用户名，这样他能获得经验值奖励哦！" value="test1">
-							<span> </span>
+							<span> 如果没有邀请人请不要修改</span>
 							</DIV>
 						</DIV>
 
@@ -132,6 +132,10 @@
 			$('#yaoqingren').blur(function() {
 //				alert(name.test($('#yaoqingren').val()));
 //				if (name.test($('#yaoqingren').val())) {
+				var name=$('#yaoqingren').val();
+				if(name=='test1'){
+					
+				}else{
 					d = 1;
 					$.getJSON("{:U('Home/Index/checkname')}",{name:$("#yaoqingren").val()},function(json){ 
 							if(json!=1){
@@ -141,7 +145,9 @@
 								d = 1;
 								$('#yaoqingren').parent().find("span").html("<font size='-2' color='red'>邀请人不存在</font>");
 							}
-				}); 
+					}); 
+				}
+					
 //				} 
 				
 			});

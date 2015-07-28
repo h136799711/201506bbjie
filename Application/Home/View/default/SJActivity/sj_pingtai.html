@@ -70,8 +70,8 @@
 										<tr>
 											<th width="60" id="task-grid_c0"><a class="sort-link" href="#">ID<span class="caret"></span></a>
 											</th>
-											<th width="200" id="task-grid_c1">任务名称</th>
-											<th width="100" id="task-grid_c2">发货模式</th>
+											<th width="160" id="task-grid_c1">任务名称</th>
+											<th width="200" id="task-grid_c2">收货信息</th>
 											<th width="100" id="task-grid_c3"><a class="sort-link" href="#">淘宝订单号<span class="caret"></span></a>
 											</th>
 											<th width="100" id="task-grid_c4"><a class="sort-link" href="#">淘宝交易金<span class="caret"></span></a>
@@ -86,28 +86,30 @@
 										</tr>
 									</thead>
 									<tbody class="item odd">
-										<volist name="tshis" id="q">
-											<volist name='task' id='vo'>
+										<volist name='task' id='vo'>
+											<volist name="tshis" id="q">
 												<if condition="$vo['id'] eq $q['task_id']">
 													<tr class="padding-tr"></tr>
 													<tr class="list-tr">
 														<td>{$vo.id}</td>
 														<td>{$vo.task_name}</td>
 														<td>
-															<if condition="$vo['delivery_mode'] eq 1">平台发货</if>
-															<if condition="$vo['delivery_mode'] eq 2">自主发货</if>
+															{$q.tb_address}
 														</td>
 														<td>{$q.tb_orderid}</td>
 														<td><span class="price" title="">{$q.tb_price}</span>
 														</td>
 														<td><span class="muted" style="color: green;">
-														<if condition="$q['do_status'] eq 1">任务进行中</if>
-														<if condition="$q['do_status'] eq 2">已完成</if>
-														<if condition="$q['do_status'] eq 3">待订单确认</if>
-														<if condition="$q['do_status'] eq 4">待确认返款</if>
-														<if condition="$q['do_status'] eq 8">驳回</if>
+														<if condition="$q.order_status eq 3">[待发货]</if><if condition="$q.order_status eq 1">[已完成]</if>
+														<if condition="$q.order_status eq 4">[已发货]</if><if condition="$q.order_status eq 8">[订单取消]</if>
+														<if condition="$q.order_status eq 5">[已收货]</if><if condition="$q.order_status eq 12">[订单退回 原因：{$vo['notes']}]</if>
+														<if condition="$q.order_status eq 6">[已退货]</if><if condition="$q.order_status eq 2">[待确认]</if>
 														</span></td>
-														<td>运单</td>
+														<td><volist name="express" id="c">
+															<if condition="$q['tb_orderid'] eq $c['orderid']">
+																{$c.expressno}
+															</if>
+														</volist></td>
 														<td><span title="">{$q.create_time|date='m-d H:i',###}</span>
 														</td>
 														<td>

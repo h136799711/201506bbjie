@@ -20,12 +20,8 @@ class SJActivityController extends CheckLoginController {
 	 * */
 	public function sj_tbhd() {
 		$user = session('user');
-		$map1 = array('uid' => $user['info']['id'], 'task_status' => 1);
+		$map1 = array('uid' => $user['info']['id'], 'task_status' => 4);
 		$result = apiCall(HomePublicApi::Task_Query, array($map1));
-		$map2 = array('uid' => $user['info']['id'], 'task_status' => 2);
-		$resultzt = apiCall(HomePublicApi::Task_Query, array($map2));
-		$map3 = array('uid' => $user['info']['id'], 'task_status' => 3);
-		$resultjs = apiCall(HomePublicApi::Task_Query, array($map3));
 		$headtitle = "宝贝街-活动";
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
@@ -40,14 +36,32 @@ class SJActivityController extends CheckLoginController {
 
 		}
 		$this -> assign('task', $result['info']);
-		$this -> assign('taskzt', $resultzt['info']);
-		$this -> assign('taskjs', $resultjs['info']);
+		
 		$this -> assign('geshu', session('shuliang'));
 		$this -> assign('username', $user['info']['username']);
 		$this -> assign('jihuas', $results);
 		$this -> assign('pro', $producta);
+		$sj=A('usersj');
+		$sj->getcount();
 		//		dump($results);
 		$this -> display();
+	}
+	/*
+	 * 退回订单
+	 * */
+	public function back(){
+		$id=I('id',0);
+		$entity=array('notes'=>I('text','无'),'do_status'=>8,'order_status'=>12);
+		if($id!=0){
+			$scount=apiCall(HomePublicApi::Task_His_SaveByID, array($id,$entity));
+			if($scount['status']){
+				$this->success('订单退回成功',U('Home/SJActivity/sj_waiting'));
+			}else{
+				$this->error('未知错误');
+			}
+		}else{
+				$this->error('未知错误');
+		}
 	}
 	/**
 	 * 任务计划
@@ -88,16 +102,18 @@ class SJActivityController extends CheckLoginController {
 		$user = session('user');
 		$map1 = array('uid' => $user['info']['id'], 'delivery_mode' => 1);
 		$result = apiCall(HomePublicApi::Task_Query, array($map1));
-		$resultaa = apiCall('Shop/OrdersInfoView/query', array($map, $page, $order, $params));
-		dump($resultaa);
 		$taskhis = apiCall(HomePublicApi::Task_His_Query, array($whe));
 		$this -> assign('tshis', $taskhis['info']);
 		$headtitle = "宝贝街-活动";
 		$this -> assign('head_title', $headtitle);
 		$this -> assign('task', $result['info']);
 		$this -> assign('username', $user['info']['username']);
-//		dump($taskhis);
-//		$this -> display();
+		$exchange=apiCall(AdminPublicApi::OrderExpress_Query, array($whe));
+		$this->assign('express',$exchange['info']);
+		$sj=A('usersj');
+		$sj->getcount();
+//		dump($exchange);
+		$this -> display();
 	}
 	 /*
 	  * 发放任务
@@ -188,6 +204,8 @@ class SJActivityController extends CheckLoginController {
 		$this -> assign('head_title', $headtitle);
 		$this -> assign('task', $result['info']);
 		$this -> assign('username', $user['info']['username']);
+		$sj=A('usersj');
+		$sj->getcount();
 //		dump($taskhis);
 		$this -> display();
 	}
@@ -205,6 +223,8 @@ class SJActivityController extends CheckLoginController {
 		$this -> assign('head_title', $headtitle);
 		$this -> assign('task', $result['info']);
 		$this -> assign('username', $user['info']['username']);
+		$sj=A('usersj');
+		$sj->getcount();
 //		dump($taskhis);
 		$this -> display();
 	}
@@ -213,7 +233,7 @@ class SJActivityController extends CheckLoginController {
 	 * */
 	public function qrdd(){
 		$id=I('id','');
-		$entity=array('do_status'=>4);
+		$entity=array('do_status'=>7);
 		$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$entity));
 //		dump($id);dump($entity);
 		if($result['status']){
@@ -471,20 +491,14 @@ class SJActivityController extends CheckLoginController {
 		$money = session('money');
 		$user = session('user');
 		$uid = $user['info']['id'];
-		$map = array('uid' => $uid);
-		$rets = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
+		
 		if ($result['status']) {
-			$ap = array('coins' => $rets['info'][0]['coins'] - $money,'frozen_money'=>$rets['info'][0]['frozen_money']+$money );
-			$return = apiCall(HomePublicApi::Bbjmember_Seller_SaveByID, array($uid, $ap));
-			if ($return['status']) {
-				$entity = array('uid' => $user['info']['id'], 'defray' => $money, 'income' => '0.000', 'create_time' => time(), 'notes' => '任务冻结金额', 'dtree_type' => 5, 'status' => 3, );
-				$result1 = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entity));
-				if ($result1['status']) {
+			
 
 					$this -> success('任务创建完成', U('Home/SJActivity/sj_tbhd'));
-				}
+				
 
-			}
+			
 
 		}
 		//		dump($entity);
