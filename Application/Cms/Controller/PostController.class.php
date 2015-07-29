@@ -10,8 +10,10 @@ use Think\Controller;
 class PostController extends CmsController {
 	
     public function index(){
-    		$map = array('parentid'=>getDatatree("POST_CATEGORY"));
-		
+    	$map = array('parentid'=>getDatatree("POST_CATEGORY"));
+//		$key = '#p}{v6xDM-@l(.qBet&1y]o4m+WudQ9TN<?nc|Yz';
+//        dump(md5(sha1(1) . $key));
+
 		$cates = apiCall("Cms/Datatree/queryNoPaging",array($map));
 		if(!$cates['status']){
 			$this->error($cates['info']);
