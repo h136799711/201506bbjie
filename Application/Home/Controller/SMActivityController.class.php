@@ -37,6 +37,25 @@ class SMActivityController extends CheckLoginController {
 		}
 	}
 	/*
+	 * 确认收货
+	 * */
+	public function sure(){
+		$id=I('id',0);
+		if($id!=0){
+			$map=array('order_status'=>5);
+			$map1=array('do_status'=>4);
+			$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$map));
+			$result1=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$map1));
+			if($result['status'] && $result1['status']){
+				$this->success('确认成功，请等待商家返款',U('Home/SMActivity/hd_sened'));
+			}else{
+				$this->error('未知错误');
+			}
+		}else{
+			$this->error('未知错误');
+		}
+	}
+	/*
 	 * 改变任务金
 	 * */
 	public function taskmoney(){
@@ -49,6 +68,7 @@ class SMActivityController extends CheckLoginController {
 		}
 	}
 	/*
+	 * 设置淘宝
 	 * */
 	public function settaobao(){
 		$user = session('user');
@@ -85,6 +105,36 @@ class SMActivityController extends CheckLoginController {
 		}
 	}
 	/*
+	 * 确认收货
+	 * */
+	public function hd_sened(){
+		$user = session('user');
+		$map1 = array('uid' => $user['info']['id'], 'order_status' => 7);
+		$result = apiCall(HomePublicApi::Task_Query, array());
+		$page = array('curpage' => I('get.p', 0), 'size' => 5);
+		$result1=apiCall(HomePublicApi::Task_His_QueryAll,array($map1,$page));
+		for ($i=0; $i <count($result1['info']['list']) ; $i++) { 
+			$mapp=array('id'=>$result1['info']['list'][$i]['task_id']);
+			$result2[]=apiCall(HomePublicApi::Task_Query,array($mapp));
+			$map3=array('task_id'=>$result2[$i]['info'][0]['id']);
+			$result3[]=apiCall(HomePublicApi::TaskHasProduct_Query,array($map3));
+		}
+		$this -> assign('tshis', $result1['info']['list']);
+		$headtitle = "宝贝街-活动";
+		$this -> assign('head_title', $headtitle);
+		$this -> assign('task', $result['info']);
+		$this -> assign('username', $user['info']['username']);
+		$exchange=apiCall(AdminPublicApi::OrderExpress_Query, array($whe));
+		$this->assign('express',$exchange['info']);
+		$goods=apiCall(HomePublicApi::Product_Query,array($ddd));
+		$this->assign('goods',$goods['info']);
+		$this->assign('tspro',$result3);
+		$index=A('Index');
+		$index->getcount();
+//		dump($goods);
+		$this -> display();
+	}
+	/*
 	 * 等待确认订单
 	 * */
 	public function hd_waiting(){
@@ -97,7 +147,6 @@ class SMActivityController extends CheckLoginController {
 		$map=array('uid'=>$user['info']['id'],'do_status'=>3);
 		$page = array('curpage' => I('get.p', 0), 'size' => 5);
 		$result1=apiCall(HomePublicApi::Task_His_QueryAll,array($map,$page));
-		
 		for ($i=0; $i <count($result1['info']['list']) ; $i++) { 
 			$mapp=array('id'=>$result1['info']['list'][$i]['task_id']);
 			$result2[]=apiCall(HomePublicApi::Task_Query,array($mapp));
@@ -241,9 +290,14 @@ class SMActivityController extends CheckLoginController {
 	 * */
 	public function qrtask(){
 		$id=I('id',0);
+		$task_map=array('id'=>$id);
 		$map=array('do_status'=>3);
+		$task=apiCall(HomePublicApi::Task_His_Query,array($task_map));
 		$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$map));
-		if($result['status']){
+		$ids=$task['info'][0]['task_id'];
+		$map2=array('task_status'=>4);
+		$result2=apiCall(HomePublicApi::Task_SaveByID,array($ids,$map2));
+		if($result['status'] &&$result2['status'] ){
 			$this->success('任务操作成功',U('Home/Usersm/sm_bbhd'));
 		}else{
 			$this->error('系统未知错误',U('Home/Usersm/sm_bbhd'));
@@ -268,7 +322,7 @@ class SMActivityController extends CheckLoginController {
 					'create_time'=>time(),
 					'tb_orderid'=>'',
 					'tb_address'=>'',
-					'tb_price'=>'0.00',
+					'tb_price'=>$result['info'][0]['task_gold'],
 					'task_id'=>$result['info'][0]['id'],
 					'uid'=>$user['info']['id'],
 				);
@@ -300,7 +354,6 @@ class SMActivityController extends CheckLoginController {
 		$id=I('id',0);
 		$tk=array('id'=>$id);
 		$map=array('task_id'=>$id);
-		
 		$task=apiCall(HomePublicApi::Task_Query, array($tk));
 		$this->assign('task',$task['info'][0]);
 		$result=apiCall(HomePublicApi::TaskHasProduct_Query, array($map));
@@ -313,8 +366,6 @@ class SMActivityController extends CheckLoginController {
 		$this->assign('hsid',$taskhisid);
 		$this->assign('pd',$return['info'][0]);
 		$this->assign('search',$returns['info'][0]);
-//		dump($task);
-
 		$map=array('uid'=>$user['info']['id'],'exchange_status'=>1);
 		$re=apiCall(HomePublicApi::ExchangeProduct_Query,array($map));
 		$this->assign('exchange',$re['info'][0]);
@@ -339,19 +390,51 @@ class SMActivityController extends CheckLoginController {
 	 * */
 	public function savedd(){
 		$id=I('hsid','');
-		$entity=array(
-			'tb_orderid'=>I('order_num',''),
-			'tb_address'=>I('address',''),
-			'tb_price'=>I('zhifu_price','0.00'),
-		);
-		
-		$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$entity));
-//		dump($result);
-		if($result['status']){
-			$this->success('提交成功！！，请关注任务动态',U('Home/Usersm/sm_bbhd'));
+		$user=session('user');
+		$spid=I('pid',0);
+		$addid=array('id'=>I('address',0));
+		$result_address=apiCall(HomePublicApi::Address_Query, array($addid));
+		if($result_address['info']==null){
+			$this->error('无法获取地址信息，请重试或确认你的地址信息');
 		}else{
-			$this->error($result['info']);
+			$address=$result_address['info'][0];
+			if($spid==0){
+				$entity=array(
+					'tb_orderid'=>I('order_num',0),
+					'tb_address'=>$address['province'].$address['city'].$address['detail'].$address['area'].$address['detail'].$address['contact_name'].$address['mobile'],
+					'tb_price'=>I('zhifu_price','0.00'),
+				);
+				$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$entity));
+	//			dump($result);
+				if($result['status']){
+					$this->success('提交成功！！，请关注任务动态',U('Home/Usersm/sm_bbhd'));
+				}else{
+					$this->error($result['info']);
+				}
+			}else{
+				$entity=array(
+					'tb_orderid'=>I('order_num',0),
+					'tb_address'=>$address['province'].$address['city'].$address['detail'].$address['area'].$address['detail'].$address['contact_name'].$address['mobile'],
+					'tb_price'=>I('zhifu_price','0.00'),
+				);
+				$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$entity));
+				$usersmap=array('id'=>$id);
+				$users=apiCall(HomePublicApi::Task_His_Query,array($usersmap));
+				$uid=$users['info'][0]['uid'];
+				$map=array('uid'=>$uid);
+				$exchange=apiCall(HomePublicApi::ExchangeProduct_Query,array($map));
+				$ord=array('orderid'=>I('order_num',0));
+				$exid=$exchange['info'][0]['id'];
+				$exchanges=apiCall(HomePublicApi::ExchangeProduct_SaveByID,array($exid,$ord));
+//				
+				if($exchanges['status'] ){
+					$this->success('提交成功！！，已提交后台审核',U('Home/Usersm/sm_bbhd'));
+				}
+			}
+			
 		}
+		
+		
 	}
 	
 	/*

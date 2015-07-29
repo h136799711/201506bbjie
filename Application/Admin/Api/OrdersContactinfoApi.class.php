@@ -7,15 +7,16 @@
 // |-----------------------------------------------------------------------------------
 
 
-  namespace Shop\Api;
+  namespace Admin\Api;
   use Common\Api\Api;
-  use Shop\Model\OrdersInfoViewModel;
+  use Admin\Model\OrdersContactinfoModel;
   
-  class OrdersInfoViewApi extends Api{
+  class OrdersContactinfoApi extends Api{
   	
   	protected function _init(){
-  		$this->model = new OrdersInfoViewModel();
+  		$this->model = new OrdersContactinfoModel();
   	}
 	
 	
+		
  }

@@ -29,7 +29,7 @@
 									<!--<a href="#" style="color: #999;">新任务<font color="red">0</font></a>-->
 									<a href="{:U('Home/SMActivity/hd_bh')}" style="color: #999;">被驳回<font color="red">{$bh}</font></a>
 									<a href="{:U('Home/SMActivity/hd_waiting')}" style="color: #999;">等待审核<font color="red">{$sh}</font></a>
-									<!--<a href="#" style="color: #999;">待确认收货<font color="red">0</font></a>-->
+									<a href="{:U('Home/SMActivity/hd_sened')}" style="color: #999;">待确认收货<font color="red">0</font></a>
 									<a href="{:U('Home/SMActivity/hd_remoney')}" style="color: #999;">等待返款<font color="red">{$fk}</font></a>
 									<a href="{:U('Home/SMActivity/hd_quxiao')}" style="color: #999;">取消/放弃</a><font color="red">{$qx}</font></a>
 								</span>
@@ -74,7 +74,12 @@
 										<td><font color="#999" style="text-decoration:line-through">当日完成: +3福币</font>
 											<br /> 小额任务: <font color="red">+3</font>福币</td>
 										<td>
-											<a target="_blank" href="{:U('Home/SMActivity/rws',array('id'=>$vo['id'],'taskhisid'=>$v['id']))}">任务书</a>
+											<if condition="$v['tb_orderid'] eq 0">
+												<a target="_blank" href="{:U('Home/SMActivity/rws',array('id'=>$vo['id'],'taskhisid'=>$v['id']))}">任务书</a>
+												<else/>
+												请点击确认提交任务！
+											</if>
+											
 											<br />
 											<font color="red">￥{$vo.task_gold}</font>
 										</td>
@@ -89,16 +94,26 @@
 											<if condition="$v['do_status'] eq 1">
 												距离任务完成剩余：<span class="js_countdownwn"  data-until="{$v['get_task_time'] + 2*3600}"></span>
 												<br><font class="task_status" color="forestgreen">任务正在进行中...</font><br>
-												<if condition="$v['tb_orderid'] eq ''">
-													<a id='anm1' style="background-color: orangered; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/qxtask',array('id'=>$v['id']))}">取消任务</a>
-													<else/>
-													<a id='anm2'  style="background-color: orangered; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/qxtask',array('id'=>$v['id']))} ">放弃任务</a><a id="anm4" style="background-color:forestgreen; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/qrtask',array('id'=>$v['id']))}">确认任务</a>
+												<if condition="$v['tb_orderid'] eq 0">
+												<a id='anm1' style="background-color: orangered; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/qxtask',array('id'=>$v['id']))}">取消任务</a>
+												
+												<a id='anm2'  style="background-color: orangered; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/qxtask',array('id'=>$v['id']))} ">放弃任务</a>
+												<else/>
+												<a id="anm4" style="background-color:forestgreen; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/qrtask',array('id'=>$v['id']))}">确认任务</a>
 												</if>
 											</if>
 											<if condition="$v['do_status'] eq 2"><font color="forestgreen">任务已完成...</font>
 											</if>
 										</td>
-										<td><a id='anm3' target="_blank" style="background-color:forestgreen; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/rws',array('id'=>$vo['id'],'taskhisid'=>$v['id']))}">开始任务</a> </td>
+										<td>
+											<if condition="$v['tb_orderid'] eq 0">
+												<a id='anm3' target="_blank" style="background-color:forestgreen; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/rws',array('id'=>$vo['id'],'taskhisid'=>$v['id']))}">开始任务</a> 
+												<else/>
+												<a id='anm3' target="_blank" style="background-color:forestgreen; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/editrws',array('id'=>$vo['id'],'taskhisid'=>$v['id']))}">修改订单信息</a> 
+											</if>
+											
+										
+										</td>
 									</tr>
 								</if>
 							</volist>

@@ -13,6 +13,8 @@ namespace Admin\Api;
 class AdminPublicApi {
 	const WxshopPicture_Query='Admin/WxshopPicture/query';
 	
+	const OrderExpress_Query='Admin/OrdersExpress/queryNoPaging';
+	const OrderExpress_QueryAll='Admin/OrdersExpress/query';
 	/**
 	 * 公告文章
 	 */
@@ -33,4 +35,18 @@ class AdminPublicApi {
 	 * 商品
 	 * */
 	const Wxproduct_QueryNoPaging="Admin/Wxproduct/queryNoPaging";
+	
+	/*
+	 * 地址管理
+	 * */
+	const Order_Address_Add="Admin/OrdersContactinfo/add";
+	const Order_Address_Query="Admin/OrdersContactinfo/queryNoPaging";
+	const Order_Address_saveByID="Admin/OrdersContactinfo/saveByID";
+	const Order_Address_Del="Admin/OrdersContactinfo/delete";
+	/*
+	 * 订单
+	 * */
+	const Orders_Add="Admin/Orders/add";
+	const Orders_SaveByID="Admin/Orders/saveByID";
+	const Orders_Query="Admin/Orders/queryNoPaging";
 }

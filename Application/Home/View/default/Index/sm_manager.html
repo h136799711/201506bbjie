@@ -19,7 +19,7 @@
 					<div class="am-panel-bd" style="height:350px;">
 						<div style="margin-left: 30px; margin-top: 50px; width: 100px; float: left;">
 							<a class="index_touxiang" href="javascript:void(0)">
-								<if condition="$head_img eq '' ">
+								<if condition="$head_img eq 0 ">
 								<img height="80px" width="80px" src="__IMG__/default_user_portrait.gif" alt="">
 								<else/>
 									<img height="100px" width="100%" src="{$head_img}" alt="">
@@ -276,7 +276,7 @@
 		<div class="am-modal-dialog">
 			<div class="am-modal-hd" style="color: orangered;">设置淘宝账号</div>
 			<div class="am-modal-bd">
-				淘宝账号：<input type="text" name="taobao">
+				淘宝账号：<input id="tbid" type="text" name="taobao">
 			</div>
 			<div class="am-modal-footer">
 				<button style="margin-top: 10px; background-color: orangered; border: 0; color: #FFFFFF;" type="submit" >确定绑定</button>
@@ -296,11 +296,17 @@
 			$('.t3').css('background-color','');
 			$('.t3 a').css('color','#FFFFFF');
 			$('#gettask').click(function(){
-				if("{$user['task_status']}"== 1){
-					window.location.href="{:U('Home/SMActivity/gettask')}";	
+				
+				if('{$taobao}'==''){
+					alert('请先设置做任务的淘宝账号');
 				}else{
-					alert('请先开启任务状态');
+					if("{$user['task_status']}"== 1){
+						window.location.href="{:U('Home/SMActivity/gettask')}";	
+					}else{
+						alert('请先开启任务状态');
+					}
 				}
+				
 			})
 			$("#start").click(function(){
 				window.location.href="{:U('Home/SMActivity/changestatus')}";

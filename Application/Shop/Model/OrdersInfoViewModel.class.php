@@ -7,7 +7,7 @@
 // |-----------------------------------------------------------------------------------
 
 
-namespace Common\Model;
+namespace Shop\Model;
 
 use Think\Model\ViewModel;
 

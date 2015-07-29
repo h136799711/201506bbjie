@@ -20,12 +20,8 @@ class SJActivityController extends CheckLoginController {
 	 * */
 	public function sj_tbhd() {
 		$user = session('user');
-		$map1 = array('uid' => $user['info']['id'], 'task_status' => 1);
+		$map1 = array('uid' => $user['info']['id'], 'task_status' => 4);
 		$result = apiCall(HomePublicApi::Task_Query, array($map1));
-		$map2 = array('uid' => $user['info']['id'], 'task_status' => 2);
-		$resultzt = apiCall(HomePublicApi::Task_Query, array($map2));
-		$map3 = array('uid' => $user['info']['id'], 'task_status' => 3);
-		$resultjs = apiCall(HomePublicApi::Task_Query, array($map3));
 		$headtitle = "宝贝街-活动";
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
@@ -40,16 +36,113 @@ class SJActivityController extends CheckLoginController {
 
 		}
 		$this -> assign('task', $result['info']);
-		$this -> assign('taskzt', $resultzt['info']);
-		$this -> assign('taskjs', $resultjs['info']);
+		
 		$this -> assign('geshu', session('shuliang'));
 		$this -> assign('username', $user['info']['username']);
 		$this -> assign('jihuas', $results);
 		$this -> assign('pro', $producta);
+		$sj=A('usersj');
+		$sj->getcount();
 		//		dump($results);
 		$this -> display();
 	}
-
+	/*
+	 * 退回订单
+	 * */
+	public function back(){
+		$id=I('id',0);
+		$entity=array('notes'=>I('text','无'),'do_status'=>8,'order_status'=>12);
+		if($id!=0){
+			$scount=apiCall(HomePublicApi::Task_His_SaveByID, array($id,$entity));
+			if($scount['status']){
+				$this->success('订单退回成功',U('Home/SJActivity/sj_waiting'));
+			}else{
+				$this->error('未知错误');
+			}
+		}else{
+				$this->error('未知错误');
+		}
+	}
+	/**
+	 * 任务计划
+	 * */
+	 public function task_play(){
+	 	$mm = array('id' => I('id',0));
+		$result_tast = apiCall(HomePublicApi::Task_Query, array($mm));
+		$result_play = apiCall(HomePublicApi::TaskPlan_Query, array($mm));
+		$results = apiCall(HomePublicApi::TaskHasProduct_Query, array($map4));
+		$producta = apiCall(HomePublicApi::Product_Query, array($pid));
+		$user = session('user');
+		$uid = array('uid' => $user['info']['id']);
+		$result = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($uid));
+		$page = array('curpage' => I('get.p', 0), 'size' => 6);
+		$map=array('uid'=>$user['info']['id']);
+		$resultAll = apiCall(HomePublicApi::TaskPlan_QueryAll, array($map,$page));
+		$fenpeimap=array('task_id'=>I('id',0));
+		$wanchengmap=array('task_id'=>I('id',0),'do_status'=>2);
+		$fcount=apiCall(HomePublicApi::Task_His_Query, array($fenpeimap));
+		$scount=apiCall(HomePublicApi::Task_His_Query, array($fenpeimap));
+		$this->assign('fcount',count($fcount['info']));
+		$this->assign('scount',count($scount['info']));
+		$this->assign('tp',$resultAll['info']['list']);
+		$this->assign('show',$resultAll['info']['show']);
+		$this->assign('money',$result['info'][0]['coins']);
+		$this->assign('task_play',$result_play['info'][0]);
+		$this->assign('task',$result_tast['info'][0]);
+		$this -> assign('jihuas', $results['info']);
+		$this -> assign('pro', $producta['info']);
+//		dump($resulta);
+	 	$this->display();
+	 }
+	/*
+	 * 平台发货
+	 * */
+	public function sj_pingtai(){
+		
+		$user = session('user');
+		$map1 = array('uid' => $user['info']['id'], 'delivery_mode' => 1);
+		$result = apiCall(HomePublicApi::Task_Query, array($map1));
+		$taskhis = apiCall(HomePublicApi::Task_His_Query, array($whe));
+		$this -> assign('tshis', $taskhis['info']);
+		$headtitle = "宝贝街-活动";
+		$this -> assign('head_title', $headtitle);
+		$this -> assign('task', $result['info']);
+		$this -> assign('username', $user['info']['username']);
+		$exchange=apiCall(AdminPublicApi::OrderExpress_Query, array($whe));
+		$this->assign('express',$exchange['info']);
+		$sj=A('usersj');
+		$sj->getcount();
+//		dump($exchange);
+		$this -> display();
+	}
+	 /*
+	  * 发放任务
+	  * */
+	public function create_tp(){
+		$user=session('user');
+		$zongjia=I('zong','0.00');
+		$entity=array(
+			'uid'=>$user['info']['id'],
+			'start_time'=>strtotime(I('begin_time',0)),
+			'enter_way'=>I('sele_type',0),
+			'task_cnt'=>I('count',0),
+			'create_time'=>time(),
+			'search_way_id'=>0,
+			'task_id'=>I('tid',0),
+		);
+//		dump($zongjia);
+		$result = apiCall(HomePublicApi::TaskPlan_Add, array($entity));
+		$entitya = array('uid' => $user['info']['id'], 'defray' => $zongjia . '.000', 'income' => '0.000', 'create_time' => time(), 'notes' => '冻结任务佣金', 'dtree_type' => 5, 'status' => 3, );
+		$resulta = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entitya));
+		if ($resulta['status']) {
+			$return1=M('bbjmemberSeller')->where('uid='.$user['info']['id'])->setDec('coins',$zongjia);
+			$return2=M('bbjmemberSeller')->where('uid='.$user['info']['id'])->setInc('frozen_money',$zongjia);
+			if($return1 && $return2){
+				$this->success('发放成功！',U('Home/SJActivity/sj_tbhd'));
+			}
+		}
+		
+	}
 	/*
 	 * 改变任务状态
 	 * */
@@ -63,7 +156,6 @@ class SJActivityController extends CheckLoginController {
 			$mm = array('task_do_type' => 2);
 			$result_tast = apiCall(HomePublicApi::Task_Save, array($uid, $mm));
 			$result = apiCall(HomePublicApi::Bbjmember_Seller_SaveByID, array($id, $ma));
-			//			dump($result_tast);
 			if ($result['status'] && $result_tast['status']) {
 				$this -> success('任务领取状态修改成功', U('Home/Usersj/index'));
 			} else {
@@ -112,7 +204,9 @@ class SJActivityController extends CheckLoginController {
 		$this -> assign('head_title', $headtitle);
 		$this -> assign('task', $result['info']);
 		$this -> assign('username', $user['info']['username']);
-//		dump($result);
+		$sj=A('usersj');
+		$sj->getcount();
+//		dump($taskhis);
 		$this -> display();
 	}
 	/*
@@ -120,7 +214,7 @@ class SJActivityController extends CheckLoginController {
 	 * */
 	public function sj_qrhk(){
 		$user = session('user');
-		$map1 = array('uid' => $user['info']['id'], 'task_status' => 1);
+		$map1 = array('uid' => $user['info']['id'], 'task_status' => 4);
 		$result = apiCall(HomePublicApi::Task_Query, array($map1));
 		$whe = array('do_status' => 4);
 		$taskhis = apiCall(HomePublicApi::Task_His_Query, array($whe));
@@ -129,6 +223,8 @@ class SJActivityController extends CheckLoginController {
 		$this -> assign('head_title', $headtitle);
 		$this -> assign('task', $result['info']);
 		$this -> assign('username', $user['info']['username']);
+		$sj=A('usersj');
+		$sj->getcount();
 //		dump($taskhis);
 		$this -> display();
 	}
@@ -137,8 +233,9 @@ class SJActivityController extends CheckLoginController {
 	 * */
 	public function qrdd(){
 		$id=I('id','');
-		$entity=array('do_status'=>4);
+		$entity=array('do_status'=>7);
 		$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$entity));
+//		dump($id);dump($entity);
 		if($result['status']){
 			$this->success('任务操作成功',U('Home/SJActivity/sj_tbhd'));
 		}else{
@@ -149,11 +246,27 @@ class SJActivityController extends CheckLoginController {
 	 * 订单确认
 	 * */
 	public function qrhk(){
-		$id=I('id','');
+		$id=I('id',0);
+		$umap=array('id'=>$id);
+		$tid=I('tid',0);
+		$smap=array('id'=>$tid);
 		$entity=array('do_status'=>2);
 		$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$entity));
 		if($result['status']){
-			$this->success('任务操作成功',U('Home/SJActivity/sj_tbhd'));
+			$us=apiCall(HomePublicApi::Task_His_Query,array($umap));
+			$uid=$us['info'][0]['uid'];
+			$sel=apiCall(HomePublicApi::Task_Query,array($smap));
+			$money=$sel['info'][0]['task_gold'];
+			$sid=$sel['info'][0]['uid'];
+//			dump($uid);dump($sid);dump($money);
+			$return=M('bbjmember')->where('uid='.$uid)->setInc('coins',$money);
+			$return1=M('bbjmemberSeller')->where('uid='.$sid)->setDec('frozen_money',$money);
+			if($return!=0 &&$return1 !=0){
+				$entity = array('uid' => $sid, 'defray' => $money, 'income' => '0.000', 'create_time' => time(), 'notes' => '任务结算返还试民', 'dtree_type' => 6, 'status' => 1, );
+				$result1 = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entity));
+				$this->success('任务操作成功',U('Home/SJActivity/sj_tbhd'));
+			}
+			
 		}else{
 			$this->error('系统未知错误',U('Home/SJActivity/sj_tbhd'));
 		}
@@ -283,11 +396,10 @@ class SJActivityController extends CheckLoginController {
 		$map = array('uid' => $user['info']['id']);
 		$sj = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
 		
-		$entity = array('uid' => $user['info']['id'], 'aliwawa' => $sj['info'][0]['aliwawa'], 'delivery_mode' => '', 'create_time' => time(), 'task_gold' => '0.00', 'task_brokerage' => '0.00', 'task_postage' => '0.00', 'update_time' => time(), 'dtree_preferential' => '', 'task_name' => '', 'notes' => '', 'chat_argot' => '', 'task_do_type' => '', 'task_status' => 1, );
+		$entity = array('uid' => $user['info']['id'], 'aliwawa' => $sj['info'][0]['aliwawa'], 'delivery_mode' => '', 'create_time' => time(), 'task_gold' => '0.00', 'task_brokerage' => '0.00', 'task_postage' => '0.00', 'update_time' => time(), 'dtree_preferential' => '', 'task_name' => '', 'notes' => '', 'chat_argot' => '', 'task_do_type' => 1, 'task_status' => 1, );
 		$result1 = apiCall(HomePublicApi::Task_Add, array($entity));
 		foreach ($al as $key => $value) {
 			if ($count < count($al['title'])) {
-
 				if ($al['title'][$count] != '' || $al['title'][$count] != null) {
 					$pro = array('uid' => $user['info']['id'], 'link' => $al['link'][$count], 'price' => $al['price'][$count], 'has_model_num' => 1, 'position' => '', 'title' => $al['title'][$count], 'main_img' => $al['img'][$count], 'wangwang' => $aliwawa, 'create_time' => time(), 'update_time' => time(), 'status' => 1, 'model_num_cfg' => $al['position'][$count], 'is_on_sale' => 1, );
 					$result = apiCall(HomePublicApi::Product_Add, array($pro));
@@ -301,7 +413,7 @@ class SJActivityController extends CheckLoginController {
 				$count = $count + 1;
 			}
 		}
-
+//		dump($summ);
 		$this -> yongjin();
 		$this -> assign('summ', $summ);
 		$headtitle = "宝贝街-创建任务";
@@ -317,7 +429,6 @@ class SJActivityController extends CheckLoginController {
 		$headtitle = "宝贝街-创建任务";
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
-
 		$this -> assign('username', $user['info']['username']);
 		$this -> display();
 	}
@@ -380,20 +491,14 @@ class SJActivityController extends CheckLoginController {
 		$money = session('money');
 		$user = session('user');
 		$uid = $user['info']['id'];
-		$map = array('uid' => $uid);
-		$rets = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
+		
 		if ($result['status']) {
-			$ap = array('coins' => $rets['info'][0]['coins'] - $money, );
-			$return = apiCall(HomePublicApi::Bbjmember_Seller_SaveByID, array($uid, $ap));
-			if ($return['status']) {
-				$entity = array('uid' => $user['info']['id'], 'defray' => $money, 'income' => '0.000', 'create_time' => time(), 'notes' => '任务冻结金额', 'dtree_type' => 5, 'status' => 3, );
-				$result1 = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entity));
-				if ($result1['status']) {
+			
 
 					$this -> success('任务创建完成', U('Home/SJActivity/sj_tbhd'));
-				}
+				
 
-			}
+			
 
 		}
 		//		dump($entity);
@@ -437,7 +542,6 @@ class SJActivityController extends CheckLoginController {
 		$sj = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
 		$pro = apiCall(HomePublicApi::Product_QueryAll, array($map));
 		$prduct = apiCall(HomePublicApi::Product_QueryAll, array($mwe));
-
 		$this -> assign('id', 0);
 		$this -> assign('downpro', $prduct['info']['list']);
 		$this -> assign('showdown', $product['show']);
@@ -586,115 +690,7 @@ class SJActivityController extends CheckLoginController {
 		//		dump($entity);
 	}
 
-	/**
-	 * 读取商品页面信息
-	 */
-	public function read() {
-		if (IS_POST) {
-			$url = I('post.url', '', 'urldecode');
-			$which = $this -> whichUrl($url);
-			switch($which) {
-				case 1 :
-					$return_info = $this -> getTaobao($url);
-					break;
-				case 2 :
-					$return_info = $this -> getTmall($url);
-					break;
-				default :
-					$this -> error("请输入正确的淘宝商品详情页地址!");
-					break;
-			}
-			if (empty($return_info['title']) || empty($return_info['main_img']) || empty($return_info['wangwang'])) {
-				$this -> error("无法识别此链接!");
-			}
-
-			$this -> success($return_info);
-
-		} else {
-			$this -> display();
-		}
-	}
-
-	/*
-	 * */
-
-	/**
-	 * 判断是什么链接，淘宝？天猫？
-	 * 检测规则
-	 * 1. 域名 是否taobao.com|tmall.com
-	 * 2. ...
-	 * 3. ...
-	 */
-	private function whichUrl($url) {
-		//TODO: 是否为合法的淘宝商品详情页链接
-		if (!(strpos($url, "tmall.com") === false)) {
-			return 2;
-		}
-		if (!(strpos($url, "taobao.com") === false)) {
-			return 1;
-		}
-
-		//
-		return 0;
-	}
-
-	private function getTmall($url) {
-		$html = file_get_contents($url);
-		$html = iconv("gb2312", "utf-8//IGNORE", $html);
-		$match = array();
-		//			dump($html);
-		$return_info = array('title' => '', 'main_img' => '', 'wangwang' => '', );
-
-		$wangwang_pattern = '/<li class="shopkeeper"(.*?)>(.*?)<a(.*?)>(.*?)<\/a>?/is';
-		preg_match($wangwang_pattern, $html, $match);
-
-		//			var_dump($match);
-		$return_info['wangwang'] = $match[4];
-
-		$title_pattern = '/<meta name="keywords" content="(.*?)"(.*?)\/>/is';
-		//			dump($html);
-		preg_match($title_pattern, $html, $match);
-		//			if($match){
-		$return_info['title'] = $match[1];
-
-		$mainimg_pattern = '/<img id="J_ImgBooth"(.*?)src="(.*?)"(.*?)>/is';
-
-		preg_match($mainimg_pattern, $html, $match);
-		$return_info['main_img'] = $match[2];
-
-		return $return_info;
-
-	}
-
-	private function getTaobao($url) {
-
-		$html = file_get_contents($url);
-		$html = iconv("gb2312", "utf-8//IGNORE", $html);
-		//			var_dump($html);
-		$match = array();
-
-		$return_info = array('title' => '', 'main_img' => '', 'wangwang' => '', );
-		$wangwang_pattern = '/<a class="tb-seller-name" (.*?)>(.*?)<\/a>/is';
-		//echo $html;
-		preg_match($wangwang_pattern, $html, $match);
-
-		//var_dump($match[2]);
-		$return_info['wangwang'] = $match[2];
-		$mainimg_pattern = '/<img id="J_ImgBooth"(.*?)data-src="(.*?)"(.*?)>/is';
-
-		preg_match($mainimg_pattern, $html, $match);
-		$return_info['main_img'] = $match[2];
-
-		//			$title_pattern = '/<h3 class="tb-main-title" data-title="(.*?)"(.*?)>/is';
-		$title_pattern = '/<meta name="keywords" content="(.*?)"(.*?)\/>/is';
-		//			dump($html);
-		preg_match($title_pattern, $html, $match);
-
-		$return_info['title'] = $match[1];
-
-		return $return_info;
-	}
-
+	
 	//创建搜索
 	public function createsearch() {
 		$headtitle = "宝贝街-创建搜索";

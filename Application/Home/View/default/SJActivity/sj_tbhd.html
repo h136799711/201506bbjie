@@ -17,7 +17,7 @@
 					<div class="jquery-once-1-processed">
 
 						<div style="position: relative">
-							<div class="pull-right btn-group"><a data-toggle="modal2" modal-title="创建淘宝活动" style="background-color: #1D99D5; color: #FFFFFF;" class="btn " href="#">创建试福任务</a>
+							<div class="pull-right btn-group"><a data-toggle="modal2" modal-title="创建淘宝活动" style="background-color: #1D99D5; color: #FFFFFF;" class="am-btn am-round" href="{:U('Home/SJActivity/activity_1')}">创建试福任务</a>
 							</div>
 							
 <include file="Widget/li" />
@@ -89,6 +89,7 @@
 										<th width="130" id="task-grid_c9">操作</th>
 									</tr>
 								</thead>
+								
 								<tbody class="item odd">
 									<tr class="padding-tr"></tr>
 									<volist name='task' id='vo' key='s'>
@@ -106,7 +107,7 @@
 										</td>
 										<td>
 											<div class="am-btn-group">
-											  <button style="background-color: #1D99D5; color: #FFFFFF;"  class="am-btn ">选择任务方式</button>
+											  <a href="{:U('Home/SJActivity/task_play',array('id'=>$vo['id']))}"  style="background-color: #1D99D5; font-size: 12px; color: #FFFFFF;"  class="am-btn am-round">发放任务</a>
 											</div>
 										</td>
 									</tr>
@@ -136,6 +137,7 @@
 											</div>
 										</td>
 									</tr>
+									
 									</volist>
 								</tbody>
 								
@@ -374,12 +376,12 @@
 </block>
 
 <block name="area_footer">
-
+	<script type="text/javascript">
+		$(function(){
+			$("button[name='task_play']").click(function(){
+				
+				alert($(this).index($("button[name='task_play']")));
+			})
+		})
+	</script>
 </block>
-
-<!--[if IEMobile 7]><body class="iem7" ><![endif]-->
-<!--[if lte IE 6]><body class="lt-ie9 lt-ie8 lt-ie7" ><![endif]-->
-<!--[if (IE 7)&(!IEMobile)]><body class="lt-ie9 lt-ie8" ><![endif]-->
-<!--[if IE 8]><body class="lt-ie9" ><![endif]-->
-<!--[if (gte IE 9)|(gt IEMobile 7)]><!-->
-<!--<![endif]-->

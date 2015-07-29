@@ -3,19 +3,12 @@
 // | WE TRY THE BEST WAY
 // |-----------------------------------------------------------------------------------
 // | Author: 贝贝 <hebiduhebi@163.com>
-// | Copyright (c) 2013-2016 杭州博也网络科技, http://www.itboye.com. All Rights Reserved.
+// | Copyright (c) 2013-2015, http://www.gooraye.net. All Rights Reserved.
 // |-----------------------------------------------------------------------------------
 
+namespace Admin\Model;
+use Think\Model;
 
-  namespace Shop\Api;
-  use Common\Api\Api;
-  use Shop\Model\OrdersInfoViewModel;
-  
-  class OrdersInfoViewApi extends Api{
-  	
-  	protected function _init(){
-  		$this->model = new OrdersInfoViewModel();
-  	}
+class OrdersContactinfoModel extends Model{
 	
-	
- }
+}

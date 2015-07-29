@@ -91,6 +91,7 @@ class RemoteProductParserController extends Controller{
             }
 
             $return_info = $parser->read_detail();
+			
 
             if(is_null($return_info) || empty($return_info['title']) || empty($return_info['main_img']) || empty($return_info['wangwang']) )	{
                 $this->error("无法识别此链接!");

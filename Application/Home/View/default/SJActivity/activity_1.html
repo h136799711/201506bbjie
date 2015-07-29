@@ -116,9 +116,9 @@
 						
 								
 							<center>
-								<font size="-2" color="red">任务最多可以添加3个链接</font>
+								<font  size="-2" color="red">任务最多可以添加3个链接</font>
 								<br />
-								<button id="down" type="button" class="am-btn am-btn-secondary" style="margin-top: 5px;">下一步</button>
+								<button id="down" type="button" class="am-btn am-btn-secondary" style=" font-size: 12px; margin-top: 5px;">下一步</button>
 							</center>
 						</div>
 						
@@ -166,7 +166,7 @@
 					$.ajax({
 						cache: false,
 						method: "post",
-						url: "{:U('Home/SJActivity/read',array('r'=>time()))}",
+						url: "{:U('Tool/RemoteProductParser/read',array('r'=>time()))}",
 						data: {
 							url: encodeURI(param_url)
 						},
@@ -190,7 +190,7 @@
 									$(".title").html("<input type='hidden' name='title[]' value='"+title +"'>"+"<span name='title'>" +title+ "</span>");
 									$(".guige").html("<input type='text' style='width:50px' name='guige[] '>");
 									$(".num").html("<input type='hidden' name='url[]' value='"+aaa +"'>"+"<input type='text' style='width:50px' name='num[]'>");
-									$(".xxx").html("<button class='am-btn am-btn-primary am-btn-xs' style='height:20px'>×</button>");
+									$(".xxx").html("<button class='am-btn am-btn-primary am-btn-xs' style='font-size:10px; '>×</button>");
 									$('.price').html("<input type='text' style='width:50px' name='price[]'>");
 												
 								} 
@@ -219,7 +219,7 @@
 					$.ajax({
 						cache: false,
 						method: "post",
-						url: "{:U('Home/SJActivity/read',array('r'=>time()))}",
+						url: "{:U('Tool/RemoteProductParser/read',array('r'=>time()))}",
 						data: {
 							url: encodeURI(param_url)
 						},
@@ -243,7 +243,7 @@
 									$(".title").html("<input type='hidden' name='title[]' value='"+title +"'>"+"<span name='title'>" +title+ "</span>");
 									$(".guige").html("<input type='text' style='width:50px' name='guige[] '>");
 									$(".num").html("<input type='hidden' name='url[]' value='"+aaa +"'>"+"<input type='text' style='width:50px' name='num[]'>");
-									$(".xxx").html("<button class='am-btn am-btn-primary am-btn-xs' style='height:20px'>×</button>");
+									$(".xxx").html("<button class='am-btn am-btn-primary am-btn-xs' style='font-size:10px; '>×</button>");
 									$('.price').html("<input type='text' style='width:50px' name='price[]'>");
 												
 								} else if ($(".title").text() != '' && $(".title1").text() == '') {
@@ -251,14 +251,14 @@
 									$(".title1").html("<input type='hidden' name='title[]' value='"+title +"'>"+"<span name='title'>"+title+"</span>");
 									$(".guige1").html("<input type='text' style='width:50px' name='guige[]'>");
 									$(".num1").html("<input type='hidden' name='url[]' value='"+aaa +"'>"+"<input type='text' style='width:50px' name='num[]'>");
-									$(".xxx1").html("<button class='am-btn am-btn-primary am-btn-xs' style='height:20px'>×</button>");
+									$(".xxx1").html("<button class='am-btn am-btn-primary am-btn-xs' style='font-size:10px; '>×</button>");
 									$('.price1').html("<input type='text' style='width:50px' name='price[]'>");
 								} else if ($(".title").text() != '' && $(".title1").text() != '') {
 									$(".img2").html("<input type='hidden' name='img[]' value="+data.info.main_img  +">"+"<img src='" + data.info.main_img + "' alt='图片' style='height:50px;width:100px;folat:left;'  />");
 									$(".title2").html("<input type='hidden' name='title[]' value='"+title +"'>"+"<span name='title'>"+title+"</span>");
 									$(".guige2").html("<input type='text' style='width:50px' name='guige[]'>");
 									$(".num2").html("<input type='hidden' name='url[]' value='"+aaa +"'>"+"<input type='text' style='width:50px' name='num[]'>");
-									$(".xxx2").html("<button class='am-btn am-btn-primary am-btn-xs' style='height:20px'>×</button>");
+									$(".xxx2").html("<button class='am-btn am-btn-primary am-btn-xs' style='font-size:10px; '>×</button>");
 									$('.price2').html("<input type='text' style='width:50px' name='price[]'>");
 								}
 								

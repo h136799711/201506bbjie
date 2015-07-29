@@ -26,24 +26,10 @@
 							<ul id="ul_rw" class="nav nav-tabs nav-store" role="menu">
 								<li class="active" role="menuitem"><a tabindex="-1" href="#">待审核任务</a>
 								</li>
-								<!--<li role="menuitem"><a tabindex="-1" href="#">已结算任务</a>
-								</li>
-								<li role="menuitem"><a tabindex="-1" href="#">暂停任务</a>
-								</li>-->
+								
 							</ul>
 						</div>
-						<!--<script type="text/javascript">
 						
-							$(function(){
-								$("#ul_rw li").click(function(){
-									
-									$(this).addClass('active').siblings().removeClass('active');
-									$(".grid-view").eq($("#ul_rw li").index($(this))).show().siblings().hide();
-								})
-								
-							})
-							
-						</script>-->
 						<div>
 							<div class="grid-view" controller="extend/gridview,person/renwu">
 								<table class="items table table-seller">
@@ -84,48 +70,51 @@
 										<tr>
 											<th width="60" id="task-grid_c0"><a class="sort-link" href="#">ID<span class="caret"></span></a>
 											</th>
-											<th width="200" id="task-grid_c1">任务名称</th>
-											<th width="180" id="task-grid_c2">发货模式</th>
+											<th width="160" id="task-grid_c1">任务名称</th>
+											<th width="200" id="task-grid_c2">收货信息</th>
 											<th width="100" id="task-grid_c3"><a class="sort-link" href="#">淘宝订单号<span class="caret"></span></a>
 											</th>
 											<th width="100" id="task-grid_c4"><a class="sort-link" href="#">淘宝交易金<span class="caret"></span></a>
 											</th>
 											<th width="120" id="task-grid_c6"><a class="sort-link" href="#">任务状态<span class="caret"></span></a>
 											</th>
+											<th width="180" id="task-grid_c6"><a class="sort-link" href="#">运单号<span class="caret"></span></a>
+											</th>
 											<th width="100" id="task-grid_c7"><a class="sort-link desc" href="#">创建时间<span class="caret"></span></a>
 											</th>
-											<th width="130" id="task-grid_c9">操作</th>
+											<th width="80" id="task-grid_c9">操作</th>
 										</tr>
 									</thead>
 									<tbody class="item odd">
-										<tr class="padding-tr"></tr>
-										<volist name="tshis" id="q">
-											<volist name='task' id='vo'>
+										<volist name='task' id='vo'>
+											<volist name="tshis" id="q">
 												<if condition="$vo['id'] eq $q['task_id']">
+													<tr class="padding-tr"></tr>
 													<tr class="list-tr">
 														<td>{$vo.id}</td>
 														<td>{$vo.task_name}</td>
 														<td>
-															<if condition="$vo['delivery_mode'] eq 1">平台发货</if>
-															<if condition="$vo['delivery_mode'] eq 2">自主发货</if>
+															{$q.tb_address}
 														</td>
 														<td>{$q.tb_orderid}</td>
 														<td><span class="price" title="">{$q.tb_price}</span>
 														</td>
 														<td><span class="muted" style="color: green;">
-														<if condition="$q['do_status'] eq 1">任务进行中</if>
-														<if condition="$q['do_status'] eq 2">已完成</if>
-														<if condition="$q['do_status'] eq 3">待订单确认</if>
-														<if condition="$q['do_status'] eq 4">待确认返款</if>
-														<if condition="$q['do_status'] eq 8">驳回</if>
-													</span>
-														</td>
-
+														<if condition="$q.order_status eq 3">[待发货]</if><if condition="$q.order_status eq 1">[已完成]</if>
+														<if condition="$q.order_status eq 4">[已发货]</if><if condition="$q.order_status eq 8">[订单取消]</if>
+														<if condition="$q.order_status eq 5">[已收货]</if><if condition="$q.order_status eq 12">[订单退回 原因：{$vo['notes']}]</if>
+														<if condition="$q.order_status eq 6">[已退货]</if><if condition="$q.order_status eq 2">[待确认]</if>
+														</span></td>
+														<td><volist name="express" id="c">
+															<if condition="$q['tb_orderid'] eq $c['orderid']">
+																{$c.expressno}
+															</if>
+														</volist></td>
 														<td><span title="">{$q.create_time|date='m-d H:i',###}</span>
 														</td>
 														<td>
-															<a class="btn"  style="font-family: '微软雅黑'; background-color: #1D99D5; font-size: 11px;line-height: 10px; padding: 5px; border-radius:5px  ; color: #FFFFFF;" href="{:U('Home/SJActivity/qrdd',array('id'=>$q['id']))}">审核通过</a>
-															<br><button id="backbtn" value="{$q.id}" class="am-btn am-btn-primary am-btn-xs" style="font-family: '微软雅黑'; background-color: orangered; margin-top: 3px; border: none; font-size: 11px;line-height: 10px; padding: 5px; border-radius:5px ;" data-am-modal="{target: '#doc-modal-3', closeViaDimmer: 0, width: 400, height: 300}">驳回</button>
+															<!--<a class="text-info inline-block" href="{:U('Home/SJActivity/qrdd',array('id'=>$q['id']))}">审核通过</a>
+															<br><a class="text-info inline-block" href="{:U('Home/SJActivity/rt',array('id'=>$q['id']))}">驳回</a>-->
 														</td>
 													</tr>
 
@@ -135,23 +124,6 @@
 									</tbody>
 
 								</table>
-								<div class="am-modal am-modal-no-btn" tabindex="-1" id="doc-modal-3">
-									<div class="am-modal-dialog">
-										<div class="am-modal-hd" >提现
-											<a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
-										</div>
-										<form action="{:U('Home/SJActivity/back')}" method="post" id="backform">
-											<input type="hidden" name="id" id="tsid" >
-											<input type="hidden" name="text" id="hidtext" >
-											<div class="" style="margin-top: 10px;">
-												撤单原因：<br>
-												<textarea id="texta"  rows="6" cols="20"></textarea>
-												<br /><span style="font-size: 12px; color: forestgreen;">比如：订单编号错误等..</span>
-											</div>
-											<input id="qr" style="font-family: '微软雅黑'; font-size: 13px; border-radius:5px ; margin-top: -8px;" class="am-btn-danger am-btn-xs" type="button" value="确认" />
-										</form>
-									</div>
-								</div>
 								<div class="row-fluid">
 									<div class="span6 offset3"></div>
 									<div class="span3">
@@ -169,21 +141,7 @@
 </block>
 
 <block name="area_footer">
-	<script type="text/javascript">
-		$(function(){
-			$('#qr').click(function(){
-				var a=$('#texta').val();
-				$('#hidtext').val(a);
-				$('#backform').submit();
-			})
-			$('#backbtn').click(function(){
-				var id=$(this).val();
-				$('#tsid').val(id);
-			})
-			
-		})
-		
-	</script>
+
 </block>
 
 <!--[if IEMobile 7]><body class="iem7" ><![endif]-->

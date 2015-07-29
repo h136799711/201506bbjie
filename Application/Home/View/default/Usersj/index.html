@@ -28,7 +28,7 @@
 													<td style="vertical-align: top;width:160px;">
 														<div class="page_head_img">
 															<a class="index_touxiang" href="javascript:void(0)">
-																<if condition="$head_img eq '' ">
+																<if condition="$head_img eq 0 ">
 																	<img src="__IMG__/default_user_portrait.gif" alt="">
 																	<else/>
 																	<img src="{$head_img}" alt="">
@@ -46,11 +46,12 @@
 															<p>
 																<if condition="$sj.vip_level eq 1">
 																	会员等级 : vip会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">续费或开通超级会员</a> ]
-
 																</if>
 																<if condition="$sj.vip_level eq 2">
 																	会员等级 : 超级会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">续费超级会员</a> ]
-																	<else/> 会员等级 : 普通会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">开通会员</a> ]
+																</if>
+																<if condition="$sj.vip_level eq 0">
+																	会员等级 : 普通会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">开通会员</a> ]
 																</if>
 
 															</p>
@@ -149,7 +150,7 @@
 											</div>
 											<div class="span2">待审核订单： <span class="number text-error">{$ddsh}</span>
 											</div>
-											<div class="span2">订单未提交： <span class="number text-info">{$qrhk}</span>
+											<div class="span2">确认还款： <span class="number text-info">{$qrhk}</span>
 											</div>
 											<!--<div class="span2">挂起： <span class="number">0</span>
 											</div>-->
