@@ -1,0 +1,128 @@
+<extend name="template/base_index" />
+
+<block name="area_header">
+	<link rel="stylesheet" href="__CSS__/shangjia2.css">
+	<style type="text/css">
+		#begin_time,#end_time,#count{ height: 30px;}
+		#yw1 li{list-style-type: none;}
+	</style>
+</block>
+
+<block name="area_body">
+
+	<include file='Widget/sjtop' />
+	<div class="seller_main clearfix" controller="seller/common">
+		<div class="seller_content_wrap">
+
+			<div class="seller_content" style="padding-top: 10px;">
+
+					<div class="task-head">
+						<div class="breadcrumbs">
+							<a href="">淘宝活动</a>&gt;<span>任务计划管理：{$task['task_name']}</span>
+						</div>
+						<!--</div><a class="look-other" href="#">查看任务试民</a>-->
+					</div>
+
+					<div class="content">
+
+						<div class="renwu-head">
+							<ul class="product-image">
+								<volist name='jihuas' id='c' >
+									<if condition="$c['task_id'] eq $task['id']">
+										<font style="margin-left: 10px;" color="#000000">尺寸：{$c['sku']}</font>
+									<volist name='pro' id='v' key='a' ><if condition="$c['pid'] eq $v['id']"><li><img width="75px" height="75px" src="{$v['main_img']}" class="gray" id="" ></li></if></volist>
+									</if>
+								</volist>
+							</ul>
+							<div class="task-tongji">
+								<div class="tongji">
+									
+									<span style="font-family: '微软雅黑'; margin-left: 20px;">单份任务金:<i>{$task['task_gold']}</i>元</span>
+								</div>
+								
+							</div>
+
+							<div class="option">
+								<!--<a class="btn btn-renwu" modal-title="发放任务" data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 750, height:500}" href="javascriot:void(0)">发放任务</a>--> 
+							</div>
+
+						</div>
+
+						<div class="renwuku jquery-once-1-processed">
+							<div id="yw1" class="grid-view" controller="extend/gridview" >
+								<table class="items table table-hover">
+									<thead>
+										<tr>
+											<th width="80" id="yw1_c0">试民</th>
+											<th width="100" id="yw1_c1">淘宝账号</th>
+											<th width="160" id="yw1_c1">收货地址</th>
+											<th width="160" class="text-center" id="yw1_c2">任务状态</th>
+											<th width="100" id="yw1_c3">订单状态</th>
+											<th width="160" class="text-center" id="yw1_c4">订单</th>
+											<th class="text-center" width="100" id="yw1_c5"><a class="sort-link" href="">任务时间<span class="caret"></span></a>
+											</th>
+											<th width="80" id="yw1_c6">操作</th>
+										</tr>
+									</thead>
+									<tbody>
+										<volist name='taskplan' id='vo'>
+										<tr class="odd">
+											<td>
+												<volist name='user' id='v' >
+													<if condition="$v['uid'] eq $vo['uid']">
+														<if condition="$v['head_img'] eq ''">
+															<li><img src="__IMG__/default_user_portrait.gif" alt=""></li>
+															<else/>
+															<li><img width="75px" height="75px" src="{$v['head_img']}" class="gray" id="" ></li>
+														</if>
+													</if>
+												</volist>
+											</td>
+											<td>
+												{$v['taobao_account']}
+											</td>
+											<td>
+												{$vo['tb_address']}
+											</td>
+											<td class="text-center">进行中</td>
+											<td class="text-center">已发货 </td>
+											<td class="text-center">
+												{$vo['tb_orderid']}
+											<td class="text-center">
+												<div class="small">
+													<div class="inline-block" style="width:80px;">{$vo.create_time|date='m-d H:i',###}</div>&nbsp;&nbsp;
+													<div class="inline-block" style="vertical-align:-3px;"><a data-toggle="modal2" modal-title="更新任务时间" href="http://www.shifujie.net/seller/sf/renwuku/shijian?id=31834"><i class="s_icon edit1"></i></a>
+													</div>
+												</div>
+											</td>
+											<td>
+												<!--<div class="renwu-caozuo small"><a target="_blank" href="">挂起</a>-->
+													
+												</div>&nbsp;</td>
+										</tr>
+										</volist>
+									</tbody>
+								</table>
+								<div class="row-fluid">
+									<div class="span6 offset3"></div>
+									<div class="span3">
+										<div class="summary">{$show}</div>
+									</div>
+								</div>
+								<div class="keys" style="display:none" title=""><span>31834</span>
+								</div>
+							</div>
+						</div>
+	
+					</div>
+				</div>
+			</div>
+			<include file='Widget/sjleft' />
+		</div>
+		
+</block>
+
+<block name="area_footer">
+	
+</block>
+
