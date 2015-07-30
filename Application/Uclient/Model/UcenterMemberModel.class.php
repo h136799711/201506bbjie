@@ -149,8 +149,11 @@ class UcenterMemberModel extends Model{
 		$user = $this->where($map)->find();
 //		dump($user);
 		if(is_array($user) && $user['status']){
+//			dump(think_ucenter_md5($password, UC_AUTH_KEY));
+//			dump($user['password']);
 			/* 验证用户密码 */
 			if(think_ucenter_md5($password, UC_AUTH_KEY) === $user['password']){
+//				dump('aaaaa');
 				$this->updateLogin($user['id']); //更新用户登录信息
 				return $user['id']; //登录成功，返回用户ID
 			} else {

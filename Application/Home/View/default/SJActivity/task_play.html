@@ -34,7 +34,7 @@
 							</ul>
 							<div class="task-tongji">
 								<div class="tongji">
-									<span>总份数:<i><empty name="$task_play['task_cut']">0<else/>{$task_play['task_cut']}</empty></i></span>
+									<span>总份数:<i>{$task_play['task_cnt']}</i></span>
 									<span>任务中:<i>{$fcount}</i></span>
 									<span>已完成:<i>{$scount}</i></span>
 									<span style="margin-left: 20px;">单份任务金:<i>{$task['task_gold']}</i>元</span>
@@ -48,7 +48,7 @@
 						</div>
 
 						<div class="renwuku jquery-once-1-processed">
-							<div id="yw1" class="grid-view" controller="extend/gridview" data-options="{&#39;ajaxUpdate&#39;:[&#39;yw1&#39;],&#39;ajaxVar&#39;:&#39;ajax&#39;,&#39;pagerClass&#39;:&#39;pagination text-center&#39;,&#39;loadingClass&#39;:&#39;grid-view-loading&#39;,&#39;filterClass&#39;:&#39;filters&#39;,&#39;tableClass&#39;:&#39;items table table-hover&#39;,&#39;selectableRows&#39;:1,&#39;enableHistory&#39;:false,&#39;updateSelector&#39;:&#39;{page}, {sort}&#39;,&#39;filterSelector&#39;:&#39;{filter}&#39;,&#39;pageVar&#39;:&#39;Renwuku_page&#39;,&#39;arg_id&#39;:&#39;Renwuku&#39;}">
+							<div id="yw1" class="grid-view" controller="extend/gridview" >
 								<table class="items table table-hover">
 									<thead>
 										<tr>
@@ -85,9 +85,9 @@
 												<div>
 													<div class="small muted">已分配：<i>{$fcount}</i>
 													</div>
-													<div class="small muted">未分配：<i>{$fcount}</i>
+													<div class="small muted" >未分配：<i id="wfp"></i>
 													</div>
-													<div class="small muted">总份数：<i>{$tp.task_cnt}</i>
+													<div class="small muted">总份数：<i id="zfs">{$tp.task_cnt}</i>
 													</div>
 												</div>&nbsp;</td>
 											<td class="text-center">
@@ -98,9 +98,9 @@
 												</div>
 											</td>
 											<td>
-												<div class="renwu-caozuo small"><a target="_blank" href="http://www.shifujie.net/seller/work/shifu?renwuku_id=31834&step=all">查看试民</a>
-													<br><a data-toggle="modal2" modal-title="修改份数" href="http://www.shifujie.net/seller/sf/renwuku/fenshu?id=31834">修改份数</a>
-													<br><a data-role="ajax" href="http://www.shifujie.net/seller/sf/renwuku/stop?id=31834" id="yt1">暂停任务</a>
+												<div class="renwu-caozuo small"><a target="_blank" href="{:U('Home/SJActivity/alluser',array('id'=>$tp['task_id']))}">查看试民</a>
+													<!--<br><a data-toggle="modal2" modal-title="修改份数" href="http://www.shifujie.net/seller/sf/renwuku/fenshu?id=31834">修改份数</a>-->
+													<br><a data-role="ajax" href="{:U('Home/SJActivity/zanting',array('id'=>$vo['id']))}" id="yt1">暂停任务</a>
 												</div>&nbsp;</td>
 										</tr>
 										</volist>
@@ -222,6 +222,9 @@
 					}
 				}
 			})
+			var zfs=$('#zfs').text();
+			var wfp=Number(zfs)-Number('{$fcount}');
+			$('#wfp').text(wfp);
 		})
 	</script>
 </block>

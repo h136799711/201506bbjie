@@ -79,11 +79,9 @@
 						<a href="">&nbsp;</a>
 					</div>
 					<volist name="newProductList" id="rpl">
-						<dl class="dl_info">
+						<dl class="dl_info" onclick="toUrl('{:U('Shop/Index/spxq',array('id'=>$rpl['id']))}')">
 							<dt>
-	
-			                <img src="{$rpl.main_img}" width="216" height="245"/>
-	
+			                	<img src="{$rpl.main_img}" width="216" height="245"/>
 			                </dt>
 							<dd style=" border-bottom:1px dotted #666">{$rpl.name}</dd>
 							<dd style="color:#FF5899;"><span style="background: url(__PUBLIC__/Shop/img/fubi.png) no-repeat 0 1px; padding-left:17px;" >{:number_format($rpl['price']/100,0)}</span> </dd>

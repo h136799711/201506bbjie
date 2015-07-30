@@ -2,8 +2,8 @@
 
 <block name="area_header">
 	<link rel="stylesheet" href="__CSS__/manager.css" />
-	<link type="text/css" rel="stylesheet" src="__CDN__/jquery-uploadify/3.2.1/uploadify.css" />
-	<script type="text/javascript" src="__CDN__/jquery-uploadify/3.2.1/jquery.uploadify.min.js"></script>
+	<link type="text/css" rel="stylesheet" src="__UPLOAD__/jquery-uploadify/3.2.1/uploadify.css" />
+	<script type="text/javascript" src="__UPLOAD__/jquery-uploadify/3.2.1/jquery.uploadify.min.js"></script>
 </block>
 
 <block name="area_body">
@@ -19,7 +19,7 @@
 					<div class="am-panel-bd" style="height:350px;">
 						<div style="margin-left: 30px; margin-top: 50px; width: 100px; float: left;">
 							<a class="index_touxiang" href="javascript:void(0)">
-								<if condition="$head_img eq 0 ">
+								<if condition="$head_img eq '' ">
 								<img height="80px" width="80px" src="__IMG__/default_user_portrait.gif" alt="">
 								<else/>
 									<img height="100px" width="100%" src="{$head_img}" alt="">
@@ -29,7 +29,7 @@
 							</a>
 							<span class="am-badge am-badge-success am-round" style="margin-top: 5px; margin-left: 10px;">等级：{$level}级</span>
 						</div>
-						<div style=" float: left; font-size: 12px; margin-left: 20px; margin-top: 56px;  width: 70%;">
+						<div style=" float: left; font-size: 12px; margin-left: 20px; margin-top: 26px;  width: 70%;">
 							<table style="width: 100%;">
 								<tr>
 									<td width="20%" style="text-align: right;">{$username}</td>
@@ -189,7 +189,7 @@
 											/* 初始化上传插件  */
 											$("#upload_picture").uploadify({
 												"height": 30,
-												"swf": "__CDN__/jquery-uploadify/3.2.1/uploadify.swf",
+												"swf": "__UPLOAD__/jquery-uploadify/3.2.1/uploadify.swf",
 												"fileObjName": "download",
 												"buttonText": "上传头像",
 												"uploader": "{:U('Home/Index/uploadPicture',array('session_id'=>session_id()))}",

@@ -10,7 +10,7 @@
 	<include file='Widget/sjtop' />
 	<div class="seller_main clearfix" controller="seller/common">
 		<div class="seller_content_wrap">
-			
+
 			<div class="seller_content" style="padding-top: 10px;">
 
 				<div class="content">
@@ -19,11 +19,18 @@
 						<div style="position: relative">
 							<div class="pull-right btn-group"><a data-toggle="modal2" modal-title="创建淘宝活动" style="background-color: #1D99D5; color: #FFFFFF;" class="am-btn am-round" href="{:U('Home/SJActivity/activity_1')}">创建试福任务</a>
 							</div>
-							
-<include file="Widget/li" />
-							<div class="clear"></div>
 
-							
+							<include file="Widget/li" />
+							<div class="clear"></div>
+							<ul id="ul_rw" class="nav nav-tabs nav-store" role="menu">
+								<li class="active" role="menuitem"><a tabindex="-1" href="#">已开启任务</a>
+								</li>
+								<li role="menuitem"><a tabindex="-1" href="#">暂停任务</a>
+								</li>
+								<!--<li role="menuitem"><a tabindex="-1" href="#">暂停任务</a>
+								</li>-->
+							</ul>
+
 						</div>
 						<script type="text/javascript">
 							$(function(){
@@ -36,338 +43,240 @@
 							})
 						</script>
 						<div>
-						<div class="grid-view" controller="extend/gridview,person/renwu" >
-							<table class="items table table-seller">
-								<thead>
-									<tr class="filters">
-										<td>
-											<div class="filter-container">
-												<input name="RenWu[task_id]" id="RenWu_task_id" type="text">
-											</div>
-										</td>
-										<td>
-											<div class="filter-container">
-												<input name="RenWu[task_name]" id="RenWu_task_name" type="text">
-											</div>
-										</td>
-										<td>
-											<div class="filter-container">&nbsp;</div>
-										</td>
-										<td>
-											<div class="filter-container">&nbsp;</div>
-										</td>
-										<td>
-											<div class="filter-container">&nbsp;</div>
-										</td>
-										<td>
-											<div class="filter-container">&nbsp;</div>
-										</td>
-										<td>
-											<div class="filter-container">&nbsp;</div>
-										</td>
-										<td>
-											<div class="filter-container">&nbsp;</div>
-										</td>
-										<td>
-											<div class="filter-container">&nbsp;</div>
-										</td>
-									</tr>
-									<tr>
-										<th width="60" id="task-grid_c0"><a class="sort-link" href="#">ID<span class="caret"></span></a>
-										</th>
-										<th width="300" id="task-grid_c1">任务名称</th>
-										<th width="120" id="task-grid_c2">发货模式</th>
-										<th width="60" id="task-grid_c3"><a class="sort-link" href="#">链接数<span class="caret"></span></a>
-										</th>
-										<th width="100" id="task-grid_c4"><a class="sort-link" href="#">单份任务金<span class="caret"></span></a>
-										</th>
-										<th width="100" id="task-grid_c5">冻结金额</th>
-										<th width="120" id="task-grid_c6"><a class="sort-link" href="#">任务状态<span class="caret"></span></a>
-										</th>
-										<th width="100" id="task-grid_c7"><a class="sort-link desc" href="#">创建时间<span class="caret"></span></a>
-										</th>
-										<th width="130" id="task-grid_c9">操作</th>
-									</tr>
-								</thead>
-								
-								<tbody class="item odd">
-									<tr class="padding-tr"></tr>
-									<volist name='task' id='vo' key='s'>
-									<tr class="list-tr">
-										<td>{$vo.id}</td>
-										<td>{$vo.task_name}</td>
-										<td><if condition="$vo['delivery_mode'] eq 1">平台发货</if><if condition="$vo['delivery_mode'] eq 2">自主发货</if></td>
-										<td>{$geshu}</td>
-										<td><span class="price"  title="">{$vo.task_brokerage}</span>
-										</td>
-										<td><span class="muted">{$vo.task_gold}</span>
-										</td>
-										<td>启用</td>
-										<td><span title="">{$vo.create_time|date='m-d H:i',###}</span>
-										</td>
-										<td>
-											<div class="am-btn-group">
-											  <a href="{:U('Home/SJActivity/task_play',array('id'=>$vo['id']))}"  style="background-color: #1D99D5; font-size: 12px; color: #FFFFFF;"  class="am-btn am-round">发放任务</a>
-											</div>
-										</td>
-									</tr>
-									<tr class="lbody-tr">
-										
-										<td colspan="3">
-											<volist name='jihuas' id='c' >
-												<if condition="$c['info'][0]['task_id'] eq $vo['id']">
-											<volist name='pro' id='v' key='a' ><if condition="$c['info'][0]['pid'] eq $v['info'][0]['id']"><img width="75px" height="75px" src="{$v['info'][0]['main_img']}" class="gray" id="" ></if></volist>
-											</if>
+							<div class="grid-view" controller="extend/gridview,person/renwu">
+								<table class="items table table-seller">
+									<thead>
+										<tr class="filters">
+											<td>
+												<div class="filter-container">
+													<input name="RenWu[task_id]" id="RenWu_task_id" type="text">
+												</div>
+											</td>
+											<td>
+												<div class="filter-container">
+													<input name="RenWu[task_name]" id="RenWu_task_name" type="text">
+												</div>
+											</td>
+											<td>
+												<div class="filter-container">&nbsp;</div>
+											</td>
+											<td>
+												<div class="filter-container">&nbsp;</div>
+											</td>
+											<td>
+												<div class="filter-container">&nbsp;</div>
+											</td>
+											<td>
+												<div class="filter-container">&nbsp;</div>
+											</td>
+											<td>
+												<div class="filter-container">&nbsp;</div>
+											</td>
+											<td>
+												<div class="filter-container">&nbsp;</div>
+											</td>
+											<td>
+												<div class="filter-container">&nbsp;</div>
+											</td>
+										</tr>
+										<tr>
+											<th width="60" id="task-grid_c0"><a class="sort-link" href="#">ID<span class="caret"></span></a>
+											</th>
+											<th width="300" id="task-grid_c1">任务名称</th>
+											<th width="120" id="task-grid_c2">发货模式</th>
+											<th width="60" id="task-grid_c3"><a class="sort-link" href="#">链接数<span class="caret"></span></a>
+											</th>
+											<th width="100" id="task-grid_c4"><a class="sort-link" href="#">单份任务金<span class="caret"></span></a>
+											</th>
+											<th width="100" id="task-grid_c5">冻结金额</th>
+											<th width="120" id="task-grid_c6"><a class="sort-link" href="#">任务状态<span class="caret"></span></a>
+											</th>
+											<th width="100" id="task-grid_c7"><a class="sort-link desc" href="#">创建时间<span class="caret"></span></a>
+											</th>
+											<th width="130" id="task-grid_c9">操作</th>
+										</tr>
+									</thead>
+
+									<tbody class="item odd">
+										<tr class="padding-tr"></tr>
+										<volist name='task' id='vo' key='s'>
+											<tr class="list-tr">
+												<td>{$vo.id}</td>
+												<td>{$vo.task_name}</td>
+												<td>
+													<if condition="$vo['delivery_mode'] eq 1">平台发货</if>
+													<if condition="$vo['delivery_mode'] eq 2">自主发货</if>
+												</td>
+												<td>{$geshu}</td>
+												<td><span class="price" title="">{$vo.task_brokerage}</span>
+												</td>
+												<td><span class="muted">{$vo.task_gold}</span>
+												</td>
+												<td>启用</td>
+												<td><span title="">{$vo.create_time|date='m-d H:i',###}</span>
+												</td>
+												<td>
+													<div class="am-btn-group">
+														<a href="{:U('Home/SJActivity/task_play',array('id'=>$vo['id']))}" style="background-color: #1D99D5; font-size: 12px; color: #FFFFFF;" class="am-btn am-round">发放任务</a>
+													</div>
+												</td>
+											</tr>
+											<tr class="lbody-tr">
+
+												<td colspan="3">
+													<volist name='jihuas' id='c'>
+														<if condition="$c['info'][0]['task_id'] eq $vo['id']">
+															<volist name='pro' id='v' key='a'>
+																<if condition="$c['info'][0]['pid'] eq $v['info'][0]['id']"><img width="75px" height="75px" src="{$v['info'][0]['main_img']}" class="gray" id=""></if>
+															</volist>
+														</if>
+													</volist>
+												</td>
+												<td colspan="2"><a class="text-info" target="_blank" href="{:U('Home/SJActivity/rws',array('id'=>$vo['id']))}">预览任务书</a>
+												</td>
+												<td colspan="3">
+													正常
+												</td>
+												<td>
+													<div><a class="text-info inline-block" data-role="ajax" href="{:U('Home/SJActivity/zanting',array('id'=>$vo['id']))}">暂停任务</a>
+														<br><a target="_blank" class="text-info inline-block" href="#">任务试民</a>
+													</div>
+												</td>
+											</tr>
+
+										</volist>
+									</tbody>
+
+								</table>
+								<div class="row-fluid">
+									<div class="span6 offset3"></div>
+									<div class="span3">
+									</div>
+								</div>
+								<div class="keys" style="display:none" title="#"><span>54917</span><span>54556</span>
+								</div>
+							</div>
+
+							<!--已暂停任务 -->
+							<div class="grid-view" controller="extend/gridview,person/renwu" style="display: none;">
+								<table class="items table table-seller">
+									<empty name="task_zt">
+										<span style="padding-top: 100px;">暂无数据记录</span>
+										<else/>
+										<thead>
+											<tr class="filters">
+												<td>
+													<div class="filter-container">
+														<input name="RenWu[task_id]" id="RenWu_task_id" type="text">
+													</div>
+												</td>
+												<td>
+													<div class="filter-container">
+														<input name="RenWu[task_name]" id="RenWu_task_name" type="text">
+													</div>
+												</td>
+												<td>
+													<div class="filter-container">&nbsp;</div>
+												</td>
+												<td>
+													<div class="filter-container">&nbsp;</div>
+												</td>
+												<td>
+													<div class="filter-container">&nbsp;</div>
+												</td>
+												<td>
+													<div class="filter-container">&nbsp;</div>
+												</td>
+												<td>
+													<div class="filter-container">&nbsp;</div>
+												</td>
+												<td>
+													<div class="filter-container">&nbsp;</div>
+												</td>
+												<td>
+													<div class="filter-container">&nbsp;</div>
+												</td>
+											</tr>
+											<tr>
+												<th width="60" id="task-grid_c0"><a class="sort-link" href="#">ID<span class="caret"></span></a>
+												</th>
+												<th width="300" id="task-grid_c1">任务名称</th>
+												<th width="120" id="task-grid_c2">发货模式</th>
+												<th width="60" id="task-grid_c3"><a class="sort-link" href="#">链接数<span class="caret"></span></a>
+												</th>
+												<th width="100" id="task-grid_c4"><a class="sort-link" href="#">单份任务金<span class="caret"></span></a>
+												</th>
+												<th width="100" id="task-grid_c5">冻结金额</th>
+												<th width="120" id="task-grid_c6"><a class="sort-link" href="#">任务状态<span class="caret"></span></a>
+												</th>
+												<th width="100" id="task-grid_c7"><a class="sort-link desc" href="#">创建时间<span class="caret"></span></a>
+												</th>
+												<th width="130" id="task-grid_c9">操作</th>
+											</tr>
+										</thead>
+										<tbody class="item odd">
+
+											<tr class="padding-tr"></tr>
+											<volist name='task_zt' id='vo' >
+												<tr class="list-tr">
+													<td>{$vo.id}</td>
+													<td>{$vo.task_name}</td>
+													<td>
+														<if condition="$vo['delivery_mode'] eq 1">平台发货</if>
+														<if condition="$vo['delivery_mode'] eq 2">自主发货</if>
+													</td>
+													<td>{$geshu}</td>
+													<td><span class="price" title="">{$vo.task_brokerage}</span>
+													</td>
+													<td><span class="muted">{$vo.task_gold}</span>
+													</td>
+													<td>启用</td>
+													<td><span title="">{$vo.create_time|date='m-d H:i',###}</span>
+													</td>
+													<td>
+														<div class="am-btn-group">
+															<a href="{:U('Home/SJActivity/task_play',array('id'=>$vo['id']))}" style="background-color: #1D99D5; font-size: 12px; color: #FFFFFF;" class="am-btn am-round">发放任务</a>
+														</div>
+													</td>
+												</tr>
+												<tr class="lbody-tr">
+
+													<td colspan="3">
+														<volist name='jihuas' id='c'>
+															<if condition="$c['info'][0]['task_id'] eq $vo['id']">
+																<volist name='pro' id='v' key='a'>
+																	<if condition="$c['info'][0]['pid'] eq $v['info'][0]['id']"><img width="75px" height="75px" src="{$v['info'][0]['main_img']}" class="gray" id=""></if>
+																</volist>
+															</if>
+														</volist>
+													</td>
+													<td colspan="2"><a class="text-info" target="_blank" href="{:U('Home/SJActivity/rws',array('id'=>$vo['id']))}">预览任务书</a>
+													</td>
+													<td colspan="3">
+														正常
+													</td>
+													<td>
+														<div><a class="text-info inline-block" data-role="ajax" href="{:U('Home/SJActivity/start',array('id'=>$vo['id']))}">开启任务</a>
+														</div>
+													</td>
+												</tr>
 											</volist>
-										</td>
-										<td colspan="2"><a class="text-info" target="_blank" href="{:U('Home/SJActivity/rws',array('id'=>$vo['id']))}">预览任务书</a>
-										</td>
-										<td colspan="3">
-											<div>
-												<div>总份数：<i>0</i>
-												</div>
-												<div>任务中：<i>0</i>
-												</div>
-												<div>已完成：<i>0</i>
-												</div>
-											</div>
-										</td>
-										<td>
-											<div><a class="text-info inline-block" data-role="ajax" href="{:U('Home/SJActivity/zanting',array('id'=>$vo['id']))}">暂停任务</a><br><a target="_blank" class="text-info inline-block" href="#">任务试民</a>
-											</div>
-										</td>
-									</tr>
-									
-									</volist>
-								</tbody>
-								
-							</table>
-							<div class="row-fluid">
-								<div class="span6 offset3"></div>
-								<div class="span3">
+									</empty>
+
+									</tbody>
+
+								</table>
+								<div class="row-fluid">
+									<div class="span6 offset3"></div>
+									<div class="span3">
+										<div class="summary"></div>
+									</div>
+								</div>
+								<div class="keys" style="display:none" title="#">
 								</div>
 							</div>
-							<div class="keys" style="display:none" title="#"><span>54917</span><span>54556</span>
-							</div>
+							<!--	已暂停任务 -->
 						</div>
-						
-						
-						
-					<!--已结算任务 -->
-						<div class="grid-view" controller="extend/gridview,person/renwu" style="display: none;" >
-							<table class="items table table-seller">
-								<thead>
-									<tr class="filters">
-										<td>
-											<div class="filter-container">
-												<input name="RenWu[task_id]" id="RenWu_task_id" type="text">
-											</div>
-										</td>
-										<td>
-											<div class="filter-container">
-												<input name="RenWu[task_name]" id="RenWu_task_name" type="text">
-											</div>
-										</td>
-										<td>
-											<div class="filter-container">&nbsp;</div>
-										</td>
-										<td>
-											<div class="filter-container">&nbsp;</div>
-										</td>
-										<td>
-											<div class="filter-container">&nbsp;</div>
-										</td>
-										<td>
-											<div class="filter-container">&nbsp;</div>
-										</td>
-										<td>
-											<div class="filter-container">&nbsp;</div>
-										</td>
-										<td>
-											<div class="filter-container">&nbsp;</div>
-										</td>
-										<td>
-											<div class="filter-container">&nbsp;</div>
-										</td>
-									</tr>
-									<tr>
-										<th width="60" id="task-grid_c0"><a class="sort-link" href="#">ID<span class="caret"></span></a>
-										</th>
-										<th width="300" id="task-grid_c1">任务名称</th>
-										<th width="120" id="task-grid_c2">发货模式</th>
-										<th width="60" id="task-grid_c3"><a class="sort-link" href="#">链接数<span class="caret"></span></a>
-										</th>
-										<th width="100" id="task-grid_c4"><a class="sort-link" href="#">单份任务金<span class="caret"></span></a>
-										</th>
-										<th width="100" id="task-grid_c5">冻结金额</th>
-										<th width="120" id="task-grid_c6"><a class="sort-link" href="#">任务状态<span class="caret"></span></a>
-										</th>
-										<th width="100" id="task-grid_c7"><a class="sort-link desc" href="#">创建时间<span class="caret"></span></a>
-										</th>
-										<th width="130" id="task-grid_c9">操作</th>
-									</tr>
-								</thead>
-								<tbody class="item odd">
-									<tr class="padding-tr"></tr>
-									<volist name='taskjs' id='vo'>
-									<tr class="list-tr">
-										<td>{$vo.id}</td>
-										<td>{$vo.task_name}</td>
-										<td><if condition="$vo['delivery_mode'] eq 1">平台发货</if><if condition="$vo['delivery_mode'] eq 2">自主发货</if></td>
-										<td>{$geshu}</td>
-										<td><span class="price"  title="">{$vo.task_brokerage}</span>
-										</td>
-										<td><span class="muted">{$vo.task_gold}</span>
-										</td>
-										<td>启用</td>
-										<td><span title="">{$vo.create_time|date='m-d H:i',###}</span>
-										</td>
-										
-									</tr>
-									<tr class="lbody-tr">
-										
-										<td colspan="3">
-											<volist name='pro' id='v' key='k'><img width="75px" height="75px" src="{$v['info'][0].main_img}" class="gray" id="" alt="{$v.title}"></volist>
-										</td>
-										<td colspan="2"><a class="text-info" target="_blank" href="{:U('Home/SJActivity/rws')}">预览任务书</a>
-										</td>
-										<td colspan="3">
-											<div>
-												<div>总份数：<i>0</i>
-												</div>
-												<div>任务中：<i>0</i>
-												</div>
-												<div>已完成：<i>0</i>
-												</div>
-											</div>
-										</td>
-										<td>
-											<div><a class="text-info inline-block" data-role="ajax" href="{:U('Home/SJActivity/zanting',array('id'=>$vo['id']))}">暂停任务</a><br><a target="_blank" class="text-info inline-block" href="#">任务试民</a>
-											</div>
-										</td>
-									</tr>
-									</volist>
-								</tbody>
-								
-							</table>
-							<div class="row-fluid">
-								<div class="span6 offset3"></div>
-								<div class="span3">
-									<div class="summary"></div>
-								</div>
-							</div>
-							<div class="keys" style="display:none" title="#"><span>54917</span><span>54556</span>
-							</div>
-						</div>
-						<!--	已结算任务 -->
-						<!--已暂停任务 -->
-						<div class="grid-view" controller="extend/gridview,person/renwu" style="display: none;" >
-							<table class="items table table-seller">
-								<thead>
-									<tr class="filters">
-										<td>
-											<div class="filter-container">
-												<input name="RenWu[task_id]" id="RenWu_task_id" type="text">
-											</div>
-										</td>
-										<td>
-											<div class="filter-container">
-												<input name="RenWu[task_name]" id="RenWu_task_name" type="text">
-											</div>
-										</td>
-										<td>
-											<div class="filter-container">&nbsp;</div>
-										</td>
-										<td>
-											<div class="filter-container">&nbsp;</div>
-										</td>
-										<td>
-											<div class="filter-container">&nbsp;</div>
-										</td>
-										<td>
-											<div class="filter-container">&nbsp;</div>
-										</td>
-										<td>
-											<div class="filter-container">&nbsp;</div>
-										</td>
-										<td>
-											<div class="filter-container">&nbsp;</div>
-										</td>
-										<td>
-											<div class="filter-container">&nbsp;</div>
-										</td>
-									</tr>
-									<tr>
-										<th width="60" id="task-grid_c0"><a class="sort-link" href="#">ID<span class="caret"></span></a>
-										</th>
-										<th width="300" id="task-grid_c1">任务名称</th>
-										<th width="120" id="task-grid_c2">发货模式</th>
-										<th width="60" id="task-grid_c3"><a class="sort-link" href="#">链接数<span class="caret"></span></a>
-										</th>
-										<th width="100" id="task-grid_c4"><a class="sort-link" href="#">单份任务金<span class="caret"></span></a>
-										</th>
-										<th width="100" id="task-grid_c5">冻结金额</th>
-										<th width="120" id="task-grid_c6"><a class="sort-link" href="#">任务状态<span class="caret"></span></a>
-										</th>
-										<th width="100" id="task-grid_c7"><a class="sort-link desc" href="#">创建时间<span class="caret"></span></a>
-										</th>
-										<th width="130" id="task-grid_c9">操作</th>
-									</tr>
-								</thead>
-								<tbody class="item odd">
-									<tr class="padding-tr"></tr>
-									<volist name='taskzt' id='vo'>
-									<tr class="list-tr">
-										<td>{$vo.id}</td>
-										<td>{$vo.task_name}</td>
-										<td><if condition="$vo['delivery_mode'] eq 1">平台发货</if><if condition="$vo['delivery_mode'] eq 2">自主发货</if></td>
-										<td>{$geshu}</td>
-										<td><span class="price"  title="">{$vo.task_brokerage}</span>
-										</td>
-										<td><span class="muted">{$vo.task_gold}</span>
-										</td>
-										<td>启用</td>
-										<td><span title="">{$vo.create_time|date='m-d H:i',###}</span>
-										</td>
-										
-									</tr>
-									<tr class="lbody-tr">
-										
-										<td colspan="3">
-											<volist name='pro' id='v' key='k'><img width="75px" height="75px" src="{$v['info'][0].main_img}" class="gray" id="" alt="{$v.title}"></volist>
-										</td>
-										<td colspan="2"><a class="text-info" target="_blank" href="{:U('Home/SJActivity/rws')}">预览任务书</a>
-										</td>
-										<td colspan="3">
-											<div>
-												<div>总份数：<i>0</i>
-												</div>
-												<div>任务中：<i>0</i>
-												</div>
-												<div>已完成：<i>0</i>
-												</div>
-											</div>
-										</td>
-										<td>
-											<div><a class="text-info inline-block" data-role="ajax" href="{:U('Home/SJActivity/start',array('id'=>$vo['id']))}">开启任务</a><br><a target="_blank" class="text-info inline-block" href="#">任务试民</a>
-											</div>
-										</td>
-									</tr>
-									</volist>
-								</tbody>
-								
-							</table>
-							<div class="row-fluid">
-								<div class="span6 offset3"></div>
-								<div class="span3">
-									<div class="summary"></div>
-								</div>
-							</div>
-							<div class="keys" style="display:none" title="#">
-							</div>
-						</div>
-						<!--	已暂停任务 -->
-</div>
 					</div>
 				</div>
 			</div>

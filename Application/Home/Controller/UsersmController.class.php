@@ -252,6 +252,9 @@ class UsersmController extends CheckLoginController {
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
 		$this->posts();
+		$order = " post_modified desc ";
+		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
+		$this->assign('info',$result['info']);
 		$this -> assign('cs_xiaox', 'sed');
 		$this -> assign('username', $user['info']['username']);
 		$this -> display();

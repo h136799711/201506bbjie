@@ -17,7 +17,7 @@
 						</li>
 					</ul>
 					<div class="vip_wrap">
-						<form class="form-horizontal jquery-once-1-processed ng-scope ng-pristine ng-valid" 
+						<form class="form-horizontal " 
 						id="yw0" action="{:U('Home/SJMoney/vip')}" method="post" novalidate="novalidate">
 							<input type="hidden" name="sgrade" ng-value="sgrade" ng-init="sgrade=2" value="2">
 							<input type="hidden" name="form_id" value="kaitong_form">
@@ -78,7 +78,7 @@
 								<label class="control-label">应付金额</label>
 								<div class="controls text">
 									<div ng-if="!xufei_type" class="ng-scope">
-										<span class="yingfu">  </span>
+										<font class="yingfu" size="5">￥</font><span id="yingfu" class="yingfu">0.00  </span>
 									</div>
 									<div ng-show="xufei_type" ng-value="youhui=xufei_type==12?nianfei_youhui:0;bili=sgrade==3?1:0.6" class="ng-hide" value="0.6">
 										<span class="yingfu ng-binding"> ￥NaN </span>
@@ -100,11 +100,12 @@
 									<input required="required" type="password" value="" name="pwd" id="password"><span class="help-inline">你需要输入密码才能做该操作</span>
 								</div>
 							</div>
-							<div class="form-actions">
-								<button type="submit" style="background-color: red; color: #FFFFFF;" name="yt0">确认开通</button>
-							</div>
+							
 							
 						</form>
+						<div class="form-actions">
+								<button id="qrvip"  style="background-color: red; color: #FFFFFF;" name="yt0">确认开通</button>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -151,8 +152,18 @@
 					dz=0.6;
 					
 				}
-				$('.yingfu').text("￥"+($("#vipPrice").val()*$(this).val()*dz));
+				$('#yingfu').text(($("#vipPrice").val()*$(this).val()*dz));
 				$('#moneya').val($("#vipPrice").val()*$(this).val()*dz);
+			})
+			$('#qrvip').click(function(){
+				var mon=parseFloat($('#yingfu').text().trim());
+				var yue=parseFloat($('.price').text().trim());
+//				alert(mon);alert(yue);
+				if(yue<mon){
+					alert('您的余额不足以支付此次交易，请前往充值');
+				}else{
+					$('#yw0').submit();
+				}
 			})
 		})
 	</script>

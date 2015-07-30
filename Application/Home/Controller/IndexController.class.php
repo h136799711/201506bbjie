@@ -269,6 +269,16 @@ class IndexController extends HomeController {
 		}
 
 	}
+	/*
+	 * 删除站内信息
+	 * */
+	public function delxx(){
+		$id=array('id'=>I('id',0));
+		$result=apiCall(AdminPublicApi::Post_Delete, array($id));
+		if($result['status']){
+			$this->success('操作成功！',U('Home/Usersm/sm_znxx'));
+		}
+	}
 /*
 	  * 商家注册基本信息
 	  * */
@@ -455,8 +465,7 @@ class IndexController extends HomeController {
 		}	
 		$this->ajaxReturn($results['info'],'json');
 	 }
-	 
-	 
+
 	 /*
 	  * 上传头像
 	  * */

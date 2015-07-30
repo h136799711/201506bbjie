@@ -366,7 +366,7 @@ class SMActivityController extends CheckLoginController {
 		$this->assign('hsid',$taskhisid);
 		$this->assign('pd',$return['info'][0]);
 		$this->assign('search',$returns['info'][0]);
-		$map=array('uid'=>$user['info']['id'],'exchange_status'=>1);
+		$map=array('uid'=>$user['info']['id'],'exchange_status'=>1,'orderid'=>0);
 		$re=apiCall(HomePublicApi::ExchangeProduct_Query,array($map));
 		$this->assign('exchange',$re['info'][0]);
 		$maps=array('uid'=>$user['info']['id']);

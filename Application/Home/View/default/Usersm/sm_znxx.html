@@ -11,8 +11,8 @@
 
 			<div class="div_minTitleAnQuan">
 				<h3>站内信息</h3>
-				<a href="#" class="a_button" style="margin-left:30px;">删除</a>
-				<a href="#" class="a_button">标记为已读</a>
+				<!--<a href="#" class="a_button" style="margin-left:30px;">删除</a>
+				<a href="#" class="a_button">标记为已读</a>-->
 			</div>
 			<div class="div_minContent" style="padding: 20px;">
 
@@ -20,7 +20,7 @@
 
 					<tr style="border: 1px solid #ccc; background: white; height: 37px;">
 						<td>
-							<input type="checkbox" name="znxx_checkedAll" />
+							编号<!--<input type="checkbox" name="znxx_checkedAll" />-->
 						</td>
 						<td style="padding-left: 20px;">是否阅读</td>
 						<td>发件人</td>
@@ -28,20 +28,21 @@
 						<td>发件时间</td>
 						<td>操作</td>
 					</tr>
+					<volist name="info" id="vo">
 					<tr style="border: 1px solid #ccc; height: 37px; font-size: 12px;">
 						<td>
-							<input type="checkbox" name="znxx_checked" />
+							{$vo.id}<!--<input type="checkbox" name="znxx_checked" />-->
 						</td>
 						<td>否</td>
 						<td>系统消息</td>
-						<td>宝贝活动#1806189#已经通过</td>
-						<td>06-13 09:20</td>
+						<td>{$vo.post_title}</td>
+						<td>{$vo.post_date|date='m-d h:i',###}</td>
 						<td>
-							<a style="height: 20px; padding: 3px;" class="am-btn am-btn-danger " href="{:U('Home/Usersm/edit',array('id'=>$vo['id']))}">编辑</a>
-							<a style="height: 20px; padding: 3px;" class="am-btn am-btn-danger " href="javascript:del('{:U('Home/Usersm/del',array('id'=>$vo['id']))}')">删除</a>
+							<a style=" font-size: 12px; padding: 3px;" target="_blank" class="am-btn am-btn-danger " href="{:U('Home/Index/gfggxx',array('id'=>$vo['id']))}">查看</a>
+							<a style="font-size: 12px; padding: 3px;" class="am-btn am-btn-danger " href="{:U('Home/Index/delxx',array('id'=>$vo['id']))}">删除</a>
 						</td>
 					</tr>
-
+					</volist>
 				</table>
 			</div>
 		</div>

@@ -20,6 +20,7 @@ class AdminPublicApi {
 	 */
 	const Post_QueryNoPaging="Admin/Post/queryNoPaging"; 
 	const Post_Query="Admin/Post/query";
+	const Post_Delete="Admin/Post/delete";
 	
 	/**
 	 * 公告

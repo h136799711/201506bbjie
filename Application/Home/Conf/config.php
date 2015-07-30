@@ -7,6 +7,8 @@ return array(
 	'TMPL_PARSE_STRING'  =>array(
      	'__CDN__' =>'http://192.168.0.100/github/itboye_cdn/cdn', // 更改默认的/Public 替换规则
 //   	'__CDN__' => 'http://cdn.itboye.com/Public/V20150526', // 更改默认的/Public 替换规则
+		'__UPLOAD__' => __ROOT__.'/Public/Upload', // 更改默认的/Public 替换规则
+
 		'__JS__'     => __ROOT__.'/Public/'.MODULE_NAME.'/js', // 增加新的JS类库路径替换规则
      	'__CSS__'     => __ROOT__.'/Public/'.MODULE_NAME.'/css', // 增加新的JS类库路径替换规则
      	'__IMG__'     => __ROOT__.'/Public/'.MODULE_NAME.'/img', // 增加新的JS类库路径替换规则	

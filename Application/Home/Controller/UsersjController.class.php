@@ -52,6 +52,7 @@ class UsersjController extends CheckLoginController {
 		}
 	}
 	
+	
 	/*
 	 * 商家账号信息
 	 * */

@@ -20,11 +20,14 @@ class SJActivityController extends CheckLoginController {
 	 * */
 	public function sj_tbhd() {
 		$user = session('user');
-		$map1 = array('uid' => $user['info']['id'], 'task_status' => 4);
+		$map1 = array('uid' => $user['info']['id'], 'task_status' => 1,'task_status' => 4);
 		$result = apiCall(HomePublicApi::Task_Query, array($map1));
+		$map2 = array('uid' => $user['info']['id'], 'task_status' => 2);
+		$result_zt = apiCall(HomePublicApi::Task_Query, array($map2));
 		$headtitle = "宝贝街-活动";
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
+		
 		for ($i = 0; $i < count($result['info']); $i++) {
 			$id = $result['info'][$i]['id'];
 			$map4 = array('task_id' => $id);
@@ -36,11 +39,13 @@ class SJActivityController extends CheckLoginController {
 
 		}
 		$this -> assign('task', $result['info']);
-		
+		$this -> assign('task_zt', $result_zt['info']);
 		$this -> assign('geshu', session('shuliang'));
 		$this -> assign('username', $user['info']['username']);
 		$this -> assign('jihuas', $results);
 		$this -> assign('pro', $producta);
+		$this -> assign('jihuas_zt', $results_zt);
+		$this -> assign('pro_zt', $producta_zt);
 		$sj=A('usersj');
 		$sj->getcount();
 		//		dump($results);
@@ -63,13 +68,37 @@ class SJActivityController extends CheckLoginController {
 				$this->error('未知错误');
 		}
 	}
+	/*
+	 * 全部试民
+	 * */
+	public function alluser(){
+		$user = session('user');
+		$headtitle = "宝贝街-所有试民";
+		$this -> assign('head_title', $headtitle);
+		$this -> assign('username', $user['info']['username']);
+		$id=array('task_id'=>I('id',0));
+		$mm=array('id'=>I('id',0));
+		$results = apiCall(HomePublicApi::TaskHasProduct_Query, array($map4));
+		$result=apiCall(HomePublicApi::Task_His_Query, array($id));
+		$result_user=apiCall(HomePublicApi::Bbjmember_Query, array());
+		$result_tast = apiCall(HomePublicApi::Task_Query, array($mm));
+		$producta = apiCall(HomePublicApi::Product_Query, array($pid));
+		$this -> assign('jihuas', $results['info']);
+		$this->assign('task',$result_tast['info'][0]);
+		$this->assign('user',$result_user['info']);
+		$this->assign('taskplan',$result['info']);
+		$this -> assign('pro', $producta['info']);
+//		dump($result_user);dump($result);
+		$this->display();
+	}
 	/**
 	 * 任务计划
 	 * */
 	 public function task_play(){
 	 	$mm = array('id' => I('id',0));
+		$mms = array('task_id' => I('id',0));
 		$result_tast = apiCall(HomePublicApi::Task_Query, array($mm));
-		$result_play = apiCall(HomePublicApi::TaskPlan_Query, array($mm));
+		$result_play = apiCall(HomePublicApi::TaskPlan_Query, array($mms));
 		$results = apiCall(HomePublicApi::TaskHasProduct_Query, array($map4));
 		$producta = apiCall(HomePublicApi::Product_Query, array($pid));
 		$user = session('user');
@@ -79,9 +108,12 @@ class SJActivityController extends CheckLoginController {
 		$map=array('uid'=>$user['info']['id']);
 		$resultAll = apiCall(HomePublicApi::TaskPlan_QueryAll, array($map,$page));
 		$fenpeimap=array('task_id'=>I('id',0));
-		$wanchengmap=array('task_id'=>I('id',0),'do_status'=>2);
+		$wanchengmap=array('task_id'=>I('id',0),'do_status'=>2,'order_status'=>7);
 		$fcount=apiCall(HomePublicApi::Task_His_Query, array($fenpeimap));
 		$scount=apiCall(HomePublicApi::Task_His_Query, array($fenpeimap));
+		$headtitle = "宝贝街-任务计划";
+		$this -> assign('head_title', $headtitle);
+		$this -> assign('username', $user['info']['username']);
 		$this->assign('fcount',count($fcount['info']));
 		$this->assign('scount',count($scount['info']));
 		$this->assign('tp',$resultAll['info']['list']);
@@ -141,6 +173,12 @@ class SJActivityController extends CheckLoginController {
 				$this->success('发放成功！',U('Home/SJActivity/sj_tbhd'));
 			}
 		}
+		
+	}
+	/*
+	 * 任务计划统计
+	 * */
+	public function tplan_count(){
 		
 	}
 	/*
@@ -493,13 +531,8 @@ class SJActivityController extends CheckLoginController {
 		$uid = $user['info']['id'];
 		
 		if ($result['status']) {
-			
-
 					$this -> success('任务创建完成', U('Home/SJActivity/sj_tbhd'));
 				
-
-			
-
 		}
 		//		dump($entity);
 	}
@@ -522,7 +555,14 @@ class SJActivityController extends CheckLoginController {
 	public function start() {
 
 		$id = I('id');
-		$entity = array('task_status' => 1);
+		$map=array('task_id'=>$id);
+		$result=apiCall(HomePublicApi::Task_His_Query, array($map));
+		if($result['info'] == null){
+			$entity = array('task_status' => 1);
+		}else{
+			$entity = array('task_status' => 4);
+		}
+		
 		$return = apiCall(HomePublicApi::Task_SaveByID, array($id, $entity));
 		if ($return['status']) {
 			$this -> success('操作成功', U('Home/SJActivity/sj_tbhd'));

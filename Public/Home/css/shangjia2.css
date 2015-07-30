@@ -6721,19 +6721,16 @@ ul.radio-list li.help span {
 	text-align: left
 }
 .page_head .hz_gold {
-	background: url('../images/person/index/h7.png?1408691268') no-repeat;
 	padding: 4px 11px 18px;
 	margin-left: 3px
 }
 .gg li {
-	background: url('../images/seller/v2/li-pre.png?1429666254') 0 center no-repeat;
 	padding-left: 15px
 }
 .page_head_title {
 	height: 35px;
 	width: 100%;
 	border-bottom: 1px solid #cdcdcd;
-	background: url('../images/person/index/p1.png?1408691268') 5px 7px no-repeat
 }
 .page_head_title h3 {
 	font-size: 14px;
@@ -7085,7 +7082,6 @@ ul.radio-list li.help span {
 	position: absolute;
 	top: 0px;
 	left: 0px;
-	background: url('../images/renwu/baoguo.png?1407484476') no-repeat;
 	width: 88px;
 	height: 33px
 }
@@ -7104,7 +7100,6 @@ ul.radio-list li.help span {
 	position: absolute;
 	top: -20px;
 	left: 50%;
-	background: url('../images/renwu/xuanze_bg.png?1407484476') no-repeat
 }
 .renwu_detail .renwu-tijiao .sp_shifu {
 	width: 260px
@@ -7322,31 +7317,26 @@ ul.radio-list li.help span {
 .theme_taobao_item_wrap .goods_store {
 	width: 17px;
 	height: 14px;
-	background: url('../images/person/renwu2/taobao_good_store.png?1429666254') 0 0 no-repeat;
 	vertical-align: middle
 }
 .theme_taobao_item_wrap .wangwang {
 	width: 22px;
 	height: 19px;
-	background: url('../images/person/renwu2/wangwang.png?1429666254') 0 0 no-repeat;
 	vertical-align: middle
 }
 .theme_taobao_item_wrap .tmall {
 	width: 19px;
 	height: 19px;
-	background: url('../images/person/renwu2/tmall.png?1429666254') 0 0 no-repeat;
 	vertical-align: middle
 }
 .theme_taobao_item_wrap .ali_wang {
 	width: 136px;
 	height: 18px;
-	background: url('../images/person/renwu2/ali_wang.png?1429666254') 0 -1px no-repeat;
 	vertical-align: middle
 }
 .theme_taobao_item_wrap .title_msk {
 	width: 121px;
 	height: 20px;
-	background: url('../images/person/renwu2/title_msk.png?1429666254') 0 -1px no-repeat;
 	display: block;
 	position: absolute;
 	left: 60px
@@ -7438,7 +7428,6 @@ ul.radio-list li.help span {
 	display: block;
 	width: 218px;
 	height: 39px;
-	background: url('../images/person/renwu2/slt.png?1429666254') no-repeat 0 -5px
 }
 .theme_tmall .price {
 	color: #c00;
@@ -7523,7 +7512,6 @@ ul.radio-list li.help span {
 	position: absolute;
 	bottom: -74px;
 	right: 20px;
-	background: url('../images/sousuo/dianji.png?1429666254') no-repeat 0 0
 }
 .theme_sj .img {
 	float: left;
@@ -7567,7 +7555,6 @@ ul.radio-list li.help span {
 	float: left;
 	width: 300px;
 	height: 140px;
-	background: url('../images/sousuo/yz_wangwang.png?1429666254') no-repeat 0 0
 }
 .theme_sj2 .r .t {
 	font-size: 15px;
@@ -7643,13 +7630,9 @@ ul.radio-list li.help span {
 	overflow: hidden
 }
 .sfkt li .pm {
-	background: url('../images/seller/v2/video_bg_base.png?1429666254') no-repeat center top;
 	width: 374px;
 	height: 310px;
 	position: absolute
-}
-.sfkt li a:hover .pm {
-	background-image: url('../images/seller/v2/video_bg.png?1429666254')
 }
 .sfkt li .t {
 	text-align: center;
@@ -7899,7 +7882,6 @@ ul.radio-list li.help span {
 }
 .vip_wrap .vip_sel,
 .vip_wrap .svip_sel {
-	background: url('../images/seller/v2/huiyuan_sel.png?1422605256') no-repeat;
 	width: 29px;
 	height: 24px;
 	float: right;
@@ -7965,7 +7947,6 @@ ul.radio-list li.help span {
 	width: 30px
 }
 .editableform-loading {
-	background: url('../images/editable/loading.gif?1400656324') center center no-repeat;
 	height: 25px;
 	width: auto;
 	min-width: 25px
@@ -8013,7 +7994,6 @@ ul.radio-list li.help span {
 	text-align: right
 }
 .editable-clear-x {
-	background: url('../images/editable/clear.png?1400656324') center center no-repeat;
 	display: block;
 	width: 13px;
 	height: 13px;

@@ -111,7 +111,7 @@
 	<SCRIPT type="text/javascript">
 		$(function() {
 			var d = 0;
-			var name = /^[a-zA-Z][a-zA-Z0-9]{5,12}$/;
+			var name = /^[a-zA-Z][a-zA-Z0-9]{3,12}$/;
 			$('#name').blur(function() {
 				
 				if (name.test($('#name').val())) {
@@ -127,27 +127,33 @@
 				}); 
 				} else {
 					d = 0;
-					$(this).parent().find("span").html("<font size='-2' color='red'>字母开头的数字组合！</font>");
+					$(this).parent().find("span").html("<font size='-2' color='red'>字母开头的数字组合！且不小于4位</font>");
 				}
 				
 			});
 			
-//			$('#yaoqingren').blur(function() {
-//
+			$('#yaoqingren').blur(function() {
+//				alert(name.test($('#yaoqingren').val()));
 //				if (name.test($('#yaoqingren').val())) {
-//					d = 1;
-//					$.getJSON("{:U('Home/Index/checkname')}",{name:$("#yaoqingren").val()},function(json){
-//							if(json!=1){
-//								d = 0;
-//								$('#yaoqingren').parent().find("span").html("<font size='-2' color='red'>用户名已存在</font>");
-//							}else{
-//								d = 1;
-//								$('#yaoqingren').parent().find("span").html("<font size='-2' color='green'>正确！</font>");
-//							}
-//				});
-//				}
-//
-//			});
+				var name=$('#yaoqingren').val();
+				if(name=='test1'){
+					
+				}else{
+					d = 1;
+					$.getJSON("{:U('Home/Index/checkname')}",{name:$("#yaoqingren").val()},function(json){ 
+							if(json!=1){
+								d = 0;
+								$('#yaoqingren').parent().find("span").html("<font size='-2' color='green'>正确</font>");
+							}else{
+								d = 1;
+								$('#yaoqingren').parent().find("span").html("<font size='-2' color='red'>邀请人不存在</font>");
+							}
+					}); 
+				}
+					
+//				} 
+				
+			});
 			var a = 0;
 			var b = 0;
 			var c = 0;
