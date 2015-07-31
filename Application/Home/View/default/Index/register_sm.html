@@ -181,7 +181,7 @@
 					$(this).parent().find("span").html("<font size='-2' color='green'>密码可用！</font>");
 				}
 			})
-			var isMobile = /^(?:13\d|15\d|18\d)\d{5}(\d{3}|\*{3})$/;
+			var isMobile = /^(?:13\d|15\d|17\d|18\d)\d{5}(\d{3}|\*{3})$/;
 			$('#phone_tel').keyup(function() {
 				if (!isMobile.test($(this).val())) {
 					b = 0;

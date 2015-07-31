@@ -29,7 +29,7 @@
 									<!--<a href="#" style="color: #999;">新任务<font color="red">0</font></a>-->
 									<a href="{:U('Home/SMActivity/hd_bh')}" style="color: #999;">被驳回<font color="red">{$bh}</font></a>
 									<a href="{:U('Home/SMActivity/hd_waiting')}" style="color: #999;">等待审核<font color="red">{$sh}</font></a>
-									<a href="{:U('Home/SMActivity/hd_sened')}" style="color: #999;">待确认收货<font color="red">0</font></a>
+									<a href="{:U('Home/SMActivity/hd_sened')}" style="color: #999;">待确认收货<font color="red">{$qrsh}</font></a>
 									<a href="{:U('Home/SMActivity/hd_remoney')}" style="color: #999;">等待返款<font color="red">{$fk}</font></a>
 									<a href="{:U('Home/SMActivity/hd_quxiao')}" style="color: #999;">取消/放弃</a><font color="red">{$qx}</font></a>
 								</span>
@@ -41,7 +41,7 @@
 							<td>额外奖励</td>
 							<td>任务金额</td>
 							<td>淘宝帐号/订单号</td>
-							<td>任务步骤</td>
+							<td>驳回原因</td>
 							<td>操作</td>
 						</tr>
 						<tr style=" height: 5px;">
@@ -68,10 +68,10 @@
 													</if>
 												</foreach>
 											</volist>
-											<div style="margin-left:90px;"><font color="red">13</font>福币
+											<div style="margin-left:90px;"><font color="red">{$vo['info'][$aa-1]['coin']}</font>福币
 												<br /> 超时由系统取消</div>
 										</td>
-										<td><font color="#999" style="text-decoration:line-through">当日完成: +3福币</font>
+										<td>
 											<br /> 小额任务: <font color="red">+{$vo['info'][$aa-1]['coin']}</font>福币</td>
 										<td>
 											<font color="red">￥{$vo['info'][$aa-1]['task_gold']}</font>
@@ -83,9 +83,9 @@
 											<br />
 										</td>
 										<td>
-											
+											<font color="red">{$v['notes']}</font>
 										</td>
-										<td> </td>
+										<td><a id='anm3' target="_blank" style="background-color:forestgreen; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/rws',array('id'=>$v['task_id'],'taskhisid'=>$v['id']))}">修改订单信息</a> </td>
 									</tr>
 								</if>
 							</volist>

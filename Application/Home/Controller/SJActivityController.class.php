@@ -20,7 +20,7 @@ class SJActivityController extends CheckLoginController {
 	 * */
 	public function sj_tbhd() {
 		$user = session('user');
-		$map1 = array('uid' => $user['info']['id'], 'task_status' => 1,'task_status' => 4);
+		$map1 = array('uid' => $user['info']['id'], 'task_status' => 1);
 		$result = apiCall(HomePublicApi::Task_Query, array($map1));
 		$map2 = array('uid' => $user['info']['id'], 'task_status' => 2);
 		$result_zt = apiCall(HomePublicApi::Task_Query, array($map2));
@@ -161,6 +161,7 @@ class SJActivityController extends CheckLoginController {
 			'create_time'=>time(),
 			'search_way_id'=>0,
 			'task_id'=>I('tid',0),
+			'yuecount'=>I('count',0),
 		);
 //		dump($zongjia);
 		$result = apiCall(HomePublicApi::TaskPlan_Add, array($entity));
@@ -361,6 +362,7 @@ class SJActivityController extends CheckLoginController {
 		$map = array('uid' => $user['info']['id'], 'status' => 1);
 		$pro = apiCall(HomePublicApi::Product_Query, array($map));
 		$this -> assign('pros', $pro['info']);
+		$this->assign('auth_status',$sj['info'][0]['auth_status']);
 		//				dump($sj['info'][0]['aliwawa']);
 		$this -> display();
 	}
@@ -427,7 +429,7 @@ class SJActivityController extends CheckLoginController {
 	public function a1() {
 		$user = session('user');
 		$aliwawa = I('aliwawa', '');
-		$al = array('img' => I('img', ''), 'link' => I('url', ''), 'title' => I('title', ''), 'num' => I('num', 1), 'price' => I('price'), 'position' => I('guige', ''), );
+		$al = array('img' => I('img', ''), 'link' => I('url', ''), 'title' => I('title', ''), 'num' => I('num', 1), 'price' => I('price','0.00'), 'position' => I('guige', ''), );
 		session('al', $al);
 		$count = 0;
 		$summ = 0;

@@ -565,7 +565,7 @@ class IndexController extends HomeController {
 	 * */
 	public function getcount(){
 		$user=session('user');
-		$count_bh=0;$count_zajx=0;$count_qx=0;$count_sh=0;$count_fk=0;
+		$count_bh=0;$count_zajx=0;$count_qx=0;$count_sh=0;$count_fk=0;$count_qrsh=0;
 		$map=array('uid'=>$user['info']['id']);
 		$result=apiCall(HomePublicApi::Task_His_Query, array($map));
 		for ($i=0; $i <count($result['info']) ; $i++) {
@@ -584,13 +584,22 @@ class IndexController extends HomeController {
 			if($result['info'][$i]['do_status']==0){
 				$count_qx=$count_qx+1;
 			}
+			if($result['info'][$i]['do_status']==7){
+				$count_qrsh=$count_qrsh+1;
+			}
 		}
 		$this->assign('bh',$count_bh);
 		$this->assign('za',$count_zajx);
 		$this->assign('qx',$count_qx);
 		$this->assign('sh',$count_sh);
 		$this->assign('fk',$count_fk);
+		$this->assign('qrsh',$count_qrsh);
 		 
 	}   
+	public function posts(){
+		$order = " post_modified desc ";
+		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
+		$this->assign('zxgg',$result['info'][0]);
+	}
 }
 

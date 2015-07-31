@@ -85,7 +85,7 @@
 												<div>
 													<div class="small muted">已分配：<i>{$fcount}</i>
 													</div>
-													<div class="small muted" >未分配：<i id="wfp"></i>
+													<div class="small muted" >未分配：<i id="wfp">{$tp.yuecount}</i>
 													</div>
 													<div class="small muted">总份数：<i id="zfs">{$tp.task_cnt}</i>
 													</div>
@@ -100,7 +100,7 @@
 											<td>
 												<div class="renwu-caozuo small"><a target="_blank" href="{:U('Home/SJActivity/alluser',array('id'=>$tp['task_id']))}">查看试民</a>
 													<!--<br><a data-toggle="modal2" modal-title="修改份数" href="http://www.shifujie.net/seller/sf/renwuku/fenshu?id=31834">修改份数</a>-->
-													<br><a data-role="ajax" href="{:U('Home/SJActivity/zanting',array('id'=>$vo['id']))}" id="yt1">暂停任务</a>
+													<!--<br><a data-role="ajax" href="{:U('Home/SJActivity/zanting',array('id'=>$vo['id']))}" id="yt1">暂停任务</a>-->
 												</div>&nbsp;</td>
 										</tr>
 										</volist>
@@ -222,9 +222,7 @@
 					}
 				}
 			})
-			var zfs=$('#zfs').text();
-			var wfp=Number(zfs)-Number('{$fcount}');
-			$('#wfp').text(wfp);
+		
 		})
 	</script>
 </block>

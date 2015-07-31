@@ -191,7 +191,6 @@ class UsersmController extends CheckLoginController {
 		$result1=apiCall(HomePublicApi::Task_His_Query,array($map));
 		$mapp=array('id'=>$result1['info'][0]['task_id']);
 		$result2=apiCall(HomePublicApi::Task_Query,array($mapp));
-		
 		for ($i=0; $i <count($result2['info']) ; $i++) {
 			$map3=array('task_id'=>$result2['info'][$i]['id']);
 			$result3[]=apiCall(HomePublicApi::TaskHasProduct_Query,array($map3));
@@ -202,6 +201,7 @@ class UsersmController extends CheckLoginController {
 		$this->assign('tspro',$result3);
 		$this->assign('tp',$result1['info']);
 		$this->assign('task',$result2['info']);
+//		dump(I('tpid'));
 		$index=A('Index');
 		$index->getcount();
 		$this -> display();

@@ -34,7 +34,7 @@
 								<br> 1、清除浏览器cookies，使用淘宝号“
 								<em>{$user.taobao_account}</em>”登录淘宝；<span class="tishi">如何清除cookie？ <span class="tip"></span></span>
 								<br> 2、搜索关键字“
-								<em>{$search.search_q}</em>”，并按筛选要求缩小搜索范围；
+								<em>{$pd.title}</em>”，并按筛选要求缩小搜索范围；
 								<br> 3、Ctrl+F“
 								<em>{$pd.aliwawa}</em>”核对店铺旺旺；
 								<br> 4、货比三家后，进入店铺；
@@ -259,7 +259,12 @@
 										<tr>
 											<td>
 												<div class="tijiao-form">
-													<form  class="shifu form-horizontal ng-invalid ng-invalid-required ng-dirty" id="" action="{:U('Home/SMActivity/savedd')}" method="post" novalidate="novalidate">
+													<if condition="$do_status eq 8">
+														<form  class="shifu form-horizontal ng-invalid ng-invalid-required ng-dirty" id="" action="{:U('Home/SMActivity/editorder')}" method="post" novalidate="novalidate">
+														<else/>
+														<form  class="shifu form-horizontal ng-invalid ng-invalid-required ng-dirty" id="" action="{:U('Home/SMActivity/savedd')}" method="post" novalidate="novalidate">
+													</if>
+													
 														<fieldset>
 															<div class="control-group">
 																<label class="control-label" for="order_taobao">任务淘宝号：</label>

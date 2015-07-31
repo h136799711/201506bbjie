@@ -28,7 +28,7 @@
 	<div class="seller_main clearfix" controller="seller/common">
 		<div class="seller_content_wrap">
 			<div class="seller_content" style="padding-top: 10px;">
-		
+
 				<div class="content">
 					<h1>创建任务</h1>
 
@@ -42,7 +42,7 @@
 							<!-- 引入ystep插件 -->
 							<script src="__JS__/ystep.js"></script>
 							<script>
-								 //根据jQuery选择器找到需要加载ystep的容器
+								//根据jQuery选择器找到需要加载ystep的容器
 								$(".ystep4").loadStep({
 									size: "large",
 									color: "blue",
@@ -67,61 +67,61 @@
 								商品链接：
 								<input id="url" name="url" style="border-bottom-left-radius:5px ;border-top-left-radius:5px ;border: 1px solid #ccc;" />
 								<input type="button" id="read" style="color:#666; border-bottom-right-radius:5px ;border-top-right-radius:5px ; border: 1px solid #ccc;" value="从淘宝读取信息" />
-							
-								<br /><div class="show"></div>
+
+								<br />
+								<div class="show"></div>
 								<!--<div class="show"></div>-->
 							</div>
-							
+
 							<form class="forma1" action="{:U('Home/SJActivity/a1')}" method="post">
 								<input type="hidden" name="aliwawa" value="{$aliwawa}">
 								<table class="am-table" style="margin-top: 20px;">
-								<thead>
-									<tr style="background: #EAEAEA;">
-										<th>宝贝图片</th>
-										<th>宝贝名称</th>
-										<th width="100">商品规格</th>
-										<th width="100">商品价格</th>
-										<th>件数</th>
-										<th>操作</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<td class="img"></td>
-										<td class="title"></td>
-										<td class="guige"></td>
-										<td class="price"></td>
-										<td class="num"></td>
-										<td class="xxx"></td>
-									</tr>
-									<tr>
-										<td class="img1"></td>
-										<td class="title1"></td>
-										<td class="guige1"></td>
-										<td class="price1"></td>
-										<td class="num1"></td>
-										<td class="xxx1"></td>
-									</tr>
-									<tr>
-										<td class="img2"></td>
-										<td class="title2"></td>
-										<td class="guige2"></td>
-										<td class="price2"></td>
-										<td class="num2"></td>
-										<td class="xxx2"></td>
-									</tr>
-								</tbody>
-							</table>
+									<thead>
+										<tr style="background: #EAEAEA;">
+											<th>宝贝图片</th>
+											<th>宝贝名称</th>
+											<th width="100">商品规格</th>
+											<th width="100">商品价格</th>
+											<th>件数</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="img"></td>
+											<td class="title"></td>
+											<td class="guige"></td>
+											<td class="price"></td>
+											<td class="num"></td>
+											<td class="xxx"></td>
+										</tr>
+										<tr>
+											<td class="img1"></td>
+											<td class="title1"></td>
+											<td class="guige1"></td>
+											<td class="price1"></td>
+											<td class="num1"></td>
+											<td class="xxx1"></td>
+										</tr>
+										<tr>
+											<td class="img2"></td>
+											<td class="title2"></td>
+											<td class="guige2"></td>
+											<td class="price2"></td>
+											<td class="num2"></td>
+											<td class="xxx2"></td>
+										</tr>
+									</tbody>
+								</table>
 							</form>
-						
-								
+
 							<center>
-								<font  size="-2" color="red">任务最多可以添加3个链接</font>
+								<font size="-2" color="red">任务最多可以添加3个链接</font>
 								<br />
 								<button id="down" type="button" class="am-btn am-btn-secondary" style=" font-size: 12px; margin-top: 5px;">下一步</button>
 							</center>
 						</div>
-						
+
 					</div>
 				</div>
 			</div>
@@ -139,7 +139,13 @@
 		$(function() {
 			
 			$('#down').click(function() {
-				$('.forma1').submit();
+				
+				if($(".title").text()!=''){
+					$('.forma1').submit();
+				}else{
+					alert('请先添加商品');
+				}
+//				
 			})
 			$("#groups").change(function() {
 				$(".groupForm").submit();
@@ -155,124 +161,128 @@
 				 从淘宝获取数据
 				 * */
 			$("#read").click(function() {
-				if({$vip_level}==0){
-					if($(".title").text()==''){
-						var query = $("#J_btn_submit").data("query");
-					if (query == 1) {
-						alert("正在请求中...");
-						return;
-					}
-					var param_url = $("#url").val();
-					$.ajax({
-						cache: false,
-						method: "post",
-						url: "{:U('Tool/RemoteProductParser/read',array('r'=>time()))}",
-						data: {
-							url: encodeURI(param_url)
-						},
-						dataType: "json",
-						beforeSend: function() {
-							showLoading();
-						}
-					}).done(function(data) {
-						$("#read").html("提交");
-						$("#read").data("query", 0);
-						console.log(data);
-						if (data.status) {
-							var title =  (data.info.title).substring(14,50);
-							var wangwang = data.info.wangwang;
-							if ('{$aliwawa}'.trim() == wangwang.trim()) {
-								var aaa=$('#url').val();
-								$('.show').empty();
-								$('.show').append();
-								if ($(".title").text() == '') {
-									$(".img").html("<input type='hidden' name='img[]' value='"+data.info.main_img +"'>"+"<img src='" + data.info.main_img + "' alt='图片' style='height:50px;width:100px;folat:left;'  />");
-									$(".title").html("<input type='hidden' name='title[]' value='"+title +"'>"+"<span name='title'>" +title+ "</span>");
-									$(".guige").html("<input type='text' style='width:50px' name='guige[] '>");
-									$(".num").html("<input type='hidden' name='url[]' value='"+aaa +"'>"+"<input type='text' style='width:50px' name='num[]'>");
-									$(".xxx").html("<button class='am-btn am-btn-primary am-btn-xs' style='font-size:10px; '>×</button>");
-									$('.price').html("<input type='text' style='width:50px' name='price[]'>");
-												
-								} 
-								
-							} else {
-								$('#doc-modal-1 .am-modal-dialog').css('height', '580px');
-								$(".show").html("<font color='red'>该商品的铺主为：" + wangwang + "</font><br><font color='red'>您的阿里旺旺为：" + '{$aliwawa}' + "</font><br><font color='red'>请录入您自己的商品</font>");
-							}
-						} else {
-							$('#doc-modal-1 .am-modal-dialog').css('height', '520px');
-							$(".show").html("<font color='red'>" + data.info + "</font>");
-							//							alert(data.)
-						}
-					
-					})
-					}else{
-						alert('普通会员只能添加一个商品');
-					}
+				if('{$auth_status}'==0){
+					alert('您的账号未通过认证，通过认证才能发布任务');
 				}else{
-					var query = $("#J_btn_submit").data("query");
-					if (query == 1) {
-						alert("正在请求中...");
-						return;
-					}
-					var param_url = $("#url").val();
-					$.ajax({
-						cache: false,
-						method: "post",
-						url: "{:U('Tool/RemoteProductParser/read',array('r'=>time()))}",
-						data: {
-							url: encodeURI(param_url)
-						},
-						dataType: "json",
-						beforeSend: function() {
-							showLoading();
+					if({$vip_level}==0){
+						if($(".title").text()==''){
+							var query = $("#J_btn_submit").data("query");
+						if (query == 1) {
+							alert("正在请求中...");
+							return;
 						}
-					}).done(function(data) {
-						$("#read").html("提交");
-						$("#read").data("query", 0);
-						console.log(data);
-						if (data.status) {
-							var title =  (data.info.title).substring(14,50);
-							var wangwang = data.info.wangwang;
-							if ('{$aliwawa}'.trim() == wangwang.trim()) {
-								var aaa=$('#url').val();
-								$('.show').empty();
-								$('.show').append();
-								if ($(".title").text() == '') {
-									$(".img").html("<input type='hidden' name='img[]' value='"+data.info.main_img +"'>"+"<img src='" + data.info.main_img + "' alt='图片' style='height:70px;width:80px;folat:left;'  />");
-									$(".title").html("<input type='hidden' name='title[]' value='"+title +"'>"+"<span name='title'>" +title+ "</span>");
-									$(".guige").html("<input type='text' style='width:50px' name='guige[] '>");
-									$(".num").html("<input type='hidden' name='url[]' value='"+aaa +"'>"+"<input type='text' style='width:50px' name='num[]'>");
-									$(".xxx").html("<button class='am-btn am-btn-primary am-btn-xs' style='font-size:10px; '>×</button>");
-									$('.price').html("<input type='text' style='width:50px' name='price[]'>");
-												
-								} else if ($(".title").text() != '' && $(".title1").text() == '') {
-									$(".img1").html("<input type='hidden' name='img[]' value="+data.info.main_img  +">"+"<img src='" + data.info.main_img + "' alt='图片' style='height:50px;width:100px;folat:left;'  />");
-									$(".title1").html("<input type='hidden' name='title[]' value='"+title +"'>"+"<span name='title'>"+title+"</span>");
-									$(".guige1").html("<input type='text' style='width:50px' name='guige[]'>");
-									$(".num1").html("<input type='hidden' name='url[]' value='"+aaa +"'>"+"<input type='text' style='width:50px' name='num[]'>");
-									$(".xxx1").html("<button class='am-btn am-btn-primary am-btn-xs' style='font-size:10px; '>×</button>");
-									$('.price1').html("<input type='text' style='width:50px' name='price[]'>");
-								} else if ($(".title").text() != '' && $(".title1").text() != '') {
-									$(".img2").html("<input type='hidden' name='img[]' value="+data.info.main_img  +">"+"<img src='" + data.info.main_img + "' alt='图片' style='height:50px;width:100px;folat:left;'  />");
-									$(".title2").html("<input type='hidden' name='title[]' value='"+title +"'>"+"<span name='title'>"+title+"</span>");
-									$(".guige2").html("<input type='text' style='width:50px' name='guige[]'>");
-									$(".num2").html("<input type='hidden' name='url[]' value='"+aaa +"'>"+"<input type='text' style='width:50px' name='num[]'>");
-									$(".xxx2").html("<button class='am-btn am-btn-primary am-btn-xs' style='font-size:10px; '>×</button>");
-									$('.price2').html("<input type='text' style='width:50px' name='price[]'>");
-								}
-								
-							} else {
-								$('#doc-modal-1 .am-modal-dialog').css('height', '580px');
-								$(".show").html("<font color='red'>该商品的铺主为：" + wangwang + "</font><br><font color='red'>您的阿里旺旺为：" + '{$aliwawa}' + "</font><br><font color='red'>请录入您自己的商品</font>");
+						var param_url = $("#url").val();
+						$.ajax({
+							cache: false,
+							method: "post",
+							url: "{:U('Tool/RemoteProductParser/read',array('r'=>time()))}",
+							data: {
+								url: encodeURI(param_url)
+							},
+							dataType: "json",
+							beforeSend: function() {
+								showLoading();
 							}
-						} else {
-							$('#doc-modal-1 .am-modal-dialog').css('height', '520px');
-							$(".show").html("<font color='red'>" + data.info + "</font>");
-							//							alert(data.)
+						}).done(function(data) {
+							$("#read").html("提交");
+							$("#read").data("query", 0);
+							console.log(data);
+							if (data.status) {
+								var title =  (data.info.title).substring(14,50);
+								var wangwang = data.info.wangwang;
+								if ('{$aliwawa}'.trim() == wangwang.trim()) {
+									var aaa=$('#url').val();
+									$('.show').empty();
+									$('.show').append();
+									if ($(".title").text() == '') {
+										$(".img").html("<input type='hidden' name='img[]' value='"+data.info.main_img +"'>"+"<img src='" + data.info.main_img + "' alt='图片' style='height:50px;width:100px;folat:left;'  />");
+										$(".title").html("<input type='hidden' name='title[]' value='"+title +"'>"+"<span name='title'>" +title+ "</span>");
+										$(".guige").html("<input type='text' style='width:50px' name='guige[] '>");
+										$(".num").html("<input type='hidden' name='url[]' value='"+aaa +"'>"+"<input type='text' style='width:50px' name='num[]'>");
+										$(".xxx").html("<button class='am-btn am-btn-primary am-btn-xs' style='font-size:10px; '>×</button>");
+										$('.price').html("<input type='text' style='width:50px' name='price[]'>");
+													
+									} 
+									
+								} else {
+									$('#doc-modal-1 .am-modal-dialog').css('height', '580px');
+									$(".show").html("<font color='red'>该商品的铺主为：" + wangwang + "</font><br><font color='red'>您的阿里旺旺为：" + '{$aliwawa}' + "</font><br><font color='red'>请录入您自己的商品</font>");
+								}
+							} else {
+								$('#doc-modal-1 .am-modal-dialog').css('height', '520px');
+								$(".show").html("<font color='red'>" + data.info + "</font>");
+								//							alert(data.)
+							}
+						
+						})
+						}else{
+							alert('普通会员只能添加一个商品');
 						}
-					
-					})
+					}else{
+						var query = $("#J_btn_submit").data("query");
+						if (query == 1) {
+							alert("正在请求中...");
+							return;
+						}
+						var param_url = $("#url").val();
+						$.ajax({
+							cache: false,
+							method: "post",
+							url: "{:U('Tool/RemoteProductParser/read',array('r'=>time()))}",
+							data: {
+								url: encodeURI(param_url)
+							},
+							dataType: "json",
+							beforeSend: function() {
+								showLoading();
+							}
+						}).done(function(data) {
+							$("#read").html("提交");
+							$("#read").data("query", 0);
+							console.log(data);
+							if (data.status) {
+								var title =  (data.info.title).substring(14,50);
+								var wangwang = data.info.wangwang;
+								if ('{$aliwawa}'.trim() == wangwang.trim()) {
+									var aaa=$('#url').val();
+									$('.show').empty();
+									$('.show').append();
+									if ($(".title").text() == '') {
+										$(".img").html("<input type='hidden' name='img[]' value='"+data.info.main_img +"'>"+"<img src='" + data.info.main_img + "' alt='图片' style='height:70px;width:80px;folat:left;'  />");
+										$(".title").html("<input type='hidden' name='title[]' value='"+title +"'>"+"<span name='title'>" +title+ "</span>");
+										$(".guige").html("<input type='text' style='width:50px' name='guige[] '>");
+										$(".num").html("<input type='hidden' name='url[]' value='"+aaa +"'>"+"<input type='text' style='width:50px' name='num[]'>");
+										$(".xxx").html("<button class='am-btn am-btn-primary am-btn-xs' style='font-size:10px; '>×</button>");
+										$('.price').html("<input type='text' style='width:50px' name='price[]'>");
+													
+									} else if ($(".title").text() != '' && $(".title1").text() == '') {
+										$(".img1").html("<input type='hidden' name='img[]' value="+data.info.main_img  +">"+"<img src='" + data.info.main_img + "' alt='图片' style='height:50px;width:100px;folat:left;'  />");
+										$(".title1").html("<input type='hidden' name='title[]' value='"+title +"'>"+"<span name='title'>"+title+"</span>");
+										$(".guige1").html("<input type='text' style='width:50px' name='guige[]'>");
+										$(".num1").html("<input type='hidden' name='url[]' value='"+aaa +"'>"+"<input type='text' style='width:50px' name='num[]'>");
+										$(".xxx1").html("<button class='am-btn am-btn-primary am-btn-xs' style='font-size:10px; '>×</button>");
+										$('.price1').html("<input type='text' style='width:50px' name='price[]'>");
+									} else if ($(".title").text() != '' && $(".title1").text() != '') {
+										$(".img2").html("<input type='hidden' name='img[]' value="+data.info.main_img  +">"+"<img src='" + data.info.main_img + "' alt='图片' style='height:50px;width:100px;folat:left;'  />");
+										$(".title2").html("<input type='hidden' name='title[]' value='"+title +"'>"+"<span name='title'>"+title+"</span>");
+										$(".guige2").html("<input type='text' style='width:50px' name='guige[]'>");
+										$(".num2").html("<input type='hidden' name='url[]' value='"+aaa +"'>"+"<input type='text' style='width:50px' name='num[]'>");
+										$(".xxx2").html("<button class='am-btn am-btn-primary am-btn-xs' style='font-size:10px; '>×</button>");
+										$('.price2').html("<input type='text' style='width:50px' name='price[]'>");
+									}
+									
+								} else {
+									$('#doc-modal-1 .am-modal-dialog').css('height', '580px');
+									$(".show").html("<font color='red'>该商品的铺主为：" + wangwang + "</font><br><font color='red'>您的阿里旺旺为：" + '{$aliwawa}' + "</font><br><font color='red'>请录入您自己的商品</font>");
+								}
+							} else {
+								$('#doc-modal-1 .am-modal-dialog').css('height', '520px');
+								$(".show").html("<font color='red'>" + data.info + "</font>");
+								//							alert(data.)
+							}
+						
+						})
+					}
 				}
 					
 				})
