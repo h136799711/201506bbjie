@@ -22,7 +22,7 @@ class SMMoneyController extends CheckLoginController {
 		$user=session('user');
 		$entity=array(
 			'uid'=>$user['info']['id'],
-			'defray'=>$money.'.000',
+			'defray'=>$money,
 			'income'=>'0.000',
 			'create_time'=>time(),
 			'notes'=>'用于提现',
@@ -36,6 +36,7 @@ class SMMoneyController extends CheckLoginController {
 			$rets = apiCall(HomePublicApi::Bbjmember_Query,array($map));
 		 	$ap=array(
 				'coins'=>$rets['info'][0]['coins']-$money,
+				'frozen_money'=>$rets['info'][0]['frozen_money']+$money,
 			);
 			$return = apiCall(HomePublicApi::Bbjmember_SaveByID,array($id,$ap));
 			if($return['status']){

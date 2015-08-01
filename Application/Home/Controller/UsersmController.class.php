@@ -95,6 +95,7 @@ class UsersmController extends CheckLoginController {
 		}
 		$this -> assign('cs_zj', 'sed');
 		$this -> assign('coins', $result['info'][0]['coins']);
+		$this -> assign('frozen_money', $result['info'][0]['frozen_money']);
 		$this -> assign('bank', $info['info'][0]);
 		$this -> assign('username', $user['info']['username']);
 //		dump($result['info'][0]['coins']);

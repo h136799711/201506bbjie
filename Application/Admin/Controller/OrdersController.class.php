@@ -298,7 +298,7 @@ class OrdersController extends AdminController {
 			
 			
 			if($result['status']){
-				$od=array('order_status'=>4);
+				$od=array('order_status'=>4,'do_status'=>7);
 				$resulta = apiCall(HomePublicApi::Task_His_SaveByID, array($orderOfid,$od));
 //				dump($od);
 				if($resulta['status']){
@@ -406,7 +406,7 @@ class OrdersController extends AdminController {
 //			$entity = array('order_status' => \Common\Model\OrdersModel::ORDER_TOBE_SHIPPED);
 //			$result = apiCall("Admin/Orders/save", array($map, $entity));
 			
-			$map=array('order_status'=>3);
+			$map=array('order_status'=>3,'do_status'=>7);
 			foreach($ids as $id){
 				$result = apiCall(HomePublicApi::Task_His_SaveByID, array($id,$map));
 				if (!$result['status']) {

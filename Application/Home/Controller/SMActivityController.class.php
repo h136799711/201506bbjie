@@ -316,9 +316,12 @@ class SMActivityController extends CheckLoginController {
 		$id=I('id',0);
 		$map=array('do_status'=>0);
 		$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$map));
-//		$tpid=session('tpid');
-//		dump($tpid);
-//		$results=M('taskPlan')->where('id='.$tpid)->setInc('yuecount',1);
+		$tpid=I('tpid',0);
+		if($tpid!=0){
+			$results=M('taskPlan')->where('id='.$tpid)->setInc('yuecount',1);
+		}else{
+			$this->error('系统未知错误',U('Home/Usersm/sm_bbhd'));
+		}
 		if($result['status']){
 			$this->success('任务操作成功',U('Home/Usersm/sm_bbhd'));
 		}else{
@@ -350,45 +353,52 @@ class SMActivityController extends CheckLoginController {
 		$user=session('user');
 		$tsk=array('uid'=>$user['info']['id'],'do_status'=>1);
 		$tsk_his=apiCall(HomePublicApi::Task_His_Query,array($tsk));
-		if($tsk_his['info']==NULL){
-			$mapa=array('yuecount'=>array('neq',0));
-			$result=apiCall(HomePublicApi::TaskPlan_Query,array($mapa));
-			$tid=array('id'=>$result['info'][0]['task_id']);
-			$resultq=apiCall(HomePublicApi::Task_Query,array($tid));
-			if($result['info']==NULL){
-				$this->error('暂无可接任务，请稍候再试',U('Home/Index/sm_manager'));
-			}else{
-				$entity=array(
-					'get_task_time'=>time(),
-					'do_status'=>1,
-					'create_time'=>time(),
-					'tb_orderid'=>'',
-					'tb_address'=>'',
-					'tb_price'=>$resultq['info'][0]['task_gold'],
-					'task_id'=>$result['info'][0]['task_id'],
-					'uid'=>$user['info']['id'],
-				);
-//				dump($entity);
-				$id=$result['info'][0]['task_id'];
-				$et=array('task_status'=>4);
-//				$this->assign('dts',$result['info'][0]['list']);
-				$tesk=apiCall(HomePublicApi::Task_SaveByID,array($id,$et));
-				$result3=apiCall(HomePublicApi::Task_His_Add,array($entity));
-				if($result3['status']){
-//					dump($result['info'][0]['id']);
-					/*$return1=M('bbjmemberSeller')->where('uid='.$user['info']['id'])->setDec('coins',$zongjia);*/
-					$result=M('taskPlan')->where('id='.$result['info'][0]['id'])->setDec('yuecount',1);
-					if($result==1){
-						session('tpid',$result['info'][0]['id']);
-						$this->success('成功接收任务，正在跳转任务界面',U('Home/Usersm/sm_bbhd',array('tpid'=>$result['info'][0]['id'])));
-					}else{
-						$this->error('领取任务失败');
+		$uid=array('uid'=>$user['info']['id']);
+		$usersm=apiCall(HomePublicApi::Bbjmember_Query, array($uid));
+		if($usersm['info'][0]['auth_status']!=0){
+			if($tsk_his['info']==NULL){
+				$mapa=array('yuecount'=>array('neq',0));
+				$result=apiCall(HomePublicApi::TaskPlan_Query,array($mapa));
+				$tid=array('id'=>$result['info'][0]['task_id']);
+				$resultq=apiCall(HomePublicApi::Task_Query,array($tid));
+				if($result['info']==NULL){
+					$this->error('暂无可接任务，请稍候再试',U('Home/Index/sm_manager'));
+				}else{
+					$entity=array(
+						'get_task_time'=>time(),
+						'do_status'=>1,
+						'create_time'=>time(),
+						'tb_orderid'=>'',
+						'tb_address'=>'',
+						'tb_price'=>$resultq['info'][0]['task_gold'],
+						'task_id'=>$result['info'][0]['task_id'],
+						'uid'=>$user['info']['id'],
+						'tpid'=>$result['info'][0]['id'],
+					);
+	//				dump($entity);
+					$id=$result['info'][0]['task_id'];
+					$et=array('task_status'=>4);
+	//				$this->assign('dts',$result['info'][0]['list']);
+					$tesk=apiCall(HomePublicApi::Task_SaveByID,array($id,$et));
+					$result3=apiCall(HomePublicApi::Task_His_Add,array($entity));
+					if($result3['status']){
+	//					dump($result['info'][0]['id']);
+						/*$return1=M('bbjmemberSeller')->where('uid='.$user['info']['id'])->setDec('coins',$zongjia);*/
+						$result=M('taskPlan')->where('id='.$result['info'][0]['id'])->setDec('yuecount',1);
+						if($result==1){
+							
+							$this->success('成功接收任务，正在跳转任务界面',U('Home/Usersm/sm_bbhd',array('tpid'=>$result['info'][0]['id'])));
+						}else{
+							$this->error('领取任务失败');
+						}
+						
 					}
-					
 				}
-			}
+			}else{
+				$this->error('领取任务失败，请先完成未完成的任务',U('Home/Usersm/sm_bbhd'));
+			}	
 		}else{
-			$this->error('领取任务失败，请先完成未完成的任务',U('Home/Usersm/sm_bbhd'));
+			$this->error('用户信息认证完成才可以接任务哦');
 		}
 		
 		
@@ -500,8 +510,14 @@ class SMActivityController extends CheckLoginController {
 		$id=I('id',0);
 		$status=array('do_status'=>0);
 		$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$status));
-		$Usersm=A("Usersm");  
-   		$Usersm->sm_bbhd();  
+		$tpid=I('tpid',0);
+		if($tpid!=0){
+			$results=M('taskPlan')->where('id='.$tpid)->setInc('yuecount',1);
+			$Usersm=A("Usersm");  
+   			$Usersm->sm_bbhd();  
+		}else{
+		}
+		
 	}
 	
 

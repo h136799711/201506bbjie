@@ -20,7 +20,7 @@ class SJActivityController extends CheckLoginController {
 	 * */
 	public function sj_tbhd() {
 		$user = session('user');
-		$map1 = array('uid' => $user['info']['id'], 'task_status' => 1);
+		$map1 = array('uid' => $user['info']['id'], 'task_status' => array('in',array(1,4)));
 		$result = apiCall(HomePublicApi::Task_Query, array($map1));
 		$map2 = array('uid' => $user['info']['id'], 'task_status' => 2);
 		$result_zt = apiCall(HomePublicApi::Task_Query, array($map2));
@@ -107,7 +107,7 @@ class SJActivityController extends CheckLoginController {
 		$page = array('curpage' => I('get.p', 0), 'size' => 6);
 		$map=array('uid'=>$user['info']['id']);
 		$resultAll = apiCall(HomePublicApi::TaskPlan_QueryAll, array($map,$page));
-		$fenpeimap=array('task_id'=>I('id',0));
+		$fenpeimap=array('task_id'=>I('id',0),'do_status'=>array('neq',0));
 		$wanchengmap=array('task_id'=>I('id',0),'do_status'=>2,'order_status'=>7);
 		$fcount=apiCall(HomePublicApi::Task_His_Query, array($fenpeimap));
 		$scount=apiCall(HomePublicApi::Task_His_Query, array($fenpeimap));
@@ -116,8 +116,7 @@ class SJActivityController extends CheckLoginController {
 		$this -> assign('username', $user['info']['username']);
 		$this->assign('fcount',count($fcount['info']));
 		$this->assign('scount',count($scount['info']));
-		$this->assign('tp',$resultAll['info']['list']);
-		$this->assign('show',$resultAll['info']['show']);
+		$this->assign('tp',$result_play['info']);
 		$this->assign('money',$result['info'][0]['coins']);
 		$this->assign('task_play',$result_play['info'][0]);
 		$this->assign('task',$result_tast['info'][0]);
@@ -165,7 +164,7 @@ class SJActivityController extends CheckLoginController {
 		);
 //		dump($zongjia);
 		$result = apiCall(HomePublicApi::TaskPlan_Add, array($entity));
-		$entitya = array('uid' => $user['info']['id'], 'defray' => $zongjia . '.000', 'income' => '0.000', 'create_time' => time(), 'notes' => '冻结任务佣金', 'dtree_type' => 5, 'status' => 3, );
+		$entitya = array('uid' => $user['info']['id'], 'defray' => $zongjia , 'income' => '0.000', 'create_time' => time(), 'notes' => '冻结任务佣金', 'dtree_type' => 5, 'status' => 3, );
 		$resulta = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entitya));
 		if ($resulta['status']) {
 			$return1=M('bbjmemberSeller')->where('uid='.$user['info']['id'])->setDec('coins',$zongjia);

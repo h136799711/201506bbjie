@@ -54,9 +54,9 @@ class BBJVIPController extends AdminController{
 			}
 		}else if($result['info'][0]['dtree_type'] ==3){
 			$money=$result['info'][0]['defray'];
-			$return2=M('bbjmember')->where('uid='.$uid)->setDec('coins',$money);
+			$return2=M('bbjmember')->where('uid='.$uid)->setDec('frozen_money',$money);
 			if($return2==0){
-				$return1=M('bbjmemberSeller')->where('uid='.$uid)->setDec('coins',$money);
+				$return1=M('bbjmemberSeller')->where('uid='.$uid)->setDec('frozen_money',$money);
 				$jl=array('status'=>1);
 				$results=apiCall(HomePublicApi::FinAccountBalanceHis_SaveByID, array($id,$jl));
 				$this->success('审核成功',U('Admin/BBJVIP/index'));

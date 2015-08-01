@@ -26,12 +26,14 @@
 		<include file="Widget/top_left" />
 		<div class="am-modal am-modal-no-btn" tabindex="-1" id="doc-modal-2">
 			<div class="am-modal-dialog">
-				<div class="am-modal-hd">更换提现账号
+				<div class="am-modal-hd">提现
 					<a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
 				</div>
 				<form action="{:U('Home/SMMoney/deposit')}" method="post">
 					<div class="am-modal-bd">
-						请输入提款金额：<input type="number" name="money" id="money" /><br /><span style="font-size: 12px; color: forestgreen;">提现金额不得大于总金额</span>
+						请输入提款金额：<input type="number" name="money" id="money" /><br /><span style="font-size: 12px; color: forestgreen;">提现金额不得大于总金额
+						<br>提现账号：{$bank['bank_name']}{$bank['bank_account']}{$bank['cardholder']}{$bank['province']}{$bank['city']}</span>
+						
 					</div>
 					<input id="qr" style="font-family: '微软雅黑'; font-size: 13px; border-radius:5px ; margin-top: -8px;" class="am-btn-danger am-btn-xs" type="submit" value="确认" />
 				</form>
@@ -61,7 +63,7 @@
 									<tr>
 										<td style="color:red">￥{$coins}</td>
 										<td style="color:red">￥{$coins}</td>
-										<td style="color:red">￥{$sum}.000</td>
+										<td style="color:red">￥{$frozen_money}</td>
 									</tr>
 								</table>
 							</div>
@@ -223,8 +225,8 @@
 										<td>{$vo.id}</td>
 										<td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
 										<td>{$vo.notes}</td>
-										<td>{$vo.income}</td>
-										<td>{$vo.defray}</td>
+										<td>+{$vo.income}</td>
+										<td>-{$vo.defray}</td>
 										<td>{$vo.defray}</td>
 									</tr>
 									</volist>	
@@ -250,9 +252,9 @@
 										<volist name="jilu" id="vo">
 									<tr>
 										<td>{$vo.id}</td>
-										<td>{$vo.defray}</td>
+										<td>-{$vo.defray}</td>
 										<td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
-										<td><if condition="$vo.status eq 1">正常</if><if condition="$vo.status eq 2">审核中</if></td>
+										<td><if condition="$vo.status eq 1">成功</if><if condition="$vo.status eq 2">审核中</if></td>
 										<td><if condition="$vo.dtree_type eq 1">后台充值</if><if condition="$vo.dtree_type eq 2">系统奖励</if><if condition="$vo.dtree_type eq 3">提现</if></td>
 										<td>{$vo.notes}</td>
 									</tr>
@@ -295,6 +297,11 @@
 				$('#tixian').click(function(){
 					if( {$coins}  <1){
 						alert('不能提现，提现金额最低为1元');
+					}
+					if("{$bank['cardholder']} ！=''"){
+						
+					}else{
+						alert('请先设置提现账号！！');
 					}
 				})
 				$('#qr').click(function(){

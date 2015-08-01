@@ -68,11 +68,11 @@
 													</if>
 												</foreach>
 											</volist>
-											<div style="margin-left:90px;"><font color="red">13</font>福币
+											<div style="margin-left:90px;"><font color="red">{$vo['coin']}</font>福币
 												<br /> 超时由系统取消</div>
 										</td>
-										<td><font color="#999" style="text-decoration:line-through">当日完成: +3福币</font>
-											<br /> 小额任务: <font color="red">+3</font>福币</td>
+										<td>
+											<br /> 小额任务: <font color="red">+{$vo['coin']}</font>福币</td>
 										<td>
 											<if condition="$v['tb_orderid'] eq 0">
 												<a target="_blank" href="{:U('Home/SMActivity/rws',array('id'=>$vo['id'],'taskhisid'=>$v['id']))}">任务书</a>
@@ -91,13 +91,12 @@
 										</td>
 										<td>
 											<input type="hidden" value="{$v.id}">
+											<input type="hidden" id="tpid" value="{$v.tpid}">
 											<if condition="$v['do_status'] eq 1">
 												距离任务完成剩余：<span class="js_countdownwn"  data-until="{$v['get_task_time'] + 2*3600}"></span>
 												<br><font class="task_status" color="forestgreen">任务正在进行中...</font><br>
 												<if condition="$v['tb_orderid'] eq 0">
-												<a id='anm1' style="background-color: orangered; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/qxtask',array('id'=>$v['id']))}">取消任务</a>
-												
-												<a id='anm2'  style="background-color: orangered; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/qxtask',array('id'=>$v['id']))} ">放弃任务</a>
+												<a id='anm2'  style="background-color: orangered; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/qxtask',array('id'=>$v['id'],'tpid'=>$v['tpid']))} ">放弃任务</a>
 												<else/>
 												<a id="anm4" style="background-color:forestgreen; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/qrtask',array('id'=>$v['id']))}">确认任务</a>
 												</if>
@@ -163,7 +162,8 @@
 		   		
 		   		if($(item).text()=='已超时！！'){
 		   			var aaid= $(this).parent().find('input').val();
-		   			$.getJSON("{:U('Home/SMActivity/timeout')}",{id:aaid},function(json){ 
+		   			var tsid= $('#tpid').val();
+		   			$.getJSON("{:U('Home/SMActivity/timeout')}",{id:aaid,tpid:tsid},function(json){ 
 							alert('任务超时已由系统取消');
 				}); 
 		   		}
