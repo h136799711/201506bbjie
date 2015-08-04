@@ -730,8 +730,15 @@ class SJActivityController extends CheckLoginController {
 
 		//		dump($entity);
 	}
-
-	
+	/*
+	 * 已读
+	 * */
+	public function yidu(){
+		$id=I('id',0);
+		$map=array('msg_status'=>1);
+		$result = apiCall(AdminPublicApi::Msgbox_SavebyId, array($id,$map));
+		dump($id);
+	}
 	//创建搜索
 	public function createsearch() {
 		$headtitle = "宝贝街-创建搜索";

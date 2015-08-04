@@ -253,9 +253,12 @@ class UsersmController extends CheckLoginController {
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
 		$this->posts();
-		$order = " post_modified desc ";
-		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
-		$this->assign('info',$result['info']);
+		$map=array('to_id'=>$user['info']['id'],);
+		$result = apiCall(AdminPublicApi::Msgbox_QueryAll,array($map));
+		$result1 = apiCall(AdminPublicApi::Message_QueryAll,array($maps));
+		$this->assign('info',$result['info']['list']);
+		$this->assign('show',$result['info']['show']);
+		$this->assign('msg',$result1['info']['list']);
 		$this -> assign('cs_xiaox', 'sed');
 		$this -> assign('username', $user['info']['username']);
 		$this -> display();
@@ -393,6 +396,10 @@ class UsersmController extends CheckLoginController {
 	}
 
 	public function posts(){
+		$user=session('user');
+		$map=array('to_id'=>$user['info']['id'],'msg_status'=>0);
+		$result = apiCall(AdminPublicApi::Msgbox_QueryAll,array($map));
+		$this->assign('wdcount',count($result['info']['list']));
 		$order = " post_modified desc ";
 		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
 		$this->assign('zxgg',$result['info'][0]);

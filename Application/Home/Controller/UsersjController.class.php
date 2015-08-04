@@ -37,6 +37,7 @@ class UsersjController extends CheckLoginController {
 		$this->assign('head_img',$sj['info'][0]['head_img']);
 		$this->checklevel();
 		$this->getcount();
+		$this->wdcount();
 		$this->display();
 	}
 	/*
@@ -66,6 +67,7 @@ class UsersjController extends CheckLoginController {
 		);
 		$result=apiCall(HomePublicApi::Bbjmember_Seller_GetInfo, array($map));
 		$this->assign('entity',$result['info']);
+		$this->wdcount();
 		$this->display();
 	}
 	/*
@@ -136,6 +138,7 @@ class UsersjController extends CheckLoginController {
 //		dump($map);
 		$result=apiCall(HomePublicApi::User_GetUser, array($id));
 		$this->assign('entity',$result['info']);
+		$this->wdcount();
 		$this->display();
 	}
 	/*
@@ -197,7 +200,15 @@ class UsersjController extends CheckLoginController {
 		$headtitle="宝贝街-站内消息";
 		$this->assign('head_title',$headtitle);
 		$user=session('user');
+		$map=array('to_id'=>$user['info']['id'],);
+		$result = apiCall(AdminPublicApi::Msgbox_QueryAll,array($map));
+		$result1 = apiCall(AdminPublicApi::Message_QueryAll,array($maps));
+		$this->assign('info',$result['info']['list']);
+		$this->assign('show',$result['info']['show']);
+		$this->assign('msg',$result1['info']['list']);
 		$this->assign('username',$user['info']['username']);
+		$this->wdcount();
+//		dump($result['info']['list']);dump($result1['info']['list']);
 		$this->display();
 	}
 	
@@ -215,6 +226,7 @@ class UsersjController extends CheckLoginController {
 		$this -> assign('vip', $result['info'][0]['vip_level']);
 		$this->assign('username',$user['info']['username']);
 //		dump($result);
+		$this->wdcount();
 		$this->display();
 	}
 	/*
@@ -225,6 +237,7 @@ class UsersjController extends CheckLoginController {
 		$this->assign('head_title',$headtitle);
 		$user=session('user');
 		$this->assign('username',$user['info']['username']);
+		$this->wdcount();
 		$this->display();
 	}
 	/*
@@ -261,12 +274,14 @@ class UsersjController extends CheckLoginController {
 		$this -> assign('djcoins', $result['info'][0]['frozen_money']);
 		$this -> assign('bank', $info['info'][0]);
 		$this->assign('username',$user['info']['username']);
+		$this->wdcount();
 		$this->display();
 	}
 	/*
 	 * 退出登录
 	 * */
 	public function exits(){
+		
 		session('[destroy]'); // 删除session
 		$this->display('Index/login');
 	}
@@ -306,6 +321,15 @@ class UsersjController extends CheckLoginController {
 		$this->assign('qrhk',$count_qrhk);
 		 
 	}
+	/*
+	 *获得未读消息
+	 * */
+	 public function wdcount(){
+	 	$user=session('user');
+		$map=array('to_id'=>$user['info']['id'],'msg_status'=>0);
+		$result = apiCall(AdminPublicApi::Msgbox_QueryAll,array($map));
+		$this->assign('wdcount',count($result['info']['list']));
+	 }
 	/*
 	 * 检测用户vip等级
 	 * */

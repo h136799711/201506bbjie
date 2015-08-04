@@ -28,6 +28,15 @@ class AdminPublicApi {
 	const Datatree_QueryNoPaging="Admin/Datatree/queryNoPaging";
 	const Datatree_Query="Admin/Datatree/query";
 	
+	/*
+	 * 站内消息
+	 * */
+	const Message_Add="Admin/Message/add";
+	const Message_QueryAll="Admin/Message/query";
+	const Msgbox_Add="Admin/Msgbox/add";
+	const Msgbox_SavebyId="Admin/Msgbox/saveByID";
+	const Msgbox_QueryAll="Admin/Msgbox/query";
+	
 	
 	const Category_QueryNoPaging="Admin/Category/queryNoPaging";
 	const Category_Query="Admin/Category/query";

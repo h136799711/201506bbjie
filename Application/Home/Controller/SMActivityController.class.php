@@ -41,12 +41,27 @@ class SMActivityController extends CheckLoginController {
 	 * */
 	public function sure(){
 		$id=I('id',0);
+		$uid=I('uid',0);
 		if($id!=0){
-			$map=array('order_status'=>5);
-			$map1=array('do_status'=>4);
+			$map=array('order_status'=>5,'do_status'=>4);
 			$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$map));
-			$result1=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$map1));
-			if($result['status'] && $result1['status']){
+			if($result['status'] ){
+				$ida=array('uid'=>$uid);
+				$results = apiCall(HomePublicApi::Task_His_Query, array($ida));
+				$entity=array(
+					'dtree_type'=>1,
+					'content'=>"您的订单".$results['info'][0]['tb_orderid']."已确认收货请尽快返款",
+					'title'=>'系统提示',
+					'create_time'=>time(),
+					'send_time'=>0,
+					'from_id'=>0,
+					'summary'=>'系统提示，您的订单...',
+					'status'=>1,
+				);
+				
+				$return = apiCall(AdminPublicApi::Message_Add, array($entity));
+				$msg=array('to_id'=>$uid,'msg_status'=>0,'msg_id'=>$return['info']);
+				$returns = apiCall(AdminPublicApi::Msgbox_Add, array($msg));
 				$this->success('确认成功，请等待商家返款',U('Home/SMActivity/hd_sened'));
 			}else{
 				$this->error('未知错误');

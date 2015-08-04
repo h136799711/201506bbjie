@@ -22,37 +22,47 @@ class OrdersController extends AdminController {
 	 * 商家主动退回订单
 	 */
 	public function backOrder(){
-		$id = I('post.orderid',0);
-		$reason = I('post.reason','商家主动取消订单');
-		
-		$result = apiCall("Admin/Orders/getInfo", array(array('id'=>$id)));
-		
-		if(!$result['status']){
-			$this->error($result['status']);
+//		$id = I('post.orderid',0);
+//		$reason = I('post.reason','商家主动取消订单');
+//		
+//		$result = apiCall("Admin/Orders/getInfo", array(array('id'=>$id)));
+//		
+//		if(!$result['status']){
+//			$this->error($result['status']);
+//		}
+//		
+//		if(is_null($result)){
+//			$this->error("订单信息获取失败，请重试！");
+//		}
+//		$wxuserid = $result['info']['wxuser_id'];
+//		$orderid = $result['info']['orderid'];
+//		$cur_status = $result['info']['order_status'];
+//
+//		//检测当前订单状态是否合法
+//		if($cur_status != 2){
+//			$this->error("当前订单状态无法变更！");
+//		}
+//		
+//		//
+//		$result = apiCall("Admin/Orders/backOrder", array($id,$reason,false,UID));
+//		
+//		if(!$result['status']){
+//			$this->error($result['info']);
+//		}
+		$id=I('orderid',0);
+		$text =I('reason','无');
+		$entity=array('notes'=>$text,'do_status'=>8,'order_status'=>12);
+		if($id!=0){
+			$scount=apiCall(HomePublicApi::Task_His_SaveByID, array($id,$entity));
+			if($scount['status']){
+				$this->success("退回成功!");
+			}else{
+				$this->error('未知错误');
+			}
+		}else{
+				$this->error('未知错误');
 		}
 		
-		if(is_null($result)){
-			$this->error("订单信息获取失败，请重试！");
-		}
-		$wxuserid = $result['info']['wxuser_id'];
-		$orderid = $result['info']['orderid'];
-		$cur_status = $result['info']['order_status'];
-
-		//检测当前订单状态是否合法
-		if($cur_status != 2){
-			$this->error("当前订单状态无法变更！");
-		}
-		
-		//
-		$result = apiCall("Admin/Orders/backOrder", array($id,$reason,false,UID));
-		
-		if(!$result['status']){
-			$this->error($result['info']);
-		}
-		$text = "您的订单:".$orderid." [被退回],原因:".$reason.". [查看详情]";
-		$orderViewLink = "<a href=\"".C('SITE_URL').U('Shop/Orders/view')."?id=$id\">$text</a>";
-		$this->sendTextTo($wxuserid,$orderViewLink);
-		$this->success("退回成功!");
 		
 		
 	}
@@ -300,8 +310,24 @@ class OrdersController extends AdminController {
 			if($result['status']){
 				$od=array('order_status'=>4,'do_status'=>7);
 				$resulta = apiCall(HomePublicApi::Task_His_SaveByID, array($orderOfid,$od));
+				$ida=array('tb_orderid'=>$orderid);
+				$results = apiCall(HomePublicApi::Task_His_Query, array($ida));
+				$entity=array(
+					'dtree_type'=>1,
+					'content'=>"您的订单".$results['info'][0]['tb_orderid']."已发货，请耐心等待收货",
+					'title'=>'系统提示',
+					'create_time'=>time(),
+					'send_time'=>0,
+					'from_id'=>0,
+					'summary'=>'系统提示，您的订单...',
+					'status'=>1,
+				);
+				
+				$return = apiCall(AdminPublicApi::Message_Add, array($entity));
+				$msg=array('to_id'=>$results['info'][0]['uid'],'msg_status'=>0,'msg_id'=>$return['info']);
+				$returns = apiCall(AdminPublicApi::Msgbox_Add, array($msg));
 //				dump($od);
-				if($resulta['status']){
+				if($returns['status']){
 					$this->success('发货信息添加完成',U('Admin/Orders/deliverGoods'));
 				}
 //				
@@ -406,15 +432,29 @@ class OrdersController extends AdminController {
 //			$entity = array('order_status' => \Common\Model\OrdersModel::ORDER_TOBE_SHIPPED);
 //			$result = apiCall("Admin/Orders/save", array($map, $entity));
 			
-			$map=array('order_status'=>3,'do_status'=>7);
+			$map=array('order_status'=>3,'do_status'=>6);
 			foreach($ids as $id){
 				$result = apiCall(HomePublicApi::Task_His_SaveByID, array($id,$map));
+				$ida=array('id'=>$id);
+				$results = apiCall(HomePublicApi::Task_His_Query, array($ida));
+				$entity=array(
+					'dtree_type'=>1,
+					'content'=>"您的订单".$results['info'][0]['tb_orderid']."已被商家确认，请耐心等待发货",
+					'title'=>'系统提示',
+					'create_time'=>time(),
+					'send_time'=>0,
+					'from_id'=>0,
+					'summary'=>'系统提示，您的订单...',
+					'status'=>1,
+				);
+				
+				$return = apiCall(AdminPublicApi::Message_Add, array($entity));
+				$msg=array('to_id'=>$results['info'][0]['uid'],'msg_status'=>0,'msg_id'=>$return['info']);
+				$returns = apiCall(AdminPublicApi::Msgbox_Add, array($msg));
 				if (!$result['status']) {
 					$this -> error($result['info']);
 				}
 			}
-			
-			
 			if ($result['status']) {
 				$this -> success(L('RESULT_SUCCESS'), U('Admin/Orders/sure'));
 			} else {

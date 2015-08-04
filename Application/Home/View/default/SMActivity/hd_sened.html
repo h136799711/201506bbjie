@@ -87,7 +87,7 @@
 										<td>
 											已发货
 										</td>
-										<td><a class="btn" style="background-color: orangered; color: #FFFFFF;"  href="{:U('Home/SMActivity/sure',array('id'=>$v['id']))}">确认收货</a> </td>
+										<td><a class="btn" style="background-color: orangered; color: #FFFFFF;"  href="{:U('Home/SMActivity/sure',array('id'=>$v['id'],'uid'=>$vo['uid']))}">确认收货</a> </td>
 									</tr>
 								</if>
 							</volist>
