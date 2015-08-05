@@ -72,12 +72,14 @@ class UsersmController extends CheckLoginController {
 		$user = session('user');
 		$uid = $user['info']['id'];
 		$map = array('uid' => $uid, );
+		$maps = array('uid' => $uid, 'dtree_type'=>3);
 		$info = apiCall(HomePublicApi::FinBankaccount_Query, array($map));
 		$result = apiCall(HomePublicApi::Bbjmember_Query, array($map));
 		$user = apiCall(HomePublicApi::User_GetUser, array($uid));
 		$result1 = apiCall(HomePublicApi::Bbjmember_Query, array($map));
 		$page = array('curpage' => I('get.p', 0), 'size' => 6);
 		$jyjl = apiCall(HomePublicApi::FinAccountBalanceHis_QueryAll, array($map, $page));
+		$jyjls = apiCall(HomePublicApi::FinAccountBalanceHis_QueryAll, array($maps, $page));
 		$all = apiCall(HomePublicApi::FinAccountBalanceHis_Query, array($map));
 		$jilus = $all['info'];
 		foreach ($jilus as $key => $value) {
@@ -87,8 +89,10 @@ class UsersmController extends CheckLoginController {
 		}
 		$this->posts();
 		$this -> assign('jilu', $jyjl['info']['list']);
+		$this -> assign('jilus', $jyjls['info']['list']);
 		$this -> assign('sum', $sum);
 		$this -> assign('show', $jyjl['info']['show']);
+		$this -> assign('shows', $jyjls['info']['show']);
 		if($resulta['info'][0]['auth_status']==1){
 			$this -> assign('email', $user['info']['email']);
 			$this -> assign('phone', $user['info']['mobile']);

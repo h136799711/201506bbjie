@@ -385,11 +385,12 @@ class IndexController extends ShopController{
 		}
 		
 		
-		
+//		dump($map);
 		$page=array();
 		$page = array('curpage' => I('get.p', 0), 'size' => 20);
 		$order = " createtime desc ";
 		$result = apiCall('Admin/Wxproduct/query', array($map, $page, $order, $params));
+//		dump($result);
 		$this->assign('page',$result['info']['show']);
 		$this->assign('productList',$result['info']['list']);
 		$this->display();

@@ -20,16 +20,17 @@ class SJActivityController extends CheckLoginController {
 	 * */
 	public function sj_tbhd() {
 		$user = session('user');
+		$page = array('curpage' => I('get.p', 0), 'size' => 3);
 		$map1 = array('uid' => $user['info']['id'], 'task_status' => array('in',array(1,4)));
-		$result = apiCall(HomePublicApi::Task_Query, array($map1));
+		$result = apiCall(HomePublicApi::Task_QueryAll, array($map1,$page));
 		$map2 = array('uid' => $user['info']['id'], 'task_status' => 2);
 		$result_zt = apiCall(HomePublicApi::Task_Query, array($map2));
 		$headtitle = "宝贝街-活动";
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
 		
-		for ($i = 0; $i < count($result['info']); $i++) {
-			$id = $result['info'][$i]['id'];
+		for ($i = 0; $i < count($result['info']['list']); $i++) {
+			$id = $result['info']['list'][$i]['id'];
 			$map4 = array('task_id' => $id);
 			$results[] = apiCall(HomePublicApi::TaskHasProduct_Query, array($map4));
 		}
@@ -38,7 +39,8 @@ class SJActivityController extends CheckLoginController {
 			$producta[] = apiCall(HomePublicApi::Product_Query, array($pid));
 
 		}
-		$this -> assign('task', $result['info']);
+		$this -> assign('task', $result['info']['list']);
+		$this->assign('show',$result['info']['show']);
 		$this -> assign('task_zt', $result_zt['info']);
 		$this -> assign('geshu', session('shuliang'));
 		$this -> assign('username', $user['info']['username']);
@@ -281,7 +283,7 @@ class SJActivityController extends CheckLoginController {
 		}
 	}
 	/*
-	 * 订单确认
+	 * 确认还款
 	 * */
 	public function qrhk(){
 		$id=I('id',0);
@@ -296,15 +298,20 @@ class SJActivityController extends CheckLoginController {
 			$sel=apiCall(HomePublicApi::Task_Query,array($smap));
 			$money=$sel['info'][0]['task_gold'];
 			$sid=$sel['info'][0]['uid'];
-//			dump($uid);dump($sid);dump($money);
+			$fucoin=$sel['info'][0]['coin'];
+			$orderid=$us['info'][0]['tb_orderid'];
 			$return=M('bbjmember')->where('uid='.$uid)->setInc('coins',$money);
+			$return=M('bbjmember')->where('uid='.$uid)->setInc('fucoin',$fucoin);
 			$return1=M('bbjmemberSeller')->where('uid='.$sid)->setDec('frozen_money',$money);
 			if($return!=0 &&$return1 !=0){
-				$entity = array('uid' => $sid, 'defray' => $money, 'income' => '0.000', 'create_time' => time(), 'notes' => '任务结算返还试民', 'dtree_type' => 6, 'status' => 1, );
-				$result1 = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entity));
+				$entity1 = array('uid' => $uid, 'defray' => '0.00', 'income' => $money, 'create_time' => time(), 'notes' => '商家退回任务金额', 'dtree_type' => 2, 'status' => 1, );
+				$result1 = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entity1));
+				$entity2 = array('uid' => $uid, 'defray' => '0.00' ,'income' => $fucoin, 'create_time' => time(), 'notes' => "订单：".$orderid."任务完成奖励福币", 'dtree_type' => 2, 'status' => 1, );
+				$result2 = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entity2));
+				$entity3 = array('uid' => $sid, 'defray' => $money, 'income' => '0.000', 'create_time' => time(), 'notes' => '任务结算返还试民', 'dtree_type' => 6, 'status' => 1, );
+				$result3 = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entity3));
 				$this->success('任务操作成功',U('Home/SJActivity/sj_tbhd'));
 			}
-			
 		}else{
 			$this->error('系统未知错误',U('Home/SJActivity/sj_tbhd'));
 		}
@@ -483,18 +490,7 @@ class SJActivityController extends CheckLoginController {
 		$id = session('pid');
 		$money = I('money');
 		$bzj=I('bzj', '');
-		$coin=0;
-		if($bzj<100){
-			$coin=2;
-		}else if($bzj<200 && $bzj>=100){
-			$coin=3;
-		}else if($bzj<300 && $bzj>=200){
-			$coin=4;
-		}else if($bzj<400 && $bzj>=300){
-			$coin=5;
-		}else if($bzj>500){
-			$coin=6;
-		}
+		$coin=round(I('yj', '')*0.7*4);
 		session('money', $money);
 		$entity = array('delivery_mode' => I('fhfs', ''), 'task_postage' => I('by', ''), 'task_gold' => $bzj, 'task_brokerage' => I('yj', ''), 'dtree_preferential' => I('yhfs', ''),'coin'=>$coin, );
 		$map = array('id' => $id);
