@@ -161,8 +161,24 @@
 		    	until = parseInt(until);
 		    	thid = parseInt(thid);
 		    	$(item).scojs_countdown({until: until,id:thid});
+		    	if($('.js_countdownwn').text()==null ||$('.js_countdownwn').text()==''){
+		    		$('.js_countdownwn').text('已超时！！');
+		    		
+		    	}
 		    });
+//		    $('.js_countdownwn').each(function(index,item){
+//		   		
+//		   		if($(item).text()=='已超时！！'){
+//		   			var aaid= $(this).parent().find('input').val();
+//		   			var tsid= $(this).parent().find('input').val();
+//		   			$.getJSON("{:U('Home/SJActivity/qrhk')}",{id:aaid,tid:tsid},function(json){ 
+//							alert('任务超时已由系统取消');
+//				}); 
+//		   		}
+//		   	})
+		   	
 		})
+		
 			
 </script>
 </block>
