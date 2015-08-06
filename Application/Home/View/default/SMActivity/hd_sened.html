@@ -77,12 +77,17 @@
 											<br /> 小额任务: <font color="red">+{$vo['coin']}</font>福币</td>
 										<td>
 											<font color="red">￥{$vo['task_gold']}</font>
+											
 										</td>
 										<td>
 											旺旺名：{$vo['aliwawa']}
 											<br /> 订单：{$v['tb_orderid']}
 											<br /> 返款：{$vo['task_gold']}
-											<br />
+											<br /><volist name="express" id="s">
+												<if condition="$v['tb_orderid'] eq $s['orderid']">
+													运单号：{$s['expressno']}
+												</if>
+											</volist>
 										</td>
 										<td>
 											已发货
