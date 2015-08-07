@@ -32,8 +32,10 @@ class AdminPublicApi {
 	 * 站内消息
 	 * */
 	const Message_Add="Admin/Message/add";
-	const Message_QueryAll="Admin/Message/query";
+	const Message_Query="Admin/Message/queryNoPaging";
 	const Msgbox_Add="Admin/Msgbox/add";
+	const Message_Del="Admin/Message/delete";
+	const Msgbox_Del="Admin/Msgbox/delete";
 	const Msgbox_SavebyId="Admin/Msgbox/saveByID";
 	const Msgbox_QueryAll="Admin/Msgbox/query";
 	

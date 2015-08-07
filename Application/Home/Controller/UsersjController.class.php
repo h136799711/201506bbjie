@@ -200,12 +200,13 @@ class UsersjController extends CheckLoginController {
 		$headtitle="宝贝街-站内消息";
 		$this->assign('head_title',$headtitle);
 		$user=session('user');
-		$map=array('to_id'=>$user['info']['id'],);
-		$result = apiCall(AdminPublicApi::Msgbox_QueryAll,array($map));
-		$result1 = apiCall(AdminPublicApi::Message_QueryAll,array($maps));
+		$map=array('to_id'=>$user['info']['id'],'msg_status'=>array('neq',2));
+		$page = array('curpage' => I('get.p', 0), 'size' => 6);
+		$result = apiCall(AdminPublicApi::Msgbox_QueryAll,array($map,$page));
+		$result1 = apiCall(AdminPublicApi::Message_Query,array($maps));
 		$this->assign('info',$result['info']['list']);
 		$this->assign('show',$result['info']['show']);
-		$this->assign('msg',$result1['info']['list']);
+		$this->assign('msg',$result1['info']);
 		$this->assign('username',$user['info']['username']);
 		$this->wdcount();
 //		dump($result['info']['list']);dump($result1['info']['list']);

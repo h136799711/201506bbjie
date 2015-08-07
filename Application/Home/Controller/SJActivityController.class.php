@@ -295,12 +295,16 @@ class SJActivityController extends CheckLoginController {
 		if($result['status']){
 			$us=apiCall(HomePublicApi::Task_His_Query,array($umap));
 			$uid=$us['info'][0]['uid'];
+			$map=array('uid' => $uid);
+			$result=apiCall(HomePublicApi::Bbjmember_Query,array($map));
+			$yqrid=$result['info'][0]['referrer_id'];
 			$sel=apiCall(HomePublicApi::Task_Query,array($smap));
 			$money=$sel['info'][0]['task_gold'];
 			$sid=$sel['info'][0]['uid'];
 			$fucoin=$sel['info'][0]['coin'];
 			$orderid=$us['info'][0]['tb_orderid'];
 			$return=M('bbjmember')->where('uid='.$uid)->setInc('coins',$money);
+			$return=M('bbjmember')->where('uid='.$yqrid)->setInc('fucoin',1);
 			$return=M('bbjmember')->where('uid='.$uid)->setInc('fucoin',$fucoin);
 			$return1=M('bbjmemberSeller')->where('uid='.$sid)->setDec('frozen_money',$money);
 			if($return!=0 &&$return1 !=0){

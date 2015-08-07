@@ -138,17 +138,29 @@ class UsersmController extends CheckLoginController {
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
 		$this -> assign('username', $user['info']['username']);
+		$map=array('referrer_id'=>$user['info']['id']);
+		$result=apiCall(HomePublicApi::Bbjmember_Query,array($map));
+		$results=apiCall(HomePublicApi::Bbjmember_Seller_Query,array($map));
+		$this->assign('smcount',count($result['info']));
+		$this->assign('sjcount',count($results['info']));
 		$this->posts();
 		$this -> display();
 	}
-/*
-	 * 师傅课堂
+	/*
+	 * 已邀请的小伙伴
 	 * */
 	public function sm_sfkt() {
-		$headtitle = "宝贝街-试福课堂";
+		$headtitle = "宝贝街-已邀请的伙伴";
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
 		$this -> assign('username', $user['info']['username']);
+		$map=array('referrer_id'=>$user['info']['id']);
+		$result=apiCall(HomePublicApi::Bbjmember_Query,array($map));
+		$results=apiCall(HomePublicApi::Bbjmember_Seller_Query,array($map));
+		$users=apiCall(HomePublicApi::UcenterUser_Query,array());
+		$this->assign('suser',$result['info']);
+		$this->assign('sjuser',$results['info']);
+		$this->assign('auser',$users['info']);
 		$this->posts();
 		$this -> display();
 	}
@@ -257,12 +269,13 @@ class UsersmController extends CheckLoginController {
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
 		$this->posts();
-		$map=array('to_id'=>$user['info']['id'],);
-		$result = apiCall(AdminPublicApi::Msgbox_QueryAll,array($map));
-		$result1 = apiCall(AdminPublicApi::Message_QueryAll,array($maps));
+		$map=array('to_id'=>$user['info']['id'],'msg_status'=>array('neq',2));
+		$page = array('curpage' => I('get.p', 0), 'size' => 6);
+		$result = apiCall(AdminPublicApi::Msgbox_QueryAll,array($map,$page));
+		$result1 = apiCall(AdminPublicApi::Message_Query,array($maps));
 		$this->assign('info',$result['info']['list']);
 		$this->assign('show',$result['info']['show']);
-		$this->assign('msg',$result1['info']['list']);
+		$this->assign('msg',$result1['info']);
 		$this -> assign('cs_xiaox', 'sed');
 		$this -> assign('username', $user['info']['username']);
 		$this -> display();

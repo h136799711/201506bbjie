@@ -20,6 +20,7 @@
 						}
 					</script>
 
+
 					<div id="div_wdhb" data-am-widget="tabs" class="am-tabs am-tabs-default">
 						<ul class="am-tabs-nav am-cf" style="width: 400px;">
 							<li class="am-active">
@@ -38,24 +39,25 @@
 											<td>注册时间</td>
 											<td>是否认证</td>
 											<td>是否激活</td>
-											<td>近期情况</td>
+											<td>用户状态</td>
 										</tr>
 									</thead>
 									<tbody style="background: #fff;">
-										<tr>
-											<td>XXXXXXXX</td>
-											<td>XXXXXXXXXXXXXXXX</td>
-											<td>XXXXX</td>
-											<td>XXXX</td>
-											<td>XXXXXXX</td>
-										</tr>
-										<tr>
-											<td>XXXXXXXX</td>
-											<td>XXXXXXXXXXXXXXXX</td>
-											<td>XXXXX</td>
-											<td>XXXX</td>
-											<td>XXXXXXX</td>
-										</tr>
+										<volist name='suser' id='vo'>
+											<tr>
+												<td><volist name='auser' id='v'>
+													<if condition="$vo['uid'] eq $v['id']">
+														{$v['username']}
+													</if>
+												</volist></td>
+												<td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+												<td><if condition="$vo['auth_status'] eq 0">待认证<else/>已认证</if></td>
+												<td>已激活</td>
+												<td>正常</td>
+											</tr>
+										</volist>
+										
+										
 									</tbody>
 								</table>
 
@@ -66,23 +68,23 @@
 										<tr>
 											<td style="width: 50%;">商家用户名</td>
 											<td>注册时间</td>
-											<td>福币奖励</td>
-
+											<td>是否认证</td>
+											<td>用户状态</td>
 										</tr>
 									</thead>
 									<tbody style="background: #fff;">
-										<tr>
-											<td>XXXXX</td>
-											<td>XXXX</td>
-											<td>XXXXXXX</td>
-
-										</tr>
-										<tr>
-											<td>XXXXX</td>
-											<td>XXXX</td>
-											<td>XXXXXXX</td>
-										</tr>
-
+										<volist name='sjuser' id='vo'>
+											<tr>
+												<td><volist name='auser' id='v'>
+													<if condition="$vo['uid'] eq $v['id']">
+														{$v['username']}
+													</if>
+												</volist></td>
+												<td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+												<td><if condition="$vo['auth_status'] eq 0">待认证<else/>已认证</if></td>
+												<td>正常</td>
+											</tr>
+										</volist>
 									</tbody>
 								</table>
 							</div>

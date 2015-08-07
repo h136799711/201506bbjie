@@ -17,62 +17,46 @@
 						<div style="width: 90%; background: #FFFFFF; height:60%; margin: 0 auto;border-radius:5px ;">
 							<div style="width: 100%; background: url(__IMG__/l-top-bg.png) no-repeat scroll 150px; height: 60%;font-size: 12px; border: 1px solid #fff; padding-right: 20px;">
 								<img src="__IMG__/zhuzhu.png" style="margin: 10px; float: left;" />
-								<div style="margin-top: 10px; margin-left:180px; color: #999; line-height: 30px;">哎呀～昨天一个铜板都没!!!看来得加油邀请小伙伴了=.= <a href="">福币日志>></a>
+								<div style="margin-top: 10px; margin-left:180px; color: #999; line-height: 30px;">哎呀～昨天一个铜板都没!!!看来得加油邀请小伙伴了=.= 
 								</div>
 							</div>
 							<div style=" font-size: 14px; border: 1px solid white;">
 								<table style="width: 80%; padding-right: 20px;">
-									<tr>
-										<td align="right">累积伙伴福利：</td>
-										<td align="left"><font color="red">0</font>福币 </td>
-										<td align="right">累积招商奖励：</td>
-										<td align="left"><font color="red">0</font>福币 </td>
-									</tr>
+									
 									<tr>
 										<td align="right">共邀请小伙伴：</td>
-										<td align="left"><font color="red">0</font>人<a href="">查看</a> </td>
+										<td align="left"><font color="red">{$smcount}</font>人<a href="{:U('Home/Usersm/sm_sfkt')}">查看</a> </td>
 										<td align="right">累积邀请商家：</td>
-										<td align="left"><font color="red">0</font>人<a href="">查看</a> </td>
+										<td align="left"><font color="red">{$sjcount}</font>人<a href="{:U('Home/Usersm/sm_sfkt')}">查看</a> </td>
 									</tr>
 
 								</table>
 							</div>
 
 						</div>
-						<div style="margin-left:50px ; margin-top: 20px; font-size: 13px;color: #999; ">
-							<b style="color: #666;">今天邀请的好友</b>
-							<br/>
-							<div style="margin-left:50px;">小伙伴：<font color="orange">0</font>人
-								<br/> 　商家：
-								<font color="orange">0</font>人
-								<br/>
-							</div>
-						</div>
+						
 					</div>
 
 					<div style="width:400px; height: 300px; margin-left: 10px; float: left; background: url(__IMG__/hdsm.png); background-size:100% 100%;">
-						<div style=" margin-top: 85px; width:75%; margin-left: 15%;">成功邀请的小伙伴(试民)每完成一个试福任务，你都可以获得+1福币的收益。</div>
-						<div style="margin-top: 15px; width:75%; margin-left: 15%;">邀请的商家成功完成第一次试福任务，你将一次性获得+200福币奖励。</div>
+						<div style=" margin-top: 85px; width:75%; margin-left: 15%;">成功邀请的小伙伴(试民)每完成一个宝贝任务，你都可以获得+1福币的收益。</div>
+						<div style="margin-top: 15px; width:75%; margin-left: 15%;">邀请的商家成功完成第一次宝贝任务，你将一次性获得+200福币奖励。</div>
 						<div style="margin-top:25px; width:75%; margin-left: 15%; font-size: 13px; color: red;">注：之前邀请的小伙伴，仍旧享受本活动奖励。但邀请的商家如已经获取福币则不重复给予奖励。</div>
 					</div>
 
 					<div style="width: 95%;background: url(__IMG__/yqfs.png) no-repeat scroll; border: 1px solid #D3FACE; margin-top: 350px; height: 300px; margin-left: 10px;">
-						<h3 style="margin-top: 50px; margin-left: 50px;">方式1</h3>
-						<div style="margin-top:10px; margin-left: 50px;color: #666;">怂恿好友在注册宝贝街账号时在邀请人栏目处填入你的宝贝街账号(h123456)。</div>
-						<h3 style="margin-top: 10px; margin-left: 50px;">方式2</h3>
-						<div style="margin-top:10px; margin-left: 50px;color: #666;">好友通过专属邀请链接注册。</div>
-						<div style="margin-top: 10px; margin-left: 50px; background: white; border-radius: 8px; padding: 10px;">http://www.shifujie.net/index.php?app=member&act=register_before&yaoqing_id=2079</div>
-						<div style="margin-top: 45px; margin-left: 50px;font-size: 13px;color: #999;">您可以将自己的专用邀请链接粘贴到QQ签名、新浪微博、个人博客等位置让更多的好友看到，也许会有更多意外惊喜哦</div>
+						<h3 style="margin-top: 150px; margin-left: 50px;">方式</h3>
+						<div style="margin-top:10px; margin-left: 50px;color: #666;">怂恿好友在注册宝贝街账号时在邀请人栏目处填入你的宝贝街账号({$username})。</div>
+						
 					</div>
 
 					<div style="margin-top:100px; font-size: 13px;color: #999;">
 						<ul>
 							<li style="font-weight: bold;font-size:16px;color: black;">因伙得福注意事项：</li>
 							<li>1、小伙伴福币奖励每日由系统定时自动发放；</li>
-							<li>2、商家成功完成第一次试福任务是指：发布、分配并结算完成一轮的宝贝活动；</li>
+							<li>2、商家成功完成第一次宝贝任务是指：发布、分配并结算完成一轮的宝贝活动；</li>
 							<li>3、因伙得福活动前邀请的宝民好友继续享有因伙得福奖励，邀请的商家将不重复奖励；</li>
 							<li>4、本活动暂时只针对试民用户，商家用户暂时不在奖励范围之内；</li>
-							<li>5、希望各位会员诚实参与，勿弄虚作假，营造一个公正公平的试福环境；</li>
+							<li>5、希望各位会员诚实参与，勿弄虚作假，营造一个公正公平的宝贝环境；</li>
 							<li>6、对作弊等恶意参与行为一经发现我们将追回一切违规所得，严重者将进行封号处理，并保有追诉法律责任的权利；</li>
 							<li>7、宝贝街对本活动享有最终解释权，并有权在网站先行公示的情况下终止本次活动；</li>
 						</ul>

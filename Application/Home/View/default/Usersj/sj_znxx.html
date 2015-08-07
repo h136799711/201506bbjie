@@ -29,62 +29,69 @@
 						<div id="xiaoxi-grid" class="grid-view" controller="extend/gridview" data-options="{&#39;ajaxUpdate&#39;:[&#39;xiaoxi-grid&#39;],&#39;ajaxVar&#39;:&#39;ajax&#39;,&#39;pagerClass&#39;:&#39;pagination text-center&#39;,&#39;loadingClass&#39;:&#39;grid-view-loading&#39;,&#39;filterClass&#39;:&#39;filters&#39;,&#39;tableClass&#39;:&#39;items table table-hover&#39;,&#39;selectableRows&#39;:2,&#39;enableHistory&#39;:false,&#39;updateSelector&#39;:&#39;{page}, {sort}&#39;,&#39;filterSelector&#39;:&#39;{filter}&#39;,&#39;pageVar&#39;:&#39;Xiaoxi_page&#39;,&#39;arg_id&#39;:&#39;Xiaoxi&#39;}">
 							<table class="items table table-hover">
 								<thead>
-									<tr>
-										<th width="50" class="text-center" id="xiaoxi-grid_c0">
-											<input class="select-on-check-all" type="checkbox" value="1" name="" id="">
-										</th>
-										<th width="80" id="xiaoxi-grid_c1">是否已读</th>
-										<th width="80" id="xiaoxi-grid_c2">发件人</th>
-										<th id="xiaoxi-grid_c3">主题</th>
-										<th id="xiaoxi-grid_c4">消息时间</th>
-										<th width="100" class="text-center" id="xiaoxi-grid_c5">操作</th>
+									<tr style="border: 1px solid #ccc; background: white; height: 37px;">
+										<td>
+											编号
+											<!--<input type="checkbox" name="znxx_checkedAll" />-->
+										</td>
+										<td style="padding-left: 20px;">是否阅读</td>
+										<td>发件人</td>
+										<td>主题</td>
+										<td>发件时间</td>
+										<td>操作</td>
 									</tr>
 								</thead>
 								<tbody>
 									<empty name='info'>
-									<tr>
-										<td colspan="6" class="empty"><span class="empty">没有找到数据.</span>
-										</td>
-									</tr>
-									<else/>
+										<tr>
+											<td colspan="6" class="empty"><span class="empty">没有找到数据.</span>
+											</td>
+										</tr>
+										<else/>
 										<volist name="info" id="vo">
 											<tr style="border: 1px solid #ccc; height: 37px; font-size: 12px;">
 												<td>
-													{$vo.id}<input type="hidden" id="mbid" value="{$vo.id}"  />
+													{$vo.id}
+													<input type="hidden" id="mbid" value="{$vo.id}" />
 												</td>
-												<td><if condition="$vo['msg_status'] eq 0">未读</if><if condition="$vo['msg_status'] eq 1">已读</if></td>
+												<td>
+													<if condition="$vo['msg_status'] eq 0">未读</if>
+													<if condition="$vo['msg_status'] eq 1">已读</if>
+												</td>
 												<volist name='msg' id='v'>
 													<if condition="$v['id'] eq $vo['msg_id']">
-													<td> <span id="my-popover">{$v.title}</span></td>
-													<div class="am-modal am-modal-alert" tabindex="-1" id="my-alert">
-													  <div class="am-modal-dialog">
-													    <div class="am-modal-hd">{$v.title}</div>
-													    <div class="am-modal-bd">
-													      {$v.content}
-													    </div>
-													    <div class="am-modal-footer">
-													      <span class="am-modal-btn">确定</span>
-													    </div>
-													  </div>
-													</div>
-													<td>{$v.summary}</td>
-													<td>{$v.create_time|date='m-d h:i',###}</td>
-												</if>
+														
+														<td> <span id="my-popover">{$v.title}</span></td>
+														<div class="am-modal am-modal-alert" tabindex="-1" id="my-alert">
+															<div class="am-modal-dialog">
+																<div class="am-modal-hd">{$v.title}</div>
+																<div class="am-modal-bd">
+																	{$v.content}
+																</div>
+																<div class="am-modal-footer">
+																	<span class="am-modal-btn">确定</span>
+																</div>
+															</div>
+														</div>
+														<td>{$v.summary}</td>
+														<td>{$v.create_time|date='m-d h:i',###}</td>
+														<td>
+															<a style=" font-size: 12px; padding: 3px;" id="look" target="_blank" class="am-btn am-btn-danger " data-am-modal="{target: '#my-alert'}" href="javascript:void(0)">查看</a>
+															<a style="font-size: 12px; padding: 3px;" class="am-btn am-btn-danger " href="{:U('Home/Index/delsjxx',array('mbid'=>$vo['id']))}">删除</a>
+														</td>
+													</if>
 												</volist>
-												<td>
-													<a style=" font-size: 12px; padding: 3px;" id="look" target="_blank" class="am-btn am-btn-danger "  data-am-modal="{target: '#my-alert'}" href="javascript:void(0)">查看</a>
-													<a style="font-size: 12px; padding: 3px;" class="am-btn am-btn-danger " href="{:U('Home/Index/delxx',array('id'=>$vo['id']))}">删除</a>
-												</td>
+
 											</tr>
 										</volist>
-									</else>
+										</else>
 									</empty>
-									
+
 								</tbody>
 							</table>
 							<div class="row-fluid">
 								<div class="span6 offset3"></div>
-								<div class="span3"></div>
+								<div class="span3">{$show}</div>
 							</div>
 							<div class="keys" style="display:none" title="/seller/message/index_all"></div>
 						</div>
@@ -92,19 +99,19 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<include file='Widget/sjleft' />
 	</div>
 </block>
 
 <block name="area_footer">
-<script type="text/javascript">
-	$(function() {
-  		$('#look').click(function(){
-  			$.getJSON("{:U('Home/SJActivity/yidu')}",{id:$("#mbid").val()},function(json){ 
-  			}
-  		})
-  	})
-
-</script>
+	<script type="text/javascript">
+		$(function() {
+					$('#look').click(function() {
+							$.getJSON("{:U('Home/SJActivity/yidu')}", {
+									id: $("#mbid").val()
+								}, function(json) {}
+							})
+					})
+	</script>
 </block>

@@ -218,13 +218,12 @@ class IndexController extends HomeController {
 		$where="username ='$yqr'";
 		$fu=M('ucenterMember')->where($where)->select();
 		$id=$fu[0]['id'];
-		$fus=M('bbjmember')->where('uid='.$id)->setInc('fucoin','2');
-//		dump($result);
+		
 		if($result['status']){
 			$uid=$result['info'];
 			$entity=array(
 				'uid'=>$uid,
-				'referrer_id'=>1,
+				'referrer_id'=>$id,
 				'referrer_name'=>$yqr,
 				'taobao_account'=>'',
 				'aliwawa'=>'',
@@ -272,9 +271,21 @@ class IndexController extends HomeController {
 	/*
 	 * 删除站内信息
 	 * */
-	public function delxx(){
-		$id=array('id'=>I('id',0));
-		$result=apiCall(AdminPublicApi::Post_Delete, array($id));
+	public function delsjxx(){
+		$mbid=I('mbid',0);
+		$map=array('msg_status'=>2);
+		$result=apiCall(AdminPublicApi::Msgbox_SavebyId, array($mbid,$map));
+		if($result['status']){
+			$this->success('操作成功！',U('Home/Usersj/sj_znxx'));
+		}
+	}
+	/*
+	 * 删除站内信息
+	 * */
+	public function delsmxx(){
+		$mbid=I('mbid',0);
+		$map=array('msg_status'=>2);
+		$result=apiCall(AdminPublicApi::Msgbox_SavebyId, array($mbid,$map));
 		if($result['status']){
 			$this->success('操作成功！',U('Home/Usersm/sm_znxx'));
 		}
@@ -292,12 +303,11 @@ class IndexController extends HomeController {
 		$where="username ='$yqr'";
 		$fu=M('ucenterMember')->where($where)->select();
 		$id=$fu[0]['id'];
-		$fus=M('bbjmember')->where('uid='.$id)->setInc('fucoin','2');
 		if($result['status']){
 			$uid=$result['info'];
 			$entity=array(
 				'uid'=>$uid,
-				'referrer_id'=>1,
+				'referrer_id'=>$id,
 				'referrer_name'=>$yqr,
 				'taobao_account'=>'',
 				'address'=>'',

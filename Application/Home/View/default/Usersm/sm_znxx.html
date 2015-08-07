@@ -50,15 +50,18 @@
 							</div>
 							<td>{$v.summary}</td>
 							<td>{$v.create_time|date='m-d h:i',###}</td>
-						</if>
-						</volist>
-						<td>
+							<td>
 						<a style=" font-size: 12px; padding: 3px;" id="look" target="_blank" class="am-btn am-btn-danger "  data-am-modal="{target: '#my-alert'}" href="javascript:void(0)">查看</a>
 						<a style="font-size: 12px; padding: 3px;" class="am-btn am-btn-danger " href="{:U('Home/Index/delxx',array('id'=>$vo['id']))}">删除</a>
 						</td>
+						</if>
+						</volist>
+						
 					</tr>
 					</volist>
+					
 				</table>
+				<div style="margin-left: 60%;">{$show}</div>
 			</div>
 		</div>
 	</div>
