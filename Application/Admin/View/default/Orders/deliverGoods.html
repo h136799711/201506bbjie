@@ -70,6 +70,9 @@
 							用户ID
 						</th>
 						<th>
+							发货方式
+						</th>
+						<th>
 							姓名,电话,邮寄地址
 						</th>
 						<th>
@@ -100,7 +103,14 @@
 								<td>
 									{$vo.uid}
 								</td>
-								
+								<td>
+									<volist name="task" id="v">
+										<if condition="$vo['task_id'] eq $v['id']">
+											<if condition="$v['delivery_mode'] eq 1">平台发货</if>
+											<if condition="$v['delivery_mode'] eq 2">自主发货</if>
+										</if>
+									</volist>
+								</td>
 								<td>{$vo.tb_address}
 								</td>
 								<td>
