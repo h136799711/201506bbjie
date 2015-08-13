@@ -85,14 +85,14 @@
 							</table>
 
 							<table style="width: 100%;margin-top: 10px;font-size: 12px;">
-								<tr style="">
+								<!--<tr style="">
 									<td width="20%" align="right" style="text-align: right; font-size: 14px; padding-top: 10px;">发货模式：</td>
 									<td style=" padding-top: 10px;">
 										<label for='a'><input id="a" name='fhtype' type="radio" value="平台发货" checked="checked"/>平台发货</label>
 										<label for='b'><input id="b" name='fhtype' type="radio" value="自主发货"/>自主发货</label>
 										<font color="#C34A8A" style="margin-left: 20px;">由系统代为发送快递，需预收邮费10元/份</font>
 									</td>
-								</tr>
+								</tr>-->
 
 								<tr style="">
 									<td width="20%" align="right" style="text-align: right;font-size: 14px; padding-top: 10px;">店铺运费设置：</td>
@@ -160,20 +160,17 @@
 		$('.bzj').text(a);
 		$('#a,#b').click(function(){
 			var ced=$('input:radio[name="fhtype"]:checked').val();
-			if(ced=='平台发货'){
+			
 				$('.yf').text(10);
 				$('.bzj').text(Number($('.yf').text())+Number($('.rwyj').text())+Number(summ));
-			}else{
-				$('.yf').text(0);
-				$('.bzj').text(Number($('.yf').text())+Number($('.rwyj').text())+Number(summ));
-			}
+			
 		})
 		$('#c,#d').click(function(){
 			var ced=$('input:radio[name="yftype"]:checked').val();
 			var cedd=$('input:radio[name="fhtype"]:checked').val();
 			var renwu=$('.rwyj').text();var bzj=$('.bzj').text();
 			var summ=$('.pronum').val();
-			if(cedd=='平台发货'){
+			
 				if(ced=='包邮'){
 					$('.yf').text(10);
 					$('.bzj').text(Number($('.yf').text())+Number($('.rwyj').text())+Number(summ));
@@ -182,17 +179,7 @@
 					$('.yf').text(25);
 					$('.bzj').text(Number($('.yf').text())+Number($('.rwyj').text())+Number(summ));
 				}
-			}else{
-				if(ced=='包邮'){
-					
-					$('.yf').text(0);
-					$('.bzj').text(Number($('.yf').text())+Number($('.rwyj').text())+Number(summ));
-				}else{
-					
-					$('.yf').text(15);
-					$('.bzj').text(Number($('.yf').text())+Number($('.rwyj').text())+Number(summ));
-				}
-			}
+			
 			
 		})
 		
@@ -204,7 +191,7 @@
 			var cedd=$('input:radio[name="fhtype"]:checked').val();
 			var renwu=$('.rwyj').text();var bzj=$('.bzj').text();var xiadan=$('.pronum').val();
 			var money=$('.bzj').text();
-			if(cedd=='平台发货'){
+		
 				if(ced=='包邮'){
 					$('#fhfs').val(1);
 					$('#by').val(10);
@@ -216,19 +203,7 @@
 					$('#bzj').val(bzj);
 					$('#yj').val(renwu);
 				}
-			}else{
-				if(ced=='包邮'){
-					$('#fhfs').val(2);
-					$('#by').val(0);
-					$('#bzj').val(bzj);
-					$('#yj').val(renwu);
-				}else{
-					$('#fhfs').val(2);
-					$('#by').val(15);
-					$('#bzj').val(bzj);
-					$('#yj').val(renwu);
-				}
-			}
+			
 			$('#money').val(money)
 			$('#xiadan').val(xiadan);
 			$('#fm').submit();

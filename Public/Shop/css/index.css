@@ -12,15 +12,15 @@ input{border:1px solid #ccc; list-style:none;}
 	#div_top .div_info div{height:30px; line-height:30px;}
 	#div_top .div_info div a{text-decoration:none; color:#FFF}
 	/*a:link ->a:hover ->a:active ->a:visited*/
-#div_top2{background-color:#FF3D65; height:13%;clear:left}
-	#div_top2 .div_info{ height:100%} 
+#div_top2{background-color:#FF3D65; height:13%;clear:left;width: 100%;}
+	#div_top2 .div_info{ height:100%; } 
 	#div_top2 .div_info div{margin-right:20px;}
 #div_title{ height:50px; }
 	#div_title div{  height:100%; padding:12px; font-size: 18px;}
 	#div_title div ul{float:left}
 	#div_title div ul li{ padding-left:20px;padding-right: 20px; float: left; padding-top: 0; padding-bottom: 0; font-weight:bold; cursor:pointer; font-size: 14px; border-right:1px solid #ccc ;}
 	/*#div_title div ul li.li_fenge{ color:#ccc}*/
-#div_lunbo{  height:422px;}
+#div_lunbo{ height:422px;}
 	#div_lunbo .div_info{ border:1px solid #ccc; height:100% ;margin-top: 0px;}
 	#div_lunbo .div_info .div_info1{ height:100%; width:300px; float:left; background: #FFFFFF; }
 	#div_lunbo .div_info .div_info1 ul li{ clear: left; margin-left:30px; border-bottom: 1px dotted #CCCCCC; }
@@ -28,7 +28,8 @@ input{border:1px solid #ccc; list-style:none;}
 	#div_lunbo .div_info .div_info1 ul li div{ width: 205px;margin-bottom: 3px;}
 	#div_lunbo .div_info .div_info1 ul li div a{text-decoration: none; font-size: 12px; color: #999;}
 	#div_lunbo .div_info .div_image{ height:100%; width:700px; float:left; background-color:#FFF}
-	#div_lunbo .div_info .div_image .div_minlunbo{ height:100%; width:700px; float:left; cursor: pointer; }
+	#div_lunbo .div_info .div_image .div_minlunbo{ height:100%; width: 100%; float:left; cursor: pointer; }
+	#div_lunbo .div_info .div_image .div_minlunbo img{ height:100%; width:100%; }
 	#div_lunbo .div_info .ul_lunbo{width: 200px; position:absolute;z-index: 999; display: block;margin:600px; margin-top: 380px;}
  
 
