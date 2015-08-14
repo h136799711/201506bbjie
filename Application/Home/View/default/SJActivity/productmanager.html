@@ -251,16 +251,16 @@
 								</a>
 							</li>
 						</ul>
-						<form controller="extend/search_form" id="yw0" action="#" method="post" class="search_form-processed">
+						<form action="{:U('Home/SJActivity/querybyname')}" method="post" class="search_form-processed">
 							<div class="well well-small">
 								<div class="row">
 									<div class="span4">
 										按名称
-										<input placeholder="搜索宝贝名称" class="mb0" name="Product[title]" id="Product_title" type="text" style="height: 30px;">
+										<input placeholder="搜索宝贝名称" class="mb0" name="name" id="Product_title" type="text" style="height: 30px;">
 									</div>
 									<div class="span4">
-										按宝贝
-										<input placeholder="输入宝贝链接搜索" class="mb0" autocomplete="off" onclick="this.select()" name="Product[url]" style="height: 30px;" id="Product_url" type="text">
+										按宝贝链接
+										<input placeholder="输入宝贝链接搜索" class="mb0" autocomplete="off" onclick="this.select()" name="url" style="height: 30px;" id="Product_url" type="text">
 									</div>
 									<div class="span2">
 										<button class="btn" type="submit" name="yt0">
@@ -472,7 +472,7 @@
 									</div>
 									<div class="span3">
 										<div class="summary">
-											{$showdown}
+											{$downshow}
 										</div>
 									</div>
 								</div>
