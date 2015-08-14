@@ -40,7 +40,7 @@ class SJActivityController extends CheckLoginController {
 
 		}
 		$this -> assign('task', $result['info']['list']);
-		$this->assign('show',$result['info']['show']);
+		$this -> assign('show',$result['info']['show']);
 		$this -> assign('task_zt', $result_zt['info']);
 		$this -> assign('geshu', session('shuliang'));
 		$this -> assign('username', $user['info']['username']);
@@ -99,6 +99,13 @@ class SJActivityController extends CheckLoginController {
 	 public function task_play(){
 	 	$mm = array('id' => I('id',0));
 		$mms = array('task_id' => I('id',0));
+		$map = array('task_id' => I('id',0));
+		$result = apiCall(HomePublicApi::TaskHasProduct_Query, array($map));
+		$mapa = array('pid' => $result['info'][0]['pid']);
+		$returns = apiCall(HomePublicApi::ProductSearchWay_Query, array($mapa));
+		if ($returns['info'] == NULL) {
+			$this -> error('如果发放任务，请先创建搜索', U('Home/SJActivity/sj_tbhd'));
+		}
 		$result_tast = apiCall(HomePublicApi::Task_Query, array($mm));
 		$result_play = apiCall(HomePublicApi::TaskPlan_Query, array($mms));
 		$results = apiCall(HomePublicApi::TaskHasProduct_Query, array($map4));
@@ -337,6 +344,7 @@ class SJActivityController extends CheckLoginController {
 	 * 任务书
 	 * */
 	public function rws() {
+		
 		$headtitle = "宝贝街-任务书";
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
@@ -806,7 +814,7 @@ class SJActivityController extends CheckLoginController {
 	 */
 	public function save() {
 		$user=session('user');
-		$entity = array('uid'=>$user['info']['id'] ,'dtree_type' => '关键字', 'status' => 1, 'create_time' => time(), 'update_time' => time(), 'pid' => I('pid', ''), 'search_url' => I('search_url', ''), 'search_q' => I('search_q', ''), 'search_order' => I('search_order', ''), 'search_condition' => I('search_xz', ''), );
+		$entity = array('uid'=>$user['info']['id'] ,'dtree_type' => '1', 'status' => 1, 'create_time' => time(), 'update_time' => time(), 'pid' => I('pid', ''), 'search_url' => I('search_url', ''), 'search_q' => I('search_q', ''), 'search_order' => I('search_order', ''), 'search_condition' => I('search_xz', ''), );
 		$result = apiCall(HomePublicApi::ProductSearchWay_Add, array($entity));
 		if ($result['status']) {
 			$this -> success('添加搜索成功', U('Home/SJActivity/createsearch'));
