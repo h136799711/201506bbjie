@@ -70,7 +70,7 @@ class SJMoneyController extends CheckLoginController {
 			$ap = array('vip_level' => $lv, );
 			$return = apiCall(HomePublicApi::Bbjmember_Seller_SaveByUID, array($id, $ap));
 			if ($return['status']) {
-				$entity = array('uid' => $id, 'defray' => $money . '.000', 'income' => '0.000', 'create_time' => time(), 'notes' => '用于开通会员', 'dtree_type' => 4, 'status' => 1, );
+				$entity = array('uid' => $id, 'defray' => $money . '.000', 'income' => '0.000', 'create_time' => time(), 'notes' => '用于开通会员'.I('time','').'个月', 'dtree_type' => 4, 'status' => 1, );
 				$resulta = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entity));
 				if ($resulta['status']) {
 					$return1=M('bbjmemberSeller')->where('uid='.$id)->setDec('coins',$money);
