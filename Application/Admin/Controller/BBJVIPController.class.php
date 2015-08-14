@@ -67,6 +67,50 @@ class BBJVIPController extends AdminController{
 			}
 		}
 	}
+	/**
+	 * 会员管理
+	 * */
+	public function vipmanager(){
+		$page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));
+		$result=apiCall(HomePublicApi::Bbjmember_Seller_QueryAll, array($maps,$page));
+		$result1=apiCall(HomePublicApi::UcenterUser_Query, array());
+		$map=array('dtree_type'=>4);
+		//$order=" create_time desc ";
+		$result2=apiCall(HomePublicApi::FinAccountBalanceHis_Query, array($map,$order));
+		for($i=0;$i<count($result['info']['list']);$i++){
+			for($j=0;$j<count($result2['info']);$j++){
+				if($result['info']['list'][$i]['uid']==$result2['info'][$j]['uid']){
+					$result['info']['list'][$i]['time']=$result2['info'][$j]['create_time'];
+					$result['info']['list'][$i]['text']=$result2['info'][$j]['notes'];
+					continue;
+				}
+			}
+			
+		}
+		//dump($result);
+		
+		$this->assign('seller',$result['info']['list']);
+		$this->assign('sellershow',$result['info']['show']);
+		$this->assign('user',$result1['info']);
+		$this->assign('jilu',$result2['info']);
+		$this->display();
+	}
+	/*
+	 * 撤销vip
+	 * */
+	public function quxiaovip(){
+		$id=I('id',0);
+		if($id!=0){
+			$entity=array('vip_level'=>0);
+			$result=apiCall(HomePublicApi::Bbjmember_Seller_SaveByID, array($id,$entity));
+			if($result['status']){
+				$this->success('撤销成功',U('Admin/BBJVIP/vipmanager'));
+			}else{
+				$this->error('撤销失败',U('Admin/BBJVIP/vipmanager'));
+			}
+		}
+		
+	}
 	public function checksm(){
 		$map=array('auth_status'=>0);
 		$page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));

@@ -50,7 +50,8 @@
 											</if>
 											<if condition="$vip eq 2">
 												当前会员等级 : 超级vip会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">超级vip会员</a> ]
-												<else/>
+											</if>
+											<if condition="$vip eq 0">
 												当前会员等级 : 普通会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">普通会员</a> ]
 											</if>
 										</div>
@@ -73,6 +74,7 @@
 							<div class="control-group clearfix" style="margin-top:-10px;line-height:1.2em;">
 								<label class="control-label">&nbsp;</label>
 								<div class="controls" style="padding-top:8px;">会员时间越长，折扣越高，最高更可享受6折优惠</div>
+								<p style="color: red;">会员不可累积开通，请认真选择会员等级和时间（过期后才能重新开通哦）</p>
 							</div>
 							<div class="control-group">
 								<label class="control-label">应付金额</label>
@@ -80,7 +82,7 @@
 									<div ng-if="!xufei_type" class="ng-scope">
 										<font class="yingfu" size="5">￥</font><span id="yingfu" class="yingfu">0.00  </span>
 									</div>
-									<div ng-show="xufei_type" ng-value="youhui=xufei_type==12?nianfei_youhui:0;bili=sgrade==3?1:0.6" class="ng-hide" value="0.6">
+									<div ng-show="xufei_type" class="ng-hide" value="0.6">
 										<span class="yingfu ng-binding"> ￥NaN </span>
 										<span ng-show="xufei_type&gt;1" class="muted ng-binding ng-hide">(原价 NaN元，优惠 NaN元)</span>
 									</div>
@@ -162,7 +164,12 @@
 				if(yue<mon){
 					alert('您的余额不足以支付此次交易，请前往充值');
 				}else{
-					$('#yw0').submit();
+					if('{$vip}'!=0){
+						alert('您已开通vip,请等待到期后继续开通');
+					}else{
+						$('#yw0').submit();
+					}
+//					
 				}
 			})
 		})
