@@ -406,7 +406,7 @@
 										    	var src = '';
 										        if(data.status){
 										        	
-										        	$("#cover_id").val('http://localhost/github/201506bbjie'+data.path);
+										        	$("#cover_id").val("{:C('SITE_URL')}"+data.path);
 										        	src = data.url || '__ROOT__' + data.path;
 										        	$("#cover_id").parent().find('.upload-img-box').html(
 										        		'<div class="upload-pre-item"><img width='+50+' height='+50+' src="' + src + '"/></div>'

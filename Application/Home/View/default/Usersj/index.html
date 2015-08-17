@@ -213,7 +213,7 @@
 												var data = $.parseJSON(data);
 												var src = '';
 												if (data.status) {
-													$("#cover_id").val('http://localhost/github/201506bbjie' + data.path);
+													$("#cover_id").val("{:C('SITE_URL')}" + data.path);
 //													alert($("#cover_id").val());
 													src = data.url || '__ROOT__' + data.path;
 													$("#cover_id").parent().find('.upload-img-box').html(

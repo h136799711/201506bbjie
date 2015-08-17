@@ -215,12 +215,18 @@ class IndexController extends HomeController {
 		$password=I('post.password');
 		$mobile=I('post.phone_tel');
 		$email=$username."@qq.com";
-		$yqr=I('post.yaoqingren');
+		$yqr=I('post.yaoqingren','');
 		$result = apiCall(HomePublicApi::User_Register, array($username, $password, $email,$mobile));
-		$where="username ='$yqr'";
-		$fu=M('ucenterMember')->where($where)->select();
-		$id=$fu[0]['id'];
-		
+//		dump($yqr);
+		if($yqr=='' && $yqr==null){
+			$where=" username ='test1' ";
+			$fu=M('ucenterMember')->where($where)->select();
+			$id=$fu[0]['id'];
+		}else{
+			$where="username ='$yqr'";
+			$fu=M('ucenterMember')->where($where)->select();
+			$id=$fu[0]['id'];
+		}
 		if($result['status']){
 			$uid=$result['info'];
 			$entity=array(
@@ -300,11 +306,18 @@ class IndexController extends HomeController {
 		$password=I('post.password');
 		$mobile=I('post.phone_tel');
 		$email=$username."@qq.com";
-		$yqr=I('post.yaoqingren');
+		$yqr=I('post.yaoqingren','');
 		$result = apiCall(HomePublicApi::User_Register, array($username, $password, $email,$mobile));
-		$where="username ='$yqr'";
-		$fu=M('ucenterMember')->where($where)->select();
-		$id=$fu[0]['id'];
+//		dump($yqr);
+		if($yqr=='' && $yqr==null){
+			$where=" username ='test1' ";
+			$fu=M('ucenterMember')->where($where)->select();
+			$id=$fu[0]['id'];
+		}else{
+			$where="username ='$yqr'";
+			$fu=M('ucenterMember')->where($where)->select();
+			$id=$fu[0]['id'];
+		}
 		if($result['status']){
 			$uid=$result['info'];
 			$entity=array(
