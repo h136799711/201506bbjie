@@ -38,7 +38,7 @@
 				<div class="div_image">
 					<volist name="lunboList" id="l" key="k">
 			
-						<div class="div_minlunbo" onclick="toUrl('{$l.url}')"
+						<div class="div_minlunbo" 
 						<if condition="$k neq 1">
 							style="display:none"
 						</if>
@@ -76,7 +76,7 @@
 				<div class="div_minInfo">
 					<div class="div_minTitle">
 						<h3>上新预告</h3>
-						<a href="">&nbsp;</a>
+						<a href="{:U('Shop/Index/flzc')}">&nbsp;</a>
 					</div>
 					<!--<volist name="newProductList" id="rpl">-->
 						<dl class="dl_info" onclick="toUrl('{:U('Shop/Index/spxq',array('id'=>$rpl['id']))}')">
@@ -95,7 +95,7 @@
 				<div class="div_minInfo">
 					<div class="div_minTitle">
 						<h3>推荐福品</h3>
-						<a href="">&nbsp;</a>
+						<a href="{:U('Shop/Index/flzc')}">&nbsp;</a>
 					</div>
 					
 					<!--<volist name="recommendProductList" id="npl">-->

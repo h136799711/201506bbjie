@@ -32,6 +32,32 @@ class UsersmController extends CheckLoginController {
 		$this->posts();
 		$this -> display('manager_info');
 	}
+	
+	public function email(){
+		$id=I('id',0);
+		$entity=array('email'=>I('email',''));
+//		dump($entity);dump($id);
+		$result=apiCall(HomePublicApi::User_SaveByID, array($id,$entity));
+		if($result['status']){
+			$this->success('修改成功',U('Home/Usersm/sm_aqzx'));
+		}else{
+			$this->error($result['info']);
+		}
+	}
+	/*
+	 * 商家手机绑定
+	 * */
+	public function phone(){
+		$id=I('id',0);
+		$entity=array('mobile'=>I('phone',''));
+//		dump($entity);
+		$result=apiCall(HomePublicApi::User_SaveByID, array($id,$entity));
+		if($result['status']){
+			$this->success('修改成功',U('Home/Usersm/sm_aqzx'));
+		}else{
+			$this->error($result['info']);
+		}
+	}
 	/*
 	 * 试民任务设置
 	 * */
@@ -234,6 +260,7 @@ class UsersmController extends CheckLoginController {
 		$this -> assign('username', $user['info']['username']);
 		$this -> assign('phone', $user['info']['mobile']);
 		$this -> assign('email', $user['info']['email']);
+		$this->assign('user',$user['info']);
 		$this -> assign('cs_aq', 'sed');
 		$this -> display();
 	}

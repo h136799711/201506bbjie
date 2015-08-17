@@ -88,22 +88,7 @@
 								</a>
 							</li>
 						</ul>
-						<form controller="extend/search_form" id="yw0" action="#" method="post" class="search_form-processed">
-							<div class="well well-small">
-								<div class="row">
-									<div class="span4">
-										按关键字
-										<input placeholder="搜索宝贝名称" class="mb0" name="Product[title]" id="Product_title" type="text" style="height: 30px;">
-									</div>
-
-									<div class="span2">
-										<button class="btn" type="submit" name="yt0">
-											搜索
-										</button>
-									</div>
-								</div>
-							</div>
-						</form>
+						
 						<div>
 							<!-- 全部中-->
 							<div class="grid-view" controller="extend/gridview">
@@ -189,7 +174,7 @@
 														</a>
 													</td>
 													<td>
-														<span data-role="inline_edit" class="inline_edit" fieldid="" fieldname="" required="required" datatype="">关键词</span>
+														关键词
 													</td>
 													<td>
 														<if condition="$a['status'] eq 1">正常</if><if condition="$a['status'] eq 0">暂停</if></span>
