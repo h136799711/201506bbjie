@@ -173,7 +173,7 @@ class IndexController extends ShopController{
         ["g_id"] => string(2) "34"
         ["p_id"] => string(2) "17"
 			*/
-			$fields=array('itboye_wxproduct.id','name','main_img','icon_url','updatetime','p_id'); 
+			$fields=array('itboye_wxproduct.id','name','main_img','icon_url','updatetime','p_id','price'); 
 			
 			
 			$result = apiCall('Admin/Wxproduct/queryJoin', array($map, $page, $order, $params,$fields));
@@ -188,7 +188,7 @@ class IndexController extends ShopController{
 			$result = apiCall('Admin/Wxproduct/queryJoin', array($map, $page, $order, $params,$fields));
 			$this -> assign('recommendProductList', $result['info']['list']); //推荐福品
 			//
-			//dump($result);
+//			dump($result);
 			$headtitle="宝贝街-首页";
 			$this->assign('head_title',$headtitle);
 			$this->assign('indexTitle',0);

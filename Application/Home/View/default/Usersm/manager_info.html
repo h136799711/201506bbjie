@@ -80,6 +80,10 @@
 								<td class="td_title">生日：</td>
 								<td>
 									<select name="year">
+										<option>1988</option><option>1989</option><option>1990</option><option>1991</option><option>1992</option>
+										<option>1993</option><option>1994</option><option>1995</option><option>1996</option><option>1997</option>
+										<option>1998</option><option>1999</option><option>2000</option><option>2001</option><option>2002</option>
+										<option>2003</option><option>2004</option><option>2005</option><option>2006</option><option>2007</option>
 										<option>2008</option>
 										<option>2009</option>
 										<option>2010</option>
@@ -157,34 +161,32 @@
 						<b>联系人信息</b>
 					</div>
 					<div class="div_minInfo">
-						<volist name="mum" id="v">
 							<table>
 								<tr>
 									<td class="td_title">姓名：</td>
 									<td>
-										<input name="realname" style="list-style: none; width: 220px;border-radius:3px;border: 1px solid #ccc;" value="{$v.realname}" />
+										<input name="realname" style="list-style: none; width: 220px;border-radius:3px;border: 1px solid #ccc;" value="{$mum.realname}" />
 									</td>
 									<td>任务有问题，能第一时间联系</td>
 								</tr>
-								<tr>
+								<!--<tr>
 									<td class="td_title">联系电话：</td>
 									<td>
 										<input name="phone" style="list-style: none; width: 220px;border-radius:3px;border: 1px solid #ccc;" value="{$vo.mobile}" />
 
 									</td>
 									<td></td>
-								</tr>
+								</tr>-->
 								<tr>
 									<td class="td_title">QQ：</td>
 									<td>
-										<input name="qq" value="" style="list-style: none; width: 220px;border-radius:3px;border: 1px solid #ccc;" value="{$v.qq}" />
+										<input type="text" name="qq"  style="list-style: none; width: 220px;border-radius:3px;border: 1px solid #ccc;" value="{$mum['qq']}" />
 									</td>
 									<td></td>
 								</tr>
 
 							</table>
 					</div>
-					</volist>
 					<div class="div_minSet" style="background: #fbf9fa; line-height: 35px; padding-left: 20px; font-size: 14px;">
 						<b>其他信息</b>
 					</div>

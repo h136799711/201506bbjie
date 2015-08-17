@@ -66,17 +66,25 @@ class SJMoneyController extends CheckLoginController {
 		$pp = think_ucenter_md5($pwd, UC_AUTH_KEY);
 		if ($password == $pp) {
 			$rets = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
-			$lv = I('lv', '1');
-			$ap = array('vip_level' => $lv, );
-			$return = apiCall(HomePublicApi::Bbjmember_Seller_SaveByUID, array($id, $ap));
-			if ($return['status']) {
-				$entity = array('uid' => $id, 'defray' => $money . '.000', 'income' => '0.000', 'create_time' => time(), 'notes' => '用于开通会员'.I('time','').'个月', 'dtree_type' => 4, 'status' => 1, );
-				$resulta = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entity));
-				if ($resulta['status']) {
-					$return1=M('bbjmemberSeller')->where('uid='.$id)->setDec('coins',$money);
-					$this -> success('恭喜！你的服务已经成功开通...', U('Home/Usersj/index'));
+			$coin=$rets['info'][0]['coins'];
+//			dump($coin);dump($money);
+			if($coin<$money){
+				$this->error('余额不足');
+			}else{
+				
+				$lv = I('lv', '1');
+				$ap = array('vip_level' => $lv, );
+				$return = apiCall(HomePublicApi::Bbjmember_Seller_SaveByUID, array($id, $ap));
+				if ($return['status']) {
+					$entity = array('uid' => $id, 'defray' => $money . '.000', 'income' => '0.000', 'create_time' => time(), 'notes' => '用于开通会员'.I('time','').'个月', 'dtree_type' => 4, 'status' => 1, );
+					$resulta = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entity));
+					if ($resulta['status']) {
+						$return1=M('bbjmemberSeller')->where('uid='.$id)->setDec('coins',$money);
+						$this -> success('恭喜！你的服务已经成功开通...', U('Home/Usersj/index'));
+					}
 				}
 			}
+			
 		} else {
 			$this -> error('密码错误  ，无法进行此操作');
 		}

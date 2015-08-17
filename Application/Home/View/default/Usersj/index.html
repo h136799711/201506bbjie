@@ -73,7 +73,7 @@
 															<if condition="$sj['aliwawa'] eq ''">
 
 																<else/>
-																<div class="alert alert-warning in fade"><a href="#" class="close" data-dismiss="alert" type="button">×</a>您还没有对您的主旺旺进行认证，请先认证您的主旺旺 <a class="text-info" href="{:U('Home/Usersj/sj_zhxx')}">前往验证</a>
+																<div class="alert alert-warning in fade"><a href="javascript:void(0)" class="close" data-dismiss="alert" type="button">×</a>您还没有对您的主旺旺进行认证，请先认证您的主旺旺 <a class="text-info" href="{:U('Home/Usersj/sj_zhxx')}">前往验证</a>
 															</if>
 															</div>
 														</div>
@@ -286,4 +286,11 @@
 </block>
 
 <block name="area_footer">
+	<script type="text/javascript">
+		$(function(){
+			$('.close').click(function(){
+				$('.alert').hide();
+			})
+		})
+	</script>
 </block>

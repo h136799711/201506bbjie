@@ -27,9 +27,10 @@ class UsersmController extends CheckLoginController {
 		$result = apiCall(HomePublicApi::Member_Query, array($map));
 		$results = apiCall(HomePublicApi::Bbjmember_Query, array($map));
 		$this -> assign('info', $results['info']);
-		$this -> assign('mum', $result['info']);
+		$this -> assign('mum', $result['info'][0]);
 		$this -> assign('cs_xx', 'sed');
 		$this->posts();
+//		dump($result);
 		$this -> display('manager_info');
 	}
 	
@@ -379,7 +380,7 @@ class UsersmController extends CheckLoginController {
 		$shi = I('shi');
 		$qu = I('qu', '');
 		$smm = array('dtree_job' => I('zhiye', ''), 'personal_signature' => I('grqm', ''), 'brief_introduction' => I('grjj', ''), 'address' => $sheng . $shi . $qu . I('address', ''), );
-		
+//		dump($smm);
 		$result = apiCall(HomePublicApi::Member_SaveByID, array($id, $sm));
 		if ($result['status']) {
 			$results = apiCall(HomePublicApi::Bbjmember_SaveByID, array($id, $smm));

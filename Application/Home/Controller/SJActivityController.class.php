@@ -49,7 +49,9 @@ class SJActivityController extends CheckLoginController {
 		$this -> assign('jihuas_zt', $results_zt);
 		$this -> assign('pro_zt', $producta_zt);
 		$sj=A('usersj');
+		$sj->is_auth();
 		$sj->getcount();
+		
 		//		dump($results);
 		$this -> display();
 	}
@@ -91,6 +93,8 @@ class SJActivityController extends CheckLoginController {
 		$this->assign('taskplan',$result['info']);
 		$this -> assign('pro', $producta['info']);
 //		dump($result_user);dump($result);
+		$sj=A('usersj');
+		$sj->is_auth();
 		$this->display();
 	}
 	/**
@@ -131,6 +135,8 @@ class SJActivityController extends CheckLoginController {
 		$this->assign('task',$result_tast['info'][0]);
 		$this -> assign('jihuas', $results['info']);
 		$this -> assign('pro', $producta['info']);
+		$sj=A('usersj');
+		$sj->is_auth();
 //		dump($resulta);
 	 	$this->display();
 	 }
@@ -151,6 +157,7 @@ class SJActivityController extends CheckLoginController {
 		$exchange=apiCall(AdminPublicApi::OrderExpress_Query, array($whe));
 		$this->assign('express',$exchange['info']);
 		$sj=A('usersj');
+		$sj->is_auth();
 		$sj->getcount();
 //		dump($exchange);
 		$this -> display();
@@ -265,6 +272,7 @@ class SJActivityController extends CheckLoginController {
 		$this -> assign('task', $result['info']);
 		$this -> assign('username', $user['info']['username']);
 		$sj=A('usersj');
+		$sj->is_auth();
 		$sj->getcount();
 //		dump($taskhis);
 		$this -> display();
@@ -284,6 +292,7 @@ class SJActivityController extends CheckLoginController {
 		$this -> assign('task', $result['info']);
 		$this -> assign('username', $user['info']['username']);
 		$sj=A('usersj');
+		$sj->is_auth();
 		$sj->getcount();
 //		dump($taskhis);
 		$this -> display();
@@ -394,7 +403,8 @@ class SJActivityController extends CheckLoginController {
 		$pro = apiCall(HomePublicApi::Product_Query, array($map));
 		$this -> assign('pros', $pro['info']);
 		$this->assign('auth_status',$sj['info'][0]['auth_status']);
-		//				dump($sj['info'][0]['aliwawa']);
+		$sj=A('usersj');
+		$sj->is_auth();
 		$this -> display();
 	}
 
@@ -490,6 +500,8 @@ class SJActivityController extends CheckLoginController {
 		$headtitle = "宝贝街-创建任务";
 		$this -> assign('head_title', $headtitle);
 		$this -> assign('username', $user['info']['username']);
+		$sj=A('usersj');
+		$sj->is_auth();
 		$this -> display('activity_2');
 	}
 
@@ -501,6 +513,8 @@ class SJActivityController extends CheckLoginController {
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
 		$this -> assign('username', $user['info']['username']);
+		$sj=A('usersj');
+		$sj->is_auth();
 		$this -> display();
 	}
 
@@ -524,6 +538,8 @@ class SJActivityController extends CheckLoginController {
 		if ($result['status']) {
 			$this -> assign('xiadan', I('xiadan', ''));
 			$this -> assign('tak', $tak['info']);
+			$sj=A('usersj');
+			$sj->is_auth();
 			$this -> display('activity_3');
 		}
 		//		$this->display('activity_3');
@@ -535,7 +551,8 @@ class SJActivityController extends CheckLoginController {
 	public function activity_3() {
 		$headtitle = "宝贝街-创建任务";
 		$this -> assign('head_title', $headtitle);
-
+		$sj=A('usersj');
+		$sj->is_auth();
 		$this -> assign('username', $user['info']['username']);
 		$this -> display();
 	}
@@ -633,6 +650,8 @@ class SJActivityController extends CheckLoginController {
 		$this -> assign('products', $pro['info']['list']);
 		$this -> assign('aliwawa', $sj['info'][0]['aliwawa']);
 		$this -> assign('username', $user['info']['username']);
+		$sj=A('usersj');
+		$sj->is_auth();
 		$this -> display();
 	}
 	/*
@@ -650,6 +669,8 @@ class SJActivityController extends CheckLoginController {
 		$this -> assign('qall', $pro['info']['show']);
 		$this -> assign('products', $pro['info']['list']);
 		$this -> assign('username', $user['info']['username']);
+		$sj=A('usersj');
+		$sj->is_auth();
 		$this->display();
 	}
 	/*
@@ -688,7 +709,8 @@ class SJActivityController extends CheckLoginController {
 			$this -> assign('products', $pro['info']['list']);
 			$this -> assign('aliwawa', $sj['info'][0]['aliwawa']);
 			$this -> assign('username', $user['info']['username']);
-			//				dump($pro['info'][0]);
+			$sj=A('usersj');
+			$sj->is_auth();
 			$this -> display('productmanager');
 		} else {
 			$entity = array('price' => I('price', ''), 'position' => trim(I('weizhi', '')), 'update_time' => time(), );
@@ -730,6 +752,8 @@ class SJActivityController extends CheckLoginController {
 		$this -> assign('pro', $pro['info']['list']);
 		$this -> assign('pros', $pros['info']);
 		$this -> assign('username', $user['info']['username']);
+		$sj=A('usersj');
+		$sj->is_auth();
 //		dump($pros);
 		$this -> display();
 	}
@@ -796,7 +820,7 @@ class SJActivityController extends CheckLoginController {
 		$id=I('id',0);
 		$map=array('msg_status'=>1);
 		$result = apiCall(AdminPublicApi::Msgbox_SavebyId, array($id,$map));
-		dump($id);
+//		dump($id);
 	}
 	//创建搜索
 	public function createsearch() {
@@ -806,6 +830,8 @@ class SJActivityController extends CheckLoginController {
 		$map = array('parentid' => 36, );
 		$result = apiCall(AdminPublicApi::Datatree_QueryNoPaging, array($map));
 		$this -> assign('username', $user['info']['username']);
+		$sj=A('usersj');
+		$sj->is_auth();
 		$this -> display();
 
 	}
