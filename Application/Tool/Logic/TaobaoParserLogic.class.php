@@ -51,8 +51,11 @@ class TaobaoParserLogic implements IParserLogic{
         //解析查询参数
         parse_str($url_parse['query'],$output);
 
-        $html = file_get_contents($this->url);
-//		$html = iconv("gb2312", "utf-8//IGNORE",$html); 
+        $this->url = html_entity_decode(urldecode($this->url));
+        $this->url = str_replace(" ","+",$this->url);
+
+        $html = file_get_contents( htmlspecialchars_decode($this->url));
+//		$html = iconv("gb2312", "utf-8//IGNORE",$html);
         $match = array();
 
         $g_page_config_pattern = '/g_page_config\s=\s(.*?)};/is';
@@ -119,6 +122,7 @@ class TaobaoParserLogic implements IParserLogic{
         $price = explode(",", $price);
 
         $format_item = $this->getFormatItems($items['data']['auctions'],$findProduct);
+
 
         $return_info = array(
             'type'=>'taobao',

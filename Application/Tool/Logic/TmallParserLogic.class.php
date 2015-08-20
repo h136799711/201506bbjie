@@ -69,7 +69,10 @@ class TmallParserLogic implements IParserLogic {
             $query .= '&'.$key.'='.urlencode($vo);
         }
 
-        $html = $this -> curl_get_contents($url_parse['scheme'].'://'.$url_parse['host'].$url_parse['path'].'?'.ltrim($query,"&"));
+        $query = htmlspecialchars_decode(($query));
+        $parse_url = $url_parse['scheme'].'://'.$url_parse['host'].$url_parse['path'].'?'.ltrim($query,"&");
+//        var_dump($parse_url);
+        $html = $this -> curl_get_contents($parse_url);
 
         $filter = $this -> getFilter($output);
         $location = $this -> getLocation($output);
