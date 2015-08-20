@@ -100,7 +100,9 @@ class IndexController extends HomeController {
 	  * 帮助中心
 	  * */
 	public function bzzx(){
-		
+		$order = " post_modified desc ";
+		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
+		$this->assign('zxgg',$result['info']);
 		$headtitle="宝贝街-帮助中心";
 		$this->assign('head_title',$headtitle);
 		$users=session('user');
@@ -213,12 +215,18 @@ class IndexController extends HomeController {
 		$password=I('post.password');
 		$mobile=I('post.phone_tel');
 		$email=$username."@qq.com";
-		$yqr=I('post.yaoqingren');
+		$yqr=I('post.yaoqingren','');
 		$result = apiCall(HomePublicApi::User_Register, array($username, $password, $email,$mobile));
-		$where="username ='$yqr'";
-		$fu=M('ucenterMember')->where($where)->select();
-		$id=$fu[0]['id'];
-		
+//		dump($yqr);
+		if($yqr=='' && $yqr==null){
+			$where=" username ='test1' ";
+			$fu=M('ucenterMember')->where($where)->select();
+			$id=$fu[0]['id'];
+		}else{
+			$where="username ='$yqr'";
+			$fu=M('ucenterMember')->where($where)->select();
+			$id=$fu[0]['id'];
+		}
 		if($result['status']){
 			$uid=$result['info'];
 			$entity=array(
@@ -298,11 +306,18 @@ class IndexController extends HomeController {
 		$password=I('post.password');
 		$mobile=I('post.phone_tel');
 		$email=$username."@qq.com";
-		$yqr=I('post.yaoqingren');
+		$yqr=I('post.yaoqingren','');
 		$result = apiCall(HomePublicApi::User_Register, array($username, $password, $email,$mobile));
-		$where="username ='$yqr'";
-		$fu=M('ucenterMember')->where($where)->select();
-		$id=$fu[0]['id'];
+//		dump($yqr);
+		if($yqr=='' && $yqr==null){
+			$where=" username ='test1' ";
+			$fu=M('ucenterMember')->where($where)->select();
+			$id=$fu[0]['id'];
+		}else{
+			$where="username ='$yqr'";
+			$fu=M('ucenterMember')->where($where)->select();
+			$id=$fu[0]['id'];
+		}
 		if($result['status']){
 			$uid=$result['info'];
 			$entity=array(
@@ -442,7 +457,8 @@ class IndexController extends HomeController {
 						$this->assign('username',$user['info']['username']);
 						$this->assign('head_img',$sj['info'][0]['head_img']);
 						$this->assign('sj',$sj['info'][0]);
-						$sj=A('Usersj');
+						$sj=A('usersj');
+						$sj->is_auth();
 						$sj->getcount();
 						$sj->checklevel();
 						$this->display('Usersj/index');
@@ -607,6 +623,7 @@ class IndexController extends HomeController {
 		 
 	}   
 	public function posts(){
+		
 		$order = " post_modified desc ";
 		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
 		$this->assign('zxgg',$result['info'][0]);

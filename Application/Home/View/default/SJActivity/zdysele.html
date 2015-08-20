@@ -36,10 +36,7 @@
 							$('#div_searchCondition').find('.font_tab').html(result.info.tab);
 							$('#div_searchCondition').find('.font_order').html(result.info.order);
 							
-							$("input[name='search_url']").val($('#url').val());
-							$("input[name='search_q']").val(result.info.key);
-							$("input[name='search_xz']").val(result.info.tab);
-							$("input[name='search_order']").val(result.info.order);
+							
 							
 							var title1=$("#div_searchCondition .font_title1").html().trim();
 							var wangwang1=$("#div_searchCondition .font_wangwang").html().trim();
@@ -135,7 +132,7 @@
 						
 						
 	//    				var markup = '<div>'+repo.nickname+'</div>';
-	      				var markup = '<div style="height:50px"><img style="margin-top:0px; height:50px; float:left; width:50px" src="'+repo.main_img+'" style="width:50px;height:50px;float:left"/>[id:'+repo.id+']'+repo.title+'</div>';
+	      				var markup = '<div><img style="margin-top:30px; height:50px; width:50px" src="'+repo.main_img+'" style="width:50px;height:50px;float:left"/>[id:'+repo.id+']'+repo.title+'</div>';
 	      				return markup;
 	    			}
 			});
@@ -159,17 +156,17 @@
 					<div class="p20"></div>
 					<div>
 
-						<form class="form-horizontal jquery-once-1-processed create2-processed ng-scope ng-valid ng-dirty" controller="extend/ajax_form,seller/sousuo_create2,extend/angular" id="yw0" action="#" method="post" novalidate="novalidate">
+						<form class="form-horizontal jquery-once-1-processed create2-processed ng-scope ng-valid ng-dirty" action="{:U('Home/SJActivity/zdysave')}" method="post" novalidate="novalidate">
 							<div class="control-group">
 								<label class="control-label" style="line-height: 25px;">搜索类型</label>
 								<div class="controls">
 									<ul class="nav nav-pills mb0" role="menu">
 										<!-- 获取搜索类型 -->
-										<li class="active" role="menuitem">
-											<a tabindex="-1" href="javascript:void(0)">关键词</a>
+										<li role="menuitem">
+											<a tabindex="-1" href="{:U('Home/SJActivity/createsearch')}">关键词</a>
 										</li>
-										<li role="menuitem"><a tabindex="-1" href="{:U('Home/SJActivity/zdysele')}">自定义</a>
-											
+										<li class="active" role="menuitem"><a tabindex="-1" href="javascript:void(0)">自定义</a>
+
 										</li>
 										<!--<li visible="1" tooltip="手机关键词仅分配手机任务时可使用" role="menuitem" data-original-title="" title=""><a tabindex="-1" href="#">手机关键词</a>
 										</li>
@@ -178,54 +175,65 @@
 									</ul>
 								</div>
 							</div>
-							
+							<input type="hidden" name="pid" id="pid" value="" />
 							<div class="control-group">
+
 								<label class="control-label">
-									搜索商品
+									选择商品
 								</label>
 
 								<div class="controls">
 
 									<div class="filter-controls pull-left" style="">
 										<form action="" class="addToGroupForm" method="post" style="">
-											<input type="hidden" name="groupid" value="{$groupid}" style="" />
 											<select style="width:465px;padding: 10px 15px;font-size: 15px;" id="user_select2" name="uid" class="form-control">
 												<option></option>
 											</select>
 
 										</form>
 									</div>
-
-									<span class="help-inline">选择需要优化搜索的商品</span> </div>
-							</div>
-
-							<div id="product_base_info" class="" style="margin-top: 15px; margin-left: 103px;display: none;">
-								<div url="#">
-									<div class="control-group">
-										<div class="control-label" style="float: left;">
-											<img width="100" src="" alt=""> </div>
-										<div class="controls" style="margin-left: 110px;">
-											<p class="pb10" style="margin-top: 8px;">
-												商品名称 : <font class="font_title"></font> </p>
-											<p class="pb10">商品链接 :
-												<input readonly="readonly" style="width:395px" type="text" value="#" class="input_url">
-											</p>
-											<p>最后更新 : <font class="font_time"></font>  </p>
-											<input type="hidden" value="38725578272" name="product_id" id="product_id"> </div>
+									<span class="help-inline">选择需要优化搜索的商品</span> 
+								</div>
+								<div id="product_base_info" class="" style="margin-top: 15px; margin-left: 103px;display: none;">
+									<div url="#">
+										<div class="control-group">
+											<div class="control-label" style="float: left;">
+												<img width="100" src="" alt=""> </div>
+											<div class="controls" style="margin-left: 110px;">
+												<p class="pb10" style="margin-top: 8px;">
+													商品名称 : <font class="font_title"></font> </p>
+												<p class="pb10">商品链接 :
+													<input readonly="readonly" style="width:395px" type="text" value="#" class="input_url">
+												</p>
+												<p>最后更新 : <font class="font_time"></font> </p>
+												<input type="hidden" value="38725578272" name="product_id" id="product_id"> </div>
+										</div>
 									</div>
 								</div>
-							</div>
-							<div class="control-group" style="margin-left:103px;">
+								<br>
+								<label class="control-label">
+									搜索商品关键字
+								</label>
+
 								<div class="controls">
-									<div class="input-append">
-										<label style="float: left;">搜索链接</label>
-										<input style="width:386px; margin-left:20px;" autocomplete="off" ng-model="url" type="text" value="" name="url" id="url" class="ng-valid ng-dirty">
-										<input type="button" class="btn" id="parseBtn" value="解析搜索">
-									</div>
-									<p class="help-block" style="color: red;">如果提示“无法解析此地址”,请更换搜索关键字多次尝试,关键字字数不少于5位</p>
-									<p class="help-block">从淘宝/天猫搜索找到对应商品的搜索页面的链接</p>
+									<input type="text" name="text" id="text" value="" placeholder="请输入搜索的关键字" />
+									<br><span style="font-size: 12px; color: #000000;">例如：吊带连衣裙</span>
 								</div>
-							</div> 
+								<br>
+								<label class="control-label">
+									商品位置
+								</label>
+
+								<div class="controls">
+									<textarea name="weizhi" rows="6" cols=""></textarea>
+									<br><span style="font-size: 12px; color: #000000;">例如：右边掌柜热卖列 -从上往下-第3个</span>
+									<br><span style="font-size: 12px; color: #000000;">例如：底部掌柜热卖行 -从左往右-第2个</span>
+								</div>
+								<br>
+								<div class="am-btn-group">
+									<button type="submit" style="font-family: '微软雅黑'; background-color: #1D99D5; font-size: 14px; width: 150px; color: #FFFFFF; margin-left: 190px;" class="am-btn am-round">保存搜索</button>
+								</div>
+							</div>
 
 						</form>
 					</div>

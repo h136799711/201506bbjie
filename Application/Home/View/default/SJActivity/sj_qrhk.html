@@ -96,13 +96,11 @@
 										<th width="80" id="task-grid_c9">操作</th>
 									</tr>
 								</thead>
-								<tbody class="item odd">
+								<tbody class="item odd" style="">
 									<volist name="tshis" id="q">
 										<foreach name='task' item='vo' >
-										<tr class="padding-tr"></tr>
-									
 											<if condition="$vo['id'] eq $q['task_id']">
-												<input type="hidden" name="" id="thid" value="{$q['id']}" />
+												
 												<tr class="list-tr">
 													<td>{$vo.id}</td>
 													<td>{$vo.task_name}</td>
@@ -119,7 +117,9 @@
 													</span>
 													</td>
 													
-													<td>距离系统自动确认还款：<span class="js_countdownwn" style="color: #FF0000;" data-until="{$q['get_task_time'] + 15*24*3600}"></span>
+													<td><input type="hidden" id="aaid" name="aaid"  value="{$q['id']}" />
+														<input type="hidden" id="tsid" name="tsid"  value="{$vo['id']}" />
+														距离系统自动确认还款：<span class="js_countdownwn" style="color: #FF0000;" data-until="{$q['get_task_time'] +5}"></span>
 													</td>
 													<td><a class="btn"  href="{:U('Home/SJActivity/qrhk',array('id'=>$q['id'],'tid'=>$vo['id']))}">确认返款</a></td>
 												</tr>
@@ -166,16 +166,16 @@
 		    		
 		    	}
 		    });
-//		    $('.js_countdownwn').each(function(index,item){
-//		   		
-//		   		if($(item).text()=='已超时！！'){
-//		   			var aaid= $(this).parent().find('input').val();
-//		   			var tsid= $(this).parent().find('input').val();
-//		   			$.getJSON("{:U('Home/SJActivity/qrhk')}",{id:aaid,tid:tsid},function(json){ 
-//							alert('任务超时已由系统取消');
-//				}); 
-//		   		}
-//		   	})
+		    $('.js_countdownwn').each(function(index,item){
+		   		if($(item).text()=='已超时！！'){
+		   			var aaid= $(this).parent().find('#aaid').val();
+		   			var tsid= $(this).parent().find('#tsid').val();
+//		   			alert(aaid);alert(tsid);
+		   			$.getJSON("{:U('Home/SJActivity/qrhk')}",{id:aaid,tid:tsid},function(json){ 
+							alert('任务超时已由系统自动确认');
+					}); 
+		   		}
+		   	})
 		   	
 		})
 		

@@ -38,6 +38,8 @@ class UsersjController extends CheckLoginController {
 		$this->checklevel();
 		$this->getcount();
 		$this->wdcount();
+		$this->is_auth();
+//		dump($result['info'][0]['auth_status']);
 		$this->display();
 	}
 	/*
@@ -67,6 +69,7 @@ class UsersjController extends CheckLoginController {
 		);
 		$result=apiCall(HomePublicApi::Bbjmember_Seller_GetInfo, array($map));
 		$this->assign('entity',$result['info']);
+		$this->is_auth();
 		$this->wdcount();
 		$this->display();
 	}
@@ -138,6 +141,7 @@ class UsersjController extends CheckLoginController {
 //		dump($map);
 		$result=apiCall(HomePublicApi::User_GetUser, array($id));
 		$this->assign('entity',$result['info']);
+		$this->is_auth();
 		$this->wdcount();
 		$this->display();
 	}
@@ -178,6 +182,7 @@ class UsersjController extends CheckLoginController {
 			$this->assign('head_title',$headtitle);
 			$user=session('user');
 			$this->assign('username',$user['info']['username']);
+			$this->is_auth();
 			$this->display();
 		}else{
 			$user=session('user');
@@ -209,6 +214,7 @@ class UsersjController extends CheckLoginController {
 		$this->assign('msg',$result1['info']);
 		$this->assign('username',$user['info']['username']);
 		$this->wdcount();
+		$this->is_auth();
 //		dump($result['info']['list']);dump($result1['info']['list']);
 		$this->display();
 	}
@@ -226,6 +232,7 @@ class UsersjController extends CheckLoginController {
 		$this -> assign('coins', $result['info'][0]['coins']);
 		$this -> assign('vip', $result['info'][0]['vip_level']);
 		$this->assign('username',$user['info']['username']);
+		$this->is_auth();
 //		dump($result);
 		$this->wdcount();
 		$this->display();
@@ -276,6 +283,7 @@ class UsersjController extends CheckLoginController {
 		$this -> assign('bank', $info['info'][0]);
 		$this->assign('username',$user['info']['username']);
 		$this->wdcount();
+		$this->is_auth();
 		$this->display();
 	}
 	/*
@@ -326,10 +334,20 @@ class UsersjController extends CheckLoginController {
 	 *获得未读消息
 	 * */
 	 public function wdcount(){
-	 	$user=session('user');
+		$user=session('user');
+		$uid=array('uid'=>$user['info']['id']);
+		$result=apiCall(HomePublicApi::Bbjmember_Seller_Query,array($uid));
+		$this->assign('auto_status',$result['info'][0]['auth_status']);
 		$map=array('to_id'=>$user['info']['id'],'msg_status'=>0);
 		$result = apiCall(AdminPublicApi::Msgbox_QueryAll,array($map));
 		$this->assign('wdcount',count($result['info']['list']));
+	 }
+	 public function is_auth(){
+	 	$user=session('user');
+		$uid=array('uid'=>$user['info']['id']);
+		$result=apiCall(HomePublicApi::Bbjmember_Seller_Query,array($uid));
+		$this->assign('auto_status',$result['info'][0]['auth_status']);
+//		dump($result['info'][0]['auth_status']);
 	 }
 	/*
 	 * 检测用户vip等级

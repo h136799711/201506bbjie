@@ -372,13 +372,15 @@ class SMActivityController extends CheckLoginController {
 		$usersm=apiCall(HomePublicApi::Bbjmember_Query, array($uid));
 		if($usersm['info'][0]['auth_status']!=0){
 			if($tsk_his['info']==NULL){
-				$mapa=array('yuecount'=>array('neq',0));
+				$map=array('uid'=>$user['info']['id'],'do_status'=>array('neq',2));
+				$task_id=apiCall(HomePublicApi::Task_His_Query, array($map));
+				$mapa=array('yuecount'=>array('neq',0),'task_id'=>array('neq',$task_id['info'][0]['task_id']));
 				$result=apiCall(HomePublicApi::TaskPlan_Query,array($mapa));
-				$tid=array('id'=>$result['info'][0]['task_id']);
-				$resultq=apiCall(HomePublicApi::Task_Query,array($tid));
 				if($result['info']==NULL){
 					$this->error('暂无可接任务，请稍候再试',U('Home/Index/sm_manager'));
 				}else{
+					$tid=array('id'=>$result['info'][0]['task_id']);
+					$resultq=apiCall(HomePublicApi::Task_Query,array($tid));
 					$entity=array(
 						'get_task_time'=>time(),
 						'do_status'=>1,

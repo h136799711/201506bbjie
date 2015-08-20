@@ -55,7 +55,7 @@
 								</tr>
 								<tr>
 									<td style="text-align: right;">我的福币:</td>
-									<td><font color="#ec1c50">0</font> 枚 <a href="">查看详情</a>
+									<td><font color="#ec1c50">{$user['fucoin']}</font> 枚 
 									</td>
 								</tr>
 								<tr>
@@ -203,7 +203,7 @@
 												var data = $.parseJSON(data);
 												var src = '';
 												if (data.status) {
-													$("#cover_id").val('http://localhost/github/201506bbjie' + data.path);
+													$("#cover_id").val("{:C('SITE_URL')}" + data.path);
 													src = data.url || '__ROOT__' + data.path;
 													$("#cover_id").parent().find('.upload-img-box').html(
 														'<div class="upload-pre-item"><img width=' + 100 + ' height=' + 100 + ' src="' + src + '"/></div>'

@@ -27,10 +27,37 @@ class UsersmController extends CheckLoginController {
 		$result = apiCall(HomePublicApi::Member_Query, array($map));
 		$results = apiCall(HomePublicApi::Bbjmember_Query, array($map));
 		$this -> assign('info', $results['info']);
-		$this -> assign('mum', $result['info']);
+		$this -> assign('mum', $result['info'][0]);
 		$this -> assign('cs_xx', 'sed');
 		$this->posts();
+//		dump($result);
 		$this -> display('manager_info');
+	}
+	
+	public function email(){
+		$id=I('id',0);
+		$entity=array('email'=>I('email',''));
+//		dump($entity);dump($id);
+		$result=apiCall(HomePublicApi::User_SaveByID, array($id,$entity));
+		if($result['status']){
+			$this->success('修改成功',U('Home/Usersm/sm_aqzx'));
+		}else{
+			$this->error($result['info']);
+		}
+	}
+	/*
+	 * 商家手机绑定
+	 * */
+	public function phone(){
+		$id=I('id',0);
+		$entity=array('mobile'=>I('phone',''));
+//		dump($entity);
+		$result=apiCall(HomePublicApi::User_SaveByID, array($id,$entity));
+		if($result['status']){
+			$this->success('修改成功',U('Home/Usersm/sm_aqzx'));
+		}else{
+			$this->error($result['info']);
+		}
 	}
 	/*
 	 * 试民任务设置
@@ -234,6 +261,7 @@ class UsersmController extends CheckLoginController {
 		$this -> assign('username', $user['info']['username']);
 		$this -> assign('phone', $user['info']['mobile']);
 		$this -> assign('email', $user['info']['email']);
+		$this->assign('user',$user['info']);
 		$this -> assign('cs_aq', 'sed');
 		$this -> display();
 	}
@@ -352,7 +380,7 @@ class UsersmController extends CheckLoginController {
 		$shi = I('shi');
 		$qu = I('qu', '');
 		$smm = array('dtree_job' => I('zhiye', ''), 'personal_signature' => I('grqm', ''), 'brief_introduction' => I('grjj', ''), 'address' => $sheng . $shi . $qu . I('address', ''), );
-		
+//		dump($smm);
 		$result = apiCall(HomePublicApi::Member_SaveByID, array($id, $sm));
 		if ($result['status']) {
 			$results = apiCall(HomePublicApi::Bbjmember_SaveByID, array($id, $smm));

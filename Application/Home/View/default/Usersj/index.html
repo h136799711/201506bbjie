@@ -73,7 +73,7 @@
 															<if condition="$sj['aliwawa'] eq ''">
 
 																<else/>
-																<div class="alert alert-warning in fade"><a href="#" class="close" data-dismiss="alert" type="button">×</a>您还没有对您的主旺旺进行认证，请先认证您的主旺旺 <a class="text-info" href="{:U('Home/Usersj/sj_zhxx')}">前往验证</a>
+																<div class="alert alert-warning in fade"><a href="javascript:void(0)" class="close" data-dismiss="alert" type="button">×</a>您还没有对您的主旺旺进行认证，请先认证您的主旺旺 <a class="text-info" href="{:U('Home/Usersj/sj_zhxx')}">前往验证</a>
 															</if>
 															</div>
 														</div>
@@ -91,7 +91,7 @@
 							<div class="widget-box">
 								<div class="widget-title">
 									<h5>最新公告</h5>
-									<a class="more" href="#">更多&gt;</a> </div>
+									 </div>
 								<div class="widget-content">
 									<div style="height:270px;padding:30px 15px 0;line-height: 28px;">
 										<ul class="gg">
@@ -213,7 +213,7 @@
 												var data = $.parseJSON(data);
 												var src = '';
 												if (data.status) {
-													$("#cover_id").val('http://localhost/github/201506bbjie' + data.path);
+													$("#cover_id").val("{:C('SITE_URL')}" + data.path);
 //													alert($("#cover_id").val());
 													src = data.url || '__ROOT__' + data.path;
 													$("#cover_id").parent().find('.upload-img-box').html(
@@ -286,4 +286,11 @@
 </block>
 
 <block name="area_footer">
+	<script type="text/javascript">
+		$(function(){
+			$('.close').click(function(){
+				$('.alert').hide();
+			})
+		})
+	</script>
 </block>

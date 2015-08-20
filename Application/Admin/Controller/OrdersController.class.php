@@ -163,9 +163,11 @@ class OrdersController extends AdminController {
 			$params['uid'] = $userid;
 		}
 		$result = apiCall(HomePublicApi::Task_His_QueryAll, array($map, $page, $order, $params));
+		$task=apiCall(HomePublicApi::Task_Query, array());
 //		dump($map);dump($params);dump($order);
 		//
 		if ($result['status']) {
+			$this -> assign('task',$task['info']);
 			$this -> assign('orderid', $orderid);
 			$this -> assign('payStatus', $payStatus);
 			$this -> assign('orderStatus', $orderStatus);
@@ -213,9 +215,11 @@ class OrdersController extends AdminController {
 
 		//
 			$result = apiCall(HomePublicApi::Task_His_QueryAll, array($map, $page, $order, $params));
+			$task=apiCall(HomePublicApi::Task_Query, array());
 
 		//
 		if ($result['status']) {
+			$this -> assign('task',$task['info']);
 			$this -> assign('orderid', $orderid);
 			$this -> assign('orderStatus', $orderStatus);
 			$this -> assign('show', $result['info']['show']);

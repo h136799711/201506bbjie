@@ -76,74 +76,12 @@
 									<textarea name="address" cols="50" rows="3" style=" border-color: #ccc; border-radius:3px;">{$vo.address}</textarea>
 								</td>
 							</tr>
-							<tr>
-								<td class="td_title">生日：</td>
-								<td>
-									<select name="year">
-										<option>2008</option>
-										<option>2009</option>
-										<option>2010</option>
-										<option>2011</option>
-										<option>2012</option>
-										<option>2013</option>
-										<option>2014</option>
-										<option>2015</option>
-										<option>2016</option>
-									</select>
-									<select name="month">
-										<option>1</option>
-										<option>2</option>
-										<option>3</option>
-										<option>4</option>
-										<option>5</option>
-										<option>6</option>
-										<option>7</option>
-										<option>8</option>
-										<option>9</option>
-										<option>10</option>
-										<option>11</option>
-										<option>12</option>
-									</select>
-									<select name="day">
-										<option>1</option>
-										<option>2</option>
-										<option>3</option>
-										<option>4</option>
-										<option>5</option>
-										<option>6</option>
-										<option>7</option>
-										<option>8</option>
-										<option>9</option>
-										<option>10</option>
-										<option>11</option>
-										<option>12</option>
-										<option>13</option>
-										<option>14</option>
-										<option>15</option>
-										<option>16</option>
-										<option>17</option>
-										<option>18</option>
-										<option>19</option>
-										<option>20</option>
-										<option>21</option>
-										<option>22</option>
-										<option>23</option>
-										<option>24</option>
-										<option>25</option>
-										<option>26</option>
-										<option>27</option>
-										<option>28</option>
-										<option>29</option>
-										<option>30</option>
-										<option>31</option>
-									</select>
-								</td>
-							</tr>
+							
 							<tr>
 								<td class="td_title">职业：</td>
 								<td>
 									<select name="zhiye">
-										<option>请选择</option>
+										<option value="{$vo['dtree_job']}">{$vo['dtree_job']}</option>
 										<option value="行政">行政</option>
 										<option value="市场">市场</option>
 										<option value="IT">it</option>
@@ -157,34 +95,32 @@
 						<b>联系人信息</b>
 					</div>
 					<div class="div_minInfo">
-						<volist name="mum" id="v">
 							<table>
 								<tr>
 									<td class="td_title">姓名：</td>
 									<td>
-										<input name="realname" style="list-style: none; width: 220px;border-radius:3px;border: 1px solid #ccc;" value="{$v.realname}" />
+										<input name="realname" style="list-style: none; width: 220px;border-radius:3px;border: 1px solid #ccc;" value="{$mum.realname}" />
 									</td>
 									<td>任务有问题，能第一时间联系</td>
 								</tr>
-								<tr>
+								<!--<tr>
 									<td class="td_title">联系电话：</td>
 									<td>
 										<input name="phone" style="list-style: none; width: 220px;border-radius:3px;border: 1px solid #ccc;" value="{$vo.mobile}" />
 
 									</td>
 									<td></td>
-								</tr>
+								</tr>-->
 								<tr>
 									<td class="td_title">QQ：</td>
 									<td>
-										<input name="qq" value="" style="list-style: none; width: 220px;border-radius:3px;border: 1px solid #ccc;" value="{$v.qq}" />
+										<input type="text" name="qq"  style="list-style: none; width: 220px;border-radius:3px;border: 1px solid #ccc;" value="{$mum['qq']}" />
 									</td>
 									<td></td>
 								</tr>
 
 							</table>
 					</div>
-					</volist>
 					<div class="div_minSet" style="background: #fbf9fa; line-height: 35px; padding-left: 20px; font-size: 14px;">
 						<b>其他信息</b>
 					</div>

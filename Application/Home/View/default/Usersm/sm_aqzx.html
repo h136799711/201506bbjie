@@ -10,8 +10,8 @@
 		<div class="div_right">
 			<div class="div_minTitleAnQuan">
 				<h3>安全中心</h3>
-				<a href="#" class="a_button" style="margin-left:30px;">账号安全</a>
-				<a href="#" class="a_button">修改密码</a>
+				<!--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;账号安全-->
+				<!--<a href="#" class="a_button">修改密码</a>-->
 			</div>
 			<div class="div_minContent" style="padding: 20px;">
 				<div class="div_minSet" style="background: #fbf9fa; line-height: 35px; padding-left: 20px; font-size: 14px;">
@@ -25,7 +25,7 @@
 						<i class="am-icon-envelope-o" style="color: hotpink; font-size: 60px; width: 70px; height:70px;" ></i>
 						<font size="-2" color="green" >您的邮箱{$email}已认证，您可以在忘记密码时也可通过此邮箱找回。</font>
 					</empty>
-					<button class="am-btn am-btn-primary am-btn-xs" style="font-family: '微软雅黑'; font-size: 13px; width: 80px; height: 30px;line-height: 10px; padding: 10px; border-radius:5px ;" data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 400, height: 225}">认证邮箱</button>
+					<!--<button class="am-btn am-btn-primary am-btn-xs" style="font-family: '微软雅黑'; font-size: 13px; width: 80px; height: 30px;line-height: 10px; padding: 10px; border-radius:5px ;" data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 400, height: 225}">认证邮箱</button>-->
 				</div>
 
 				<div class="div_minSet" style="background: #fbf9fa; line-height: 35px; padding-left: 20px; font-size: 14px;">
@@ -39,11 +39,11 @@
 						<i class="am-icon-mobile" style="text-align: center;color: hotpink; font-size: 60px; width: 70px; height:70px;"  ></i>
 						<font size="-2" color="green" >您的手机{$phone}已认证，您可以在忘记密码时也可通过此邮箱找回。</font>
 					</empty>
-					<button class="am-btn am-btn-primary am-btn-xs" style="font-family: '微软雅黑'; font-size: 13px; width: 80px; height: 30px;line-height: 10px; padding: 10px; border-radius:5px ;" data-am-modal="{target: '#doc-modal-2', closeViaDimmer: 0, width: 400, height: 225}">认证手机</button>
+					<!--<button class="am-btn am-btn-primary am-btn-xs" style="font-family: '微软雅黑'; font-size: 13px; width: 80px; height: 30px;line-height: 10px; padding: 10px; border-radius:5px ;" data-am-modal="{target: '#doc-modal-2', closeViaDimmer: 0, width: 400, height: 225}">认证手机</button>-->
 
 				</div>
 
-				<div class="div_minSet" style="background: #fbf9fa; line-height: 35px; padding-left: 20px; font-size: 14px;">
+				<!--<div class="div_minSet" style="background: #fbf9fa; line-height: 35px; padding-left: 20px; font-size: 14px;">
 					<b>密保设置</b>
 				</div>
 				<div class="div_minSetInfo" style="padding-left: 20px;text-align: left;">
@@ -56,12 +56,12 @@
 					</empty>
 					<button class="am-btn am-btn-primary am-btn-xs" style="font-family: '微软雅黑'; font-size: 13px; width: 80px; height: 30px;line-height: 10px; padding: 10px; border-radius:5px ;" data-am-modal="{target: '#doc-modal-3', closeViaDimmer: 0, width: 400, height: 225}">认证密保</button>
 
-				</div>
+				</div>-->
 			</div>
 
 		</div>
 	</div>
-<div class="am-modal am-modal-no-btn" tabindex="-1" id="doc-modal-3">
+<!--<div class="am-modal am-modal-no-btn" tabindex="-1" id="doc-modal-3">
 			<div class="am-modal-dialog">
 				<div class="am-modal-hd">密保认证
 					<a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
@@ -78,7 +78,7 @@
 					</div>
 				</form>
 			</div>
-		</div>
+		</div>-->
 		<div class="am-modal am-modal-no-btn" tabindex="-1" id="doc-modal-1">
 			<div class="am-modal-dialog">
 				<div class="am-modal-hd">邮箱认证
@@ -86,7 +86,7 @@
 				</div>
 				<form action="{:U('Home/Usersm/email')}" method="post">
 					<div class="am-modal-bd">
-						<input type="hidden" name="id" value="{$entity['id']}" />
+						<input type="hidden" name="id" value="{$user['id']}" />
 						<input type="text" name="email" value="{$email}">
 						<input style="font-family: '微软雅黑'; font-size: 13px; border-radius:5px ; margin-top: -8px;" class="am-btn-danger am-btn-xs" type="submit" value="确认" />
 					</div>
@@ -100,8 +100,8 @@
 				</div>
 				<form action="{:U('Home/Usersm/phone')}" method="post">
 					<div class="am-modal-bd">
-						<input type="hidden" name="id" value="{$phone}" />
-						<input type="text" class="email" name="phone" value="{$entity['mobile']}">
+						<input type="hidden" name="id" value="{$user['id']}" />
+						<input type="text" class="email" name="phone" value="{$phone}">
 						<input style="font-family: '微软雅黑'; font-size: 13px; border-radius:5px ; margin-top: -8px;" class="am-btn-danger am-btn-xs" type="submit" value="确认" />
 					</div>
 				</form>

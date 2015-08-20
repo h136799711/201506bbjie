@@ -69,7 +69,7 @@
 						<DIV class="control-group">
 							<LABEL class="control-label" for="yaoqingren">邀请人：</LABEL>
 							<DIV class="controls">
-								<INPUT name="yaoqingren" class="input-large" id="yaoqingren" type="text" placeholder="请填写邀你注册者的用户名，这样他能获得经验值奖励哦！" value="test1">
+								<INPUT name="yaoqingren" class="input-large" id="yaoqingren" type="text" placeholder="请填写邀你注册者的用户名，这样他能获得经验值奖励哦！" value="">
 							<span> 如果没有邀请人请不要修改</span>
 							</DIV>
 						</DIV>
@@ -88,7 +88,7 @@
 								</LABEL>
 							</DIV>
 						</DIV>
-						<BUTTON name="yt0" id="sb" class="register_submit btn" type="submit">立即注册</BUTTON>
+						<BUTTON name="yt0" id="sb" class="register_submit btn" type="submit">下一步</BUTTON>
 					</FORM>
 					<DIV class="right">
 						<DIV class="login">
@@ -136,13 +136,13 @@
 				if(name=='test1'){
 					
 				}else{
-					d = 1;
+					d = 0;
 					$.getJSON("{:U('Home/Index/checkname')}",{name:$("#yaoqingren").val()},function(json){ 
 							if(json!=1){
-								d = 0;
+								d = 1;
 								$('#yaoqingren').parent().find("span").html("<font size='-2' color='green'>正确</font>");
 							}else{
-								d = 1;
+								d = 0;
 								$('#yaoqingren').parent().find("span").html("<font size='-2' color='red'>邀请人不存在</font>");
 							}
 					}); 
