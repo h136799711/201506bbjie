@@ -45,18 +45,19 @@
 							var title1=$("#div_searchCondition .font_title1").text().trim();
 							var wangwang1=$("#div_searchCondition .font_wangwang").html().trim();
 							var result1="未能在结果页面找到对应搜索，提交后需等待客服审核";
+							$('#iscz').val('2');
 							var style1="am-alert-warning";
 							//alert(result.info.items);
 							
 							for(var i=0;i<results.length;i++){
-								if(title1.indexOf(result.info.items[i].title.trim())!=-1||result.info.items[i].nick.trim()=='{$aliwawa}'){
+								if(title1.indexOf(result.info.items[i].title.trim())!=-1||results[i].nick.trim()=='{$aliwawa}'){
+									$('#iscz').val('1');
 									result1="成功在搜索页找到对应商品,保存搜索后可直接开始使用";
 									style1="am-alert-success";
 									break;	
 								}
 								//alert();
 							}
-							
 							$("#div_search_result").append('<div class="am-alert '+style1+'" data-am-alert><button type="button" class="am-close">&times;</button><p>'+result1+'</p></div>');
 							
 							
@@ -239,6 +240,7 @@
 					<div id="sousuo_preview">
 						<div>
 							<form class="form-horizontal jquery-once-1-processed" controller="extend/ajax_form" id="yw0" action="{:U('Home/SJActivity/save')}" method="post" novalidate="novalidate">
+								<input type="hidden" value="" name="iscz" id="iscz">
 								<input type="hidden" value="" name="pid">
 								<input type="hidden" value="" name="search_url" />
 								<input type="hidden" value="" name="search_q" />

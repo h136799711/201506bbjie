@@ -35,6 +35,22 @@ class BBJVIPController extends AdminController{
 		$this->assign('show',$result['info']['show']);
 		$this->display();
 	}	
+	/*
+	 * 商品搜索管理审核
+	 * */
+	public function checkproduct(){
+		$map=array('status'=>2);
+		$page = array('curpage' => I('get.p', 0), 'size' => 10 );
+		$pro = apiCall(HomePublicApi::ProductSearchWay_QueryAll, array($map,$page));
+		$pros = apiCall(HomePublicApi::Product_Query, array($mapp));
+		$result=apiCall(HomePublicApi::UcenterUser_Query, array($maps));
+		$this->assign('searchway',$pro['info']['list']);
+		$this->assign('searchshow',$pro['info']['show']);
+		$this->assign('user',$result['info']);
+		$this->assign('pros',$pros['info']);
+//		dump($pro);
+		$this->display();
+	}
 	public function check(){
 		$id=I('id','');
 		$map=array('id'=>I('id',''));
@@ -309,6 +325,32 @@ class BBJVIPController extends AdminController{
 		$this->assign('list',$result['info']['list']);
 		$this->assign('show',$result['info']['show']);
 		$this->display();
+	}
+	/*
+	 * 查看搜索
+	 * */
+	public function searchview(){
+		$map=array('id'=>I('id',0));
+		$result1 = apiCall(HomePublicApi::ProductSearchWay_Query, array($map));
+		$pros = apiCall(HomePublicApi::Product_Query, array($mapp));
+		$this->assign('sh',$result1['info'][0]);
+		$this->assign('pros',$pros['info']);
+		$this->display();
+	}
+	/*
+	 * 审核通过
+	 * */
+	public function searchsucc(){
+		$id=I('id',0);
+		if($id!=0){
+			$map=array('status'=>1);
+			$result = apiCall(HomePublicApi::ProductSearchWay_SaveByID, array($id,$map));
+			if($result['status']){
+				$this->success('操作成功',U('Admin/BBJVIP/checkproduct'));
+			}
+		}else{
+			$this->error('参数错误');
+		}
 	}
 	/*
 	 * 任务领取管理

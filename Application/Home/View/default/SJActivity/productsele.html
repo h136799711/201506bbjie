@@ -177,7 +177,7 @@
 														关键词
 													</td>
 													<td>
-														<if condition="$a['status'] eq 1">正常</if><if condition="$a['status'] eq 0">暂停</if></span>
+														<if condition="$a['status'] eq 1">正常</if><if condition="$a['status'] eq 0">暂停</if><if condition="$a['status'] eq 2">审核中</if></span>
 													</td>
 													<td>
 														<span title="">{$a.update_time|date='Y-m-d H:i:s',###}</span>
@@ -185,8 +185,13 @@
 													<td>
 														<if condition="$a['status'] eq 1">
 															<a tooltip="暂停" modal-title="" visible="1" class="btn btn-mini" href="{:U('Home/SJActivity/ztsele',array('id'=>$a['id']))}">暂停</a>
-														<else/>
+														</if>
+														<if condition="$a['status'] eq 0">
 															<a tooltip="开启" modal-title="" visible="1" class="btn btn-mini" href="{:U('Home/SJActivity/startsele',array('id'=>$a['id']))}">开启</a>
+														</if>
+														<if condition="$a['status'] eq 2">
+															等待审核
+															<!--<a tooltip="开启" modal-title="" visible="1" class="btn btn-mini" href="{:U('Home/SJActivity/startsele',array('id'=>$a['id']))}">开启</a>-->
 														</if>
 														<span style="height:3px;display:table;">
 

@@ -874,11 +874,17 @@ class SJActivityController extends CheckLoginController {
 	 */
 	public function save() {
 		$user=session('user');
-		$entity = array('uid'=>$user['info']['id'] ,'dtree_type' => 1, 'status' => 1, 'create_time' => time(), 'update_time' => time(), 'pid' => I('pid', ''), 'search_url' => I('search_url', ''), 'search_q' => I('search_q', ''), 'search_order' => I('search_order', ''), 'search_condition' => I('search_xz', ''), );
-		$result = apiCall(HomePublicApi::ProductSearchWay_Add, array($entity));
-		if ($result['status']) {
-			$this -> success('添加搜索成功', U('Home/SJActivity/createsearch'));
+		$iscz=I('iscz',0);
+		if($iscz!=0){
+			$entity = array('uid'=>$user['info']['id'] ,'dtree_type' => 1, 'status' => $iscz, 'create_time' => time(), 'update_time' => time(), 'pid' => I('pid', ''), 'search_url' => I('search_url', ''), 'search_q' => I('search_q', ''), 'search_order' => I('search_order', ''), 'search_condition' => I('search_xz', ''), );
+			$result = apiCall(HomePublicApi::ProductSearchWay_Add, array($entity));
+			if ($result['status']) {
+				$this -> success('添加搜索成功', U('Home/SJActivity/createsearch'));
+			}
+		}else{
+			$this->error('获取信息失败');
 		}
+		
 		//
 	}
 	public function zdysave() {
