@@ -70,6 +70,7 @@ class HomePublicApi{
 	 */
 	 
 	const UcenterUser_Query='Home/UcenterMember/queryNoPaging';
+	const UcenterUser_QueryAll='Home/UcenterMember/query';
 	const UcenterUser_Del='Home/UcenterMember/delete';
 	const Member_Add='Admin/Member/add';
 	const Member_Query='Admin/Member/queryNoPaging';

@@ -31,6 +31,7 @@
 						if(result.status==0){
 							alert(result.info);
 						}else{
+							var results=result.info.items;
 							$('#div_searchCondition').find('.font_openUrl').html(result.info.url);
 							$('#div_searchCondition').find('.font_key').html(result.info.key);
 							$('#div_searchCondition').find('.font_tab').html(result.info.tab);
@@ -41,14 +42,14 @@
 							$("input[name='search_xz']").val(result.info.tab);
 							$("input[name='search_order']").val(result.info.order);
 							
-							var title1=$("#div_searchCondition .font_title1").html().trim();
+							var title1=$("#div_searchCondition .font_title1").text().trim();
 							var wangwang1=$("#div_searchCondition .font_wangwang").html().trim();
 							var result1="未能在结果页面找到对应搜索，提交后需等待客服审核";
 							var style1="am-alert-warning";
 							//alert(result.info.items);
-							for(var i=0;i<result.info.items.length;i++){
-								 
-								if(title1.indexOf(result.info.items[i].title.trim())!=-1&&result.info.items[i].nick.trim()==wangwang1){
+							
+							for(var i=0;i<results.length;i++){
+								if(title1.indexOf(result.info.items[i].title.trim())!=-1||result.info.items[i].nick.trim()=='{$aliwawa}'){
 									result1="成功在搜索页找到对应商品,保存搜索后可直接开始使用";
 									style1="am-alert-success";
 									break;	
@@ -100,8 +101,11 @@
 			  	}, 
 				  	minimumInputLength: 0,
 					templateSelection: function (repo) {
+						
 						//var minTitle= repo.title.substring(10);
 						if(repo.title!=undefined){
+							if('{$aliwawa}'==repo.wangwang){
+							
 							var minTitle= repo.title.substring(0,20)+"...";
 							$("#product_base_info img").attr('src',repo.main_img);
 							$("#product_base_info .controls .font_title").html(repo.title);
@@ -119,7 +123,10 @@
 							
 							$("#div_searchCondition .font_wangwang").html(repo.wangwang.substring(0,3));
 							
-							
+								
+							}else{
+								alert('请更换你绑定旺旺的商品');
+							}
 							
 							
 							return minTitle || repo.text;

@@ -26,7 +26,7 @@
 								用户昵称
 							</th>
 							<th>
-								金额
+								金额（收入/支出）
 							</th>
 							<th>
 								变动类型
@@ -34,15 +34,15 @@
 							<th>
 								时间
 							</th>
-							<th>
+							<!--<th>
 								余额
-							</th>
+							</th>-->
 							<th>
 								备注
 							</th>
-							<th>
+							<!--<th>
 								操作
-							</th>
+							</th>-->
 						</tr>
 					</thead>
 					<tbody>
@@ -65,14 +65,8 @@
 										</volist>
 									</td>
 									<td>
-										<if condition="$vo['dtree_type'] eq 1">
-											{$vo.income}
-											<elseif condition="$vo['dtree_type'] eq 2"/>
-											{$vo.income}
-											<elseif condition="$vo['dtree_type'] eq 3"/>
+											{$vo.income}/
 											{$vo.defray}
-											
-										</if>
 									</td>
 									<td>
 										<if condition="$vo['dtree_type'] eq 1">
@@ -81,22 +75,28 @@
 											奖励
 											<elseif condition="$vo['dtree_type'] eq 3"/>
 											提现
+											<elseif condition="$vo['dtree_type'] eq 4"/>
+											开通vip
+											<elseif condition="$vo['dtree_type'] eq 5"/>
+											任务押金
+											<elseif condition="$vo['dtree_type'] eq 6"/>
+											返回任务佣金
 										</if>
 									</td>
 									<td>
 										{$vo.create_time|date='Y-m-d h:i:s',###}
 									</td>
-									<td>
+									<!--<td>
 										<volist name="new" id="c">
 											<if condition="$vo['uid'] eq $c['id']">{$c['coins']}</if>
 										</volist>
-									</td>
+									</td>-->
 									<td>
 										{$vo.notes}
 									</td>
 									<td>
-										<a href="{:U('Admin/BBJVIP/check',array('id'=>$vo['id']))}" target="_blank" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>审核通过</a>
-										<a href="{:U('Admin/BBJVIP/moneychecksb',array('id'=>$vo['id']))}" class="ajax-get confirm btn btn-sm btn-danger"><i class="fa fa-trash"></i>审核失败</a>
+										<!--<a href="{:U('Admin/BBJVIP/check',array('id'=>$vo['id']))}" target="_blank" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>审核通过</a>
+										<a href="{:U('Admin/BBJVIP/moneychecksb',array('id'=>$vo['id']))}" class="ajax-get confirm btn btn-sm btn-danger"><i class="fa fa-trash"></i>审核失败</a>-->
 									</td>
 								</tr>
 

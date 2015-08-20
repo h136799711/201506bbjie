@@ -13,13 +13,28 @@ class BBJVIPController extends AdminController{
 	public function index(){
 		$page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));
 		$map=array('status'=>2);
+		$resultsm=apiCall(HomePublicApi::Bbjmember_Query, array());
+		$resultsj=apiCall(HomePublicApi::Bbjmember_Seller_Query, array());
+		$i=0;
+		foreach($resultsm['info'] as $a){
+			
+			$new[$i]['id']=$a['uid'];
+			$new[$i]['coins']=$a['coins'];
+			$i++;
+		}
+		foreach($resultsj['info'] as $b){
+			$new[$i]['id']=$b['uid'];
+			$new[$i]['coins']=$b['coins'];
+			$i++;
+		}
+		$this->assign('new',$new);
 		$result1=apiCall(HomePublicApi::UcenterUser_Query, array($maps));
 		$result=apiCall(HomePublicApi::FinAccountBalanceHis_QueryAll, array($map,$page));
 		$this->assign('user',$result1['info']);
 		$this->assign('jilu',$result['info']['list']);
 		$this->assign('show',$result['info']['show']);
 		$this->display();
-	}
+	}	
 	public function check(){
 		$id=I('id','');
 		$map=array('id'=>I('id',''));
@@ -38,7 +53,6 @@ class BBJVIPController extends AdminController{
 				$results=apiCall(HomePublicApi::FinAccountBalanceHis_SaveByID, array($id,$jl));
 				$this->success('审核成功',U('Admin/BBJVIP/index'));
 			}
-			
 		}else if($result['info'][0]['dtree_type'] ==2){
 			$money=$result['info'][0]['income'];
 			$return=M('bbjmember')->where('uid='.$uid)->setInc('coins',$money);
@@ -64,6 +78,41 @@ class BBJVIPController extends AdminController{
 				$jl=array('status'=>1);
 				$results=apiCall(HomePublicApi::FinAccountBalanceHis_SaveByID, array($id,$jl));
 				$this->success('审核成功',U('Admin/BBJVIP/index'));
+			}
+		}
+	}
+
+	/*
+	 * 资金审核失败
+	 * */
+	public function moneychecksb(){
+		$id=I('id','');
+		$map=array('id'=>I('id',''));
+		$result=apiCall(HomePublicApi::FinAccountBalanceHis_Query, array($map));
+		$uid=$result['info'][0]['uid'];
+		if($result['info'][0]['dtree_type'] ==1){
+			$jl=array('status'=>4,'notes'=>'充值审核失败');
+			$results=apiCall(HomePublicApi::FinAccountBalanceHis_SaveByID, array($id,$jl));
+			$this->success('操作成功',U('Admin/BBJVIP/index'));
+		}else if($result['info'][0]['dtree_type'] ==2){
+			$jl=array('status'=>4,'notes'=>'审核失败');
+			$results=apiCall(HomePublicApi::FinAccountBalanceHis_SaveByID, array($id,$jl));
+			$this->success('操作成功',U('Admin/BBJVIP/index'));
+			
+		}else if($result['info'][0]['dtree_type'] ==3){
+			$money=$result['info'][0]['defray'];
+			$return2=M('bbjmember')->where('uid='.$uid)->setDec('frozen_money',$money);
+			$return3=M('bbjmember')->where('uid='.$uid)->setInc('coins',$money);
+			if($return3==0){
+				$return1=M('bbjmemberSeller')->where('uid='.$uid)->setDec('frozen_money',$money);
+				$return1=M('bbjmemberSeller')->where('uid='.$uid)->setDec('coins',$money);
+				$jl=array('status'=>4,'notes'=>'提现审核失败');
+				$results=apiCall(HomePublicApi::FinAccountBalanceHis_SaveByID, array($id,$jl));
+				$this->success('操作成功',U('Admin/BBJVIP/index'));
+			}else{
+				$jl=array('status'=>4,'notes'=>'提现审核失败');
+				$results=apiCall(HomePublicApi::FinAccountBalanceHis_SaveByID, array($id,$jl));
+				$this->success('操作成功',U('Admin/BBJVIP/index'));
 			}
 		}
 	}
@@ -112,20 +161,26 @@ class BBJVIPController extends AdminController{
 		
 	}
 	public function checksm(){
-		$map=array('auth_status'=>0);
+		$username=I('username','');
+		if (!empty($username)) {
+			$map['username'] = array('like','%'. $username . '%');
+		}
 		$page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));
-		$result=apiCall(HomePublicApi::Bbjmember_QueryAll, array($map,$page));
-		$result1=apiCall(HomePublicApi::UcenterUser_Query, array($maps));
+		$result=apiCall(HomePublicApi::Bbjmember_QueryAll, array($maps,$page));
+		$result1=apiCall(HomePublicApi::UcenterUser_Query, array($map));
 		$this->assign('jilu',$result['info']['list']);
 		$this->assign('show',$result['info']['show']);
 		$this->assign('user',$result1['info']);
 		$this->display();
 	}
 	public function managersm(){
-		
+		$username=I('username','');
+		if (!empty($username)) {
+			$map['username'] = array('like','%'. $username . '%');
+		}
 		$page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));
-		$result=apiCall(HomePublicApi::Bbjmember_QueryAll, array($page));
-		$result1=apiCall(HomePublicApi::UcenterUser_Query, array($maps));
+		$result=apiCall(HomePublicApi::Bbjmember_QueryAll, array($maps,$page));
+		$result1=apiCall(HomePublicApi::UcenterUser_Query, array($map));
 		$this->assign('jilu',$result['info']['list']);
 		$this->assign('show',$result['info']['show']);
 		$this->assign('user',$result1['info']);
@@ -146,21 +201,30 @@ class BBJVIPController extends AdminController{
 		
 		}
 	}
-	
+
 	public function checksj(){
-		$map=array('auth_status'=>0);
+		$username=I('username','');
+		if (!empty($username)) {
+			$map['username'] = array('like','%'. $username . '%');
+		}
+		
 		$page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));
-		$result=apiCall(HomePublicApi::Bbjmember_Seller_QueryAll, array($map,$page));
-		$result1=apiCall(HomePublicApi::UcenterUser_Query, array($maps));
+		$result=apiCall(HomePublicApi::Bbjmember_Seller_QueryAll, array($maps,$page));
+		$result1=apiCall(HomePublicApi::UcenterUser_Query, array($map));
 		$this->assign('jilu',$result['info']['list']);
 		$this->assign('show',$result['info']['show']);
 		$this->assign('user',$result1['info']);
 		$this->display();
 	}
 	public function managersj(){
+		$username=I('username','');
+		if (!empty($username)) {
+			$map['username'] = array('like','%'. $username . '%');
+		}
+		
 		$page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));
-		$result=apiCall(HomePublicApi::Bbjmember_Seller_QueryAll, array($page));
-		$result1=apiCall(HomePublicApi::UcenterUser_Query, array($maps));
+		$result=apiCall(HomePublicApi::Bbjmember_Seller_QueryAll, array($maps,$page));
+		$result1=apiCall(HomePublicApi::UcenterUser_Query, array($map));
 		$this->assign('jilu',$result['info']['list']);
 		$this->assign('show',$result['info']['show']);
 		$this->assign('user',$result1['info']);
@@ -198,15 +262,22 @@ class BBJVIPController extends AdminController{
 		$result=apiCall(HomePublicApi::Bbjmember_Seller_SaveByID, array($id,$entity));
 //		dump($result);
 		if($result['status']){
-			$this->success('审核成功',U('Admin/BBJVIP/checksm'));
+			$this->success('审核成功',U('Admin/BBJVIP/checksj'));
 		}
 	}
-	public function checkf(){
-		$this->error('认证失败');
+	public function checksb(){
+
+		$id=I('id');
+		$entity=array('auth_status'=>3);
+		$result=apiCall(HomePublicApi::Bbjmember_Seller_SaveByID, array($id,$entity));
+//		dump($result);
+		if($result['status']){
+			$this->success('操作成功',U('Admin/BBJVIP/checksj'));
+		}
 	}
 	
 	public function view(){
-		$map=array('id'=>I('id'));
+		$map=array('uid'=>I('id'));
 		$result=apiCall(HomePublicApi::Bbjmember_Query, array($map));
 		$result1=apiCall(HomePublicApi::UcenterUser_Query, array($maps));
 		if($result['info']=='' ||$result['info']==null ){

@@ -13,6 +13,20 @@
 		{:W('Menus/left')}
 		<div class="admin-main-content">
 			{:W('Menus/breadcrumb')}
+			<div class="filter-controls">
+				<!-- 条件查询 -->
+				<form action="{:U('Admin/BBJVIP/managersm')}" method="post" class="searchForm form-inline">
+					<div class="form-group row   col-lg-12 col-md-12">
+						<div class="input-group">
+							<div class="input-group-addon">用户名称</div>
+							<input type="text" name="username" style="height: 40px; margin-left: 5px;" placeholder="请输入用户名称">
+							<button class="btn" type="submit" style="margin-left: 20px; height: 40px; background-color: green; color: #FFFFFF;" >搜索</button>
+						</div>
+						
+					</div>
+					
+				</form>
+			</div>
 				<table class="table table-striped table table-hover  table-condensed">
 					<thead>
 						<tr>
@@ -44,48 +58,50 @@
 						</tr>
 					</thead>
 					<tbody>
-						<empty name="jilu">
+						<empty name="user">
 							<tr>
 								<td colspan="7" class="text-center">{:L('NO_DATA')}</td>
 							</tr>
 							<else/>
-							<volist name="jilu" id="vo">
-								<tr>
-									<td>
-										<input type="checkbox" value="{$vo.id}" name="ids[]" class="selectitem" /></td>
-									<td>
-										{$vo.id}
-									</td>
-									
-									<td>
-										<volist name='user' id='v'>
-											<if condition="$vo['uid'] eq $v['id']">{$v.username}</if>
-										</volist>
-									</td>
-									<td>
-										<volist name='user' id='v'>
-											<if condition="$vo['uid'] eq $v['id']">{$v.email}</if>
-										</volist>
-									</td>
-									<td>
-										<volist name='user' id='v'>
-											<if condition="$vo['uid'] eq $v['id']">{$v.mobile}</if>
-										</volist>
-									</td>
-									<td>
-										{$vo.taobao_account}
-									</td>
-									<td>
-										{$vo.create_time|date='Y-m-d h:i:s',###}
-									</td>
-									
-									<td>
+							<volist name="user" id="vo">
+								<volist name='jilu' id='v'>
+									<if condition="$v['uid'] eq $vo['id']">
+									<tr>
+										<td>
+											<input type="checkbox" value="{$vo.id}" name="ids[]" class="selectitem" /></td>
+										<td>
+											{$v.id}
+										</td>
+										
+										<td>
+											{$vo.username}
+											
+										</td>
+										<td>
+											{$vo.email}
+										</td>
+										<td>
+											{$vo.mobile}
+										</td>
+										<td>
+											{$v.taobao_account}
+										</td>
+										<td>
+											{$v.create_time|date='Y-m-d h:i:s',###}
+										</td>
+										<td>
+											<if condition="$v['auth_status'] eq 1">审核通过</if>
+											<if condition="$v['auth_status'] eq 0">待审核</if>
+											<if condition="$v['auth_status'] eq 3">审核失败</if>
+										</td>
+										<td>
 										<a href="{:U('Admin/BBJVIP/view',array('id'=>$vo['id']))}" target="_blank" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>查看</a>
 										<!--<a href="{:U('Admin/BBJVIP/edit',array('id'=>$vo['id']))}" class="btn btn-sm btn-default"><i class="fa fa-edit"></i>编辑</a>-->
-										<a href="{:U('Admin/BBJVIP/delete_sm',array('id'=>$vo['uid']))}" class="ajax-get confirm btn btn-sm btn-danger"><i class="fa fa-trash"></i>删除</a>
+										<a href="{:U('Admin/BBJVIP/delete_sm',array('id'=>$vo['id']))}" class="ajax-get confirm btn btn-sm btn-danger"><i class="fa fa-trash"></i>删除</a>
 									</td>
-								</tr>
-
+									</tr>
+									</if>
+								</volist>
 							</volist>
 						</empty>
 					</tbody>

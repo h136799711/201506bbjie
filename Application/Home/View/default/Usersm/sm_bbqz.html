@@ -39,6 +39,7 @@
 				</form>
 			</div>
 		</div>
+		<a id="click" href="javascript:void(0)"  data-am-modal="{target: '#doc-modal-2', closeViaDimmer: 0, width: 400, height: 225}"></a>
 		<div class="div_right">
 			<div class="div_minTitle">
 				<h3>宝贝钱庄</h3>
@@ -51,19 +52,20 @@
 								<table style="width: 100%;">
 									<tr>
 										<td colspan="3" style="padding-top:0;">资金概况
+											
 											<button id="tixian" class="am-btn am-btn-primary am-btn-xs" style="font-family: '微软雅黑'; font-size: 13px; width: 80px; height: 30px;line-height: 10px; padding: 10px; border-radius:5px ;"
-										 data-am-modal="{target: '#doc-modal-2', closeViaDimmer: 0, width: 400, height: 225}">提现</button>
+										>提现</button>
 										</td>
 									</tr>
 									<tr>
-										<td>总余额:</td>
-										<td>可用余额:</td>
-										<td>提现中余额:</td>
+										<td>总余额</td>
+										<td>可用余额</td>
+										<td>提现中余额</td>
 									</tr>
 									<tr>
-										<td style="color:red">￥{$coins}</td>
-										<td style="color:red">￥{$coins}</td>
-										<td style="color:red">￥{$frozen_money}</td>
+										<td style="color:red">￥<if condition="$coins eq ''">0.00<else/>{$coins}</if></td>
+										<td style="color:red">￥<if condition="$coins eq ''">0.00<else/>{$coins}</if></td>
+										<td style="color:red">￥<if condition="$frozen_money eq ''">0.00<else/>{$coins}</if></td>
 									</tr>
 								</table>
 							</div>
@@ -106,10 +108,10 @@
 									</td>
 								</tr>
 								<tr>
-									<td>提现至:</td>
-									<td>帐号:</td>
-									<td>姓名:</td>
-									<td>开户信息:</td>
+									<td>提现至</td>
+									<td>帐号</td>
+									<td>姓名</td>
+									<td>开户信息</td>
 								</tr>
 								<tr>
 									
@@ -295,14 +297,16 @@
 		
 				})
 				$('#tixian').click(function(){
-					if( {$coins}  <1){
-						alert('不能提现，提现金额最低为1元');
-					}
-					if("{$bank['cardholder']} ！=''"){
-						
+					if( {$coins} <=0 || {$coins}==''){
+						alert('不能提现，提现金额最低为1元或余额不足');
 					}else{
-						alert('请先设置提现账号！！');
+						if("{$bank['cardholder']} ！=''"){
+						$('#click').click();
+						}else{
+							alert('请先设置提现账号！！');
+						}
 					}
+					
 				})
 				$('#qr').click(function(){
 					if($('#money').val()>{$coins}){

@@ -829,6 +829,9 @@ class SJActivityController extends CheckLoginController {
 		$user = session('user');
 		$map = array('parentid' => 36, );
 		$result = apiCall(AdminPublicApi::Datatree_QueryNoPaging, array($map));
+		$mapa = array('uid' => $user['info']['id']);
+		$sj = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($mapa));
+		$this -> assign('aliwawa', $sj['info'][0]['aliwawa']);
 		$this -> assign('username', $user['info']['username']);
 		$sj=A('usersj');
 		$sj->is_auth();

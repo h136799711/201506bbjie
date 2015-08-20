@@ -99,10 +99,17 @@
 													<textarea maxlength="120" style="height:100px;width:365px;" name="address" id="Store_address">{$entity['address']}</textarea>
 												</div>
 											</div>
-
-											<div class="form-actions">
-												<button type="submit" style="height: 28px; width: 70px; border-radius:5px ; font-size: 12px ; text-align: center;" class="am-btn am-btn-primary am-btn-xs" >提交认证</button>
-											</div>
+											<if condition="$auto_status eq 0">
+												<div class="form-actions">
+													<button type="submit" style="height: 28px; width: 70px; border-radius:5px ; font-size: 12px ; text-align: center;" class="am-btn am-btn-primary am-btn-xs" >提交认证</button>
+												</div>
+												<else/>
+												<font style="margin-left: 180px;" color="orangered">您的资料已经认证成功,如果修改资料需要重新验证,请谨慎修改！</font>
+												<div class="form-actions">
+													<button type="submit" style="height: 28px; width: 70px; border-radius:5px ; font-size: 12px ; text-align: center;" class="am-btn am-btn-primary am-btn-xs" >重新认证</button>
+												</div>
+											</if>
+											
 										</form>
 									</div>
 
@@ -124,14 +131,7 @@
 													<input type="text" value="{$entity['waybill_show']}" name="ydxs" id="xs_wang"><span class="help-inline">宝贝活动中在物流单号上显示，默认显示旺旺号</span>
 												</div>
 											</div>
-											<div class="control-group">
-												<label class="control-label">信用卡</label>
-												<div class="controls text">
-													<span class="text-muted">店铺未开通信用卡</span>
-													<span class="help-inline">如果状态不一致请联系专属客服修改</span>
-												</div>
-											</div>
-
+											
 											<div class="control-group">
 												<label class="control-label" for="renwu_fzr">任务负责人</label>
 												<div class="controls">
@@ -151,7 +151,7 @@
 												</div>
 											</div>
 											<div class="form-actions">
-												<button type="submit" style="height: 28px; width: 70px; border-radius:5px ; font-size: 12px ; text-align: center;" class="am-btn am-btn-primary am-btn-xs" >重新生成</button>
+												<button type="submit" style="height: 28px; width: 70px; border-radius:5px ; font-size: 12px ; text-align: center;" class="am-btn am-btn-primary am-btn-xs" >保存</button>
 											</div>
 										</form>
 									</div>
@@ -192,7 +192,7 @@
 												</div>
 											</div>
 											<div class="form-actions">
-												<button type="submit" style="height: 28px; width: 70px; border-radius:5px ; font-size: 12px ; text-align: center;" class="am-btn am-btn-primary am-btn-xs" >重新生成</button>
+												<button type="submit" style="height: 28px; width: 70px; border-radius:5px ; font-size: 12px ; text-align: center;" class="am-btn am-btn-primary am-btn-xs" >保存</button>
 											</div>
 										</form>
 									</div>
