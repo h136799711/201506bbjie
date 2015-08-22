@@ -97,8 +97,8 @@
 											<if condition="$v['auth_status'] eq 3">审核失败</if>
 										</td>
 										<td><if condition="$v['auth_status'] eq 0">
-											<a href="{:U('Admin/BBJVIP/checksuccesssj',array('id'=>$v['id']))}"  class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>审核通过</a>
-											<a href="{:U('Admin/BBJVIP/checksb',array('id'=>$v['id']))}" class="ajax-get confirm btn btn-sm btn-danger"><i class="fa fa-trash"></i>审核失败</a>
+											<a href="{:U('Admin/BBJVIP/checksuccess',array('id'=>$vo['id']))}"  class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>审核通过</a>
+											<a href="{:U('Admin/BBJVIP/checksb',array('id'=>$vo['id']))}" class="ajax-get confirm btn btn-sm btn-danger"><i class="fa fa-trash"></i>审核失败</a>
 											</if>
 										</td>
 									</tr>

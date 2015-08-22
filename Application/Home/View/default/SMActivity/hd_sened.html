@@ -85,6 +85,7 @@
 											<br /> 返款：{$vo['task_gold']}
 											<br /><volist name="express" id="s">
 												<if condition="$v['tb_orderid'] eq $s['orderid']">
+													快递公司：{$s['expressname']}<br>
 													运单号：{$s['expressno']}
 												</if>
 											</volist>

@@ -20,34 +20,40 @@ class SJActivityController extends CheckLoginController {
 	 * */
 	public function sj_tbhd() {
 		$user = session('user');
-		$page = array('curpage' => I('get.p', 0), 'size' => 3);
+		$page = array('curpage' => I('get.p', 0), 'size' => 4);
 		$map1 = array('uid' => $user['info']['id'], 'task_status' => array('in',array(1,4)));
 		$result = apiCall(HomePublicApi::Task_QueryAll, array($map1,$page));
 		$map2 = array('uid' => $user['info']['id'], 'task_status' => 2);
-		$result_zt = apiCall(HomePublicApi::Task_Query, array($map2));
+		$resultzt = apiCall(HomePublicApi::Task_QueryAll, array($map2,$page));
 		$headtitle = "宝贝街-活动";
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
-		
 		for ($i = 0; $i < count($result['info']['list']); $i++) {
-			$id = $result['info']['list'][$i]['id'];
-			$map4 = array('task_id' => $id);
-			$results[] = apiCall(HomePublicApi::TaskHasProduct_Query, array($map4));
+				$id = $result['info']['list'][$i]['id'];
+				$map4 = array('task_id' => $id);
+				$result['info']['list'][$i]['hasList']= apiCall(HomePublicApi::TaskHasProduct_Query, array($map4))['info'];
+				for($j=0;$j<count($result['info']['list'][$i]['hasList']);$j++){
+					$pid = array('id' => $result['info']['list'][$i]['hasList'][$j]['pid']);
+					$result['info']['list'][$i]['hasList'][$j]['product'] = apiCall(HomePublicApi::Product_Query, array($pid))['info'][0];
+				}
 		}
-		for ($j = 0; $j < count($results); $j++) {
-			$pid = array('id' => $results[$j]['info'][0]['pid']);
-			$producta[] = apiCall(HomePublicApi::Product_Query, array($pid));
-
+		for ($i = 0; $i < count($resultzt['info']['list']); $i++) {
+				$id = $result['info']['list'][$i]['id'];
+				$map4 = array('task_id' => $id);
+				$resultzt['info']['list'][$i]['hasList']= apiCall(HomePublicApi::TaskHasProduct_Query, array($map4))['info'];
+				for($j=0;$j<count($result['info']['list'][$i]['hasList']);$j++){
+					$pid = array('id' => $result['info']['list'][$i]['hasList'][$j]['pid']);
+					$resultzt['info']['list'][$i]['hasList'][$j]['product'] = apiCall(HomePublicApi::Product_Query, array($pid))['info'][0];
+				}
 		}
-		$this -> assign('task', $result['info']['list']);
-		$this -> assign('show',$result['info']['show']);
-		$this -> assign('task_zt', $result_zt['info']);
-		$this -> assign('geshu', session('shuliang'));
+//		dump($result);//dump($producta);dump($results);
+		
+		$this->assign('task',$result['info']['list']);
+		$this->assign('show',$result['info']['show']);
+		$this->assign('taskzt',$resultzt['info']['list']);
+		$this->assign('showzt',$resultzt['info']['show']);
 		$this -> assign('username', $user['info']['username']);
-		$this -> assign('jihuas', $results);
-		$this -> assign('pro', $producta);
-		$this -> assign('jihuas_zt', $results_zt);
-		$this -> assign('pro_zt', $producta_zt);
+		
 		$sj=A('usersj');
 		$sj->is_auth();
 		$sj->getcount();
@@ -375,7 +381,7 @@ class SJActivityController extends CheckLoginController {
 		$map = array('task_id' => $id);
 		$result = apiCall(HomePublicApi::TaskHasProduct_Query, array($map));
 		$mapp = array('id' => $result['info'][0]['pid']);
-		$mapa = array('pid' => $result['info'][0]['pid']);
+		$mapa = array('pid' => $result['info'][0]['pid'],'status'=>1);
 		//		dump($mapa);
 		$return = apiCall(HomePublicApi::Product_Query, array($mapp));
 		$returns = apiCall(HomePublicApi::ProductSearchWay_Query, array($mapa));
@@ -470,6 +476,8 @@ class SJActivityController extends CheckLoginController {
 	public function a1() {
 		$user = session('user');
 		$aliwawa = I('aliwawa', '');
+		$pid=I('pid',0);
+//		dump($pid);
 		$al = array('img' => I('img', ''), 'link' => I('url', ''), 'title' => I('title', ''), 'num' => I('num', 1), 'price' => I('price','0.00'), 'position' => I('guige', ''), );
 		session('al', $al);
 		$count = 0;
@@ -482,14 +490,28 @@ class SJActivityController extends CheckLoginController {
 		foreach ($al as $key => $value) {
 			if ($count < count($al['title'])) {
 				if ($al['title'][$count] != '' || $al['title'][$count] != null) {
-					$pro = array('uid' => $user['info']['id'], 'link' => $al['link'][$count], 'price' => $al['price'][$count], 'has_model_num' => 1, 'position' => '', 'title' => $al['title'][$count], 'main_img' => $al['img'][$count], 'wangwang' => $aliwawa, 'create_time' => time(), 'update_time' => time(), 'status' => 1, 'model_num_cfg' => $al['position'][$count], 'is_on_sale' => 1, );
-					$result = apiCall(HomePublicApi::Product_Add, array($pro));
-					if ($result['status']) {
-						session('pid', $result1['info']);
-						$task_has = array('task_id' => $result1['info'], 'pid' => $result['info'], 'num' => $al['num'][$count], 'sku' => $al['position'][$count], 'pname' => $al['title'][$count], 'create_time' => time(), );
-						$ret = apiCall(HomePublicApi::TaskHasProduct_Add, array($task_has));
-						$summ = $summ + $al['price'][$count];
+					if($pid==0){
+						$pro = array('uid' => $user['info']['id'], 'link' => $al['link'][$count], 'price' => $al['price'][$count], 'has_model_num' => 1, 'position' => '', 'title' => $al['title'][$count], 'main_img' => $al['img'][$count], 'wangwang' => $aliwawa, 'create_time' => time(), 'update_time' => time(), 'status' => 1, 'model_num_cfg' => $al['position'][$count], 'is_on_sale' => 1, );
+						$result = apiCall(HomePublicApi::Product_Add, array($pro));
+						if ($result['status']) {
+							session('pid', $result1['info']);
+							$task_has = array('task_id' => $result1['info'], 'pid' => $result['info'], 'num' => $al['num'][$count], 'sku' => $al['position'][$count], 'pname' => $al['title'][$count], 'create_time' => time(), );
+							$ret = apiCall(HomePublicApi::TaskHasProduct_Add, array($task_has));
+							$summ = $summ + $al['price'][$count];
+						}
+					}else{
+//						dump($pid);
+						$pro = array('price' => $al['price'][$count],  'update_time' => time(),  'model_num_cfg' => $al['position'][$count], );
+//						dump($pid[$count]);
+						$result = apiCall(HomePublicApi::Product_SaveByID, array($pid[$count],$pro));
+						if ($result['status']) {
+							session('pid', $result1['info']);
+							$task_has = array('task_id' => $result1['info'], 'pid' => $pid[$count], 'num' => $al['num'][$count], 'sku' => $al['position'][$count], 'pname' => $al['title'][$count], 'create_time' => time(), );
+							$ret = apiCall(HomePublicApi::TaskHasProduct_Add, array($task_has));
+							$summ = $summ + $al['price'][$count];
+						}
 					}
+					
 				}
 				$count = $count + 1;
 			}

@@ -365,10 +365,10 @@ class IndexController extends HomeController {
 					);
 //					dump($group);
 					$result3 = apiCall(HomePublicApi::Group_Add, array($group));
+//					dump($result3);
 					if($result3['status']){
 						$this->display('register_sj_kz');
 					}
-//dump($result3);
 				}
 			}
 		}

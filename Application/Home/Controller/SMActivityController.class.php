@@ -373,9 +373,13 @@ class SMActivityController extends CheckLoginController {
 		if($usersm['info'][0]['auth_status']!=0){
 			if($tsk_his['info']==NULL){
 				$map=array('uid'=>$user['info']['id'],'do_status'=>array('neq',2));
+//				
 				$task_id=apiCall(HomePublicApi::Task_His_Query, array($map));
-				$mapa=array('yuecount'=>array('neq',0),'task_id'=>array('neq',$task_id['info'][0]['task_id']));
+//				
+				$mapa=array('yuecount'=>array('neq',0));
 				$result=apiCall(HomePublicApi::TaskPlan_Query,array($mapa));
+//				dump($result);
+//				dump($mapa);
 				if($result['info']==NULL){
 					$this->error('暂无可接任务，请稍候再试',U('Home/Index/sm_manager'));
 				}else{
@@ -400,7 +404,7 @@ class SMActivityController extends CheckLoginController {
 					$result3=apiCall(HomePublicApi::Task_His_Add,array($entity));
 					if($result3['status']){
 	//					dump($result['info'][0]['id']);
-						/*$return1=M('bbjmemberSeller')->where('uid='.$user['info']['id'])->setDec('coins',$zongjia);*/
+//						$return1=M('bbjmemberSeller')->where('uid='.$user['info']['id'])->setDec('coins',$zongjia);
 						$result=M('taskPlan')->where('id='.$result['info'][0]['id'])->setDec('yuecount',1);
 						if($result==1){
 							
@@ -475,6 +479,7 @@ class SMActivityController extends CheckLoginController {
 		$id=I('hsid','');
 		$user=session('user');
 		$spid=I('pid',0);
+		$orderid=I('order_num',0);
 		$addid=array('id'=>I('address',0));
 		$result_address=apiCall(HomePublicApi::Address_Query, array($addid));
 		if($result_address['info']==null){
@@ -483,12 +488,11 @@ class SMActivityController extends CheckLoginController {
 			$address=$result_address['info'][0];
 			if($spid==0){
 				$entity=array(
-					'tb_orderid'=>I('order_num',0),
-					'tb_address'=>$address['province'].$address['city'].$address['detail'].$address['area'].$address['detail'].$address['contact_name'].$address['mobile'],
+					'tb_orderid'=>$orderid,
+					'tb_address'=>$address['contact_name'].",".$address['mobile'].",".$address['province'].",".$address['city'].",".$address['detail'].",".$address['area'].",".$address['detail'],
 					'tb_price'=>I('zhifu_price','0.00'),
 				);
 				$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$entity));
-	//			dump($result);
 				if($result['status']){
 					$this->success('提交成功！！，请关注任务动态',U('Home/Usersm/sm_bbhd'));
 				}else{
@@ -497,7 +501,7 @@ class SMActivityController extends CheckLoginController {
 			}else{
 				$entity=array(
 					'tb_orderid'=>I('order_num',0),
-					'tb_address'=>$address['province'].$address['city'].$address['detail'].$address['area'].$address['detail'].$address['contact_name'].$address['mobile'],
+					'tb_address'=>$address['contact_name'].$address['mobile'].$address['province'].$address['city'].$address['detail'].$address['area'].$address['detail'],
 					'tb_price'=>I('zhifu_price','0.00'),
 				);
 				$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$entity));

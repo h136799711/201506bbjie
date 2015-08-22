@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>这只是简单的查询页面</title>
+		
+		<style type="text/css">
+			*{font-size: 12px;}
+			table{text-align:center;}
+			th,td{width: 100px;}
+		</style>
+		
+		<script type="text/javascript" src="__CDN__/jquery/2.1.1/jquery.min.js"></script>
+		<script type="text/javascript">
+			/*$(function(){
+				
+			})
+			
+			function changeTable(table){
+				$.ajax({
+					type:"get",
+					url:"{:U('Admin/QueryTableInfo/changeColumn')}",
+					data:{
+						"tableName":table.value
+					},
+					success:function(info){
+						$("select[name='columnName']").empty();
+						var column=info.info;
+						for(var i=0;i<column.length;i++){
+							$("select[name='columnName']").append("<option value='"+column[i]+"'>"+column[i]+"</option>");
+						}
+						//for(var i=0;)
+						
+					}
+				});
+			}*/
+		</script>
+	</head>
+	
+	
+	<body>
+		
+		<form action="{:U(Admin/QueryTableInfo/index)}" method="post">
+			<select name="tableName" onchange="changeTable(this)">
+				
+				<volist name="tableArray" id="ta">
+					<option 
+					<eq name="tableName" value="$ta">
+						selected="selected"
+					</eq>
+					value="{$ta}">{$ta}</option>
+				</volist>
+			</select>
+			<input type="hidden" name="type" value="1"/>
+			<!--
+			<select name="columnName">
+				<volist name="listKey" id="lk">
+					<option value="{$lk}"
+					<eq name="columnName" value="$lk">
+						selected="selected"
+					</eq>
+					>{$lk}</option>
+				</volist>
+			</select>
+			
+			
+			<select name="sort">
+				<option value="desc" 
+					<eq name="sort" value="desc">
+						selected="selected"
+					</eq>
+				>降序</option>
+				<option value="asc"
+					<eq name="sort" value="asc">
+						selected="selected"
+					</eq>
+				>升序</option>
+			</select>-->
+			<input type="submit" value="查询" />
+		</form>
+		<table border="1">
+				<empty name="list" >
+					<tr>
+						<td>暂无数据</td>
+					</tr>
+					<else />
+					<tr>
+						<volist name="listKey" id="lk">
+							<th>{$lk}</th>
+						</volist>
+					</tr>
+					<volist name="list" id="l">
+					<tr>
+						<volist name="listKey" id="lk">
+							<td>{$l[$lk]}</td>
+						</volist>
+					</tr>
+				</volist>
+				</empty>
+		</table>
+	</body>
+</html>

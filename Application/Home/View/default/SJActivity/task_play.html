@@ -19,7 +19,7 @@
 					<div class="task-head">
 						<div class="breadcrumbs">
 							<a href="">淘宝活动</a>&gt;<span>任务计划管理：{$task['task_name']}</span>
-						</div><a class="look-other" href="#">查看任务试民</a>
+						</div>
 					</div>
 
 					<div class="content">
@@ -77,7 +77,7 @@
 													<volist name='pro' id='v' key='a' ><if condition="$c['pid'] eq $v['id']"><li>{$c['pname']}</li><br></if></volist>
 													</if>
 												</volist>
-												<a data-toggle="modal2" class="text-info small" modal-title="更改搜索设置" href="">更改搜索设置</a>
+												<!--<a data-toggle="modal2" class="text-info small" modal-title="更改搜索设置" href="">更改搜索设置</a>-->
 											</td>
 											<td class="text-center">普通搜索</td>
 											<td class="text-center"> </td>
@@ -85,7 +85,7 @@
 												<div>
 													<div class="small muted">已分配：<i>{$fcount}</i>
 													</div>
-													<div class="small muted" >未分配：<i id="wfp">{$tp.yuecount}</i>
+													<div class="small muted">未分配：<i id="wfp">{$tp.yuecount}</i>
 													</div>
 													<div class="small muted">总份数：<i id="zfs">{$tp.task_cnt}</i>
 													</div>
@@ -165,7 +165,7 @@
 									</tr>
 									<tr>
 										<td style="text-align: right;padding-right: 5px;padding-top: 10px;">
-											发放时间：
+											结束时间：
 										</td>
 										<td style="padding-top: 10px;">
 											<input type="date" name="begin_time" id="begin_time"  />
