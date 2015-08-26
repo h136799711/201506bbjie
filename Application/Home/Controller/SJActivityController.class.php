@@ -762,10 +762,12 @@ class SJActivityController extends CheckLoginController {
 		$mwe = array('uid' => $user['info']['id'], 'status' => 0);
 		$page = array('curpage' => I('get.p', 0), 'size' => 6);
 		//dump($user['info']['id']);
+		$sj = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($mapp));
 		$product = apiCall(HomePublicApi::ProductSearchWay_QueryAll, array($map,$page));
 		$pro = apiCall(HomePublicApi::ProductSearchWay_QueryAll, array($mapp,$page));
 		$pros = apiCall(HomePublicApi::Product_Query, array($mapp));
 		$prduct = apiCall(HomePublicApi::ProductSearchWay_QueryAll, array($mwe,$page));
+		$this -> assign('aliwawa', $sj['info'][0]['aliwawa']);
 		$this -> assign('prduct', $prduct['info']['list']);
 		$this -> assign('prshow', $prduct['info']['show']);
 		$this -> assign('product', $product['info']['list']);
@@ -780,6 +782,24 @@ class SJActivityController extends CheckLoginController {
 		$this -> display();
 	}
 
+	public function upsearch() {
+		$headtitle = "宝贝街-更新搜索管理";
+		$map=array('id'=>I('id',0));
+		$this -> assign('head_title', $headtitle);
+		$user = session('user');
+		$mapp = array('uid' => $user['info']['id']);
+		$sj = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($mapp));
+		$product = apiCall(HomePublicApi::ProductSearchWay_Query, array($map));
+		$pros = apiCall(HomePublicApi::Product_Query, array($mapp));
+		$this -> assign('pros',$pros['info']);
+		$this->assign('search',$product['info'][0]);
+		$this -> assign('aliwawa', $sj['info'][0]['aliwawa']);
+		$this -> assign('username', $user['info']['username']);
+		$sj=A('usersj');
+		$sj->is_auth();
+//		dump($pros);
+		$this -> display();
+	}
 	/*
 	 * 商品上架
 	 * */
@@ -866,7 +886,7 @@ class SJActivityController extends CheckLoginController {
 	 */
 	public function select() {
 		$user = session('user');
-		$map = array('uid' => $user['info']['id'], 'status' => 1, 'title' => array('like', "%" . I('q', '', 'trim') . "%"),
+		$map = array('uid' => $user['info']['id'], 'is_on_sale' => 1, 'title' => array('like', "%" . I('q', '', 'trim') . "%"),
 		//'link'=>array('like', "%" . I('q', '', 'trim') . "%"),
 		//'_logic' =>'OR',
 		);
@@ -897,18 +917,76 @@ class SJActivityController extends CheckLoginController {
 	public function save() {
 		$user=session('user');
 		$iscz=I('iscz',0);
-		if($iscz!=0){
-			$entity = array('uid'=>$user['info']['id'] ,'dtree_type' => 1, 'status' => $iscz, 'create_time' => time(), 'update_time' => time(), 'pid' => I('pid', ''), 'search_url' => I('search_url', ''), 'search_q' => I('search_q', ''), 'search_order' => I('search_order', ''), 'search_condition' => I('search_xz', ''), );
-			$result = apiCall(HomePublicApi::ProductSearchWay_Add, array($entity));
-			if ($result['status']) {
-				$this -> success('添加搜索成功', U('Home/SJActivity/createsearch'));
+		$id=I('id',0);
+		if($id!=0){
+			if($iscz!=0){
+				$entity = array('update_time' => time(), 'pid' => I('pid', ''), 'search_url' => I('search_url', ''), 'search_q' => I('search_q', ''), 'search_order' => I('search_order', ''), 'search_condition' => I('search_xz', ''), );
+				$result = apiCall(HomePublicApi::ProductSearchWay_SaveByID, array($id,$entity));
+				if ($result['status']) {
+					$this -> success('更新搜索成功', U('Home/SJActivity/createsearch'));
+				}
+			}else{
+				$this->error('获取信息失败');
 			}
 		}else{
-			$this->error('获取信息失败');
+			if($iscz!=0){
+				$entity = array('uid'=>$user['info']['id'] ,'dtree_type' => 1, 'status' => $iscz, 'create_time' => time(), 'update_time' => time(), 'pid' => I('pid', ''), 'search_url' => I('search_url', ''), 'search_q' => I('search_q', ''), 'search_order' => I('search_order', ''), 'search_condition' => I('search_xz', ''), );
+				$result = apiCall(HomePublicApi::ProductSearchWay_Add, array($entity));
+				if ($result['status']) {
+					$this -> success('添加搜索成功', U('Home/SJActivity/createsearch'));
+				}
+			}else{
+				$this->error('获取信息失败');
+			}
 		}
+		
 		
 		//
 	}
+	/*
+	 * 检查url
+	 * */
+	public function checkurl(){
+		$map=array(
+			'link'=>array('like','%'.I('purl','').'%'),
+		);
+		$result = apiCall(HomePublicApi::Product_Query, array($map));
+		if($result['info'][0]['link'] !=null){
+			$this->ajaxReturn(0,'json');
+		}else{
+			$this->ajaxReturn(1,'json');
+		}
+		
+	}
+	/*upcount修改任务份数
+	 * */
+	public function upcount(){
+		$user=session('user');
+	 	$id=I('sid',0);
+		$mapp=array('id'=>$id);
+		$money=I('dfmoney','');
+		$map=array('task_cnt'=>I('rwcount',1));
+		$result = apiCall(HomePublicApi::TaskPlan_Query, array($mapp));
+		$fenshu=$result['info'][0]['task_cnt'];
+		
+		$zongjia=(I('rwcount',1)-$fenshu)*$money;
+		if($zongjia<=0){
+			$this->error('请填写大于当前任务份数的数字!');
+		}else{
+			$results = apiCall(HomePublicApi::TaskPlan_SaveByID, array($id,$map));
+			$entitya = array('uid' => $user['info']['id'], 'defray' => $zongjia , 'income' => '0.000', 'create_time' => time(), 'notes' => '增加份数冻结任务佣金', 'dtree_type' => 5, 'status' => 3, );
+			$resulta = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entitya));
+			if ($resulta['status']) {
+				$return1=M('bbjmemberSeller')->where('uid='.$user['info']['id'])->setDec('coins',$zongjia);
+				$return2=M('bbjmemberSeller')->where('uid='.$user['info']['id'])->setInc('frozen_money',$zongjia);
+				if($return1 && $return2){
+					$this->success('发放成功！',U('Home/SJActivity/sj_tbhd'));
+				}
+			}
+		}
+		
+		
+	 }
 	public function zdysave() {
 		$user=session('user');
 		$entity = array('uid'=>$user['info']['id'] ,'dtree_type' => 2, 'status' => 1, 'create_time' => time(), 'update_time' => time(), 'pid' => I('pid', ''), 'search_url' => '', 'search_q' => I('text', ''), 'search_order' => I('search_order', ''), 'search_condition' => I('weizhi', ''), );

@@ -142,6 +142,9 @@
 							<div class="am-modal-bd">
 								<form action="{:U('Home/SJActivity/productedit')}" method="post">
 								<input type="hidden" name="id" value="{$id}" />
+								<input type="hidden" name="alww" class="alww" value="">
+								<input type="hidden" name="img" class="img" value="">
+								<input type="hidden" name="title" class="title" value="">
 								<table border="" cellspacing="" cellpadding="" style="margin-top: 10px;">
 									
 									<tr>
@@ -149,7 +152,7 @@
 											商品链接
 										</td>
 										<td style="padding-top: 10px;">
-											 <input class="am-form-field" style="height: 20px;" type="text" value="{$product['link']}"  disabled>
+											 <input class="am-form-field" style="height: 20px;" type="text" id="url1" value="{$product['link']}"  disabled>
 										</td>
 									</tr>
 									<tr>
@@ -163,8 +166,9 @@
 										<td style="text-align: right;padding-right: 5px;padding-top: 10px;">
 										</td>
 										<td style="font-size: 12px;padding-top: 10px;">
-											<div class="show" style="text-align: left;">
-												<img style="float: left;" src="{$product['main_img']}">{$product.title}
+											<div class="show1" style="text-align: left;">
+												<img style="float: left; height: 100px; width: 100px;" src="{$product['main_img']}">{$product.title}
+												<br><button id="read1" type="button" class="am-btn-default">更新商品</button>
 											</div>
 										</td>
 									</tr>
@@ -508,12 +512,70 @@ function showLoading() {
 			$('#gxbtn').click();
 		}
 		$("#read").click(function() {
+			var urls=$("#url").val().substr(0,$("#url").val().indexOf('&'));
+			$.getJSON("{:U('Home/SJActivity/checkurl')}",{purl:urls},function(json){ 
+				if(json!=1){
+					alert('已经添加过该商品,无需重复添加!');
+				}else{
+					var query = $("#J_btn_submit").data("query");
+					if (query == 1) {
+						alert("正在请求中...");
+						return;
+					}
+					var param_url = $("#url").val();
+					$.ajax({
+						cache: false,
+						method: "post",
+						url: "{:U('Tool/RemoteProductParser/read',array('r'=>time()))}",
+						data: {
+							url: encodeURI(param_url)
+						},
+						dataType: "json",
+						beforeSend: function() {
+							showLoading();
+						}
+					}).done(function(data) {
+						$("#read").text("提交");
+						$("#read").data("query", 0);
+						console.log(data);
+						if (data.status) {
+							var title =  data.info.title;
+							var wangwang = data.info.wangwang;
+							if ('{$aliwawa}'.trim() == wangwang.trim()) {
+								$("input[name='alww']").val(wangwang.trim());
+								$(".title").val(title);
+								$(".img").val(data.info.main_img);
+								$('#doc-modal-1 .am-modal-dialog').css('height', '600px');
+								$(".show").html("<img  src='" + data.info.main_img + "' alt='图片' style='float:left' />" + title);
+								
+							} else {
+								$('#doc-modal-1 .am-modal-dialog').css('height', '580px');
+								$(".show").html("<font color='red'>该商品的铺主为：" + wangwang + "</font><br><font color='red'>您的阿里旺旺为：" + '{$aliwawa}' + "</font><br><font color='red'>请录入您自己的商品</font>");
+							}
+						} else {
+							$('#doc-modal-1 .am-modal-dialog').css('height', '520px');
+							$(".show").html("<font color='red'>" + data.info + "</font>");
+							//							alert(data.)
+						}
+					})
+				}
+			}); 
+//			if(d!=0){
+//				
+//			}
+			
+			
+		})
+		var d=0;
+		/*更新*/
+		$("#read1").click(function() {
+			
 			var query = $("#J_btn_submit").data("query");
 			if (query == 1) {
 				alert("正在请求中...");
 				return;
 			}
-			var param_url = $("#url").val();
+			var param_url = $("#url1").val();
 			$.ajax({
 				cache: false,
 				method: "post",
@@ -526,30 +588,29 @@ function showLoading() {
 					showLoading();
 				}
 			}).done(function(data) {
-				$("#read").text("提交");
-				$("#read").data("query", 0);
+				$("#read1").text("提交");
+				$("#read1").data("query", 0);
 				console.log(data);
 				if (data.status) {
 					var title =  data.info.title;
 					var wangwang = data.info.wangwang;
 					if ('{$aliwawa}'.trim() == wangwang.trim()) {
 						$("input[name='alww']").val(wangwang.trim());
-						$(".title").val(title);
-						$(".img").val(data.info.main_img);
-						$('#doc-modal-1 .am-modal-dialog').css('height', '600px');
-						$(".show").html("<img  src='" + data.info.main_img + "' alt='图片' style='float:left' />" + title);
+						$(".title1").val(title);
+						$(".img1").val(data.info.main_img);
+						$('#doc-modal-2 .am-modal-dialog').css('height', '600px');
+						$(".show1").html("<img height='150' width='150'  src='" + data.info.main_img + "' alt='图片' style='float:left' /><br><button id='read1' type='button' class='am-btn-default'>更新商品</button>" + title);
 						
 					} else {
-						$('#doc-modal-1 .am-modal-dialog').css('height', '580px');
-						$(".show").html("<font color='red'>该商品的铺主为：" + wangwang + "</font><br><font color='red'>您的阿里旺旺为：" + '{$aliwawa}' + "</font><br><font color='red'>请录入您自己的商品</font>");
+						$('#doc-modal-2 .am-modal-dialog').css('height', '580px');
+						$(".show1").html("<font color='red'>该商品的铺主为：" + wangwang + "</font><br><font color='red'>您的阿里旺旺为：" + '{$aliwawa}' + "</font><br><font color='red'>请录入您自己的商品</font>");
 					}
 				} else {
-					$('#doc-modal-1 .am-modal-dialog').css('height', '520px');
+					$('#doc-modal-2 .am-modal-dialog').css('height', '520px');
 					$(".show").html("<font color='red'>" + data.info + "</font>");
 					//							alert(data.)
 				}
 			})
 		})
-		
 })</script>
 </block>

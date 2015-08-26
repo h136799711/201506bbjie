@@ -119,7 +119,7 @@
 													
 													<td><input type="hidden" id="aaid" name="aaid"  value="{$q['id']}" />
 														<input type="hidden" id="tsid" name="tsid"  value="{$vo['id']}" />
-														距离系统自动确认还款：<span class="js_countdownwn" style="color: #FF0000;" data-until="{$q['get_task_time'] +15*24*3600}"></span>
+														距离系统自动确认还款：<span class="js_countdownwn" style="color: #FF0000;" data-until="{$q['get_task_time'] +3*24*3600}"></span>
 													</td>
 													<td><a class="btn"  href="{:U('Home/SJActivity/qrhk',array('id'=>$q['id'],'tid'=>$vo['id']))}">确认返款</a></td>
 												</tr>

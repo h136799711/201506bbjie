@@ -1,0 +1,342 @@
+<extend name="template/base_index" />
+
+<block name="area_header">
+	<link rel="stylesheet" href="__CSS__/shangjia.css">
+	<link rel="stylesheet" href="__CSS__/select2.css">
+	<script type="text/javascript" src="__CDN__/select2/4.0.0/js/select2.full.js"></script>
+	<script type="text/javascript" src="__CDN__/select2/4.0.0/js/i18n/zh-CN.js"></script>
+	<link type="text/css" rel="stylesheet" href="__CDN__/select2/4.0.0/css/select2.min.css" />
+	<style type="text/css">
+		.select2-results__options{ background: white;width: 465px;}
+			/*.select2-container{ background: white;}
+			.select2-dropdown--below{ background: white;}*/
+			.select2-search--dropdown{
+				width: 465px;
+				margin-top: -85px;
+				background: white;
+			}
+	</style>
+	<script type="text/javascript">
+		$(function(){
+			$('#parseBtn').click(function(){
+				var parseUrl=$('#url').val();
+				$.ajax({
+					cache:false,
+					type:"post",
+					data:{url:encodeURI(parseUrl)},
+					url:"{:U('Tool/RemoteProductParser/read_search',array('r'=>time()))}",
+					//url:"{:U('Tool/RemoteProductParser/read_search')}",
+					dataType:"json",
+					success:function(result){
+						if(result.status==0){
+							alert(result.info);
+						}else{
+							var results=result.info.items;
+							$('#div_searchCondition').find('.font_openUrl').html(result.info.url);
+							$('#div_searchCondition').find('.font_key').html(result.info.key);
+							$('#div_searchCondition').find('.font_tab').html(result.info.tab);
+							$('#div_searchCondition').find('.font_order').html(result.info.order);
+							
+							$("input[name='search_url']").val($('#url').val());
+							$("input[name='search_q']").val(result.info.key);
+							$("input[name='search_xz']").val(result.info.tab);
+							$("input[name='search_order']").val(result.info.order);
+							
+							var title1=$("#div_searchCondition .font_title1").text().trim();
+							var wangwang1=$("#div_searchCondition .font_wangwang").html().trim();
+							var result1="未能在结果页面找到对应搜索，提交后需等待客服审核";
+							$('#iscz').val('2');
+							var style1="am-alert-warning";
+							//alert(result.info.items);
+							
+							for(var i=0;i<results.length;i++){
+								if(title1.indexOf(result.info.items[i].title.trim())!=-1||results[i].nick.trim()=='{$aliwawa}'){
+									$('#iscz').val('1');
+									result1="成功在搜索页找到对应商品,保存搜索后可直接开始使用";
+									style1="am-alert-success";
+									break;	
+								}
+								//alert();
+							}
+							$("#div_search_result").append('<div class="am-alert '+style1+'" data-am-alert><button type="button" class="am-close">&times;</button><p>'+result1+'</p></div>');
+							
+							
+							$('#div_searchCondition').show();
+						}
+						
+					}
+				});
+				
+			})
+			
+			
+			
+			
+			$("#user_select2").select2({
+				placeholder: "可输入宝贝名称搜索"	,
+				language: "zh-CN",
+				ajax: {
+				    url: "{:U('SJActivity/select')}",
+				    dataType: 'json',
+				    delay: 250,
+				    data: function (params) {
+				    	var queryParameters = {
+					      q: params.term
+					    }
+	    				return queryParameters;
+				      
+				    },
+				    processResults: function (data, page) {
+				    	if(!data.info){
+				    		data.info = new Array();
+				    		data.info['nodata']="无相关数据";
+				    	}
+				      	// parse the results into the format expected by Select2.
+				      	// since we are using custom formatting functions we do not need to
+				      	// alter the remote JSON data
+				      	return {
+				        	results: data.info
+				      	};
+				    },
+				    cache: true
+			  	}, 
+				  	minimumInputLength: 0,
+					templateSelection: function (repo) {
+						
+						//var minTitle= repo.title.substring(10);
+						if(repo.title!=undefined){
+							if('{$aliwawa}'==repo.wangwang){
+							
+							var minTitle= repo.title.substring(0,20)+"...";
+							$("#product_base_info img").attr('src',repo.main_img);
+							$("#product_base_info .controls .font_title").html(repo.title);
+							     
+							$("#product_base_info .controls .font_time").html(new Date(parseInt(repo.update_time) * 1000).toLocaleString().replace(/:\d{1,2}$/,' '));
+							$("#product_base_info .controls .input_url").val(repo.link);
+							$("#product_base_info").show();
+							//alert($("#div_searchCondition .img").size());
+							$("input[name='pid']").val(repo.id);
+							
+							
+							$("#div_searchCondition img").attr("src",repo.main_img);
+							$("#div_searchCondition .font_title1").html(repo.title);
+							$("#div_searchCondition .font_price1").html(repo.price);
+							
+							$("#div_searchCondition .font_wangwang").html(repo.wangwang.substring(0,3));
+							
+								
+							}else{
+								alert('请更换你绑定旺旺的商品');
+							}
+							
+							
+							return minTitle || repo.text;
+						}else{
+							return repo.title || repo.text;
+						}
+		  				
+					},
+				  templateResult: function (repo) {
+				   		//console.info(repo);
+	      				if (repo.loading) return repo.text;
+						if(repo.nodata) return repo.nodata;
+						
+						
+	//    				var markup = '<div>'+repo.nickname+'</div>';
+	      				var markup = '<div style="height:50px"><img style="margin-top:0px; height:50px; float:left; width:50px" src="'+repo.main_img+'" style="width:50px;height:50px;float:left"/>[id:'+repo.id+']'+repo.title+'</div>';
+	      				return markup;
+	    			}
+			});
+			
+			
+		})
+	</script>
+
+</block>
+
+<block name="area_body">
+	<include file='Widget/sjtop' />
+	<div class="seller_main clearfix" controller="seller/common">
+		<div class="seller_content_wrap">
+			<div class="seller_content" style="padding-top: 10px;">
+
+				<div class="content">
+
+					<h1>创建搜索</h1>
+
+					<div class="p20"></div>
+					<div>
+
+						<form class="form-horizontal jquery-once-1-processed create2-processed ng-scope ng-valid ng-dirty" controller="extend/ajax_form,seller/sousuo_create2,extend/angular" id="yw0" action="#" method="post" novalidate="novalidate">
+							<div class="control-group">
+								<label class="control-label" style="line-height: 25px;">搜索类型</label>
+								<div class="controls">
+									<ul class="nav nav-pills mb0" role="menu">
+										<!-- 获取搜索类型 -->
+										<li class="active" role="menuitem">
+											<a tabindex="-1" href="javascript:void(0)">关键词</a>
+										</li>
+										<li role="menuitem"><a tabindex="-1" href="{:U('Home/SJActivity/zdysele')}">自定义</a>
+											
+										</li>
+										<!--<li visible="1" tooltip="手机关键词仅分配手机任务时可使用" role="menuitem" data-original-title="" title=""><a tabindex="-1" href="#">手机关键词</a>
+										</li>
+										<li visible="1" tooltip="手机关键词仅分配手机任务时可用" role="menuitem" data-original-title="" title=""><a tabindex="-1" href="#">手机自定义</a>
+										</li>-->
+									</ul>
+								</div>
+							</div>
+							
+							<div class="control-group">
+								<label class="control-label">
+									搜索商品
+								</label>
+
+								<div class="controls">
+
+									<div class="filter-controls pull-left" style="">
+										<form action="" class="addToGroupForm" method="post" style="">
+											<input type="hidden" name="groupid" value="{$groupid}" style="" />
+											<select style="width:465px;padding: 10px 15px;font-size: 15px;" id="user_select2" name="uid" class="form-control">
+												<option></option>
+											</select>
+
+										</form>
+									</div>
+
+									<span class="help-inline">选择需要优化搜索的商品</span> </div>
+							</div>
+
+							<div id="product_base_info" class="" style="margin-top: 15px; margin-left: 103px;">
+								<div url="#">
+									<div class="control-group">
+										<volist name="pros" id="vo">
+											<if condition="$search['pid'] eq $vo['id']">
+											<div class="control-label" style="float: left;">
+												<img class="img" style="height: 140px; width: 120px; float: left;"  src="{$vo['main_img']}" alt="">
+											</div>
+											<div class="controls" style="margin-left: 110px;">
+												<p class="pb10" style="margin-top: 8px;">
+													商品名称 : <font class="font_title">{$vo['title']}</font> </p>
+												<p class="pb10">商品链接 :
+													<input readonly="readonly" style="width:395px" type="text" value="{$vo['link']}" class="input_url">
+												</p>
+												<p>最后更新 : <font class="font_time">{$vo.update_time|date='Y-m-d H:i:s',###}</font>  </p>
+											</div>
+											</if>
+										</volist>
+									</div>
+								</div>
+							</div>
+							<div class="control-group" style="margin-left:103px;">
+								<div class="controls">
+									<div class="input-append">
+										<label style="float: left;">搜索链接</label>
+										<input style="width:386px; margin-left:20px;" autocomplete="off" ng-model="url" type="text" value="{$search['search_url']}" name="url" id="url" class="ng-valid ng-dirty">
+										<input type="button" class="btn" id="parseBtn" value="解析搜索">
+									</div>
+									<p class="help-block" style="color: red;">如果提示“无法解析此地址”,请更换搜索关键字多次尝试,关键字字数不少于5位</p>
+									<p class="help-block">从淘宝/天猫搜索找到对应商品的搜索页面的链接</p>
+								</div>
+							</div> 
+
+						</form>
+					</div>
+					<div id="sousuo_preview">
+						<div>
+							<form class="form-horizontal jquery-once-1-processed" controller="extend/ajax_form" id="yw0" action="{:U('Home/SJActivity/save')}" method="post" novalidate="novalidate">
+								<input type="hidden" value="" name="iscz" id="iscz">
+								<input type="hidden" value="{$search['id']}" name="id" id="">
+								<input type="hidden" value="{$search['pid']}" name="pid">
+								<input type="hidden" value="{$search['search_url']}" name="search_url" />
+								<input type="hidden" value="{$search['search_q']}" name="search_q" />
+								<input type="hidden" value="{$search['search_condition']}" name="search_xz" />
+								<input type="hidden" value="{$search['search_order']}" name="search_order" />
+								<div id="div_searchCondition" style="">
+									<div class="form-horizontal">
+										<div class="control-group">
+											<label class="control-label">
+												搜索条件
+											</label>
+											<br>
+											<div class="controls">
+												<div style="padding: 10px;background: #eee;color:#222;margin-bottom: 20px;">
+													<p>打开<font class="font_openUrl">www.taobao.com</font>
+													</p>
+													<p>搜索关键词: <font class="font_key">{$search['search_q']}</font>
+													</p>
+													<p>选择 <font class="font_tab">{$search['search_condition']}</font>
+													</p>
+													<p>排序: <font class="font_order">{$search['search_order']}</font>
+													</p>
+													<p>一般在前五页即可找到对应商品</p>
+												</div>
+											</div>
+										</div>
+
+										<div class="control-group">
+											<label class="control-label">搜索结果</label>
+
+											<div class="controls">
+
+												<div unselectable="on" onselectstart="return false;">
+													<volist name="pros" id="vo">
+														<if condition="$search['pid'] eq $vo['id']">
+													<div class="theme_taobao_item_wrap">
+														<div class="theme_taobao">
+															
+																
+																<img class="img" src="{$vo['main_img']}" alt="">
+																
+															
+															<div class="row-1">
+																<span class="pull-right">XX人付款</span>
+																<span class="price">
+
+                <span>¥</span> <font class="font_price1">{$vo['price']}</font> </span>
+															</div>
+															<div class="row-2"><i class="title_msk" style="background: url(__IMG__/title_msk.png) 0 -1px no-repeat;display:block;position:absolute;left:60px"></i>
+																<font class="font_title1">{$vo['title']}</font> </div>
+															<div class="row-3">
+																<div class="pull-right">XX XX</div>
+																<i class="goods_store" style="url(__IMG__/goods_store.png) 0 0 no-repeat;vertical-align:middle"></i>
+																<span><font class="font_wangwang">{$aliwawa}</font><i class="ali_wang" style="background: url(__IMG__/ali_wang.png)  0 -2px no-repeat;vertical-align:middle"></i></span>
+															</div>
+															<div class="row-4">
+																<i class="pull-right wangwang" style="background: url(__IMG__/wangwang.png) 0 0px no-repeat;vertical-align:middle"></i> &nbsp;
+															</div>
+														</div>
+													</div>
+													</if>
+													</volist>
+												</div>
+											</div>
+										</div>
+
+									</div>
+									<div class="control-group">
+										<div id="div_search_result" class="controls">
+
+											<!--<div class="alert alert-warning in fade"><a href="#" class="close" data-dismiss="alert" type="button">×</a></div> -->
+										</div>
+									</div>
+
+									<div class="form-actions">
+										<button class="am-btn am-btn-primary" type="submit">保存搜索</button>
+									</div>
+								</div>
+								<div style="padding: 50px;"></div>
+
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<include file='Widget/sjleft' />
+	</div>
+</block>
+
+<block name="area_footer">
+
+</block>

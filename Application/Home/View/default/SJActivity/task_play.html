@@ -99,7 +99,8 @@
 											</td>
 											<td>
 												<div class="renwu-caozuo small"><a target="_blank" href="{:U('Home/SJActivity/alluser',array('id'=>$tp['task_id']))}">查看试民</a>
-													<!--<br><a data-toggle="modal2" modal-title="修改份数" href="http://www.shifujie.net/seller/sf/renwuku/fenshu?id=31834">修改份数</a>-->
+													<br><a class="xgfs" data-am-modal="{target: '#doc-modal-2', closeViaDimmer: 0, width:350, height:150}" data-toggle="modal2"  href="javascript:void(0)">修改份数</a>
+													<input type="hidden" name="id" id="id" value="{$tp.id}" />
 													<!--<br><a data-role="ajax" href="{:U('Home/SJActivity/zanting',array('id'=>$vo['id']))}" id="yt1">暂停任务</a>-->
 												</div>&nbsp;</td>
 										</tr>
@@ -184,7 +185,7 @@
 										<td style="padding-top: 10px;">
 										</td>
 										<td style="padding-top: 10px;">
-											<button type="submit" class="am-btn am-btn-primary am-btn-xs" style="width: 80px; height:30px;padding: 0;border-radius: 5px; ">
+											<button id="addok" type="submit" class="am-btn am-btn-primary am-btn-xs" style="width: 80px; height:30px;padding: 0;border-radius: 5px; ">
 												保存
 											</button>
 										</td>
@@ -194,6 +195,30 @@
 							</div>
 						</div>
 					</div>
+					<!--修改份数窗口-->
+					<div class="am-modal am-modal-no-btn" tabindex="-1" id="doc-modal-2">
+						<div class="am-modal-dialog" style="border-radius: 5px;border-bottom: 1px solid #ccc;">
+							<div class="am-modal-hd" style="font-size:12px;">
+								修改任务份数
+								<a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>
+									&times;
+								</a>
+								<form class="fm" action="{:U('Home/SJActivity/upcount')}" method="post">
+									<input type="hidden" name="dfmoney" id="dfmoney" value="{$task['task_gold']}" />
+									<input type="hidden" name="sid" id="sid" value="" /><br>
+								<div style="text-align: center;">
+									修改任务份数：<input type="number" style="width:100px; height: 30px;" id="rwcount" name="rwcount" value="" /><br>
+									<button id="xgfsok" type="submit">确定</button>
+								</div>
+								</form>
+								
+							</div>
+							<div class="am-modal-bd">
+								
+							</div>
+						</div>
+					</div>
+					<!--修改份数窗口-->
 </block>
 
 <block name="area_footer">
@@ -203,7 +228,7 @@
 			var ysyf= $('#ysyf').text();
 			var xdje= Number(zrwj)-Number(ysyf);
 			$('#xdje').text(xdje);
-			$("button[type='submit']").click(function(){
+			$("#addok").click(function(){
 				var btime=$('#begin_time').val();
 				var etime=$('#end_time').val();
 				var count=$('#count').val();
@@ -222,7 +247,21 @@
 					}
 				}
 			})
-		
+			$('.xgfs').click(function(){
+				var a=$(this).parent().find("input[name='id']").val();
+				$('#sid').val(a);
+			})
+			$('#xgfsok').click(function(){
+				var count=$('#rwcount').val();
+				var sum=Number(count)*Number(zrwj);
+				if('{$money}'<sum){
+						alert('您的余额不足以支付任务佣金');
+						return false;
+					}else{
+						$('#zong').val(sum);
+						return true;
+					}
+			})
 		})
 	</script>
 </block>
