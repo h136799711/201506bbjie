@@ -273,7 +273,11 @@ class SJActivityController extends CheckLoginController {
 		$whe = array('do_status' => 3);
 		$taskhis = apiCall(HomePublicApi::Task_His_Query, array($whe));
 		$this -> assign('tshis', $taskhis['info']);
+		$sm=apiCall(HomePublicApi::Bbjmember_Query, array());
+		$sms=apiCall(HomePublicApi::Member_Query, array());
 		$headtitle = "宝贝街-活动";
+		$this->assign('sm',$sm['info']);
+		$this->assign('sms',$sms['info']);
 		$this -> assign('head_title', $headtitle);
 		$this -> assign('task', $result['info']);
 		$this -> assign('username', $user['info']['username']);
@@ -308,7 +312,7 @@ class SJActivityController extends CheckLoginController {
 	 * */
 	public function qrdd(){
 		$id=I('id','');
-		$entity=array('do_status'=>7);
+		$entity=array('order_status'=>2,'do_status'=>6);
 		$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$entity));
 //		dump($id);dump($entity);
 		if($result['status']){
@@ -335,15 +339,16 @@ class SJActivityController extends CheckLoginController {
 			$yqrid=$result['info'][0]['referrer_id'];
 			$sel=apiCall(HomePublicApi::Task_Query,array($smap));
 			$money=$sel['info'][0]['task_gold'];
+			$fhmoney=$us['info'][0]['tb_price'];
 			$sid=$sel['info'][0]['uid'];
 			$fucoin=$sel['info'][0]['coin'];
 			$orderid=$us['info'][0]['tb_orderid'];
-			$return=M('bbjmember')->where('uid='.$uid)->setInc('coins',$money);
+			$return=M('bbjmember')->where('uid='.$uid)->setInc('coins',$fhmoney);
 			$return=M('bbjmember')->where('uid='.$yqrid)->setInc('fucoin',1);
 			$return=M('bbjmember')->where('uid='.$uid)->setInc('fucoin',$fucoin);
 			$return1=M('bbjmemberSeller')->where('uid='.$sid)->setDec('frozen_money',$money);
 			if($return!=0 &&$return1 !=0){
-				$entity1 = array('uid' => $uid, 'defray' => '0.00', 'income' => $money, 'create_time' => time(), 'notes' => '商家退回任务金额', 'dtree_type' => 2, 'status' => 1, );
+				$entity1 = array('uid' => $uid, 'defray' => '0.00', 'income' => $fhmoney, 'create_time' => time(), 'notes' => '商家退回任务金额', 'dtree_type' => 2, 'status' => 1, );
 				$result1 = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entity1));
 				$entity2 = array('uid' => $uid, 'defray' => '0.00' ,'income' => $fucoin, 'create_time' => time(), 'notes' => "订单：".$orderid."任务完成奖励福币", 'dtree_type' => 2, 'status' => 1, );
 				$result2 = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entity2));
@@ -553,7 +558,7 @@ class SJActivityController extends CheckLoginController {
 		$bzj=I('bzj', '');
 		$coin=round(I('yj', '')*0.7*4);
 		session('money', $money);
-		$entity = array('delivery_mode' => 2, 'task_postage' => I('by', ''), 'task_gold' => $bzj, 'task_brokerage' => I('yj', ''), 'dtree_preferential' => I('yhfs', ''),'coin'=>$coin, );
+		$entity = array('delivery_mode' => 1, 'task_postage' => I('by', ''), 'task_gold' => $bzj, 'task_brokerage' => I('yj', ''), 'dtree_preferential' => I('yhfs', ''),'coin'=>$coin, );
 		$map = array('id' => $id);
 		$result = apiCall(HomePublicApi::Task_SaveByID, array($id, $entity));
 		$tak = apiCall(HomePublicApi::Task_Query, array($map));
@@ -912,7 +917,7 @@ class SJActivityController extends CheckLoginController {
 	}
 
 	/**
-	 * 保存搜索
+	 * 保存搜索 
 	 */
 	public function save() {
 		$user=session('user');
@@ -965,13 +970,12 @@ class SJActivityController extends CheckLoginController {
 	 	$id=I('sid',0);
 		$mapp=array('id'=>$id);
 		$money=I('dfmoney','');
-		$map=array('task_cnt'=>I('rwcount',1));
 		$result = apiCall(HomePublicApi::TaskPlan_Query, array($mapp));
 		$fenshu=$result['info'][0]['task_cnt'];
-		
-		$zongjia=(I('rwcount',1)-$fenshu)*$money;
+		$map=array('task_cnt'=>I('rwcount',1)+$fenshu);
+		$zongjia=I('rwcount',1)*$money;
 		if($zongjia<=0){
-			$this->error('请填写大于当前任务份数的数字!');
+			$this->error('请填写正确的份数!');
 		}else{
 			$results = apiCall(HomePublicApi::TaskPlan_SaveByID, array($id,$map));
 			$entitya = array('uid' => $user['info']['id'], 'defray' => $zongjia , 'income' => '0.000', 'create_time' => time(), 'notes' => '增加份数冻结任务佣金', 'dtree_type' => 5, 'status' => 3, );
@@ -984,9 +988,19 @@ class SJActivityController extends CheckLoginController {
 				}
 			}
 		}
-		
-		
 	 }
+
+	/*
+	 * 修改任务时间
+	 * */
+	public function uptime(){
+		$id=I('timeid',0);
+		$stime=I('stime',0);
+		$etime=I('etime',0);
+		$map=array('create_time'=>strtotime($stime),'start_time'=>strtotime($etime));
+		$results = apiCall(HomePublicApi::TaskPlan_SaveByID, array($id,$map));
+		$this->success('操作成功');
+	}
 	public function zdysave() {
 		$user=session('user');
 		$entity = array('uid'=>$user['info']['id'] ,'dtree_type' => 2, 'status' => 1, 'create_time' => time(), 'update_time' => time(), 'pid' => I('pid', ''), 'search_url' => '', 'search_q' => I('text', ''), 'search_order' => I('search_order', ''), 'search_condition' => I('weizhi', ''), );

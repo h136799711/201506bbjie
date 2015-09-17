@@ -157,28 +157,29 @@ class SMActivityController extends CheckLoginController {
 	 * */
 	public function hd_sened(){
 		$user = session('user');
-		$map1 = array('uid' => $user['info']['id'], 'do_status' => 7);
-		$result = apiCall(HomePublicApi::Task_Query, array());
+		$map = array('uid' => $user['info']['id'], 'do_status' => 7);
 		$page = array('curpage' => I('get.p', 0), 'size' => 5);
-		$result1=apiCall(HomePublicApi::Task_His_QueryAll,array($map1,$page));
-		for ($i=0; $i <count($result1['info']['list']) ; $i++) { 
-			$mapp=array('id'=>$result1['info']['list'][$i]['task_id']);
-			$result2[]=apiCall(HomePublicApi::Task_Query,array($mapp));
-			$map3=array('task_id'=>$result2[$i]['info'][0]['id']);
-			$result3[]=apiCall(HomePublicApi::TaskHasProduct_Query,array($map3));
+		$result=apiCall(HomePublicApi::Task_His_QueryAll,array($map,$page));
+		for ($i = 0; $i < count($result['info']['list']); $i++) {
+			$id = $result['info']['list'][$i]['task_id'];
+			$map4 = array('task_id' => $id);
+			$result['info']['list'][$i]['hasList']= apiCall(HomePublicApi::TaskHasProduct_Query, array($map4))['info'];
+			for($j=0;$j<count($result['info']['list'][$i]['hasList']);$j++){
+				$pid = array('id' => $result['info']['list'][$i]['hasList'][$j]['pid']);
+				$result['info']['list'][$i]['hasList'][$j]['product'] = apiCall(HomePublicApi::Product_Query, array($pid))['info'][0];
+			}
 		}
-		$this -> assign('tshis', $result1['info']['list']);
-		$headtitle = "宝贝街-活动";
-		$this -> assign('head_title', $headtitle);
-		$this -> assign('task', $result['info']);
+		$tp=$result1['info']['list'];
 		$this -> assign('username', $user['info']['username']);
-		$exchange=apiCall(AdminPublicApi::OrderExpress_Query, array($whe));
-		$this->assign('express',$exchange['info']);
-		$goods=apiCall(HomePublicApi::Product_Query,array($ddd));
-		$this->assign('goods',$goods['info']);
-		$this->assign('tspro',$result3);
+		$result2=apiCall(HomePublicApi::Task_Query,array($mapp));
+		$express=apiCall(AdminPublicApi::OrderExpress_Query,array());
+		$this->assign('express',$express['info']);
+		$this->assign('task',$result2['info']);
+		$this->assign('pross',$result['info']['list']);
+		$this->assign('show',$result['info']['show']);
 		$index=A('Index');
 		$index->getcount();
+		$index->posts();
 //		dump($goods);
 		$this -> display();
 	}
@@ -190,26 +191,25 @@ class SMActivityController extends CheckLoginController {
 		$this -> assign('cs_sf', 'sed');
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
-		$order = " post_modified desc ";
-		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
+		
 		$map=array('uid'=>$user['info']['id'],'do_status'=>3);
 		$page = array('curpage' => I('get.p', 0), 'size' => 5);
-		$result1=apiCall(HomePublicApi::Task_His_QueryAll,array($map,$page));
-		for ($i=0; $i <count($result1['info']['list']) ; $i++) { 
-			$mapp=array('id'=>$result1['info']['list'][$i]['task_id']);
-			$result2[]=apiCall(HomePublicApi::Task_Query,array($mapp));
-			$map3=array('task_id'=>$result2[$i]['info'][0]['id']);
-			$result3[]=apiCall(HomePublicApi::TaskHasProduct_Query,array($map3));
+		$result=apiCall(HomePublicApi::Task_His_QueryAll,array($map,$page));
+		for ($i = 0; $i < count($result['info']['list']); $i++) {
+			$id = $result['info']['list'][$i]['task_id'];
+			$map4 = array('task_id' => $id);
+			$result['info']['list'][$i]['hasList']= apiCall(HomePublicApi::TaskHasProduct_Query, array($map4))['info'];
+			for($j=0;$j<count($result['info']['list'][$i]['hasList']);$j++){
+				$pid = array('id' => $result['info']['list'][$i]['hasList'][$j]['pid']);
+				$result['info']['list'][$i]['hasList'][$j]['product'] = apiCall(HomePublicApi::Product_Query, array($pid))['info'][0];
+			}
 		}
 		$tp=$result1['info']['list'];
-		$this->assign('zxgg',$result['info'][0]);
 		$this -> assign('username', $user['info']['username']);
-		$goods=apiCall(HomePublicApi::Product_Query,array($ddd));
-		$this->assign('goods',$goods['info']);
-		$this->assign('tspro',$result3);
-		$this->assign('tp',$result1['info']['list']);
-		$this->assign('show',$result1['info']['show']);
-		$this->assign('task',$result2);
+		$result2=apiCall(HomePublicApi::Task_Query,array($mapp));
+		$this->assign('task',$result2['info']);
+		$this->assign('pross',$result['info']['list']);
+		$this->assign('show',$result['info']['show']);
 		$index=A('Index');
 		$index->getcount();
 		$index->posts();
@@ -225,28 +225,25 @@ class SMActivityController extends CheckLoginController {
 		$this -> assign('cs_sf', 'sed');
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
-		$order = " post_modified desc ";
-		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
+		
 		$map=array('uid'=>$user['info']['id'],'do_status'=>4);
 		$page = array('curpage' => I('get.p', 0), 'size' => 5);
-		$result1=apiCall(HomePublicApi::Task_His_QueryAll,array($map,$page));
-		
-		for ($i=0; $i <count($result1['info']['list']) ; $i++) { 
-			$mapp=array('id'=>$result1['info']['list'][$i]['task_id']);
-			$result2[]=apiCall(HomePublicApi::Task_Query,array($mapp));
-			$map3=array('task_id'=>$result2[$i]['info'][0]['id']);
-			$result3[]=apiCall(HomePublicApi::TaskHasProduct_Query,array($map3));
-			
+		$result=apiCall(HomePublicApi::Task_His_QueryAll,array($map,$page));
+		for ($i = 0; $i < count($result['info']['list']); $i++) {
+			$id = $result['info']['list'][$i]['task_id'];
+			$map4 = array('task_id' => $id);
+			$result['info']['list'][$i]['hasList']= apiCall(HomePublicApi::TaskHasProduct_Query, array($map4))['info'];
+			for($j=0;$j<count($result['info']['list'][$i]['hasList']);$j++){
+				$pid = array('id' => $result['info']['list'][$i]['hasList'][$j]['pid']);
+				$result['info']['list'][$i]['hasList'][$j]['product'] = apiCall(HomePublicApi::Product_Query, array($pid))['info'][0];
+			}
 		}
 		$tp=$result1['info']['list'];
-		$this->assign('zxgg',$result['info'][0]);
 		$this -> assign('username', $user['info']['username']);
-		$goods=apiCall(HomePublicApi::Product_Query,array($ddd));
-		$this->assign('goods',$goods['info']);
-		$this->assign('tspro',$result3);
-		$this->assign('tp',$result1['info']['list']);
-		$this->assign('show',$result1['info']['show']);
-		$this->assign('task',$result2);
+		$result2=apiCall(HomePublicApi::Task_Query,array($mapp));
+		$this->assign('task',$result2['info']);
+		$this->assign('pross',$result['info']['list']);
+		$this->assign('show',$result['info']['show']);
 		$index=A('Index');
 		$index->getcount();
 		$index->posts();
@@ -261,29 +258,25 @@ class SMActivityController extends CheckLoginController {
 		$this -> assign('cs_sf', 'sed');
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
-		$order = " post_modified desc ";
-		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
+	
 		$map=array('uid'=>$user['info']['id'],'do_status'=>8);
 		$page = array('curpage' => I('get.p', 0), 'size' => 5);
-		$result1=apiCall(HomePublicApi::Task_His_QueryAll,array($map,$page));
-		
-		$this->assign('zxgg',$result['info'][0]);
-		for ($i=0; $i <count($result1['info']['list']) ; $i++) { 
-			$mapp=array('id'=>$result1['info']['list'][$i]['task_id']);
-			$result2[]=apiCall(HomePublicApi::Task_Query,array($mapp));
-			$map3=array('task_id'=>$result2[$i]['info'][0]['id']);
-			$result3[]=apiCall(HomePublicApi::TaskHasProduct_Query,array($map3));
-			
+		$result=apiCall(HomePublicApi::Task_His_QueryAll,array($map,$page));
+		for ($i = 0; $i < count($result['info']['list']); $i++) {
+			$id = $result['info']['list'][$i]['task_id'];
+			$map4 = array('task_id' => $id);
+			$result['info']['list'][$i]['hasList']= apiCall(HomePublicApi::TaskHasProduct_Query, array($map4))['info'];
+			for($j=0;$j<count($result['info']['list'][$i]['hasList']);$j++){
+				$pid = array('id' => $result['info']['list'][$i]['hasList'][$j]['pid']);
+				$result['info']['list'][$i]['hasList'][$j]['product'] = apiCall(HomePublicApi::Product_Query, array($pid))['info'][0];
+			}
 		}
 		$tp=$result1['info']['list'];
-		$this->assign('zxgg',$result['info'][0]);
 		$this -> assign('username', $user['info']['username']);
-		$goods=apiCall(HomePublicApi::Product_Query,array($ddd));
-		$this->assign('goods',$goods['info']);
-		$this->assign('tspro',$result3);
-		$this->assign('tp',$result1['info']['list']);
-		$this->assign('show',$result1['info']['show']);
-		$this->assign('task',$result2);
+		$result2=apiCall(HomePublicApi::Task_Query,array($mapp));
+		$this->assign('task',$result2['info']);
+		$this->assign('pross',$result['info']['list']);
+		$this->assign('show',$result['info']['show']);
 		$index=A('Index');
 		$index->getcount();
 		$index->posts();
@@ -298,27 +291,24 @@ class SMActivityController extends CheckLoginController {
 		$this -> assign('cs_sf', 'sed');
 		$this -> assign('head_title', $headtitle);
 		$user = session('user');
-		$order = " post_modified desc ";
-		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
 		$map=array('uid'=>$user['info']['id'],'do_status'=>0);
 		$page = array('curpage' => I('get.p', 0), 'size' => 5);
-		$result1=apiCall(HomePublicApi::Task_His_QueryAll,array($map,$page));
-		for ($i=0; $i <count($result1['info']['list']) ; $i++) { 
-			$mapp=array('id'=>$result1['info']['list'][$i]['task_id']);
-			$result2[]=apiCall(HomePublicApi::Task_Query,array($mapp));
-			$map3=array('task_id'=>$result2[$i]['info'][0]['id']);
-			$result3[]=apiCall(HomePublicApi::TaskHasProduct_Query,array($map3));
-			
+		$result=apiCall(HomePublicApi::Task_His_QueryAll,array($map,$page));
+		for ($i = 0; $i < count($result['info']['list']); $i++) {
+			$id = $result['info']['list'][$i]['task_id'];
+			$map4 = array('task_id' => $id);
+			$result['info']['list'][$i]['hasList']= apiCall(HomePublicApi::TaskHasProduct_Query, array($map4))['info'];
+			for($j=0;$j<count($result['info']['list'][$i]['hasList']);$j++){
+				$pid = array('id' => $result['info']['list'][$i]['hasList'][$j]['pid']);
+				$result['info']['list'][$i]['hasList'][$j]['product'] = apiCall(HomePublicApi::Product_Query, array($pid))['info'][0];
+			}
 		}
 		$tp=$result1['info']['list'];
-		$this->assign('zxgg',$result['info'][0]);
 		$this -> assign('username', $user['info']['username']);
-		$goods=apiCall(HomePublicApi::Product_Query,array($ddd));
-		$this->assign('goods',$goods['info']);
-		$this->assign('tspro',$result3);
-		$this->assign('tp',$result1['info']['list']);
-		$this->assign('show',$result1['info']['show']);
-		$this->assign('task',$result2);
+		$result2=apiCall(HomePublicApi::Task_Query,array($mapp));
+		$this->assign('task',$result2['info']);
+		$this->assign('pross',$result['info']['list']);
+		$this->assign('show',$result['info']['show']);
 		$index=A('Index');
 		$index->posts();
 		$index->getcount();
@@ -388,10 +378,11 @@ class SMActivityController extends CheckLoginController {
 					$entity=array(
 						'get_task_time'=>time(),
 						'do_status'=>1,
+						'order_status'=>1,
 						'create_time'=>time(),
 						'tb_orderid'=>'',
 						'tb_address'=>'',
-						'tb_price'=>$resultq['info'][0]['task_gold'],
+						'tb_price'=>0,
 						'task_id'=>$result['info'][0]['task_id'],
 						'uid'=>$user['info']['id'],
 						'tpid'=>$result['info'][0]['id'],
@@ -424,6 +415,38 @@ class SMActivityController extends CheckLoginController {
 		
 		
 	}
+	/*
+	 * 查找任务
+	 * */
+	public function chazhao(){
+		$user=session('user');
+		$map=array('uid'=>$user['info']['id'],'tb_orderid'=>array('like','%'.I('txt','').'%'));
+		$page = array('curpage' => I('get.p', 0), 'size' => 8);
+		$result=apiCall(HomePublicApi::Task_His_QueryAll,array($map,$page));
+		for ($i = 0; $i < count($result['info']['list']); $i++) {
+			$id = $result['info']['list'][$i]['task_id'];
+			$map4 = array('task_id' => $id);
+			$result['info']['list'][$i]['hasList']= apiCall(HomePublicApi::TaskHasProduct_Query, array($map4))['info'];
+			for($j=0;$j<count($result['info']['list'][$i]['hasList']);$j++){
+				$pid = array('id' => $result['info']['list'][$i]['hasList'][$j]['pid']);
+				$result['info']['list'][$i]['hasList'][$j]['product'] = apiCall(HomePublicApi::Product_Query, array($pid))['info'][0];
+			}
+		}
+		//dump($result);
+		$result2=apiCall(HomePublicApi::Task_Query,array($mapp));
+		$this->assign('task',$result2['info']);
+		$this->assign('pross',$result['info']['list']);
+		$this->assign('show',$result['info']['show']);
+		$this -> assign('username', $user['info']['username']);
+		$this -> assign('cs_sf', 'sed');
+		$this -> assign('head_title', $headtitle);	
+		$index=A('Index');
+		$index->getcount();
+		$index->posts();
+		$this->display('Usersm/sm_bbhd');
+	}
+	
+	
 	public function rws(){
 		$headtitle = "宝贝街-任务书";
 		$this -> assign('head_title', $headtitle);
@@ -441,16 +464,19 @@ class SMActivityController extends CheckLoginController {
 		$this->assign('task',$task['info'][0]);
 		$result=apiCall(HomePublicApi::TaskHasProduct_Query, array($map));
 		$this->assign('jianshu',$result['info'][0]['num']);
-		$mapp=array('id'=>$result['info'][0]['pid']);
-		$mapa=array('pid'=>$result['info'][0]['pid']);
-		$return=apiCall(HomePublicApi::Product_Query, array($mapp));
-		$returns=apiCall(HomePublicApi::ProductSearchWay_Query, array($mapa));
+		
 		$taskhisid=I('taskhisid');
+		for ($i=0; $i <count($result['info']) ; $i++) { 
+			$mapp=array('id'=>$result['info'][$i]['pid']);
+			$mapa=array('pid'=>$result['info'][$i]['pid']);
+			$return[]=apiCall(HomePublicApi::Product_Query, array($mapp));
+			$returns=apiCall(HomePublicApi::ProductSearchWay_Query, array($mapa));
+		}
 		$tsmap=array('id'=>$taskhisid);
-		$this->assign('hsid',$taskhisid);
 		$taskhis=apiCall(HomePublicApi::Task_His_Query, array($tsmap));
-//		dump();
-		$this->assign('pd',$return['info'][0]);
+//		dump($return);
+		$this->assign('pd',$return);
+		$this->assign('pds',$return[0]['info'][0]);
 		$this->assign('searchm ',$returns['info'][0]);
 		$map=array('uid'=>$user['info']['id'],'exchange_status'=>1,'orderid'=>0);
 		$re=apiCall(HomePublicApi::ExchangeProduct_Query,array($map));
@@ -458,6 +484,7 @@ class SMActivityController extends CheckLoginController {
 		$maps=array('uid'=>$user['info']['id']);
 		$results=apiCall(AdminPublicApi::Wxproduct_QueryNoPaging,array($maps));
 		$this->assign('product',$results['info']);
+		$this->assign('hsid',$taskhisid);
 		$this->assign('do_status',$taskhis['info'][0]['do_status']);
 		$this->display();
 	}
@@ -540,6 +567,166 @@ class SMActivityController extends CheckLoginController {
 		}
 		
 	}
+	
+	 /**
+     * 查询订单
+     */
+    function  searchExpress(){
+
+         $url =C('JUHE_API.EXPRESS_SENDURL');#请求的数据接口URL
+        $com=I("com",0);
+        $no=I("no",0);
+        $params='com='.$com.'&no='.$no.'&dtype=json&key='.C('JUHE_API.EXPRESS_APPKEY');
+
+        $content = $this->juhecurl($url,$params,0);
+        if($content){
+            $result = json_decode($content,true);
+            $result_code = $result['resultcode'];
+            if($result_code == 200){
+                $this->ajaxReturn($result['result']);
+            }else{
+                $this->ajaxReturn("订单查询失败,错误ID号：".$result_code);
+            }
+        }else{
+            $this->ajaxReturn("订单查询失败");
+        }
+    }
+	
+	
+	/**
+     * 查询订单
+     */
+    function  searchExpressHtml(){
+
+        /*$url=C('JUHE_API.EXPRESS_SENDURL'); #请求的数据接口URL
+        //dump($url);
+        $com=I("com",0);
+        $no=I("no",0);
+        $params='com='.$com.'&no='.$no.'&dtype=json&key='.C('JUHE_API.EXPRESS_APPKEY');
+        $content = $this->juhecurl($url,$params,0);
+        if($content){
+            $result = json_decode($content,true);
+            //rsort($result['result']['list']);
+            $this->assign('result',$result);
+        }else{
+
+        }*/
+
+
+        /******** 测试数据*************/
+       $result['error_code']=0;
+        $list[]= array(
+                "datetime"=>"2013-06-25  10:44:05",
+                "remark"=>"已收件",
+                "zone"=>"台州市"
+        );
+        $list[]= array(
+                "datetime"=> "2013-06-25  11:05:21",
+                "remark"=>"快件在 台州  ,准备送往下一站 台州集散中心  ",
+                "zone"=> "台州市"
+
+        );
+        $list[]= array(
+            "datetime"=>"2013-06-25  20:36:02",
+            "remark"=>"快件在 台州集散中心  ,准备送往下一站 台州集散中心 ",
+            "zone"=>"台州市"
+        );
+        $list[]= array(
+            "datetime"=>"2013-06-25  21:17:36",
+            "remark"=>"快件在 台州集散中心 ,准备送往下一站 杭州集散中心",
+            "zone"=>"台州市"
+        );
+        $list[]= array(
+            "datetime"=>"2013-06-26  12:20:00",
+            "remark"=>"快件在 杭州集散中心  ,准备送往下一站 西安集散中心 ",
+            "zone"=>"杭州市"
+        );
+        $list[]= array(
+            "datetime"=>"2013-06-27  05:48:42",
+            "remark"=>"快件在 西安集散中心 ,准备送往下一站 西安  ",
+            "zone"=>"西安市/咸阳市"
+        );
+
+        $list[]= array(
+            "datetime"=>"2013-06-27  08:03:03",
+            "remark"=>"正在派件.. ",
+            "zone"=>"西安市/咸阳市"
+        );
+
+        $list[]= array(
+            "datetime"=>"2013-06-27  08:51:33",
+            "remark"=>"派件已签收",
+            "zone"=>"西安市/咸阳市"
+        );
+
+        $list[]= array(
+            "datetime"=>"2013-06-27 08:51",
+            "remark"=>"派件已签收",
+            "zone"=>"西安市/咸阳市"
+        );
+
+        $list[]= array(
+            "datetime"=>"2013-06-27  08:51:33",
+            "remark"=>"签收人是：已签收",
+            "zone"=>"西安市/咸阳市"
+        );
+
+
+        rsort($list); //数组倒序
+        $result['result']=array(
+           "company"=>"顺丰",
+           "com"=>"sf",
+           "no"=>"575677355677",
+           "status"=>1,
+            "list"=>$list
+        );
+        $this->assign("result",$result);
+        /******** 测试数据*************/
+        $this ->display();
+    }
+	
+	
+	
+
+/*
+      ***请求接口，返回JSON数据
+      ***@url:接口地址
+      ***@params:传递的参数
+      ***@ispost:是否以POST提交，默认GET
+  */
+    function juhecurl($url,$params=false,$ispost=0){
+        $httpInfo = array();
+        $ch = curl_init();
+
+        curl_setopt( $ch, CURLOPT_HTTP_VERSION , CURL_HTTP_VERSION_1_0 );
+        curl_setopt( $ch, CURLOPT_USERAGENT , 'Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22' );
+        curl_setopt( $ch, CURLOPT_CONNECTTIMEOUT , 30 );
+        curl_setopt( $ch, CURLOPT_TIMEOUT , 30);
+        curl_setopt( $ch, CURLOPT_RETURNTRANSFER , true );
+        if( $ispost )
+        {
+            curl_setopt( $ch , CURLOPT_POST , true );
+            curl_setopt( $ch , CURLOPT_POSTFIELDS , $params );
+            curl_setopt( $ch , CURLOPT_URL , $url );
+        }
+        else
+        {
+            if($params){
+                curl_setopt( $ch , CURLOPT_URL , $url.'?'.$params );
+            }else{
+                curl_setopt( $ch , CURLOPT_URL , $url);
+            }
+        }
+        $response = curl_exec( $ch );
+        if ($response === FALSE) {
+            #echo "cURL Error: " . curl_error($ch);
+            return false;
+        }
+        $httpCode = curl_getinfo( $ch , CURLINFO_HTTP_CODE );
+        $httpInfo = array_merge( $httpInfo , curl_getinfo( $ch ) );
+        curl_close( $ch );
+        return $response;
+    }
 	
 
 }

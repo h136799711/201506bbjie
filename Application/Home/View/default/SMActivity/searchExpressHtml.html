@@ -1,0 +1,59 @@
+
+    <style>
+        .ul_exp{
+            list-style: none;
+        }
+        .ul_exp li{
+              border-left:1px solid #ccc;
+              /*border-bottom:1px solid #ccc;*/
+              padding-top: 0px;
+              padding-bottom: 50px;
+          }
+        .div_info{
+            padding-left: 20px;
+            font-size: 12px;
+            color: #ccc;
+        }
+
+        .ul_exp li.active .div_info{
+           color: green;
+        }
+
+        .ul_exp li.active .div_circle{
+            background-color: greenyellow;
+            border:1px solid green;
+        }
+
+        .div_circle{
+            width: 15px;
+            height: 15px;
+            border: 1px solid #ccc;
+            border-radius: 50%;
+            position: relative;
+            margin-left: -9px;
+            margin-top: -40px;
+            background-color: #ccc;
+        }
+
+
+    </style>
+
+<h3>物流公司：{$result.result.company}</h3>
+<h3>订单号：{$result.result.no}</h3>
+<h3 style="border-bottom: 1px solid #ccc;padding-bottom: 5px;">物流跟踪</h3>
+<eq name="result.error_code" value="0">
+    <ul class="ul_exp">
+        <volist name="result.result.list" id="l" key="k">
+            <li
+                    <eq name="k" value="1">class="active"</eq>
+                    ><div class="div_info">{$l.remark}<br />{$l.datetime}</div><div class="div_circle"></div></li>
+        </volist>
+        <!--<li class="active"><div class="div_info">杭州市邮政速递物流公司已妥投<br />2015-08-29</div><div class="div_circle"></div></li>
+        <li><div class="div_info">杭州市从站点出发<br />2015-08-29</div><div class="div_circle"></div></li>
+        <li><div class="div_info">南通海门电子商务<br />2015-08-29</div><div class="div_circle"></div></li>
+        <li><div class="div_info">南通上门取件<br />2015-08-29</div><div class="div_circle"></div></li>-->
+    </ul>
+    <else />
+    <h3>获取物流信息获取错误</h3>
+</eq>
+<hr />

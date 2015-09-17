@@ -349,27 +349,26 @@ class OrdersController extends AdminController {
 //		if (IS_GET) {
 			$orderid = I('orderid', '');
 			$userid = I('uid', 0);
-			$orderStatus = I('orderstatus',\Common\Model\OrdersModel::ORDER_RECEIPT_OF_GOODS);
+			$orderStatus = I('orderstatus',5);
 			$params = array();
 			$map = array();
 			if (!empty($orderid)) {
-				$map['orderid'] = array('like', $orderid . '%');
-				$params['orderid'] = $orderid;
+				$map['tb_orderid'] = array('like', $orderid . '%');
+				$params['tb_orderid'] = $orderid;
 			}
-			$map['wxaccountid'] = getWxAccountID();
+//			$map['uid'] = getWxAccountID();
 			$map['order_status'] = $orderStatus;
-			$map['pay_status'] = \Common\Model\OrdersModel::ORDER_PAID;
 			
 			$params['order_status'] = $orderStatus;
-			$page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));
-			$order = " createtime desc ";
+//			$page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));
+			$order = " create_time desc ";
 
 			if ($userid > 0) {
-				$map['wxuser_id'] = $userid;
+				$map['uid'] = $userid;
 			}
 
 			//
-			$result = apiCall('Shop/OrdersInfoView/query', array($map, $page, $order, $params));
+			$result = apiCall(HomePublicApi::Task_His_QueryAll, array($map, $page, $order, $params));
 
 			//
 			if ($result['status']) {

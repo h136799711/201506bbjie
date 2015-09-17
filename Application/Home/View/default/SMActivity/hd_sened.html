@@ -21,9 +21,10 @@
 					<thead>
 						<tr>
 							<td colspan="6" style=" height: 120px; ">
-
-								<input style="border: 1px solid #ccc; border-bottom-left-radius:7px; border-top-left-radius:7px;" />
-								<input class="am-btn-default" type="button" value="活动搜索" style="border: 1px solid #ccc;border-bottom-right-radius:7px; border-top-right-radius:7px;" />
+								<form action="{:U('Home/SMActivity/chazhao')}" method="post" style="float: left;">
+									<input name="txt" placeholder="请输入订单编号" style="border: 1px solid #ccc; border-bottom-left-radius:7px; border-top-left-radius:7px;" />
+									<input class="am-btn-default" type="submit" value="活动搜索" style="border: 1px solid #ccc;border-bottom-right-radius:7px; border-top-right-radius:7px;" />
+								</form>
 								<span style="font-size: 12px; margin-left: 20px;">
 									<a href="{:U('Home/Usersm/sm_bbhd')}" style="color: red;">进行中任务</a>
 									<!--<a href="#" style="color: #999;">新任务<font color="red">0</font></a>-->
@@ -53,22 +54,18 @@
 					</thead>
 
 					<tbody style="font-size: 12px;">
-						<foreach name="tshis" item="v">
+						<foreach name="pross" item="v">
 							<volist name="task" id="vo" key='aa'>
 								<if condition="$v['task_id'] eq $vo['id']">
 									<input type="hidden" name="" id="thid" value="{$v['id']}" />
 									<tr style="border: 1px solid #ccc; background: #F5F5F5; height: 37px;">
-										<td style="padding-left: 20px;" colspan="6">编号:{$vo['id']} 任务时间:{$v.get_task_time|date='m-d H:i',###}商家:{$vo['aliwawa']}</td>
+										<td style="padding-left: 20px;" colspan="6">编号:{$vo['id']} 任务时间:{$v['get_task_time']|date='m-d H:i',###}商家:{$vo['aliwawa']}</td>
 
 									</tr>
 									<tr style="border: 1px solid #ccc; height:100px; background:white;">
 										<td>
-											<volist name="tspro" id="t" key="k">
-												<foreach name="goods" item="c">
-													<if condition="$t['info'][$k-1]['pid'] eq $c['id']">
-														<img src="{$c['main_img']}" style="float: left; height: 50px; width: 70px; margin-left: 10px;" />
-													</if>
-												</foreach>
+											<volist name="v.hasList" id="t" >
+												<img src="{$t['product']['main_img']}" style="float: left; height: 50px; width: 70px; margin-left: 10px;" />
 											</volist>
 											<div style="margin-left:90px;"><font color="red">{$vo['coin']}</font>福币
 												<br /> 超时由系统取消</div>
@@ -82,22 +79,28 @@
 										<td>
 											旺旺名：{$vo['aliwawa']}
 											<br /> 订单：{$v['tb_orderid']}
-											<br /> 返款：{$vo['task_gold']}
+											<br /> 返款：{$v['tb_price']}
 											<br /><volist name="express" id="s">
 												<if condition="$v['tb_orderid'] eq $s['orderid']">
+													<input type="hidden" name="code" id="code" value="{$s['expresscode']}" />
 													快递公司：{$s['expressname']}<br>
 													运单号：{$s['expressno']}
 												</if>
+												
 											</volist>
 										</td>
 										<td>
 											已发货
 										</td>
-										<td><a class="btn" style="background-color: orangered; color: #FFFFFF;"  href="{:U('Home/SMActivity/sure',array('id'=>$v['id'],'uid'=>$vo['uid']))}">确认收货</a> </td>
+										<td><a class="btn" style="background-color: orangered; padding: 2px; color: #FFFFFF;"  href="{:U('Home/SMActivity/sure',array('id'=>$v['id'],'uid'=>$vo['uid']))}">确认收货</a>
+											<button id="ckwl"  data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 400}">查看物流</button>
+										</td>
 									</tr>
 								</if>
 							</volist>
+							
 						</foreach>
+						
 					</tbody>
 				</table>
 				{$show}
@@ -113,6 +116,16 @@
 			</div>
 		</div>
 	</div>
+	<div class="am-modal am-modal-no-btn" tabindex="-1" id="doc-modal-1">
+  <div class="am-modal-dialog">
+    <div class="am-modal-hd"><font id="titlea" size="4">快递查询</font>
+      <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+    </div>
+    <div id="textas" class="am-modal-bd">
+      
+    </div>
+  </div>
+</div>
 
 </block>
 
@@ -123,6 +136,20 @@
 		  $('#tixing').click(function(){
 		  	alert('提醒成功！请等待卖家确认');
 		  })
+		  $('#ckwl').click(function(){
+//			var com=$("#com").val();
+			
+				//$.getJSON("{:U('Shop/Orders/searchExpress')}",{com:com,no:$("#no").val()},function(json){ 
+					//console.info(json);
+					//for(var a=0; a<json.list.length;a++){
+						//alert(json.list[a].remark);
+						$('#textas').load("{:U('Home/SMActivity/searchExpressHtml')}");
+					//}
+				//})
+			
+			
+		
+	})
 		    
 		});
 	</script>

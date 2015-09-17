@@ -28,7 +28,7 @@
 								</a>
 							</div>
 							<div class="am-modal-bd">
-								<form action="{:U('Home/SJActivity/addproduct')}" method="post">
+								<form class="fm" method="post">
 								<input type="hidden" name="alww" class="alww" value="">
 								<input type="hidden" name="img" class="img" value="">
 								<input type="hidden" name="title" class="title" value="">
@@ -117,7 +117,7 @@
 										<td style="padding-top: 10px;">
 										</td>
 										<td style="padding-top: 10px;">
-											<button type="submit" class="am-btn am-btn-primary am-btn-xs" style="width: 80px; height:30px;padding: 0;border-radius: 5px; ">
+											<button type="button" url="{:U('Home/SJActivity/addproduct')}" target-form="fm" class="ajax-post am-btn am-btn-primary am-btn-xs" style="width: 80px; height:30px;padding: 0;border-radius: 5px; ">
 												保存
 											</button>
 										</td>

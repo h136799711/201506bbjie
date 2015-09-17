@@ -99,7 +99,7 @@
 									<td style=" padding-top: 10px;">
 										<input id="c" name="yftype" type="radio" value="包邮" checked="checked"/>包邮 
 										<input id="d" name="yftype" type="radio" value="不包邮"/>不包邮 
-										<font color="#C34A8A" style="margin-left: 20px;">试民在淘宝下单时还需另付邮费,需加￥15保证金</font>
+										<font color="#C34A8A" style="margin-left: 20px;">默认平台发货,超级VIP可自主发货</font>
 									</td>
 								</tr>
 
@@ -115,7 +115,7 @@
 										<form id='fm' action="{:U('Home/SJActivity/a2')}" method="post">
 											<div class="fm">
 												<input type="hidden" name="by" id="by" value="" />
-												<input type="hidden" name="fhfs" id="fhfs" value="" />
+												<input type="hidden" name="fhfs" id="fhfs" value="1" />
 												<input type="hidden" name="bzj" id="bzj" value="" />
 												<input type="hidden" name="yj" id="yj" value="" />
 												<input type="hidden" name="xiadan" id="xiadan" value="" />
@@ -134,7 +134,7 @@
 								</tr>
 							</table>
 							<center>
-								<button id="up" type="button" class="am-btn am-btn-secondary" style="margin-top: 5px;">上一步</button>
+								<!--<button id="up" type="button" class="am-btn am-btn-secondary" style="margin-top: 5px;">上一步</button>-->
 								<button id="down" type="button" class="am-btn am-btn-secondary" style="margin-top: 5px;">下一步</button>
 							</center>
 						</div>
@@ -183,9 +183,7 @@
 			
 		})
 		
-		$('#up').click(function(){
-			window.location.href="{:U('Home/SJActivity/activity_1')}";
-		})
+		
 		$('#down').click(function(){
 			var ced=$('input:radio[name="yftype"]:checked').val();
 			var cedd=$('input:radio[name="fhtype"]:checked').val();

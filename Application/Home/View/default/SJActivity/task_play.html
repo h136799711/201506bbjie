@@ -62,7 +62,7 @@
 											<th width="80" id="yw1_c6">操作</th>
 										</tr>
 									</thead>
-									<tbody>
+									<tbod y>
 										<volist name='tp' id='tp'>
 										<tr class="odd">
 											<td>
@@ -100,6 +100,7 @@
 											<td>
 												<div class="renwu-caozuo small"><a target="_blank" href="{:U('Home/SJActivity/alluser',array('id'=>$tp['task_id']))}">查看试民</a>
 													<br><a class="xgfs" data-am-modal="{target: '#doc-modal-2', closeViaDimmer: 0, width:350, height:150}" data-toggle="modal2"  href="javascript:void(0)">修改份数</a>
+													<br><a class="xgsj" data-am-modal="{target: '#doc-modal-3', closeViaDimmer: 0, width:450, height:150}" data-toggle="modal2"  href="javascript:void(0)">修改时间</a>
 													<input type="hidden" name="id" id="id" value="{$tp.id}" />
 													<!--<br><a data-role="ajax" href="{:U('Home/SJActivity/zanting',array('id'=>$vo['id']))}" id="yt1">暂停任务</a>-->
 												</div>&nbsp;</td>
@@ -207,7 +208,7 @@
 									<input type="hidden" name="dfmoney" id="dfmoney" value="{$task['task_gold']}" />
 									<input type="hidden" name="sid" id="sid" value="" /><br>
 								<div style="text-align: center;">
-									修改任务份数：<input type="number" style="width:100px; height: 30px;" id="rwcount" name="rwcount" value="" /><br>
+									修改任务份数：<input type="number" min="1" style="width:100px; height: 30px;" id="rwcount" name="rwcount" value="" /><br>
 									<button id="xgfsok" type="submit">确定</button>
 								</div>
 								</form>
@@ -219,6 +220,32 @@
 						</div>
 					</div>
 					<!--修改份数窗口-->
+					
+					<!--修改任务时间-->
+					<div class="am-modal am-modal-no-btn" tabindex="-1" id="doc-modal-3">
+						<div class="am-modal-dialog" style="border-radius: 5px;border-bottom: 1px solid #ccc;">
+							<div class="am-modal-hd" style="font-size:12px;">
+								修改任务时间
+								<a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>
+									&times;
+								</a>
+								<form class="fm " action="{:U('Home/SJActivity/uptime')}" method="post">
+									<input type="hidden" name="timeid" id="timeid" value="" />
+								 <div class="" style="">
+							      	从<input type="date" name="stime" style="width: 40%; height: 30px; font-size: 15px;"  placeholder="{$create_play.start_time|date='m-d H:i',###}" value="">到
+							       <input type="date" style="width: 40%; font-size: 15px; height: 30px;" name="etime" id="date" value="" /><br>
+							       	<button type="submit" >确认</button>
+							       	
+							    </div>
+								</form>
+								
+							</div>
+							<div class="am-modal-bd">
+								
+							</div>
+						</div>
+					</div>
+					<!--修改任务时间-->
 </block>
 
 <block name="area_footer">
@@ -250,6 +277,10 @@
 			$('.xgfs').click(function(){
 				var a=$(this).parent().find("input[name='id']").val();
 				$('#sid').val(a);
+			})
+			$('.xgsj').click(function(){
+				var a=$(this).parent().find("input[name='id']").val();
+				$('#timeid').val(a);
 			})
 			$('#xgfsok').click(function(){
 				var count=$('#rwcount').val();

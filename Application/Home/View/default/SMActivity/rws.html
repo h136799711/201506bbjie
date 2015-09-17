@@ -30,9 +30,11 @@
 								<br> 1、清除浏览器cookies，使用淘宝号“
 								<em>{$user.taobao_account}</em>”登录淘宝；<span class="tishi">如何清除cookie？ <span class="tip"></span></span>
 								<br> 2、搜索关键字“
-								<em>{$pd.title}</em>”，并按筛选要求缩小搜索范围；
+								<volist name="pd" id="v">
+								<em>{$v['info'][0]['title']}</em>”，并按筛选要求缩小搜索范围；
+								</volist>
 								<br> 3、Ctrl+F“
-								<em>{$pd.aliwawa}</em>”核对店铺旺旺；
+								<em>{$pds.aliwawa}</em>”核对店铺旺旺；
 								<br> 4、货比三家后，进入店铺；
 								<br> 5、多点开几款宝贝浏览，并
 								<em>收藏</em>宝贝；
@@ -94,12 +96,12 @@
 								</div>
 							</div>
 							<div class="m20">
-								<div>3 、按下：<em>Ctrl+F</em>左上角搜索框输入“<em>{$pd.aliwawa}</em>” 查找当前页 (浏览器不同搜索框位置可能有所偏差)
+								<div>3 、按下：<em>Ctrl+F</em>左上角搜索框输入“<em>{$pds.aliwawa}</em>” 查找当前页 (浏览器不同搜索框位置可能有所偏差)
 									<br>
 									<small class="muted" style="font-weight: 400;">如果筛选结果一步中未作特殊说明的话，一般在前5页就能找到对应商品。如果未找到，也请您耐心再翻两页</small>
 								</div>
 								<p class="ctrl_f" unselectable="on" onselectstart="return false;">
-									<span>{$pd.aliwawa}</span>
+									<span>{$pds.aliwawa}</span>
 								</p>
 							</div>
 
@@ -111,23 +113,25 @@
 
 								<div unselectable="on" onselectstart="return false;">
 									<div class="theme_taobao_item_wrap">
+										<volist name="pd" id="v">
 										<div class="theme_taobao">
-											<img class="img" src="{$pd.main_img}" alt="">
+											<img class="img" src="{$v['info'][0]['main_img']}" alt="">
 											<div class="row-1">
 												<span class="pull-right">XX人付款</span>
 												<span class="price">
                 									<span>¥</span> {$task.task_gold} 
 												</span>
 											</div>
-											<div class="row-2"><i class="title_msk"></i> {$pd.title} </div>
+											<div class="row-2"><i class="title_msk"></i> {$v['info'][0]['title']} </div>
 											<div class="row-3">
 												<div class="pull-right">XX XX</div>
-												<i class="goods_store"></i><span>{$pd.wangwang}<i class="ali_wang"></i></span>
+												<i class="goods_store"></i><span>{$pds.wangwang}<i class="ali_wang"></i></span>
 											</div>
 											<div class="row-4">
 												<i class="pull-right wangwang"></i> &nbsp;
 											</div>
 										</div>
+										</volist>
 									</div>
 								</div>
 							</div>
@@ -167,15 +171,16 @@
 							<div class="c renwu_list">
 								<div class="ovh">
 									<ul>
+										<volist name="pd" id='v'>
 										<li>
 											<div class="item clearfix">
 												<div class="img">
-													<img src="{$pd.main_img}">
+													<img src="{$v['info'][0]['main_img']}">
 												</div>
 												<div class="bd">
 													<div class="t">
-														{$pd.title}
-														<br> 规格:{$pd.model_num_cfg} </div>
+														{$v['info'][0]['title']}
+														<br> 规格:{$v['info'][0]['model_num_cfg']} </div>
 													<div class="sx">
 														单价：{$task.task_gold} 元
 														<br> 件数：
@@ -189,6 +194,7 @@
 													<br> {$search.search_condition}-{$search.search_order} </div>
 											</div>
 										</li>
+										</volist>
 									</ul>
 								</div>
 							</div>
@@ -442,7 +448,7 @@
  		})
  		$("#queren_btn").click(function(){
  			var ww=$('#wawa').val();
- 			var wangwang="{$pd['wangwang']}".trim();
+ 			var wangwang="{$pds['wangwang']}".trim();
    			if(wangwang==ww){
    				alert('恭喜您，这个就是铺主的旺旺');
    			}else{

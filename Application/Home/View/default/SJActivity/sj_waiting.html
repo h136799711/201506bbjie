@@ -24,7 +24,7 @@
 							<div class="clear"></div>
 
 							<ul id="ul_rw" class="nav nav-tabs nav-store" role="menu">
-								<li class="active" role="menuitem"><a tabindex="-1" href="#">待审核任务</a>
+								<li class="active" role="menuitem"><a tabindex="-1" >待审核任务</a>
 								</li>
 								<!--<li role="menuitem"><a tabindex="-1" href="#">已结算任务</a>
 								</li>
@@ -82,17 +82,19 @@
 											</td>
 										</tr>
 										<tr>
-											<th width="60" id="task-grid_c0"><a class="sort-link" href="#">ID<span class="caret"></span></a>
+											<th width="60" id="task-grid_c0"><a class="sort-link">ID<span class="caret"></span></a>
 											</th>
-											<th width="200" id="task-grid_c1">任务名称</th>
+											<th width="150" id="task-grid_c1">任务名称</th>
 											<th width="180" id="task-grid_c2">发货模式</th>
-											<th width="100" id="task-grid_c3"><a class="sort-link" href="#">淘宝订单号<span class="caret"></span></a>
+											<th width="180" id="task-grid_c2">姓名,手机,收货地址</th>
+											<th width="180" id="task-grid_c2">卖家旺旺,QQ</th>
+											<th width="100" id="task-grid_c3"><a class="sort-link" >淘宝订单号<span class="caret"></span></a>
 											</th>
-											<th width="100" id="task-grid_c4"><a class="sort-link" href="#">淘宝交易金<span class="caret"></span></a>
+											<th width="100" id="task-grid_c4"><a class="sort-link" >淘宝交易金<span class="caret"></span></a>
 											</th>
 											<th width="120" id="task-grid_c6"><a class="sort-link" href="#">任务状态<span class="caret"></span></a>
 											</th>
-											<th width="100" id="task-grid_c7"><a class="sort-link desc" href="#">创建时间<span class="caret"></span></a>
+											<th width="100" id="task-grid_c7"><a class="sort-link desc" >创建时间<span class="caret"></span></a>
 											</th>
 											<th width="130" id="task-grid_c9">操作</th>
 										</tr>
@@ -108,6 +110,16 @@
 														<td>
 															<if condition="$vo['delivery_mode'] eq 1">平台发货</if>
 															<if condition="$vo['delivery_mode'] eq 2">自主发货</if>
+														</td>
+														<td>{$q.tb_address}</td>
+														<td>
+															<volist name="sm" id='s'>
+																<if condition="$q['uid'] eq $s['uid']">{$s['taobao_account']}</if>
+															</volist>
+															,<br>
+															<volist name="sms" id='ss'>
+																<if condition="$q['uid'] eq $ss['uid']">{$ss['qq']}</if>
+															</volist>
 														</td>
 														<td>{$q.tb_orderid}</td>
 														<td><span class="price" title="">{$q.tb_price}</span>

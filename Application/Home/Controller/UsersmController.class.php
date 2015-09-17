@@ -31,6 +31,8 @@ class UsersmController extends CheckLoginController {
 		$this -> assign('cs_xx', 'sed');
 		$this->posts();
 //		dump($result);
+$index=A('Index');
+		$index->getcount();
 		$this -> display('manager_info');
 	}
 	
@@ -75,6 +77,8 @@ class UsersmController extends CheckLoginController {
 		$this->posts();
 		$this -> assign('head_title', $headtitle);
 		$this -> assign('cs_rw', 'sed');
+		$index=A('Index');
+		$index->getcount();
 		$this -> display();
 	}
 	
@@ -130,6 +134,8 @@ class UsersmController extends CheckLoginController {
 		$this -> assign('bank', $info['info'][0]);
 		$this -> assign('username', $user['info']['username']);
 //		dump($result['info'][0]['coins']);
+$index=A('Index');
+		$index->getcount();
 		$this -> display();
 	}
 	/*
@@ -155,6 +161,8 @@ class UsersmController extends CheckLoginController {
 		$this -> assign('username', $user['info']['username']);
 		$this -> assign('cs_yd', 'sed');
 		$this->posts();
+		$index=A('Index');
+		$index->getcount();
 		$this -> display();
 	}
 	/*
@@ -170,6 +178,8 @@ class UsersmController extends CheckLoginController {
 		$results=apiCall(HomePublicApi::Bbjmember_Seller_Query,array($map));
 		$this->assign('smcount',count($result['info']));
 		$this->assign('sjcount',count($results['info']));
+		$index=A('Index');
+		$index->getcount();
 		$this->posts();
 		$this -> display();
 	}
@@ -188,6 +198,8 @@ class UsersmController extends CheckLoginController {
 		$this->assign('suser',$result['info']);
 		$this->assign('sjuser',$results['info']);
 		$this->assign('auser',$users['info']);
+		$index=A('Index');
+		$index->getcount();
 		$this->posts();
 		$this -> display();
 	}
@@ -200,6 +212,8 @@ class UsersmController extends CheckLoginController {
 		$user = session('user');
 		$this -> assign('cs_sc', 'sed');
 		$this->posts();
+		$index=A('Index');
+		$index->getcount();
 		$this -> assign('username', $user['info']['username']);
 		$this -> display();
 		
@@ -217,6 +231,8 @@ class UsersmController extends CheckLoginController {
 		$result=apiCall(AdminPublicApi::Wxproduct_QueryNoPaging,array($map));
 		$this->assign('product',$result['info']);
 		$this->assign('exchange',$re['info']);
+		$index=A('Index');
+		$index->getcount();
 //		dump($re);
 		$this->posts();
 		$this -> assign('username', $user['info']['username']);
@@ -227,27 +243,32 @@ class UsersmController extends CheckLoginController {
 	 * */
 	public function sm_bbhd() {
 		$headtitle = "宝贝街-宝贝活动";
-		$this -> assign('cs_sf', 'sed');
-		$this -> assign('head_title', $headtitle);
+		
 		$user = session('user');
 		$this->posts();
 		$map=array('uid'=>$user['info']['id'],'do_status'=>1);
-		$result1=apiCall(HomePublicApi::Task_His_Query,array($map));
-		$mapp=array('id'=>$result1['info'][0]['task_id']);
-		$result2=apiCall(HomePublicApi::Task_Query,array($mapp));
-		for ($i=0; $i <count($result2['info']) ; $i++) {
-			$map3=array('task_id'=>$result2['info'][$i]['id']);
-			$result3[]=apiCall(HomePublicApi::TaskHasProduct_Query,array($map3));
+		$page = array('curpage' => I('get.p', 0), 'size' => 5);
+		$result=apiCall(HomePublicApi::Task_His_QueryAll,array($map,$page));
+		for ($i = 0; $i < count($result['info']['list']); $i++) {
+			$id = $result['info']['list'][$i]['task_id'];
+			$map4 = array('task_id' => $id);
+			$result['info']['list'][$i]['hasList']= apiCall(HomePublicApi::TaskHasProduct_Query, array($map4))['info'];
+			for($j=0;$j<count($result['info']['list'][$i]['hasList']);$j++){
+				$pid = array('id' => $result['info']['list'][$i]['hasList'][$j]['pid']);
+				$result['info']['list'][$i]['hasList'][$j]['product'] = apiCall(HomePublicApi::Product_Query, array($pid))['info'][0];
+			}
 		}
+		$tp=$result1['info']['list'];
 		$this -> assign('username', $user['info']['username']);
-		$goods=apiCall(HomePublicApi::Product_Query,array($ddd));
-		$this->assign('goods',$goods['info']);
-		$this->assign('tspro',$result3);
-		$this->assign('tp',$result1['info']);
+		$result2=apiCall(HomePublicApi::Task_Query,array($mapp));
+		$express=apiCall(AdminPublicApi::OrderExpress_Query,array());
+		$this->assign('express',$express['info']);
 		$this->assign('task',$result2['info']);
-//		dump(I('tpid'));
+		$this->assign('pross',$result['info']['list']);
+		$this->assign('show',$result['info']['show']);
 		$index=A('Index');
 		$index->getcount();
+		$index->posts();
 		$this -> display();
 	}
 	/*
@@ -263,6 +284,8 @@ class UsersmController extends CheckLoginController {
 		$this -> assign('email', $user['info']['email']);
 		$this->assign('user',$user['info']);
 		$this -> assign('cs_aq', 'sed');
+		$index=A('Index');
+		$index->getcount();
 		$this -> display();
 	}
 	/*
@@ -306,6 +329,8 @@ class UsersmController extends CheckLoginController {
 		$this->assign('msg',$result1['info']);
 		$this -> assign('cs_xiaox', 'sed');
 		$this -> assign('username', $user['info']['username']);
+		$index=A('Index');
+		$index->getcount();
 		$this -> display();
 	}
 	/*

@@ -8,9 +8,8 @@
 
 return array(
 		'CFG_EXPRESS'=>array(
-			'wytch' => "同诚汇速递", 
 			'002shentong' => "申通快递", 
-			'003shunfeng' => "顺丰速运", 
+			'sf' => "顺丰速运", 
 			'056yuantong' => "圆通速递", 
 			'059Yunda' => "韵达快运", 
 			'042tiantian' => "天天快递",

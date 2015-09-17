@@ -61,7 +61,7 @@
 											<th width="160" class="text-center" id="yw1_c4">订单</th>
 											<th class="text-center" width="100" id="yw1_c5"><a class="sort-link" href="">任务时间<span class="caret"></span></a>
 											</th>
-											<th width="80" id="yw1_c6">操作</th>
+											
 										</tr>
 									</thead>
 									<tbody>
@@ -79,7 +79,11 @@
 												</volist>
 											</td>
 											<td>
+												<volist name='user' id='v' >
+													<if condition="$v['uid'] eq $vo['uid']">
 												{$v['taobao_account']}
+												</if>
+												</volist>
 											</td>
 											<td>
 												{$vo['tb_address']}
@@ -95,10 +99,7 @@
 													</div>
 												</div>
 											</td>
-											<td>
-												<!--<div class="renwu-caozuo small"><a target="_blank" href="">挂起</a>-->
-													
-												</div>&nbsp;</td>
+											
 										</tr>
 										</volist>
 									</tbody>

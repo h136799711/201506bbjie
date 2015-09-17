@@ -114,7 +114,6 @@ class BBJVIPController extends AdminController{
 			$jl=array('status'=>4,'notes'=>'审核失败');
 			$results=apiCall(HomePublicApi::FinAccountBalanceHis_SaveByID, array($id,$jl));
 			$this->success('操作成功',U('Admin/BBJVIP/index'));
-			
 		}else if($result['info'][0]['dtree_type'] ==3){
 			$money=$result['info'][0]['defray'];
 			$return2=M('bbjmember')->where('uid='.$uid)->setDec('frozen_money',$money);

@@ -15,6 +15,9 @@ return array(
 	'UPGRADE_URL'=>'http://appcenter.itboye.com/index.php/Home/Index/upgrade_check/app_id/[APP_ID]/2.json',
 	'UPGRADE_AUTH_DOMAIN'=>'[AUTH_DOMAIN]',//授权域名
 	
+	'EXPRESS_APPKEY'=>'56104543f69b2498b3e8041d50ad6a71',
+'EXPRESS_SENDURL'=>'http://v.juhe.cn/exp/index',
+	
 	//唯一管理员用户配置	
    'USER_ADMINISTRATOR' => 1, //管理员用户ID
    'MODULE_DENY_LIST'      =>  array('Common','Runtime','Ucenter','Uclient'),

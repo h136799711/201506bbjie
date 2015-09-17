@@ -253,6 +253,7 @@ class IndexController extends HomeController {
 					'uid'=>$uid,
 					'nickname'=>$username,
 					'status'=>1,
+					'qq'=>I('qq',0),
 					'realname'=>'',
 					'idnumber'=>'',
 					'update_time'=>time(),
@@ -265,12 +266,8 @@ class IndexController extends HomeController {
 						'uid'=>$uid,
 						'group_id'=>14,
 					);
-//					dump($group);
 					$result3 = apiCall(HomePublicApi::Group_Add, array($group));
-//					dump($result3);
-					if($result3['status']){
-						$this->success('注册成功',U('Home/Index/login'));
-					}
+					$this->success('注册成功',U('Home/Index/login'));
 				}
 			}
 		}

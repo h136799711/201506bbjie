@@ -533,8 +533,7 @@ class IndexController extends ShopController{
 		$this->assign('fubi',$results['info'][0]['fucoin']);
 		
 		$this->assign('skuInfo',$skuInfo);
-		//dump($skuInfo);
-		$this->assign(' ',$skuList);
+		$this->assign('skuList',$skuList);
 		$headtitle="宝贝街-商品详情";
 		$this->assign('head_title',$headtitle);
 		$this->assign('username',$user['info']['username']);

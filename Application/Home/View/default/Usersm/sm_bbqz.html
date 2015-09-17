@@ -164,7 +164,7 @@
 							</tr>
 							<tr>
 								<td>持卡人</td>
-								<td><input type="text" name="name" id="daan" value="" /></td>
+								<td><input type="text" name="name" id="name" value="" /></td>
 							</tr>
 							<tr>
 								<td>开户信息：</td>
@@ -174,7 +174,7 @@
 							</tr>
 							<tr>
 								<td>银行账号：</td>
-								<td><input type="tel" name="bank_num" id="daan" value="" /></td>
+								<td><input type="tel" name="bank_num" id="num" value="" /></td>
 							</tr>
 							
 							<tr>
@@ -186,7 +186,7 @@
 							
 						</table>
 					</div>
-					<input style="font-family: '微软雅黑'; font-size: 13px; border-radius:5px ; margin-top: -8px;" class="am-btn-danger am-btn-xs" type="submit" value="确认" />
+					<input id="szbank" style="font-family: '微软雅黑'; font-size: 13px; border-radius:5px ; margin-top: -8px;" class="am-btn-danger am-btn-xs" type="submit" value="确认" />
 				</form>
 			</div>
 		</div>
@@ -300,13 +300,27 @@
 					if( {$coins} <=0 || {$coins}==''){
 						alert('不能提现，提现金额最低为1元或余额不足');
 					}else{
-						if("{$bank['cardholder']} ！=''"){
-						$('#click').click();
+						
+						if("{$bank['cardholder']}" !=''){
+//							alert({$bank['cardholder']});
+							$('#click').click();
 						}else{
+//							alert({$bank['cardholder']});
 							alert('请先设置提现账号！！');
 						}
 					}
 					
+				})
+				$('#szbank').click(function(){
+					var yh=$("select[name='bank']").val();
+					var name=$('#name').val();
+					var num=$('#num').val();
+					if(yh!='' && name!='' && num!=''){
+						return true;
+					}else{
+						alert('请填写完整信息');
+						return false;
+					}
 				})
 				$('#qr').click(function(){
 					if($('#money').val()>{$coins}){

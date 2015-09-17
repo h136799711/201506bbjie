@@ -43,6 +43,7 @@
 			<dl class="dl_menu">
 				<dt class="dt_menu"><font ><i class="am-icon-bullhorn"></i>&nbsp;活动管理</font></dt>
 				<dd class="dd_menu"><a class="{$cs_sf}" href="{:U('Home/Usersm/sm_bbhd')}"><i class="am-icon-caret-right"></i>&nbsp;试福活动</a>
+					<font color="red" id="xx" size="3">()</font>
 				</dd>
 				<!--<dd class="dd_menu"><a class="{$cs_sc}" href="{:U('Home/Usersm/sm_schd')}"><i class="am-icon-caret-right"></i>&nbsp;收藏活动</a>-->
 				</dd>
@@ -70,3 +71,9 @@
 				</div>
 			</div>
 		</div>
+		<script type="text/javascript">
+			$(function(){
+				var xc=Number({$bh})+Number({$sh})+Number({$qrsh})+Number({$fk})+Number({$qx});
+				$('#xx').text("("+xc+")");
+			})
+		</script>

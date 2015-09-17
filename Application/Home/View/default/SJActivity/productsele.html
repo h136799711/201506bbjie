@@ -66,14 +66,8 @@
 							})
 						</script>
 						<ul id="ul_start_down" class="nav nav-tabs" role="menu">
-							<li class="active" role="menuitem">
-								<a tabindex="-1" href="javascript:void(0)">
-
-									全部
-
-								</a>
-							</li>
-							<li role="menuitem">
+							
+							<li role="menuitem" class="active">
 								<a tabindex="-1" href="javascript:void(0)">
 
 									已启用
@@ -87,139 +81,19 @@
 
 								</a>
 							</li>
+							<li  role="menuitem">
+								<a tabindex="-1" href="javascript:void(0)">
+
+									全部
+
+								</a>
+							</li>
 						</ul>
 						
 						<div>
 							<!-- 全部中-->
-							<div class="grid-view" controller="extend/gridview">
-								<table class="items table table-hover">
-									<thead>
-										<tr>
-											<th>
-												编号
-											</th>
-											<th width="120" id="product-grid_c0">
-												<a class="sort-link" href="#">
-
-													搜索商品
-
-													<span class="caret">
-
-													</span>
-
-												</a>
-											</th>
-											<th id="product-grid_c1">
-												关键字/搜索名称
-											</th>
-											<th width="120" id="product-grid_c2">
-												<a class="sort-link" href="#">
-
-													搜索类型
-
-													<span class="caret">
-
-													</span>
-
-												</a>
-											</th>
-											<th width="120" id="product-grid_c3">
-												<a class="sort-link" href="#">
-
-													状态
-
-													<span class="caret">
-
-													</span>
-
-												</a>
-											</th>
-											<th width="100" id="product-grid_c5">
-												<a class="sort-link desc" href="">
-
-													最后更新
-
-													<span class="caret">
-
-													</span>
-
-												</a>
-											</th>
-											<th width="60" id="product-grid_c6">
-												操作
-											</th>
-										</tr>
-									</thead>
-									<tbody>
-										<empty name="pro">
-											<tr>
-												<td colspan="6">暂无商品信息</td>
-											</tr>
-											<else/>
-											<volist name="pro" id="a">
-												<tr class="odd">
-													<td>
-														{$a['id']}
-													</td>
-													<td>
-														<div class="p_img">
-															<volist name='pros' id='v'>
-																<if condition="$a['pid'] eq $v['id']">
-																	<img width="56px" height="56px" src="{$v.main_img}" alt="">
-																</if>
-															</volist>
-														</div>
-													</td>
-													<td>
-														<a data-toggle="modal2" modal-title="" href="#">
-
-															<div class="p_title small">
-																{$a.search_q}
-
-															</div>
-														</a>
-													</td>
-													<td>
-														关键词
-													</td>
-													<td>
-														<if condition="$a['status'] eq 1">正常</if><if condition="$a['status'] eq 0">暂停</if><if condition="$a['status'] eq 2">审核中</if></span>
-													</td>
-													<td>
-														<if condition="$a['status'] eq 1">
-														<span class="js_countdownwn" data-until="{$a['update_time'] +5*24*3600}"></span>
-														</if>
-														<if condition="$a['status'] eq 0">
-															不可用
-														</if>
-														<if condition="$a['status'] eq 2">
-															正在审核
-															</if>
-													</td>
-													<td>
-														<if condition="$a['status'] eq 1">
-															<a tooltip="暂停"  class="btn btn-mini" href="{:U('Home/SJActivity/ztsele',array('id'=>$a['id']))}">暂停</a>
-															<a tooltip="更新"  class="btn btn-mini" href="{:U('Home/SJActivity/upsearch',array('id'=>$a['id']))}">更新</a>
-														</if>
-														<if condition="$a['status'] eq 0">
-															<a tooltip="开启" modal-title="" visible="1" class="btn btn-mini" href="{:U('Home/SJActivity/startsele',array('id'=>$a['id']))}">开启</a>
-														
-														</if>
-														<if condition="$a['status'] eq 2">
-															等待审核
-															<!--<a tooltip="开启" modal-title="" visible="1" class="btn btn-mini" href="{:U('Home/SJActivity/startsele',array('id'=>$a['id']))}">开启</a>-->
-														</if>
-														<span style="height:3px;display:table;">
-
-												</span>
-
-													</td>
-												</tr>
-
-											</volist>
-										</empty>
-									</tbody>
-								</table>
+							
+								
 								<!-- 全部-->
 
 								<div class="row-fluid" style="margin-left: -300px;">
@@ -234,9 +108,9 @@
 								<div class="keys" style="display:none" title="/seller/product">
 
 								</div>
-							</div>
+						
 							<!-- 已启用-->
-							<div style="display: none;" class="grid-view" controller="extend/gridview">
+							<div class="grid-view" controller="extend/gridview">
 								<table class="items table table-hover">
 									<thead>
 										<tr>
@@ -329,7 +203,7 @@
 																<span class="js_countdownwn" data-until="{$a['update_time'] +5*24*3600}"></span>
 															</td>
 															<td>
-
+																<a tooltip="更新"  class="btn btn-mini" href="{:U('Home/SJActivity/upsearch',array('id'=>$a['id']))}">更新</a>
 																<a tooltip="开启" modal-title="" visible="1" class="btn btn-mini" href="{:U('Home/SJActivity/ztsele',array('id'=>$a['id']))}">
 
 													暂停
@@ -475,7 +349,137 @@
 										</empty>
 									</tbody>
 								</table>
+								</div>
 								<!-- 暂停-->
+								<div  style="display: none;" class="grid-view" controller="extend/gridview">
+								<table class="items table table-hover">
+									<thead>
+										<tr>
+											<th>
+												编号
+											</th>
+											<th width="120" id="product-grid_c0">
+												<a class="sort-link" href="#">
+
+													搜索商品
+
+													<span class="caret">
+
+													</span>
+
+												</a>
+											</th>
+											<th id="product-grid_c1">
+												关键字/搜索名称
+											</th>
+											<th width="120" id="product-grid_c2">
+												<a class="sort-link" href="#">
+
+													搜索类型
+
+													<span class="caret">
+
+													</span>
+
+												</a>
+											</th>
+											<th width="120" id="product-grid_c3">
+												<a class="sort-link" href="#">
+
+													状态
+
+													<span class="caret">
+
+													</span>
+
+												</a>
+											</th>
+											<th width="100" id="product-grid_c5">
+												<a class="sort-link desc" href="">
+
+													最后更新
+
+													<span class="caret">
+
+													</span>
+
+												</a>
+											</th>
+											<th width="60" id="product-grid_c6">
+												操作
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										<empty name="pro">
+											<tr>
+												<td colspan="6">暂无商品信息</td>
+											</tr>
+											<else/>
+											<volist name="pro" id="a">
+												<tr class="odd">
+													<td>
+														{$a['id']}
+													</td>
+													<td>
+														<div class="p_img">
+															<volist name='pros' id='v'>
+																<if condition="$a['pid'] eq $v['id']">
+																	<img width="56px" height="56px" src="{$v.main_img}" alt="">
+																</if>
+															</volist>
+														</div>
+													</td>
+													<td>
+														<a data-toggle="modal2" modal-title="" href="#">
+
+															<div class="p_title small">
+																{$a.search_q}
+
+															</div>
+														</a>
+													</td>
+													<td>
+														关键词
+													</td>
+													<td>
+														<if condition="$a['status'] eq 1">正常</if><if condition="$a['status'] eq 0">暂停</if><if condition="$a['status'] eq 2">审核中</if></span>
+													</td>
+													<td>
+														<if condition="$a['status'] eq 1">
+														<span class="js_countdownwn" data-until="{$a['update_time'] +5*24*3600}"></span>
+														</if>
+														<if condition="$a['status'] eq 0">
+															不可用
+														</if>
+														<if condition="$a['status'] eq 2">
+															正在审核
+															</if>
+													</td>
+													<td>
+														<if condition="$a['status'] eq 1">
+															<a tooltip="暂停"  class="btn btn-mini" href="{:U('Home/SJActivity/ztsele',array('id'=>$a['id']))}">暂停</a>
+															<a tooltip="更新"  class="btn btn-mini" href="{:U('Home/SJActivity/upsearch',array('id'=>$a['id']))}">更新</a>
+														</if>
+														<if condition="$a['status'] eq 0">
+															<a tooltip="开启" modal-title="" visible="1" class="btn btn-mini" href="{:U('Home/SJActivity/startsele',array('id'=>$a['id']))}">开启</a>
+														
+														</if>
+														<if condition="$a['status'] eq 2">
+															等待审核
+															<!--<a tooltip="开启" modal-title="" visible="1" class="btn btn-mini" href="{:U('Home/SJActivity/startsele',array('id'=>$a['id']))}">开启</a>-->
+														</if>
+														<span style="height:3px;display:table;">
+
+												</span>
+
+													</td>
+												</tr>
+
+											</volist>
+										</empty>
+									</tbody>
+								</table>
 								<div class="row-fluid" style="margin-left: -300px;">
 									<div class="span6 offset3">
 									</div>

@@ -53,7 +53,7 @@
 								
 								<volist name="skuInfo" id="si">
 									<tr class="tr_sku">
-										<td style="padding-top: 20px;" sid="{$si.key}" >{$si.name}:</td>
+										<td style="padding-top: 20px;" sid="{$si.key}">{$si.name}:</td>
 										<td style="padding-top: 20px;">
 											<volist name="si.value" id="sv">
 												<font class="font_sku" index="0" sid="{$sv.key}" onmouseover="overSku(this)" onclick="selectSku(this)" onmouseout="outSku(this)">{$sv.value}</font>
