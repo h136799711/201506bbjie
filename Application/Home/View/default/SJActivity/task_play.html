@@ -92,7 +92,7 @@
 												</div>&nbsp;</td>
 											<td class="text-center">
 												<div class="small">
-													<div class="inline-block" style="width:80px;">{$tp.start_time|date='m-d H:i',###}</div>&nbsp;&nbsp;
+													<div class="inline-block" style="width:80px;">{$tp.start_time|date='m-d H:i',###}-{$tp.end_time|date='m-d H:i',###}</div>&nbsp;&nbsp;
 													<div class="inline-block" style="vertical-align:-3px;"><a data-toggle="modal2" modal-title="更新任务时间" href="http://www.shifujie.net/seller/sf/renwuku/shijian?id=31834"><i class="s_icon edit1"></i></a>
 													</div>
 												</div>
@@ -100,7 +100,7 @@
 											<td>
 												<div class="renwu-caozuo small"><a target="_blank" href="{:U('Home/SJActivity/alluser',array('id'=>$tp['task_id']))}">查看试民</a>
 													<br><a class="xgfs" data-am-modal="{target: '#doc-modal-2', closeViaDimmer: 0, width:350, height:150}" data-toggle="modal2"  href="javascript:void(0)">修改份数</a>
-													<br><a class="xgsj" data-am-modal="{target: '#doc-modal-3', closeViaDimmer: 0, width:450, height:150}" data-toggle="modal2"  href="javascript:void(0)">修改时间</a>
+													<br><a class="xgsj" data-am-modal="{target: '#doc-modal-3', closeViaDimmer: 0, width:650, height:150}" data-toggle="modal2"  href="javascript:void(0)">修改时间</a>
 													<input type="hidden" name="id" id="id" value="{$tp.id}" />
 													<!--<br><a data-role="ajax" href="{:U('Home/SJActivity/zanting',array('id'=>$vo['id']))}" id="yt1">暂停任务</a>-->
 												</div>&nbsp;</td>
@@ -133,10 +133,10 @@
 								</a>
 							</div>
 							<div class="am-modal-bd">
-								<form action="{:U('Home/SJActivity/create_tp')}" method="post">
+								<form action="{:U('Home/SJActivity/create_tp')}" class="createfm" method="post">
 									<input type="hidden" name="tid" id="tid" value="{$task['id']}" />
 									<input type="hidden" name="zong" id="zong" value="" />
-								<table style="margin-left: 160px; line-height:50px;" cellspacing="" cellpadding="" style="margin-top: 10px;">
+								<table style="margin-left: 100px; line-height:50px;" cellspacing="" cellpadding="" style="margin-top: 10px;">
 									<tr>
 										<td width="20%" style="text-align: right; padding-right: 5px; padding-top: 10px;">
 											对应任务：
@@ -162,19 +162,21 @@
 												<option value="0">不限</option>
 												<option value="1">搜索模式（试民通过搜索进入店铺）</option>
 												<option value="2">老客户模式（试民通过收藏夹或购物车进入店铺）</option>
+												<option value="3">手机搜索（试民通过手机搜索商品进入店铺）</option>
 											</select>
 										</td>
 									</tr>
 									<tr>
 										<td style="text-align: right;padding-right: 5px;padding-top: 10px;">
-											结束时间：
+											发放时间：
 										</td>
 										<td style="padding-top: 10px;">
-											<input type="date" name="begin_time" id="begin_time"  />
+												从<input type="datetime-local" name="stime" style="width: 44%; height: 30px; font-size: 15px;"  placeholder="{$create_play.start_time|date='m-d H:i',###}" value="">到
+							       			<input type="datetime-local" style="width: 44%; font-size: 15px; height: 30px;" name="etime" id="date" value="" />
 										</td>
 									</tr>
 									<tr>
-										<td style="padding-top: 10px;">
+										<td style="padding-top: 10px;text-align: right;padding-right: 5px;">
 											发放份数：
 										</td>
 										<td style="font-size: 12px;padding-top: 10px;">
@@ -186,7 +188,7 @@
 										<td style="padding-top: 10px;">
 										</td>
 										<td style="padding-top: 10px;">
-											<button id="addok" type="submit" class="am-btn am-btn-primary am-btn-xs" style="width: 80px; height:30px;padding: 0;border-radius: 5px; ">
+											<button id="addok" target-form="createfm" type="button" url="{:U('Home/SJActivity/create_tp')}" class="ajax-post am-btn am-btn-primary am-btn-xs" style="width: 80px; height:30px;padding: 0;border-radius: 5px; ">
 												保存
 											</button>
 										</td>
@@ -209,7 +211,7 @@
 									<input type="hidden" name="sid" id="sid" value="" /><br>
 								<div style="text-align: center;">
 									修改任务份数：<input type="number" min="1" style="width:100px; height: 30px;" id="rwcount" name="rwcount" value="" /><br>
-									<button id="xgfsok" type="submit">确定</button>
+									<button id="xgfsok" url="{:U('Home/SJActivity/upcount')}" target-form="fm" class="ajax-post" type="button">确定</button>
 								</div>
 								</form>
 								
@@ -232,8 +234,8 @@
 								<form class="fm " action="{:U('Home/SJActivity/uptime')}" method="post">
 									<input type="hidden" name="timeid" id="timeid" value="" />
 								 <div class="" style="">
-							      	从<input type="date" name="stime" style="width: 40%; height: 30px; font-size: 15px;"  placeholder="{$create_play.start_time|date='m-d H:i',###}" value="">到
-							       <input type="date" style="width: 40%; font-size: 15px; height: 30px;" name="etime" id="date" value="" /><br>
+							      	从<input type="datetime-local" name="stime" style="width: 40%; height: 30px; font-size: 15px;"  placeholder="{$create_play.start_time|date='m-d H:i',###}" value="">到
+							       <input type="datetime-local" style="width: 40%; font-size: 15px; height: 30px;" name="etime" id="date" value="" /><br>
 							       	<button type="submit" >确认</button>
 							       	
 							    </div>

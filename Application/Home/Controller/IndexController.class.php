@@ -435,7 +435,7 @@ class IndexController extends HomeController {
 						$this->assign('info',$result['info']);
 						$this->checklevel();
 						$this->getcount();
-						$this->display('sm_manager');
+						$this->success('登录成功!',U('Home/Index/sm_manager'));
 					}else{
 						$return=M('bbjmemberSeller')->where('uid='.$uid)->setInc('exp','4');
 						session('user',$users);
@@ -458,7 +458,7 @@ class IndexController extends HomeController {
 						$sj->is_auth();
 						$sj->getcount();
 						$sj->checklevel();
-						$this->display('Usersj/index');
+							$this->success('登录成功!',U('Home/Usersj/index'));
 					}
 				}
 				
@@ -474,8 +474,6 @@ class IndexController extends HomeController {
 	  * */
 	public function exits(){
 		session('[destroy]'); // 删除session
-
-		
 		$this->display('login');
 	}
 	/*

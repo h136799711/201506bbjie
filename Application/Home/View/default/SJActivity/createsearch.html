@@ -179,6 +179,9 @@
 										<li role="menuitem"><a tabindex="-1" href="{:U('Home/SJActivity/zdysele')}">自定义</a>
 											
 										</li>
+										<li role="menuitem"><a tabindex="-1" href="{:U('Home/SJActivity/phonesele')}">手机搜索</a>
+											
+										</li>
 										<!--<li visible="1" tooltip="手机关键词仅分配手机任务时可使用" role="menuitem" data-original-title="" title=""><a tabindex="-1" href="#">手机关键词</a>
 										</li>
 										<li visible="1" tooltip="手机关键词仅分配手机任务时可用" role="menuitem" data-original-title="" title=""><a tabindex="-1" href="#">手机自定义</a>
@@ -239,7 +242,7 @@
 					</div>
 					<div id="sousuo_preview">
 						<div>
-							<form class="form-horizontal jquery-once-1-processed" controller="extend/ajax_form" id="yw0" action="{:U('Home/SJActivity/save')}" method="post" novalidate="novalidate">
+							<form class="form-horizontal jquery-once-1-processed fm" controller="extend/ajax_form" id="yw0" action="{:U('Home/SJActivity/save')}" method="post" novalidate="novalidate">
 								<input type="hidden" value="" name="iscz" id="iscz">
 								<input type="hidden" value="" name="pid">
 								<input type="hidden" value="" name="search_url" />
@@ -308,7 +311,7 @@
 									</div>
 
 									<div class="form-actions">
-										<button class="am-btn am-btn-primary" type="submit">保存搜索</button>
+										<button class="am-btn am-btn-primary ajax-post" url="{:U('Home/SJActivity/save')}" target-form="fm" type="button">保存搜索</button>
 									</div>
 								</div>
 								<div style="padding: 50px;"></div>

@@ -68,24 +68,26 @@
 									商品链接：
 									<input id="url" name="url" style="border-bottom-left-radius:5px ;border-top-left-radius:5px ;border: 1px solid #ccc;" />
 									<input type="button" id="read" style="color:#666; border-bottom-right-radius:5px ;border-top-right-radius:5px ; border: 1px solid #ccc;" value="从淘宝读取信息" />
-									<a id="gogoods" href="javascript:void(0)">从商品库中获取</a>
+									<a id="gogoods" href="javascript:void(0)">更换方式</a>
 								</div>
 
 								<br />
 								<div class="showsp">
 									<div class="controls">
 										<div class="filter-controls pull-left" style=" margin-left: 150px;">
+										
 											<form action="" class="addToGroupForm" method="post" style="">
-												<input type="hidden" name="groupid" value="{$groupid}" style="" />
+													请选择商品：<input type="hidden" name="groupid" value="{$groupid}" style="" />
 												<select style="width:465px;padding: 10px 15px;  font-size: 15px;" id="user_select2" name="uid" class="form-control">
 													<option></option>
 												</select>
 											</form>
 										</div>
-										<a id="gotaobao" href="javascript:void(0)">从淘宝中获取</a>
+										<a id="gotaobao" href="javascript:void(0)">更换方式</a>
 									</div>
+									<div class="show"></div>
 								</div>
-								<div class="show"></div>
+								
 							</div>
 							<br>
 							<form class="forma1" style="" action="{:U('Home/SJActivity/a1')}" method="post">
@@ -152,8 +154,8 @@
 			$("#J_btn_submit").data("query", 1);
 		}
 		$(function() {
-			$('.controls').hide();
-			$('.tbdq').show();
+			$('.controls').show();
+			$('.tbdq').hide();
 			$('#gotaobao').click(function(){
 				$('.tbdq').toggle(function(){
 					

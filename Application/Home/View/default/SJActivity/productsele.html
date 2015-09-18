@@ -91,8 +91,6 @@
 						</ul>
 						
 						<div>
-							<!-- 全部中-->
-							
 								
 								<!-- 全部-->
 
@@ -331,7 +329,9 @@
 																<span class="js_countdownwn" >不可用</span>
 															</td>
 															<td>
-
+																<a data-role="delete" tooltip="删除" visible="1" class="btn btn-mini" href="{:U('Home/SJActivity/delsele',array('id'=>$a['id']))}" data-original-title="" title="">
+													删除
+												</a>
 																<a tooltip="开启" modal-title="" visible="1" class="btn btn-mini" href="{:U('Home/SJActivity/startsele',array('id'=>$a['id']))}">
 
 													开启
@@ -349,6 +349,15 @@
 										</empty>
 									</tbody>
 								</table>
+								<div class="row-fluid" style="margin-left: -300px;">
+									<div class="span6 offset3">
+									</div>
+									<div class="span3" style="margin: 0 auto;">
+										<div class="summary" style="width: 500px;">
+											{$prooshow}
+										</div>
+									</div>
+								</div>
 								</div>
 								<!-- 暂停-->
 								<div  style="display: none;" class="grid-view" controller="extend/gridview">
@@ -483,9 +492,9 @@
 								<div class="row-fluid" style="margin-left: -300px;">
 									<div class="span6 offset3">
 									</div>
-									<div class="span3" style="margin: 0 auto;">
+									<div class="span3"  style="margin: 0 auto; clear: ;">
 										<div class="summary" style="width: 500px;">
-											{$prshow}
+											{$proshow}
 										</div>
 									</div>
 								</div>

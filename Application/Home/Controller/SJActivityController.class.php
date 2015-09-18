@@ -170,13 +170,15 @@ class SJActivityController extends CheckLoginController {
 	}
 	 /*
 	  * 发放任务
+	  * TODO 限制
 	  * */
 	public function create_tp(){
 		$user=session('user');
 		$zongjia=I('zong','0.00');
 		$entity=array(
 			'uid'=>$user['info']['id'],
-			'start_time'=>strtotime(I('begin_time',0)),
+			'start_time'=>strtotime(I('stime',0)),
+			'end_time'=>strtotime(I('etime',0)),
 			'enter_way'=>I('sele_type',0),
 			'task_cnt'=>I('count',0),
 			'create_time'=>time(),
@@ -184,17 +186,21 @@ class SJActivityController extends CheckLoginController {
 			'task_id'=>I('tid',0),
 			'yuecount'=>I('count',0),
 		);
-//		dump($zongjia);
-		$result = apiCall(HomePublicApi::TaskPlan_Add, array($entity));
-		$entitya = array('uid' => $user['info']['id'], 'defray' => $zongjia , 'income' => '0.000', 'create_time' => time(), 'notes' => '冻结任务佣金', 'dtree_type' => 5, 'status' => 3, );
-		$resulta = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entitya));
-		if ($resulta['status']) {
-			$return1=M('bbjmemberSeller')->where('uid='.$user['info']['id'])->setDec('coins',$zongjia);
-			$return2=M('bbjmemberSeller')->where('uid='.$user['info']['id'])->setInc('frozen_money',$zongjia);
-			if($return1 && $return2){
-				$this->success('发放成功！',U('Home/SJActivity/sj_tbhd'));
+		if(strtotime(I('etime',0))-strtotime(I('stime',0))<1 ||strtotime(I('stime',0))-time()<1){
+			$this->error('发放时间错误！');
+		}else{
+			$result = apiCall(HomePublicApi::TaskPlan_Add, array($entity));
+			$entitya = array('uid' => $user['info']['id'], 'defray' => $zongjia , 'income' => '0.000', 'create_time' => time(), 'notes' => '冻结任务佣金', 'dtree_type' => 5, 'status' => 3, );
+			$resulta = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entitya));
+			if ($resulta['status']) {
+				$return1=M('bbjmemberSeller')->where('uid='.$user['info']['id'])->setDec('coins',$zongjia);
+				$return2=M('bbjmemberSeller')->where('uid='.$user['info']['id'])->setInc('frozen_money',$zongjia);
+				if($return1 && $return2){
+					$this->success('发放成功！');
+				}
 			}
 		}
+		
 		
 	}
 	/*
@@ -765,7 +771,7 @@ class SJActivityController extends CheckLoginController {
 		$map = array('uid' => $user['info']['id'], 'status' => 1);
 		$mapp = array('uid' => $user['info']['id']);
 		$mwe = array('uid' => $user['info']['id'], 'status' => 0);
-		$page = array('curpage' => I('get.p', 0), 'size' => 6);
+		$page = array('curpage' => I('get.p', 0), 'size' => 10);
 		//dump($user['info']['id']);
 		$sj = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($mapp));
 		$product = apiCall(HomePublicApi::ProductSearchWay_QueryAll, array($map,$page));
@@ -828,6 +834,19 @@ class SJActivityController extends CheckLoginController {
 		$result = apiCall(HomePublicApi::Product_Del, array($map));
 		if ($result['status']) {
 			$this -> success('删除成功', U('Home/SJActivity/productmanager'));
+		} else {
+			$this -> error($result['info']);
+		}
+	}
+	/*
+	 * 商品删除
+	 * */
+	public function delsele() {
+		$id = I('id', 0);
+		$map = array('id' => $id, );
+		$result = apiCall(HomePublicApi::ProductSearchWay_Del, array($map));
+		if ($result['status']) {
+			$this -> success('删除成功', U('Home/SJActivity/productsele'));
 		} else {
 			$this -> error($result['info']);
 		}
@@ -916,6 +935,26 @@ class SJActivityController extends CheckLoginController {
 		 }*/
 	}
 
+//	public function selectsch() {
+//		$user = session('user');
+//		$map = array('uid' => $user['info']['id'], 'is_on_sale' => 1, 'title' => array('like', "%" . I('q', '', 'trim') . "%"),
+//		);
+//		$results = apiCall(HomePublicApi::ProductSearchWay_Query);
+//		for ($i=0; $i <count($results['info']) ; $i++) { 
+//			$ids=$results['info'][$i]['pid'];
+//		}
+//		$page = array('curpage' => I('get.p', 0), 'size' => 200);
+//		$result = apiCall(HomePublicApi::Product_QueryAll, array($map, $page));
+//		for ($i=0; $i <count($result['info']['list']) ; $i++) { 
+//			if(!is_array($result['info']['list'][$i]['id'],$ids)){
+//				$ress[]=$result['info']['list'][$i];
+//			}
+//		}
+//		$this -> success($ress);
+//
+//		
+//	}
+
 	/**
 	 * 保存搜索 
 	 */
@@ -923,6 +962,7 @@ class SJActivityController extends CheckLoginController {
 		$user=session('user');
 		$iscz=I('iscz',0);
 		$id=I('id',0);
+		$type=I('type',0);
 		if($id!=0){
 			if($iscz!=0){
 				$entity = array('update_time' => time(), 'pid' => I('pid', ''), 'search_url' => I('search_url', ''), 'search_q' => I('search_q', ''), 'search_order' => I('search_order', ''), 'search_condition' => I('search_xz', ''), );
@@ -935,7 +975,7 @@ class SJActivityController extends CheckLoginController {
 			}
 		}else{
 			if($iscz!=0){
-				$entity = array('uid'=>$user['info']['id'] ,'dtree_type' => 1, 'status' => $iscz, 'create_time' => time(), 'update_time' => time(), 'pid' => I('pid', ''), 'search_url' => I('search_url', ''), 'search_q' => I('search_q', ''), 'search_order' => I('search_order', ''), 'search_condition' => I('search_xz', ''), );
+				$entity = array('uid'=>$user['info']['id'] ,'dtree_type' => $type, 'status' => $iscz, 'create_time' => time(), 'update_time' => time(), 'pid' => I('pid', ''), 'search_url' => I('search_url', ''), 'search_q' => I('search_q', ''), 'search_order' => I('search_order', ''), 'search_condition' => I('search_xz', ''), );
 				$result = apiCall(HomePublicApi::ProductSearchWay_Add, array($entity));
 				if ($result['status']) {
 					$this -> success('添加搜索成功', U('Home/SJActivity/createsearch'));
@@ -972,7 +1012,8 @@ class SJActivityController extends CheckLoginController {
 		$money=I('dfmoney','');
 		$result = apiCall(HomePublicApi::TaskPlan_Query, array($mapp));
 		$fenshu=$result['info'][0]['task_cnt'];
-		$map=array('task_cnt'=>I('rwcount',1)+$fenshu);
+		$yue=$result['info'][0]['yuecount'];
+		$map=array('task_cnt'=>I('rwcount',1)+$fenshu,'yuecount'=>I('rwcount',1)+$yue);
 		$zongjia=I('rwcount',1)*$money;
 		if($zongjia<=0){
 			$this->error('请填写正确的份数!');
@@ -989,7 +1030,21 @@ class SJActivityController extends CheckLoginController {
 			}
 		}
 	 }
-
+/**/
+	public function phonesele(){
+		$headtitle = "宝贝街-创建搜索";
+		$this -> assign('head_title', $headtitle);
+		$user = session('user');
+		$map = array('parentid' => 36, );
+		$result = apiCall(AdminPublicApi::Datatree_QueryNoPaging, array($map));
+		$mapa = array('uid' => $user['info']['id']);
+		$sj = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($mapa));
+		$this -> assign('aliwawa', $sj['info'][0]['aliwawa']);
+		$this -> assign('username', $user['info']['username']);
+		$sj=A('usersj');
+		$sj->is_auth();
+		$this -> display();
+	}
 	/*
 	 * 修改任务时间
 	 * */
@@ -1003,7 +1058,7 @@ class SJActivityController extends CheckLoginController {
 	}
 	public function zdysave() {
 		$user=session('user');
-		$entity = array('uid'=>$user['info']['id'] ,'dtree_type' => 2, 'status' => 1, 'create_time' => time(), 'update_time' => time(), 'pid' => I('pid', ''), 'search_url' => '', 'search_q' => I('text', ''), 'search_order' => I('search_order', ''), 'search_condition' => I('weizhi', ''), );
+		$entity = array('uid'=>$user['info']['id'] ,'dtree_type' => 1, 'status' => 1, 'create_time' => time(), 'update_time' => time(), 'pid' => I('pid', ''), 'search_url' => '', 'search_q' => I('text', ''), 'search_order' => I('search_order', ''), 'search_condition' => I('weizhi', ''), );
 //		dump($entity);
 		$result = apiCall(HomePublicApi::ProductSearchWay_Add, array($entity));
 		if ($result['status']) {

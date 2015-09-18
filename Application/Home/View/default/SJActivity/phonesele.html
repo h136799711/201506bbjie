@@ -3,7 +3,7 @@
 <block name="area_header">
 	<link rel="stylesheet" href="__CSS__/shangjia.css">
 	<link rel="stylesheet" href="__CSS__/select2.css">
-	<script type="text/javascript" src="__CDN__/select2/4.0.0/js/select2.full.js"></script>
+
 	<script type="text/javascript" src="__CDN__/select2/4.0.0/js/i18n/zh-CN.js"></script>
 	<link type="text/css" rel="stylesheet" href="__CDN__/select2/4.0.0/css/select2.min.css" />
 	<style type="text/css">
@@ -16,6 +16,117 @@
 				background: white;
 			}
 	</style>
+	
+
+</block>
+
+<block name="area_body">
+	<include file='Widget/sjtop' />
+	<div class="seller_main clearfix" controller="seller/common">
+		<div class="seller_content_wrap">
+			<div class="seller_content" style="padding-top: 10px;">
+
+				<div class="content">
+
+					<h1>创建搜索</h1>
+
+					<div class="p20"></div>
+					<div>
+
+						<form class="form-horizontal fsw" action="{:U('Home/SJActivity/save')}" method="post" >
+							<div class="control-group">
+								<label class="control-label" style="line-height: 25px;">搜索类型</label>
+								<div class="controls">
+									<ul class="nav nav-pills mb0" role="menu">
+										<!-- 获取搜索类型 -->
+										<li role="menuitem">
+											<a tabindex="-1" href="{:U('Home/SJActivity/createsearch')}">关键词</a>
+										</li>
+										<li role="menuitem"><a tabindex="-1" href="{:U('Home/SJActivity/zdysele')}">自定义</a>
+											
+										</li>
+										<li class="active"><a tabindex="-1" href="{:U('Home/SJActivity/phonesele')}">手机搜索</a>
+											
+										</li>
+										<!--<li visible="1" tooltip="手机关键词仅分配手机任务时可使用" role="menuitem" data-original-title="" title=""><a tabindex="-1" href="#">手机关键词</a>
+										</li>
+										<li visible="1" tooltip="手机关键词仅分配手机任务时可用" role="menuitem" data-original-title="" title=""><a tabindex="-1" href="#">手机自定义</a>
+										</li>-->
+									</ul>
+								</div>
+							</div>
+							<input type="hidden" name="pid" id="pid" value="" />
+							<div class="control-group">
+
+								<label class="control-label">
+									选择商品
+								</label>
+
+								<div class="controls">
+
+									<div class="filter-controls pull-left" style="">
+										<form action="" class="addToGroupForm" method="post" style="">
+											<select style="width:465px;padding: 10px 15px;font-size: 15px;" id="user_select2" name="uid" class="form-control">
+												<option></option>
+											</select>
+
+										</form>
+									</div>
+									<span class="help-inline">选择需要优化搜索的商品</span> 
+								</div>
+								<div id="product_base_info" class="" style="margin-top: 15px; margin-left: 103px;display: none;">
+									<div url="#">
+										<div class="control-group">
+											<div class="control-label" style="float: left;">
+												<img width="100" src="" alt=""> </div>
+											<div class="controls" style="margin-left: 110px;">
+												<p class="pb10" style="margin-top: 8px;">
+													商品名称 : <font class="font_title"></font> </p>
+												<p class="pb10">商品链接 :
+													<input readonly="readonly" style="width:395px" type="text" value="#" class="input_url">
+												</p>
+												<p>最后更新 : <font class="font_time"></font> </p>
+												<input type="hidden" value="38725578272" name="product_id" id="product_id"> </div>
+										</div>
+									</div>
+								</div>
+								<br>
+								<label class="control-label">
+									搜索商品关键字
+								</label>
+
+								<div class="controls">
+									<input type="text" name="text" id="text" value="" placeholder="请输入搜索的关键字" />
+									<br><span style="font-size: 12px; color: #000000;">例如：吊带连衣裙</span>
+								</div>
+								<br>
+								<label class="control-label">
+									商品位置
+								</label>
+
+								<div class="controls">
+									<textarea name="weizhi" rows="6" cols=""></textarea>
+									<br><span style="font-size: 12px; color: #000000;">例如： 从上往下-第3个</span>
+									<br><span style="font-size: 12px; color: #000000;">例如：第五页地1个</span>
+								</div><input type="hidden" name="type" id="type" value="2" />
+								<br>
+								<div class="am-btn-group">
+									<button  class="ajax-post am-btn am-round" type="button"  url="{:U('Home/SJActivity/save')}" target-form="fsw" style="font-family: '微软雅黑'; background-color: #1D99D5; font-size: 14px; width: 150px; color: #FFFFFF; margin-left: 190px;">保存搜索</button>
+								</div>
+							</div>
+
+						</form>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		<include file='Widget/sjleft' />
+	</div>
+</block>
+
+<block name="area_footer">
+	<script type="text/javascript" src="__CDN__/select2/4.0.0/js/select2.full.js"></script>
 	<script type="text/javascript">
 		$(function(){
 			$('#parseBtn').click(function(){
@@ -132,7 +243,7 @@
 						
 						
 	//    				var markup = '<div>'+repo.nickname+'</div>';
-	      				var markup = '<div><img style="margin-top:30px; height:50px; width:50px" src="'+repo.main_img+'" style="width:50px;height:50px;float:left"/>[id:'+repo.id+']'+repo.title+'</div>';
+	      				var markup = '<div><img style="margin-top:5px; height:50px; width:50px" src="'+repo.main_img+'" style="width:50px;height:50px;float:left"/>'+repo.title+'</div>';
 	      				return markup;
 	    			}
 			});
@@ -140,114 +251,4 @@
 			
 		})
 	</script>
-
-</block>
-
-<block name="area_body">
-	<include file='Widget/sjtop' />
-	<div class="seller_main clearfix" controller="seller/common">
-		<div class="seller_content_wrap">
-			<div class="seller_content" style="padding-top: 10px;">
-
-				<div class="content">
-
-					<h1>创建搜索</h1>
-
-					<div class="p20"></div>
-					<div>
-
-						<form class="form-horizontal jquery-once-1-processed create2-processed ng-scope ng-valid ng-dirty fm" action="{:U('Home/SJActivity/save')}" method="post" novalidate="novalidate">
-							<div class="control-group">
-								<label class="control-label" style="line-height: 25px;">搜索类型</label>
-								<div class="controls">
-									<ul class="nav nav-pills mb0" role="menu">
-										<!-- 获取搜索类型 -->
-										<li role="menuitem">
-											<a tabindex="-1" href="{:U('Home/SJActivity/createsearch')}">关键词</a>
-										</li>
-										<li class="active" role="menuitem"><a tabindex="-1" href="javascript:void(0)">自定义</a>
-
-										</li>
-										<li class="active"><a tabindex="-1" href="{:U('Home/SJActivity/phonesele')}">手机搜索</a>
-											
-										</li>
-										<!--<li visible="1" tooltip="手机关键词仅分配手机任务时可使用" role="menuitem" data-original-title="" title=""><a tabindex="-1" href="#">手机关键词</a>
-										</li>
-										<li visible="1" tooltip="手机关键词仅分配手机任务时可用" role="menuitem" data-original-title="" title=""><a tabindex="-1" href="#">手机自定义</a>
-										</li>-->
-									</ul>
-								</div>
-							</div>
-							<input type="hidden" name="pid" id="pid" value="" />
-							<div class="control-group">
-
-								<label class="control-label">
-									选择商品
-								</label>
-
-								<div class="controls">
-
-									<div class="filter-controls pull-left" style="">
-										<form action="" class="addToGroupForm" method="post" style="">
-											<select style="width:465px;padding: 10px 15px;font-size: 15px;" id="user_select2" name="uid" class="form-control">
-												<option></option>
-											</select>
-
-										</form>
-									</div>
-									<span class="help-inline">选择需要优化搜索的商品</span> 
-								</div>
-								<div id="product_base_info" class="" style="margin-top: 15px; margin-left: 103px;display: none;">
-									<div url="#">
-										<div class="control-group">
-											<div class="control-label" style="float: left;">
-												<img width="100" src="" alt=""> </div>
-											<div class="controls" style="margin-left: 110px;">
-												<p class="pb10" style="margin-top: 8px;">
-													商品名称 : <font class="font_title"></font> </p>
-												<p class="pb10">商品链接 :
-													<input readonly="readonly" style="width:395px" type="text" value="#" class="input_url">
-												</p>
-												<p>最后更新 : <font class="font_time"></font> </p>
-												<input type="hidden" value="38725578272" name="product_id" id="product_id"> </div>
-										</div>
-									</div>
-								</div>
-								<br>
-								<label class="control-label">
-									搜索商品关键字
-								</label>
-
-								<div class="controls">
-									<input type="text" name="text" id="text" value="" placeholder="请输入搜索的关键字" />
-									<br><span style="font-size: 12px; color: #000000;">例如：吊带连衣裙</span>
-								</div>
-								<br>
-								<label class="control-label">
-									商品位置
-								</label>
-
-								<div class="controls">
-									<textarea name="weizhi" rows="6" cols=""></textarea>
-									<br><span style="font-size: 12px; color: #000000;">例如：右边掌柜热卖列 -从上往下-第3个</span>
-									<br><span style="font-size: 12px; color: #000000;">例如：底部掌柜热卖行 -从左往右-第2个</span>
-								</div>
-								<br><input type="hidden" name="type" id="type" value="1" />
-								<div class="am-btn-group">
-								<button type="button"  url="{:U('Home/SJActivity/save')}" target-form="fm" style="font-family: '微软雅黑'; background-color: #1D99D5; font-size: 14px; width: 150px; color: #FFFFFF; margin-left: 190px;" class="ajax-post am-btn am-round">保存搜索</button>
-								</div>
-							</div>
-
-						</form>
-					</div>
-					
-				</div>
-			</div>
-		</div>
-		<include file='Widget/sjleft' />
-	</div>
-</block>
-
-<block name="area_footer">
-
 </block>

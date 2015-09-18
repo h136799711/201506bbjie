@@ -356,6 +356,7 @@ class SMActivityController extends CheckLoginController {
 	 * */
 	public function gettask(){
 		$user=session('user');
+		$time=time();
 		$tsk=array('uid'=>$user['info']['id'],'do_status'=>1);
 		$tsk_his=apiCall(HomePublicApi::Task_His_Query,array($tsk));
 		$uid=array('uid'=>$user['info']['id']);
@@ -366,7 +367,7 @@ class SMActivityController extends CheckLoginController {
 //				
 				$task_id=apiCall(HomePublicApi::Task_His_Query, array($map));
 //				
-				$mapa=array('yuecount'=>array('neq',0));
+				$mapa=array('yuecount'=>array('neq',0),'start_time'=>array('lt',time()),'end_time'=>array('gt',time()));
 				$result=apiCall(HomePublicApi::TaskPlan_Query,array($mapa));
 //				dump($result);
 //				dump($mapa);

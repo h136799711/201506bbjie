@@ -28,7 +28,7 @@
 								</a>
 							</div>
 							<div class="am-modal-bd">
-								<form class="fm" method="post">
+								<form class="fms"  method="post">
 								<input type="hidden" name="alww" class="alww" value="">
 								<input type="hidden" name="img" class="img" value="">
 								<input type="hidden" name="title" class="title" value="">
@@ -117,9 +117,9 @@
 										<td style="padding-top: 10px;">
 										</td>
 										<td style="padding-top: 10px;">
-											<button type="button" url="{:U('Home/SJActivity/addproduct')}" target-form="fm" class="ajax-post am-btn am-btn-primary am-btn-xs" style="width: 80px; height:30px;padding: 0;border-radius: 5px; ">
+											<a  href="{:U('Home/SJActivity/addproduct')}" target-form="fms" class="ajax-post am-btn am-btn-primary am-btn-xs" style="width: 80px; height:30px;padding: 5px;border-radius: 5px; ">
 												保存
-											</button>
+											</a>
 										</td>
 									</tr>
 								</table>
@@ -140,7 +140,7 @@
 								</a>
 							</div>
 							<div class="am-modal-bd">
-								<form action="{:U('Home/SJActivity/productedit')}" method="post">
+								<form action="{:U('Home/SJActivity/productedit')}" class="gxfm" method="post">
 								<input type="hidden" name="id" value="{$id}" />
 								<input type="hidden" name="alww" class="alww" value="">
 								<input type="hidden" name="img" class="img" value="">
@@ -205,7 +205,7 @@
 										<td style="padding-top: 10px;">
 										</td>
 										<td style="padding-top: 10px;">
-											<button type="submit" class="am-btn am-btn-primary am-btn-xs" style="width: 80px; height:30px;padding: 0;border-radius: 5px; ">
+											<button type="button" url="{:U('Home/SJActivity/productedit')}" target-form="gxfm" class="ajax-post am-btn am-btn-primary am-btn-xs" style="width: 80px; height:30px;padding: 0;border-radius: 5px; ">
 												保存
 											</button>
 										</td>
@@ -353,11 +353,11 @@
 												</a>
 
 													
-												</button>
+											
 												<span style="height:3px;display:table;">
 												</span>
-												<a data-role="ajax" visible="1" class="btn btn-mini"
-												href="{:U('Home/SJActivity/downpro',array('id'=>$vo['id']))}">
+												<a  class="ajax-post btn btn-mini"
+												href="{:U('Home/SJActivity/downpro',array('id'=>$vo['id']))}" target-form="">
 													下架
 												</a>
 											</td>
@@ -592,7 +592,7 @@ function showLoading() {
 				$("#read1").data("query", 0);
 				console.log(data);
 				if (data.status) {
-					var title =  data.info.title;
+					var title =  (data.info.title).substring(14,50);
 					var wangwang = data.info.wangwang;
 					if ('{$aliwawa}'.trim() == wangwang.trim()) {
 						$("input[name='alww']").val(wangwang.trim());
