@@ -11,24 +11,35 @@ namespace Tool\Controller;
 
 use Think\Controller;
 
-class RemoteProductParserController extends Controller{
+class RemoteProductParser2Controller extends Controller{
 
     public function read_search(){
+        $ch = curl_init();
+        $url = "https://s.taobao.com/search?";
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_COOKIE, "username=test;password=test");
+        curl_setopt($ch, CURLOPT_COOKIEJAR, APP_PATH."/cookies.txt");
+        curl_setopt($ch, CURLOPT_COOKIEFILE, APP_PATH."/cookies.txt");
+        $result =  curl_exec($ch);
+        curl_close($ch);
+        var_dump($result);
+        exit();
         if(IS_POST){
             $url = I('post.url','','urldecode');
-
+            $parser = null;
             $which = $this->whichUrl($url);
-
             switch($which){
 
                 case 1:
-                    $parser = new \Tool\Logic\TaobaoParserLogic($url);
+                    $parser = new \Tool\Logic\TestTaobaoParserLogic($url);
                     break;
                 case 2:
                     $parser = new \Tool\Logic\TmallParserLogic($url);
                     break;
                 default:
-                    $this->error("请输入正确的商品搜索页地址!");
+                    $this->error("请输入正确的商品详情页地址!");
                     break;
             }
 
@@ -49,7 +60,7 @@ class RemoteProductParserController extends Controller{
             }
 
         }else{
-            $this->display();
+            $this->display("RemoteProductParser/read_search");
         }
 
     }
