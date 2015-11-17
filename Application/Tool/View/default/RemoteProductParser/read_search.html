@@ -56,7 +56,7 @@
 		</div>
 		<div style="width: 640px;margin: 0 auto;">
 			<form method="post" action="__SELF__">
-				<input type="text" name="url" value="https://s.taobao.com/search?q=%E5%A5%B3%E8%A3%85+%E4%B8%8A%E4%B8%80&js=1&stats_click=search_radio_all%3A1&initiative_id=staobaoz_20150820&ie=utf8" style="width: 460px;padding: 10px;" />
+				<input type="text" name="url" value="https://s.taobao.com/search?q=nvren" style="width: 460px;padding: 10px;" />
 				<button type="submit"  data-query="0" >POST提交</button>
 				
 				<button type="button" id="J_btn_submit" data-query="0" >AJAX提交</button>
@@ -65,7 +65,7 @@
 			<div class="getdata">
 				
 			</div>
-			
+            <!--<iframe class="js_iframe"></iframe>-->
 		</div>
 		
 		<script type="text/javascript">
@@ -74,6 +74,11 @@
 			$("#J_btn_submit").data("query",1);
 		}
 			$(function(){
+
+
+//                $(".js_iframe").on("load",function(){
+//                    console.log($(".js_iframe").html());
+//                });
 				$("#J_btn_submit").click(function(){
 					var query = $("#J_btn_submit").data("query");
 					if(query == 1){
@@ -81,7 +86,15 @@
 							return ;
 					}
 					var param_url = $("input[name='url']").val();
-					
+//                    var script = $('<script type="text/html">').appendTo($("html")).attr("src",param_url);
+//                    $.getScript(param_url, function (data) {
+//                        console.log(data);
+//                    });
+//                    $.post(param_url,{}, function(response){
+//                        console.log("post",response);
+//                        // response就是返回的页面内容，然后我们可以对其做进一步的处理
+//                    },'html');
+//                    $(".getdata").load(param_url);
 					$.ajax({
 						cache:false,
 						method:"post",
