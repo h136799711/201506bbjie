@@ -78,7 +78,7 @@
 										
 											<form action="" class="addToGroupForm" method="post" style="">
 													请选择商品：<input type="hidden" name="groupid" value="{$groupid}" style="" />
-												<select style="width:465px;padding: 10px 15px;  font-size: 15px;" id="user_select2" name="uid" class="form-control">
+												<select style="width:465px;padding: 10px 15px;  font-size: 15px;display:none;" id="user_select2" name="uid" class="form-control">
 													<option></option>
 												</select>
 											</form>
@@ -149,6 +149,7 @@
 
 <block name="area_footer">
 	<script type="text/javascript">
+		var nev=0;
 		function showLoading() {
 			$("#J_btn_submit").text("正在提交中....");
 			$("#J_btn_submit").data("query", 1);
@@ -196,6 +197,7 @@
 				 从淘宝获取数据
 				 * */
 			$("#read").click(function() {
+
 				if('{$auth_status}'==0){
 					alert('您的账号未通过认证，通过认证才能发布任务');
 				}else{
@@ -230,9 +232,9 @@
 									$('.show').empty();
 									$('.show').append();
 									if ($(".title").text() == '') {
-										$(".img").html("<input type='hidden' name='img[]' value='"+data.info.main_img +"'>"+"<img src='" + data.info.main_img + "' alt='图片' style='height:50px;width:100px;folat:left;'  />");
+										$(".img").html("<input type='hidden' name='img[]' value='"+data.info.main_img +"'>"+"<img src='" + data.info.main_img + "' alt='图片' style='height:80px;width:80px;folat:left;'  />");
 										$(".title").html("<input type='hidden' name='title[]' value='"+title +"'>"+"<span name='title'>" +title+ "</span>");
-										$(".guige").html("<input type='text' style='width:50px' name='guige[] '>");
+										$(".guige").html("<input type='text' style='width:50px' name='guige[] ' value='"+repo.model_num_cfg+"'>");
 										$(".num").html("<input type='hidden' name='url[]' value='"+aaa +"'>"+"<input type='text' style='width:50px' name='num[]'>");
 										$(".xxx").html("<button class='am-btn am-btn-primary am-btn-xs' style='font-size:10px; '>×</button>");
 										$('.price').html("<input type='text' style='width:50px' name='price[]'>");
@@ -283,24 +285,24 @@
 									$('.show').empty();
 									$('.show').append();
 									if ($(".title").text() == '') {
-										$(".img").html("<input type='hidden' name='img[]' value='"+data.info.main_img +"'>"+"<img src='" + data.info.main_img + "' alt='图片' style='height:70px;width:80px;folat:left;'  />");
+										$(".img").html("<input type='hidden' name='img[]' value='"+data.info.main_img +"'>"+"<img src='" + data.info.main_img + "' alt='图片' style='height:80px;width:80px;folat:left;'  />");
 										$(".title").html("<input type='hidden' name='title[]' value='"+title +"'>"+"<span name='title'>" +title+ "</span>");
-										$(".guige").html("<input type='text' style='width:50px' name='guige[] '>");
+										$(".guige").html("<input type='text' style='width:50px' name='guige[] ' value='"+repo.model_num_cfg+"'>");
 										$(".num").html("<input type='hidden' name='url[]' value='"+aaa +"'>"+"<input type='text' style='width:50px' name='num[]'>");
 										$(".xxx").html("<button class='am-btn am-btn-primary am-btn-xs' style='font-size:10px; '>×</button>");
 										$('.price').html("<input type='text' style='width:50px' name='price[]'>");
 													
 									} else if ($(".title").text() != '' && $(".title1").text() == '') {
-										$(".img1").html("<input type='hidden' name='img[]' value="+data.info.main_img  +">"+"<img src='" + data.info.main_img + "' alt='图片' style='height:50px;width:100px;folat:left;'  />");
+										$(".img1").html("<input type='hidden' name='img[]' value="+data.info.main_img  +">"+"<img src='" + data.info.main_img + "' alt='图片' style='height:80px;width:80px;folat:left;'  />");
 										$(".title1").html("<input type='hidden' name='title[]' value='"+title +"'>"+"<span name='title'>"+title+"</span>");
-										$(".guige1").html("<input type='text' style='width:50px' name='guige[]'>");
+										$(".guige1").html("<input type='text' style='width:50px' name='guige[]' value='"+repo.model_num_cfg+"'>");
 										$(".num1").html("<input type='hidden' name='url[]' value='"+aaa +"'>"+"<input type='text' style='width:50px' name='num[]'>");
 										$(".xxx1").html("<button class='am-btn am-btn-primary am-btn-xs' style='font-size:10px; '>×</button>");
 										$('.price1').html("<input type='text' style='width:50px' name='price[]'>");
 									} else if ($(".title").text() != '' && $(".title1").text() != '') {
-										$(".img2").html("<input type='hidden' name='img[]' value="+data.info.main_img  +">"+"<img src='" + data.info.main_img + "' alt='图片' style='height:50px;width:100px;folat:left;'  />");
+										$(".img2").html("<input type='hidden' name='img[]' value="+data.info.main_img  +">"+"<img src='" + data.info.main_img + "' alt='图片' style='height:80px;width:80px;folat:left;'  />");
 										$(".title2").html("<input type='hidden' name='title[]' value='"+title +"'>"+"<span name='title'>"+title+"</span>");
-										$(".guige2").html("<input type='text' style='width:50px' name='guige[]'>");
+										$(".guige2").html("<input type='text' style='width:50px' name='guige[]' value='"+repo.model_num_cfg+"'>");
 										$(".num2").html("<input type='hidden' name='url[]' value='"+aaa +"'>"+"<input type='text' style='width:50px' name='num[]'>");
 										$(".xxx2").html("<button class='am-btn am-btn-primary am-btn-xs' style='font-size:10px; '>×</button>");
 										$('.price2').html("<input type='text' style='width:50px' name='price[]'>");
@@ -378,7 +380,10 @@
 			  	}, 
 				  	minimumInputLength: 0,
 					templateSelection: function (repo) {
-						
+						//var nev=0;
+						nev=nev+1;
+						//alert(nev);
+						if(nev%2==0){
 //						var minTitle= repo.title.substring(10);
 						if(repo.title!=undefined){
 							if('{$auth_status}'==0){
@@ -389,7 +394,7 @@
 										$('.show').empty();
 										$('.show').append();
 										if ($(".title").text() == '') {
-											$(".img").html("<input type='hidden' name='img[]' value='"+repo.main_img +"'>"+"<img src='" + repo.main_img + "' alt='图片' style='height:70px;width:80px;folat:left;'  />");
+											$(".img").html("<input type='hidden' name='img[]' value='"+repo.main_img +"'>"+"<img src='" + repo.main_img + "' alt='图片' style='height:80px;width:80px;folat:left;'  />");
 											$(".title").html("<input type='hidden' name='title[]' value='"+repo.title +"'>"+"<span name='title'>" +repo.title+ "</span>");
 											$(".guige").html("<input type='text' style='width:150px' name='guige[]' value='"+repo.model_num_cfg+"'>");
 											$(".num").html("<input type='hidden' name='url[]' value='"+repo.link +"'>"+"<input type='text' style='width:50px' name='num[]' value='1'>");
@@ -403,9 +408,10 @@
 								}else{
 									if ('{$aliwawa}'.trim() == repo.wangwang.trim()) {
 										$('.show').empty();
-										$('.show').append();
+										//$('.show').append();
 										if ($(".title").text() == '') {
-											$(".img").html("<input type='hidden' name='img[]' value='"+repo.main_img +"'>"+"<img src='" + repo.main_img + "' alt='图片' style='height:70px;width:80px;folat:left;'  />");
+									
+											$(".img").html("<input type='hidden' name='img[]' value='"+repo.main_img +"'>"+"<img src='" + repo.main_img + "' alt='图片' style='height:80px;width:80px;folat:left;'  />");
 											$(".title").html("<input type='hidden' name='title[]' value='"+repo.title +"'>"+"<span name='title'>" +repo.title+ "</span>");
 											$(".guige").html("<input type='text' style='width:150px' name='guige[]' value='"+repo.model_num_cfg+"'>");
 											$(".num").html("<input type='hidden' name='url[]' value='"+repo.link +"'>"+"<input type='text' style='width:50px' name='num[]' value='1'>");
@@ -413,16 +419,17 @@
 											$('.price').html("<input type='text' class='am-form-field' style='width:150px' name='price[]' value='"+repo.price+"'> <input type='hidden'  name='pid[]' value='"+repo.id+"'>");
 														
 										} else if ($(".title").text() != '' && $(".title1").text() == '') {
-											$(".img1").html("<input type='hidden' name='img[]' value="+repo.main_img  +">"+"<img src='" + repo.main_img + "' alt='图片' style='height:50px;width:100px;folat:left;'  />");
+											$(".img1").html("<input type='hidden' name='img[]' value="+repo.main_img  +">"+"<img src='" + repo.main_img + "' alt='图片' style='height:80px;width:80px;folat:left;'  />");
 											$(".title1").html("<input type='hidden' name='title[]' value='"+repo.title +"'>"+"<span name='title'>"+repo.title+"</span>");
-											$(".guige1").html("<input type='text' style='width:150px' name='guige[]'>");
+											$(".guige1").html("<input type='text' style='width:150px' name='guige[]' value='"+repo.model_num_cfg+"'>");
 											$(".num1").html("<input type='hidden' name='url[]' value='"+repo.link +"'>"+"<input type='text' style='width:50px' name='num[]' value='1'>");
 											$(".xxx1").html("<button class='am-btn am-btn-primary am-btn-xs' style='font-size:10px; '>×</button>");
 											$('.price1').html("<input type='text' class='am-form-field' style='width:150px' name='price[]' value='"+repo.price+"'> <input type='hidden'  name='pid[]' value='"+repo.id+"'>");
 										} else if ($(".title").text() != '' && $(".title1").text() != '') {
-											$(".img2").html("<input type='hidden' name='img[]' value="+repo.main_img  +">"+"<img src='" + repo.main_img + "' alt='图片' style='height:50px;width:100px;folat:left;'  />");
+										
+											$(".img2").html("<input type='hidden' name='img[]' value="+repo.main_img  +">"+"<img src='" + repo.main_img + "' alt='图片' style='height:80px;width:80px;folat:left;'  />");
 											$(".title2").html("<input type='hidden' name='title[]' value='"+repo.title +"'>"+"<span name='title'>"+repo.title+"</span>");
-											$(".guige2").html("<input type='text' style='width:150px' name='guige[]'>");
+											$(".guige2").html("<input type='text' style='width:150px' name='guige[]' value='"+repo.model_num_cfg+"'>");
 											$(".num2").html("<input type='hidden' name='url[]' value='"+repo.link +"'>"+"<input type='text' style='width:50px' name='num[]' value='1'>");
 											$(".xxx2").html("<button class='am-btn am-btn-primary am-btn-xs' style='font-size:10px; '>×</button>");
 											$('.price2').html("<input type='text' class='am-form-field' style='width:150px' name='price[]' value='"+repo.price+"'><input type='hidden'  name='pid[]' value='"+repo.id+"'>");
@@ -434,18 +441,21 @@
 								}
 							}
 //							
-							return minTitle || repo.text;
+
+							//return minTitle || repo.text;
+							//return repo.title || repo.text;
+							return repo.title || repo.text;
 						}else{
 							return repo.title || repo.text;
 						}
-		  				
+		  				}else{return repo.title || repo.text;}
 					},
 				  templateResult: function (repo) {
 				   		//console.info(repo);
 	      				if (repo.loading) return repo.text;
 						if(repo.nodata) return repo.nodata;
 	      				var markup = '<div style="height:50px"><img style="margin-top:0px; height:50px; float:left; width:50px" src="'+repo.main_img+'" style="width:50px;height:50px;float:left"/>[id:'+repo.id+']'+repo.title+'</div>';
-	      				return markup;
+	      				return $(markup);
 	    			}
 			});
 			

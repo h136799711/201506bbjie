@@ -207,8 +207,9 @@ class UsersjController extends CheckLoginController {
 		$user=session('user');
 		$map=array('to_id'=>$user['info']['id'],'msg_status'=>array('neq',2));
 		$page = array('curpage' => I('get.p', 0), 'size' => 6);
-		$result = apiCall(AdminPublicApi::Msgbox_QueryAll,array($map,$page));
-		$result1 = apiCall(AdminPublicApi::Message_Query,array($maps));
+		$order=array('id'=>'desc');
+		$result = apiCall(AdminPublicApi::Msgbox_QueryAll,array($map,$page,$order));
+		$result1 = apiCall(AdminPublicApi::Message_Query,array($maps,$order));
 		$this->assign('info',$result['info']['list']);
 		$this->assign('show',$result['info']['show']);
 		$this->assign('msg',$result1['info']);
@@ -218,7 +219,23 @@ class UsersjController extends CheckLoginController {
 //		dump($result['info']['list']);dump($result1['info']['list']);
 		$this->display();
 	}
-	
+	public function detail(){
+		$id=I('mbid',0);
+		$id2=I('msid',0);
+		
+		$map=array('msg_status'=>1);
+		$result = apiCall(AdminPublicApi::Msgbox_SavebyId, array($id,$map));
+		//$message = apiCall(AdminPublicApi::Message_Query, array($id2));
+		//$this->assign('msg',$message['info']);
+		$headtitle="宝贝街-站内消息";
+		$this->assign('head_title',$headtitle);
+		$this->is_auth();
+		$this->wdcount();
+		$message = M('message'); 
+		$msg=$message->find($id2); 
+		$this->assign("msg",$msg);
+		$this->display();
+	}
 	/*
 	 * VIP开通
 	 * */
@@ -292,6 +309,7 @@ class UsersjController extends CheckLoginController {
 	public function exits(){
 		
 		session('[destroy]'); // 删除session
+		F('wdcount2',NULL);
 		$this->display('Index/login');
 	}
 	/*
@@ -341,6 +359,8 @@ class UsersjController extends CheckLoginController {
 		$map=array('to_id'=>$user['info']['id'],'msg_status'=>0);
 		$result = apiCall(AdminPublicApi::Msgbox_QueryAll,array($map));
 		$this->assign('wdcount',count($result['info']['list']));
+		$wdcount2=count($result['info']['list']);
+		F('wdcount2',$wdcount2);
 	 }
 	 public function is_auth(){
 	 	$user=session('user');

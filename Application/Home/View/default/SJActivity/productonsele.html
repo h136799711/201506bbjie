@@ -50,14 +50,14 @@
 						</script>
 						<ul id="ul_start_down" class="nav nav-tabs" role="menu">
 
-							<li role="menuitem" class="active">
+							<li role="menuitem">
 								<a tabindex="-1" href="{:U('Home/SJActivity/productsele')}">
 
 									全部
 
 								</a>
 							</li>
-							<li role="menuitem">
+							<li role="menuitem"  class="active">
 
 								<a tabindex="-1" href="{:U('Home/SJActivity/productonsele')}">
 
@@ -75,15 +75,7 @@
 						</ul>
 						<div>
 							<!-- 全部-->
-							<div class="row-fluid" style="margin-left: -300px;">
-								<div class="span6 offset3">
-								</div>
-								<div class="span3" style="margin: 0 auto;">
-									<div class="summary" style="width: 500px;">
-										{$proshow}
-									</div>
-								</div>
-							</div>
+
 							<div class="keys" style="display:none" title="/seller/product">
 
 							</div>
@@ -94,7 +86,7 @@
                             	时间：2015-10-19
                             	描述：全部
                             -->
-							<div class="grid-view" controller="extend/gridview">
+							<div class="grid-view" style="display: none;" controller="extend/gridview">
 								<table class="items table table-hover">
 									<thead>
 										<tr>
@@ -222,22 +214,14 @@
 										</empty>
 									</tbody>
 								</table>
-								<div class="row-fluid" style="margin-left: -300px;">
-									<div class="span6 offset3">
-									</div>
-									<div class="span3" style="margin: 0 auto; clear: ;">
-										<div class="summary" style="width: 500px;">
-											{$proshow}
-										</div>
-									</div>
-								</div>
+							
 								<div class="keys" style="display:none" title="#">
 								</div>
 							</div>
 							
 							
 							<!-- 已启用-->
-							<div class="grid-view" style="display: none;" controller="extend/gridview">
+							<div class="grid-view"  controller="extend/gridview">
 								<table class="items table table-hover">
 									<thead>
 										<tr>
@@ -334,15 +318,7 @@
 									</tbody>
 								</table>
 
-								<div class="row-fluid" style="margin-left: -300px;">
-									<div class="span6 offset3">
-									</div>
-									<div class="span3" style="margin: 0 auto;">
-										<div class="summary" style="width: 500px;">
-											{$prooshow}
-										</div>
-									</div>
-								</div>
+
 								<div class="keys" style="display:none" title="javascript:void(0)">
 
 								</div>
@@ -460,15 +436,7 @@
 										</empty>
 									</tbody>
 								</table>
-								<div class="row-fluid" style="margin-left: -300px;">
-									<div class="span6 offset3">
-									</div>
-									<div class="span3" style="margin: 0 auto;">
-										<div class="summary" style="width: 500px;">
-											{$prooshow}
-										</div>
-									</div>
-								</div>
+
 							</div>
 							<!-- 暂停-->
 							
