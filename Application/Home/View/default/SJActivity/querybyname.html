@@ -48,7 +48,7 @@
 							</li>
 							
 						</ul>
-						<form action="{:U('Home/SJActivity/querybyname')}" method="post" class="search_form-processed">
+						<form action="{:U('Home/SJActivity/querybyname')}" method="get" class="search_form-processed">
 							<div class="well well-small">
 								<div class="row">
 									<div class="span4">
@@ -74,7 +74,7 @@
 									<thead>
 										<tr>
 											<th width="40" id="product-grid_c0">
-												<a class="sort-link" href="#">
+												<a class="sort-link">
 													ID
 													<span class="caret">
 													</span>
@@ -83,8 +83,15 @@
 											<th id="product-grid_c1">
 												宝贝名称
 											</th>
+											<th width="80">
+												<a class="sort-link">
+													状态
+													<span class="caret">
+													</span>
+												</a>
+											</th>
 											<th width="80" id="product-grid_c2">
-												<a class="sort-link" href="#">
+												<a class="sort-link">
 													单价
 													<span class="caret">
 													</span>
@@ -92,7 +99,7 @@
 											</th>
 											
 											<th width="100" id="product-grid_c5">
-												<a class="sort-link desc" href="">
+												<a class="sort-link desc">
 													最后更新
 													<span class="caret">
 													</span>
@@ -113,7 +120,7 @@
 												{$vo.id}
 											</td>
 											<td>
-												<a data-toggle="modal2" modal-title="查看商品#17224" href="#">
+												<a data-toggle="modal2" modal-title="查看商品#17224" >
 													<div class="p_img">
 														<img width="56px" height="56px" src="{$vo.main_img}" alt="">
 													</div>
@@ -126,6 +133,13 @@
 												</a>
 											</td>
 											<td>
+												<if condition="$vo['is_on_sale'] eq 0">
+												已下架
+												<else /> 
+												上架中
+												</if>
+											</td>
+											<td>
 												<span  class="inline_edit"  >{$vo.price}</span>
 											</td>
 											
@@ -133,18 +147,31 @@
 												<span title="2015-06-27 09:10">{$vo.update_time|date='Y-m-d H:i:s',###}</span>
 											</td>
 											<td>
+												
+												<if condition="$vo['is_on_sale'] eq 0">
+												<a data-role="delete" tooltip="删除" visible="1" class="btn btn-mini" href="{:U('Home/SJActivity/delpro',array('id'=>$vo['id']))}" data-original-title="" title="">
+													删除
+												</a>
+												<else /> 
 												<a  tooltip="更新" modal-title="" visible="1" class="btn btn-mini" href="{:U('Home/SJActivity/productedit',array('id'=>$vo['id']))}" >
 													更新
 												</a>
-
+												</if>
 													
 												</button>
 												<span style="height:3px;display:table;">
 												</span>
+												<if condition="$vo['is_on_sale'] eq 0">
+												<a data-role="ajax" visible="1" class="btn btn-mini" href="{:U('Home/SJActivity/uppro',array('id'=>$vo['id']))}">
+													启用
+												</a>
+												<else /> 
 												<a data-role="ajax" visible="1" class="btn btn-mini"
 												href="{:U('Home/SJActivity/downpro',array('id'=>$vo['id']))}">
 													下架
 												</a>
+												</if>
+												
 											</td>
 										</tr>
 										</volist>

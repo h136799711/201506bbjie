@@ -391,7 +391,38 @@ class WxshopProductController extends AdminController {
 		}
 	}
 
+public function search() {
+		$onshelf = I('onshelf', 0);
+		
+		$likename=$_GET['name'];
 
+		$this -> assign('likename', $likename);
+		$map['name'] = array('like','%'.$likename.'%');
+		$map['onshelf'] = $onshelf;
+		$page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));
+		$order = " createtime desc ";
+		//
+		$result = apiCall('Admin/Wxproduct/query', array($map, $page, $order, $params));
+		//
+		if ($result['status']) {
+			$this -> assign('name', $likename);
+			$this -> assign('onshelf', $onshelf);
+			$this -> assign('storeid', $storeid);
+			$this -> assign('show', $result['info']['show']);
+			$this -> assign('list', $result['info']['list']);
+			
+			
+			$store = apiCall('Admin/Wxstore/getInfo', array(array('id'=>$storeid)));
+			if(!$store['status']){
+				$this->error($store['info']);
+			}
+			$this->assign("store",$store['info']);
+			$this -> display();
+		} else {
+			LogRecord('INFO:' . $result['info'], '[FILE] ' . __FILE__ . ' [LINE] ' . __LINE__);
+			$this -> error(L('UNKNOWN_ERR'));
+		}
+	}
 	/**
 	 * 商品上下架
 	 * @param $success_url 删除成功后跳转

@@ -23,9 +23,9 @@
 							<include file="Widget/li" />
 							<div class="clear"></div>
 							<ul id="ul_rw" class="nav nav-tabs nav-store" role="menu">
-								<li class="active" role="menuitem"><a tabindex="-1" href="{:U('Home/SJActivity/sj_tbhd')}">已开启任务</a>
-								</li>
 								
+								<li role="menuitem" class="active"><a tabindex="-1" href="{:U('Home/SJActivity/sj_tbzt')}">暂停任务</a>
+								</li>
 								<!--<li role="menuitem"><a tabindex="-1" href="#">暂停任务</a>
 								</li>-->
 							</ul>
@@ -42,23 +42,23 @@
 							})
 						</script>
 						<div>
-							<div class="grid-view" controller="extend/gridview,person/renwu">
+							<div class="grid-view" controller="extend/gridview,person/renwu"  style="display: none;">
 								<table class="items table table-seller">
 									<thead>
 										
 										<tr>
-											<th width="60" id="task-grid_c0"><a class="sort-link" >ID<span class="caret"></span></a>
+											<th width="60" id="task-grid_c0"><a class="sort-link" href="#">ID<span class="caret"></span></a>
 											</th>
 											<th width="300" id="task-grid_c1">任务名称</th>
 											<th width="120" id="task-grid_c2">发货模式</th>
-											<th width="60" id="task-grid_c3"><a class="sort-link" >链接数<span class="caret"></span></a>
+											<th width="60" id="task-grid_c3"><a class="sort-link" href="#">链接数<span class="caret"></span></a>
 											</th>
-											<th width="100" id="task-grid_c4"><a class="sort-link">单份任务金<span class="caret"></span></a>
+											<th width="100" id="task-grid_c4"><a class="sort-link" href="#">单份任务金<span class="caret"></span></a>
 											</th>
 											<th width="100" id="task-grid_c5">冻结金额</th>
-											<th width="120" id="task-grid_c6"><a class="sort-link" >任务状态<span class="caret"></span></a>
+											<th width="120" id="task-grid_c6"><a class="sort-link" href="#">任务状态<span class="caret"></span></a>
 											</th>
-											<th width="100" id="task-grid_c7"><a class="sort-link desc" >创建时间<span class="caret"></span></a>
+											<th width="100" id="task-grid_c7"><a class="sort-link desc" href="#">创建时间<span class="caret"></span></a>
 											</th>
 											<th width="130" id="task-grid_c9">操作</th>
 										</tr>
@@ -120,26 +120,26 @@
 							</div>
 
 							<!--已暂停任务 -->
-							<div class="grid-view" controller="extend/gridview,person/renwu" style="display: none;">
+							<div class="grid-view" controller="extend/gridview,person/renwu">
 								<table class="items table table-seller">
 									<empty name="taskzt">
 										<span style="padding-top: 100px;">暂无数据记录</span>
 										<else/>
 										<thead>
-											
+
 											<tr>
-												<th width="60" id="task-grid_c0"><a class="sort-link" href="#">ID<span class="caret"></span></a>
+												<th width="60" id="task-grid_c0"><a class="sort-link" >ID<span class="caret"></span></a>
 												</th>
 												<th width="300" id="task-grid_c1">任务名称</th>
 												<th width="120" id="task-grid_c2">发货模式</th>
-												<th width="60" id="task-grid_c3"><a class="sort-link" href="#">链接数<span class="caret"></span></a>
+												<th width="60" id="task-grid_c3"><a class="sort-link" >链接数<span class="caret"></span></a>
 												</th>
-												<th width="100" id="task-grid_c4"><a class="sort-link" href="#">单份任务金<span class="caret"></span></a>
+												<th width="100" id="task-grid_c4"><a class="sort-link" >单份任务金<span class="caret"></span></a>
 												</th>
 												<th width="100" id="task-grid_c5">冻结金额</th>
-												<th width="120" id="task-grid_c6"><a class="sort-link" href="#">任务状态<span class="caret"></span></a>
+												<th width="120" id="task-grid_c6"><a class="sort-link" >任务状态<span class="caret"></span></a>
 												</th>
-												<th width="100" id="task-grid_c7"><a class="sort-link desc" href="#">创建时间<span class="caret"></span></a>
+												<th width="100" id="task-grid_c7"><a class="sort-link desc" >创建时间<span class="caret"></span></a>
 												</th>
 												<th width="130" id="task-grid_c9">操作</th>
 											</tr>

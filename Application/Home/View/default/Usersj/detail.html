@@ -21,7 +21,6 @@
 							</li>-->
 						</ul>
 					</div>
-
 					<div class="jquery-once-1-processed">
 						<div class="pb10">
 						</div>
@@ -29,53 +28,25 @@
 							<table class="items table table-hover">
 								<thead>
 									<tr style="border: 1px solid #ccc; background: white; height: 37px;">
-										<td style="display:none;">
-											编号
-											<!--<input type="checkbox" name="znxx_checkedAll" />-->
-										</td>
-										<td style="padding-left: 20px;">是否阅读</td>
-										<td>发件人</td>
-										<td>主题</td>
-										<td>发件时间</td>
-										<td>操作</td>
+
+										<td style="font-size:18px;padding-left:20px"><b>{$msg.title}</b></td>
+
 									</tr>
 								</thead>
 								<tbody>
-									<empty name='info'>
+
 										<tr>
-											<td colspan="6" class="empty"><span class="empty">没有找到数据.</span>
+											<td>
+														
+						{$msg.content}
 											</td>
 										</tr>
-										<else/>
-										<volist name="info" id="vo">
-											<tr style="border: 1px solid #ccc; height: 37px; font-size: 12px;">
-												<td style="display:none;">
-													{$vo.id}
-													<input type="hidden" id="mbchakan{$vo.id}" value="{$vo.id}" />
-												</td>
-												<td>
-													<if condition="$vo['msg_status'] eq 0">未读</if>
-													<if condition="$vo['msg_status'] eq 1">已读</if>
-												</td>
-
-												<volist name='msg' id='v'>
-													<if condition="$v['id'] eq $vo['msg_id']">
+										<tr>
+											<td>
 														
-														<td> <span id="my-popover">{$v.title}</span></td>
-
-														<td>{$v.summary}</td>
-														<td>{$v.create_time|date='m-d h:i',###}</td>
-														<td>
-															<a style=" font-size: 12px; padding: 3px;" id="look" class="am-btn am-btn-danger "  href="{:U('Home/Usersj/detail',array('mbid'=>$vo['id'],'msid'=>$vo['msg_id']))}">查看</a>
-															<a style="font-size: 12px; padding: 3px;" class="am-btn am-btn-danger " href="{:U('Home/Index/delsjxx',array('mbid'=>$vo['id']))}">删除</a>
-														</td>
-													</if>
-												</volist>
-
-											</tr>
-										</volist>
-										</else>
-									</empty>
+																				<a style=" font-size: 12px; padding: 3px;" id="look" class="am-btn am-btn-primary am-btn-xl"  href="{:U('Home/Usersj/sj_znxx')}">返回</a>
+											</td>
+										</tr>	
 
 								</tbody>
 							</table>
@@ -86,6 +57,9 @@
 							<div class="keys" style="display:none" title="/seller/message/index_all"></div>
 						</div>
 					</div>
+					
+
+					
 				</div>
 			</div>
 		</div>

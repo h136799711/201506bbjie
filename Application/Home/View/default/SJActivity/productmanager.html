@@ -140,7 +140,7 @@
 								</a>
 							</div>
 							<div class="am-modal-bd">
-								<form action="{:U('Home/SJActivity/productedit')}" class="gxfm" method="post">
+								<form action="{:U('Home/SJActivity/productedit')}" class="gxfm" method="get">
 								<input type="hidden" name="id" value="{$id}" />
 								<input type="hidden" name="alww" class="alww" value="">
 								<input type="hidden" name="img" class="img" value="">
@@ -245,12 +245,12 @@
 						})</script>
 						<ul id="ul_start_down" class="nav nav-tabs" role="menu">
 							<li class="active" role="menuitem">
-								<a tabindex="-1" href="javascript:void(0)">
+								<a tabindex="-1" href="{:U('Home/SJActivity/productmanager')}">
 									启用状态商品
 								</a>
 							</li>
 							<li role="menuitem">
-								<a tabindex="-1" href="javascript:void(0)">
+								<a tabindex="-1" href="{:U('Home/SJActivity/productmanager2')}">
 									已下架
 								</a>
 							</li>
@@ -291,21 +291,21 @@
 												宝贝名称
 											</th>
 											<th width="80" id="product-grid_c2">
-												<a class="sort-link" href="#">
+												<a class="sort-link">
 													单价
 													<span class="caret">
 													</span>
 												</a>
 											</th>
 											<th width="160" id="product-grid_c3">
-												<a class="sort-link" href="#">
+												<a class="sort-link" >
 													位置
 													<span class="caret">
 													</span>
 												</a>
 											</th>
 											<th width="100" id="product-grid_c5">
-												<a class="sort-link desc" href="">
+												<a class="sort-link desc" >
 													最后更新
 													<span class="caret">
 													</span>
@@ -339,10 +339,10 @@
 												</a>
 											</td>
 											<td>
-												<span data-role="inline_edit" class="inline_edit" fieldid="17224" fieldname="price" required="required" datatype="price" >{$vo.price}</span>
+												<span data-role="inline_edit" fieldid="17224" fieldname="price" required="required" datatype="price" >{$vo.price}</span>
 											</td>
 											<td>
-												<span data-role="inline_edit" class="inline_edit" fieldid="17224" fieldname="weizhi" required="required" method="textarea">{$vo.position}</span>
+												<span data-role="inline_edit" fieldid="17224" fieldname="weizhi" required="required" method="textarea">{$vo.position}</span>
 											</td>
 											<td>
 												<span title="2015-06-27 09:10">{$vo.update_time|date='Y-m-d H:i:s',###}</span>
