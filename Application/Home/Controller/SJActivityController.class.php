@@ -1165,7 +1165,7 @@ class SJActivityController extends CheckLoginController {
 				$return1=M('bbjmemberSeller')->where('uid='.$user['info']['id'])->setDec('coins',$zongjia);
 				$return2=M('bbjmemberSeller')->where('uid='.$user['info']['id'])->setInc('frozen_money',$zongjia);
 				if($return1 && $return2){
-					$this->success('发放成功！',U('Home/SJActivity/sj_tbhd'));
+					$this->success('发放成功！');
 				}
 			}
 		}

@@ -547,6 +547,8 @@ class IndexController extends HomeController {
 		$this->assign('info',$result['info']);
 		$this->getcount();
 		$this->checklevel();
+		$Usersm=A('Usersm');
+		$Usersm->posts();
 		$this->display();
 		
 		
@@ -584,6 +586,7 @@ class IndexController extends HomeController {
 /*
 	 * 获取统计数据
 	 * */
+
 	public function getcount(){
 		$user=session('user');
 		$count_bh=0;$count_zajx=0;$count_qx=0;$count_sh=0;$count_fk=0;$count_qrsh=0;

@@ -1,0 +1,63 @@
+<extend name="template/base_index" />
+
+<block name="area_header">
+	<link rel="stylesheet" href="__CSS__/manager.css" />
+</block>
+
+<block name="area_body">
+	<div class="div_all">
+		<include file="Widget/top_left" />
+		<div class="div_right">
+
+			<div class="div_minTitleAnQuan">
+				<h3>站内信息</h3>
+				<!--<a href="#" class="a_button" style="margin-left:30px;">删除</a>
+				<a href="#" class="a_button">标记为已读</a>-->
+			</div>
+			<div class="div_minContent" style="padding: 20px;">
+
+				<table style="width: 1020px; margin-top: 9px; color: #848383;">
+
+					<tr style="border: 1px solid #ccc; background: white; height: 37px;">
+						<td style="font-size:18px;padding-left:20px;color:#000;"><b>{$msg.title}</b></td>
+					</tr>
+					
+					<tr style="border: 1px solid #ccc; height: 37px; font-size: 12px;">
+						<td>
+							{$msg.content}
+						</td>
+						</tr>
+						<tr>
+						<td>
+							<a style=" font-size: 12px; padding: 3px;" id="look" class="am-btn am-btn-primary am-btn-xl"  href="{:U('Home/Usersm/sm_znxx')}">返回</a>
+						</td>
+						
+						
+					</tr>
+				
+					
+				</table>
+				<div style="margin-left: 60%;">{$show}</div>
+			</div>
+		</div>
+	</div>
+</block>
+
+<block name="area_footer">
+	<script type="text/javascript">
+	$(function() {
+  		$('#look').click(function(){
+			
+//			$.ajax(
+//				url:"{:U('Home/SJActivity/yidu')}",
+//				data:{
+//						id:$("#mbid").val(),
+//					},
+//				success:function(json){
+//					
+//				});
+  		})
+  	})
+
+</script>
+</block>
