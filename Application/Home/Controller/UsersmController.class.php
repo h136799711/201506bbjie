@@ -333,6 +333,31 @@ $index=A('Index');
 		$index->getcount();
 		$this -> display();
 	}
+	public function detail(){
+		$id=I('mbid',0);
+		$id2=I('msid',0);
+		$headtitle = "宝贝街-站内消息";
+		$this -> assign('head_title', $headtitle);
+		$user = session('user');
+		$this->posts();
+
+		$index=A('Index');
+		$index->getcount();
+
+		
+		
+		$map=array('msg_status'=>1);
+		$result = apiCall(AdminPublicApi::Msgbox_SavebyId, array($id,$map));
+
+
+		$this->assign('username',$user['info']['username']);
+
+
+		$message = M('message'); 
+		$msg=$message->find($id2); 
+		$this->assign("msg",$msg);
+		$this->display();
+	}
 	/*
 	 * 试民添加银行卡信息
 	 * */

@@ -37,21 +37,10 @@
 						<volist name='msg' id='v'>
 							<if condition="$v['id'] eq $vo['msg_id']">
 								<td> <span id="my-popover">{$v.title}</span></td>
-									<div class="am-modal am-modal-alert" tabindex="-1" id="my-alert">
-									  <div class="am-modal-dialog">
-										<div class="am-modal-hd">{$v.title}</div>
-										<div class="am-modal-bd">
-										{$v.content}
-										</div>
-										 <div class="am-modal-footer">
-											<span class="am-modal-btn">确定</span>
-									 </div>
-								 </div>
-							</div>
 							<td>{$v.summary}</td>
 							<td>{$v.create_time|date='m-d h:i',###}</td>
 							<td>
-						<a style=" font-size: 12px; padding: 3px;" id="look" target="_blank" class="am-btn am-btn-danger "  data-am-modal="{target: '#my-alert'}" href="javascript:void(0)">查看</a>
+						<a style=" font-size: 12px; padding: 3px;" id="look" class="am-btn am-btn-danger " href="{:U('Home/Usersm/detail',array('mbid'=>$vo['id'],'msid'=>$vo['msg_id']))}">查看</a>
 						<a style="font-size: 12px; padding: 3px;" class="am-btn am-btn-danger " href="{:U('Home/Index/delxx',array('id'=>$vo['id']))}">删除</a>
 						</td>
 						</if>

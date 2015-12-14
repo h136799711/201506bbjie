@@ -222,13 +222,14 @@ class UsersjController extends CheckLoginController {
 	public function detail(){
 		$id=I('mbid',0);
 		$id2=I('msid',0);
-		
+		$user=session('user');
 		$map=array('msg_status'=>1);
 		$result = apiCall(AdminPublicApi::Msgbox_SavebyId, array($id,$map));
 		//$message = apiCall(AdminPublicApi::Message_Query, array($id2));
 		//$this->assign('msg',$message['info']);
 		$headtitle="宝贝街-站内消息";
 		$this->assign('head_title',$headtitle);
+		$this->assign('username',$user['info']['username']);
 		$this->is_auth();
 		$this->wdcount();
 		$message = M('message'); 
