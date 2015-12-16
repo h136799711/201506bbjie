@@ -1,0 +1,51 @@
+
+<div class="div_right" style="width: 800px;">
+    <div id="flashEditorOut">
+        <div id="mei_tu_xiu_xiu">
+            <h1>头像上传</h1>
+        </div>
+    </div>
+</div>
+    <style type="text/css">
+        body{background: #F5F5F5}
+
+    </style>
+    <script src="http://open.web.meitu.com/sources/xiuxiu.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        $(function(){
+
+            xiuxiu.embedSWF("mei_tu_xiu_xiu",5,"720px","580px");
+            /*第1个参数是加载编辑器div容器，第2个参数是编辑器类型，第3个参数是div容器宽，第4个参数是div容器高*/
+            xiuxiu.setUploadURL("{:C('SITE_URL')}{:U('Shop/Avatar/upload')}");//修改为上传接收图片程序地址
+            xiuxiu.setUploadType(2);
+            xiuxiu.setUploadDataFieldName("image");
+            xiuxiu.onInit = function ()
+            {
+                <empty name="user['head']">
+            xiuxiu.loadPhoto("{:C('SITE_URL')}__PUBLIC__/Home/img/default_user_portrait.gif);//修改为要处理的图片url
+                <else/>
+                xiuxiu.loadPhoto("{$user['head']}");//修改为要处理的图片url
+                </empty>
+
+            }
+            xiuxiu.onUploadResponse = function (data)
+            {
+                var jsonData = JSON.parse(data);
+                console.log(jsonData);
+                if(jsonData.status){
+                    alertMsg("更新成功!");
+
+                    setTimeout(function(){
+                        window.location.reload();
+                    },2000);
+                }else{
+                    alertMsg("更新失败!");
+                }
+            }
+            xiuxiu.onClose = function(id) {
+
+            }
+        })
+    </script>
+

@@ -13,6 +13,9 @@ use Common\Model\WeixinLogModel;
 
 class WeixinLogApi extends Api{
 	
+	const QUERY_NO_PAGING="Admin/WeixinLog/queryNoPaging";
+	
+	
 	protected function _init(){
 		$this->model = new WeixinLogModel();
 	}

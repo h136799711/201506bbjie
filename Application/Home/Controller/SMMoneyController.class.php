@@ -12,7 +12,7 @@ use Home\Api\HomePublicApi;
 /*
  * 资金提现
  */
-class SMMoneyController extends CheckLoginController {
+class SMMoneyController extends HomeController {
 	
 	/*
 	 * 资金提现

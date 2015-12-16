@@ -13,7 +13,7 @@ use Admin\Api\AdminPublicApi;
 /*
  * 试民操作
  */
-class UsersmController extends CheckLoginController {
+class UsersmController extends HomeController {
 	/*
 	 * 试民资料
 	 * */
@@ -82,18 +82,7 @@ $index=A('Index');
 		$this -> display();
 	}
 	
-	/*
-	 * 用户头像上传
-	 * */
-	public function uploadheadimg(){
-		$user=session('user');
-		$id=$user['info']['id'];
-		$entity=array('head_img'=>I('picurl',''));
-		$result=apiCall(HomePublicApi::Bbjmember_SaveByID, array($id,$entity));
-		if($result['status']){
-			$this->success('用户头像修改成功',U('Home/Index/sm_manager'));
-		}
-	}
+
 	/*
 	 * 试民钱庄
 	 * */

@@ -13,6 +13,8 @@ if(version_compare(PHP_VERSION,'5.3.0','<'))  die('require PHP > 5.3.0 !');
 define('BOYE_SYS_NAME',true);
 define("PROJECT_NAME","201506bbjie");
 
+define("APP_STATUS","local_100");
+
 // 是否调试模式
 define('APP_DEBUG',true);
 

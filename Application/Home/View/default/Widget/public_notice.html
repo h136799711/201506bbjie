@@ -1,0 +1,25 @@
+
+<div class="widget-box">
+    <div class="widget-title">
+        <h5>最新公告</h5>
+    </div>
+
+    <div class="widget-content">
+        <div style="height:270px;padding:30px 15px 0;line-height: 28px;">
+            <ul class="gg">
+                <empty name="list">
+                    没有数据
+                    <else/>
+                <volist name="list" id="vo">
+                    <li>
+                        <span class="pull-right muted"><span title="{$vo.post_date|date='m-d h:i',###}">{$vo.post_date|date='m-d h:i',###}</span></span>
+                        <a class="" href="{:U('Home/Index/gfggxx',array('id'=>$vo['id']))}" target="_blank"><span title="{$vo.post_title}">{$vo.post_title}</span></a>
+                    </li>
+                </volist>
+
+                </empty>
+            </ul>
+        </div>
+    </div>
+</div>
+{__NORUNTIME__}

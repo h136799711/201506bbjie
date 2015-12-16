@@ -13,14 +13,15 @@ use \Common\Api\Api;
 use \Admin\Model\ActionModel;
 
 class ActionApi extends Api{
-	
+    const GET_INFO="Admin/Action/getInfo";
+
 	protected function _init(){
 		$this->model = new ActionModel();
 	}
 	
 	/**
      * 新增或更新一个行为
-     * @return boolean fasle 失败 ， int  成功 返回完整的数据
+     * @return boolean false 失败 ， int  成功 返回完整的数据
      */
     public function update($entity){
         /* 获取数据对象 */

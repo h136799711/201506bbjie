@@ -13,7 +13,7 @@ use Admin\Api\AdminPublicApi;
 /*
  * 资金提现
  */
-class SJActivityController extends CheckLoginController {
+class SJActivityController extends HomeController {
 
 	/*
 	 * 淘宝活动

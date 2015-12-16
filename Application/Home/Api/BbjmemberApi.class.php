@@ -10,6 +10,29 @@ use \Common\Api\Api;
 use \Home\Model\BbjmemberModel;
 
 class BbjmemberApi extends Api{
+
+    /**
+     * 新增
+     */
+    const ADD = "Home/Bbjmember/add";
+    /**
+     * 删除
+     */
+    const DELETE = "Home/Bbjmember/delete";
+    /**
+     * 不分页查询
+     */
+    const QUERY_NO_PAGING = "Home/Bbjmember/queryNoPaging";
+    /**
+     * 分页查询
+     */
+    const QUERY = "Home/Bbjmember/query";
+
+    /**
+     * 获取用户信息
+     */
+    const GET_INFO = "Home/Bbjmember/getInfo";
+
 	protected function _init(){
 		$this->model = new BbjmemberModel();
 	}

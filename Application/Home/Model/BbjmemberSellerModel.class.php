@@ -12,4 +12,5 @@ namespace Home\Model;
  * AuthGroupAccessModel 用户组与用户对应表
  */
 class BbjmemberSellerModel extends \Think\Model{
+
 }

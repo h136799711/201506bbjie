@@ -10,6 +10,7 @@ return array(
 	'AUTOLOAD_NAMESPACE'=>array(
 		'Modules'=>__ROOT__.'/Modules'
 	),
+
 	//在线升级配置 APP_KEY,APP_ID,AUTH_DOMAIN
 	'UPGRADE_AUTH_KEY'=>'[APP_KEY]',//授权码，用于在线升级
 	'UPGRADE_URL'=>'http://appcenter.itboye.com/index.php/Home/Index/upgrade_check/app_id/[APP_ID]/2.json',

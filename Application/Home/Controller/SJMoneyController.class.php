@@ -12,7 +12,8 @@ use Home\Api\HomePublicApi;
 /*
  * 资金提现
  */
-class SJMoneyController extends CheckLoginController {
+class SJMoneyController extends HomeController {
+
 
 	/*
 	 * 资金充值

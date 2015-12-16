@@ -8,6 +8,8 @@
 
 namespace Admin\Controller;
 
+use Cms\Api\PostApi;
+
 class PostController extends  AdminController{
 	
 	public function index(){
@@ -36,7 +38,7 @@ class PostController extends  AdminController{
 		$page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));
 		$order = " post_modified desc ";
 		//
-		$result = apiCall('Admin/Post/query',array($map,$page,$order,$params));
+		$result = apiCall(PostApi::QUERY,array($map,$page,$order,$params));
 		//
 		if($result['status']){
 			$this->assign('startdatetime',$startdatetime);
@@ -72,7 +74,7 @@ class PostController extends  AdminController{
 				'comment_count'=>0
 			);
 			
-			$result = apiCall("Admin/Post/add", array($entity));
+			$result = apiCall(PostApi::ADD, array($entity));
 			
 			if(!$result['status']){
 				$this->error($result['info']);
@@ -86,7 +88,7 @@ class PostController extends  AdminController{
 	public function edit(){
 		$id = I('id',0);
 		if(IS_GET){
-			$result = apiCall("Admin/Post/getInfo", array(array("id"=>$id)));
+			$result = apiCall(PostApi::GET_INFO, array(array("id"=>$id)));
 			if(!$result['info']){
 				$this->error($result['info']);
 			}
@@ -104,8 +106,9 @@ class PostController extends  AdminController{
 				'post_status'=>I('post_status','draft'),
 				'comment_status'=>I('commen_status','closed'),
 			);
-			$result = apiCall("Admin/Post/saveByID", array($id,$entity));
-			
+
+			$result = apiCall(PostApi::SAVE_BY_ID, array($id,$entity));
+
 			if(!$result['status']){
 				$this->error($result['info']);
 			}
@@ -118,7 +121,7 @@ class PostController extends  AdminController{
 	public function delete(){
 		$id = I('id',0);
 		
-		$result = apiCall("Admin/Post/delete", array(array("id"=>$id)));
+		$result = apiCall(PostApi::DELETE, array(array("id"=>$id)));
 		
 		if(!$result['status']){
 			$this->error($result['info']);

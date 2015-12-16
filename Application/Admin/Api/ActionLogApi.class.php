@@ -13,7 +13,8 @@ use \Common\Api\Api;
 use \Admin\Model\ActionLogModel;
 
 class ActionLogApi extends Api{
-	
+	const ADD="Admin/ActionLog/add";
+
 	protected function _init(){
 		$this->model = new ActionLogModel();
 	}

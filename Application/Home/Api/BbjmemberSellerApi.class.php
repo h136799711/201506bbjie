@@ -10,7 +10,32 @@ use \Common\Api\Api;
 use \Home\Model\BbjmemberSellerModel;
 
 class BbjmemberSellerApi extends Api{
-	protected function _init(){
+
+
+    /**
+     * 新增
+     */
+    const ADD = "Home/BbjmemberSeller/add";
+    /**
+     * 删除
+     */
+    const DELETE = "Home/BbjmemberSeller/delete";
+    /**
+     * 不分页查询
+     */
+    const QUERY_NO_PAGING = "Home/BbjmemberSeller/queryNoPaging";
+    /**
+     * 分页查询
+     */
+    const QUERY = "Home/BbjmemberSeller/query";
+
+    /**
+     * 获取用户信息
+     */
+    const GET_INFO = "Home/BbjmemberSeller/getInfo";
+
+
+    protected function _init(){
 		$this->model = new BbjmemberSellerModel();
 	}
 //	public function register($username, $password, $email, $mobile = '',$entity,$list,$list2){

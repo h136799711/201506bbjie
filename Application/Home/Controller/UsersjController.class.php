@@ -6,6 +6,10 @@
 // | Copyright (c) 2013-2016, http://www.itboye.com. All Rights Reserved.
 // |-----------------------------------------------------------------------------------
 namespace Home\Controller;
+use Admin\Api\MsgboxApi;
+use Admin\Model\MessageModel;
+use Admin\Model\MsgboxModel;
+use Cms\Api\PostApi;
 use Think\Controller;
 use Think\Storage;
 use Home\Api\HomePublicApi;
@@ -14,7 +18,17 @@ use Admin\Api\AdminPublicApi;
 /*
  * 官网首页
  */
-class UsersjController extends CheckLoginController {
+class UsersjController extends HomeController {
+
+
+    protected function _initialize(){
+        parent::_initialize();
+        $this->checkLogin();
+
+        $this->wdcount();
+        $this->is_auth();
+    }
+
 	/*
 	 * 商家中心
 	 * 
@@ -22,37 +36,24 @@ class UsersjController extends CheckLoginController {
 	public function index(){
 		$headtitle="宝贝街-商家中心";
 		$this->assign('head_title',$headtitle);
-		$user=session('user');
-		$id=$user['info']['id'];
+
 		$map=array(
-			'uid'=>$id,
-		);					
-		$order = " post_modified desc ";
-		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
-		$this->assign('info',$result['info']);
-		$sj=apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
-		$this->assign('money',$sj['info'][0]['coins']);
-		$this->assign('username',$user['info']['username']);
-		$this->assign('sj',$sj['info'][0]);
-		$this->assign('head_img',$sj['info'][0]['head_img']);
+			'uid'=>UID,
+		);
+
 		$this->checklevel();
 		$this->getcount();
-		$this->wdcount();
-		$this->is_auth();
-//		dump($result['info'][0]['auth_status']);
-		$this->display();
+
+        $this->boye_display();
 	}
+
+
+
 	/*
 	 * 用户头像上传
 	 * */
-	public function uploadheadimg(){
-		$user=session('user');
-		$id=$user['info']['id'];
-		$entity=array('head_img'=>I('picurl',''));
-		$result=apiCall(HomePublicApi::Bbjmember_Seller_SaveByUID, array($id,$entity));
-		if($result['status']){
-			$this->success('用户头像修改成功',U('Home/Usersj/index'));
-		}
+	public function avatar(){
+        $this->boye_display();
 	}
 	
 	
@@ -69,8 +70,7 @@ class UsersjController extends CheckLoginController {
 		);
 		$result=apiCall(HomePublicApi::Bbjmember_Seller_GetInfo, array($map));
 		$this->assign('entity',$result['info']);
-		$this->is_auth();
-		$this->wdcount();
+
 		$this->display();
 	}
 	/*
@@ -141,8 +141,7 @@ class UsersjController extends CheckLoginController {
 //		dump($map);
 		$result=apiCall(HomePublicApi::User_GetUser, array($id));
 		$this->assign('entity',$result['info']);
-		$this->is_auth();
-		$this->wdcount();
+
 		$this->display();
 	}
 	/*
@@ -182,7 +181,7 @@ class UsersjController extends CheckLoginController {
 			$this->assign('head_title',$headtitle);
 			$user=session('user');
 			$this->assign('username',$user['info']['username']);
-			$this->is_auth();
+
 			$this->display();
 		}else{
 			$user=session('user');
@@ -204,19 +203,21 @@ class UsersjController extends CheckLoginController {
 	public function sj_znxx(){
 		$headtitle="宝贝街-站内消息";
 		$this->assign('head_title',$headtitle);
-		$user=session('user');
-		$map=array('to_id'=>$user['info']['id'],'msg_status'=>array('neq',2));
-		$page = array('curpage' => I('get.p', 0), 'size' => 6);
+
+		$map=array('to_id'=> UID,'msg_status'=>array('neq',MsgboxModel::DELETE));
+
+		$page = array('curpage' => I('get.p', 0), 'size' => 10);
+
 		$order=array('id'=>'desc');
-		$result = apiCall(AdminPublicApi::Msgbox_QueryAll,array($map,$page,$order));
-		$result1 = apiCall(AdminPublicApi::Message_Query,array($maps,$order));
-		$this->assign('info',$result['info']['list']);
+		$result = apiCall(MsgboxApi::QUERY_BY_UID_AND_MSG_STATUS,array(UID,0,$page,$order));
+
+		$this->assign('list',$result['info']['list']);
 		$this->assign('show',$result['info']['show']);
-		$this->assign('msg',$result1['info']);
-		$this->assign('username',$user['info']['username']);
+
+
 		$this->wdcount();
 		$this->is_auth();
-//		dump($result['info']['list']);dump($result1['info']['list']);
+
 		$this->display();
 	}
 	public function detail(){
@@ -300,8 +301,7 @@ class UsersjController extends CheckLoginController {
 		$this -> assign('djcoins', $result['info'][0]['frozen_money']);
 		$this -> assign('bank', $info['info'][0]);
 		$this->assign('username',$user['info']['username']);
-		$this->wdcount();
-		$this->is_auth();
+
 		$this->display();
 	}
 	/*
@@ -353,55 +353,55 @@ class UsersjController extends CheckLoginController {
 	 *获得未读消息
 	 * */
 	 public function wdcount(){
-		$user=session('user');
-		$uid=array('uid'=>$user['info']['id']);
-		$result=apiCall(HomePublicApi::Bbjmember_Seller_Query,array($uid));
-		$this->assign('auto_status',$result['info'][0]['auth_status']);
-		$map=array('to_id'=>$user['info']['id'],'msg_status'=>0);
-		$result = apiCall(AdminPublicApi::Msgbox_QueryAll,array($map));
-		$this->assign('wdcount',count($result['info']['list']));
-		$wdcount2=count($result['info']['list']);
-		F('wdcount2',$wdcount2);
+         $cnt = S('c_msg_not_read_cnt');
+         if(is_null($cnt) || $cnt === false){
+             $result = apiCall(MsgboxApi::COUNT_BY_UID_AND_MSG_STATUS,array(UID,MsgboxModel::READ));
+             if($result['status']){
+                 $cnt = count($result['info']);
+             }else{
+                 $cnt = 0;
+             }
+             S('c_msg_not_read_cnt',$cnt,300);
+         }
+         $this->assign("not_read_msg_cnt",$cnt);
+
 	 }
+
 	 public function is_auth(){
-	 	$user=session('user');
-		$uid=array('uid'=>$user['info']['id']);
-		$result=apiCall(HomePublicApi::Bbjmember_Seller_Query,array($uid));
-		$this->assign('auto_status',$result['info'][0]['auth_status']);
-//		dump($result['info'][0]['auth_status']);
+		$this->assign('auto_status',$this->userinfo['auto_status']);
 	 }
 	/*
 	 * 检测用户vip等级
 	 * */
 	public function checklevel(){
-		$user=session('user');
-		$map=array('uid'=>$user['info']['id']);
-		$result=apiCall(HomePublicApi::Bbjmember_Seller_Query,array($map));
-		if($result['status']){
-			$exp=$result['info'][0]['exp'];
-			if($exp<100){
-					$this->assign('level',1);
-					$this->assign('exp',$exp-0);
-				}else if($exp>=100 && $exp<200){
-					$this->assign('level',2);
-					$this->assign('exp',$exp-100);
-				}else if($exp>=200 && $exp<300){
-					$this->assign('level',3);
-					$this->assign('exp',$exp-200);
-				}else if($exp>=300 && $exp<400){
-					$this->assign('level',4);
-					$this->assign('exp',$exp-300);
-				}else if($exp>=400 && $exp<500){
-					$this->assign('level',5);
-					$this->assign('exp',$exp-400);
-				}else if($exp>=500 && $exp<600){
-					$this->assign('level',6);
-					$this->assign('exp',$exp-500);
-				}else if($exp>=600 && $exp<700){
-					$this->assign('level',7);
-					$this->assign('exp',$exp-600);
-				}
-		}
+        $this->checkLogin();
+
+        $exp  = $this->userinfo['exp'];
+
+        if($exp < 100){
+            $this->assign('level',1);
+            $this->assign('exp',$exp-0);
+        }else if($exp>=100 && $exp<200){
+            $this->assign('level',2);
+            $this->assign('exp',$exp-100);
+        }else if($exp>=200 && $exp<300){
+            $this->assign('level',3);
+            $this->assign('exp',$exp-200);
+        }else if($exp>=300 && $exp<400){
+            $this->assign('level',4);
+            $this->assign('exp',$exp-300);
+        }else if($exp>=400 && $exp<500){
+            $this->assign('level',5);
+            $this->assign('exp',$exp-400);
+        }else if($exp>=500 && $exp<600){
+            $this->assign('level',6);
+            $this->assign('exp',$exp-500);
+        }else if($exp>=600 && $exp<700){
+            $this->assign('level',7);
+            $this->assign('exp',$exp-600);
+        }
+
+
 	}    
 	
 }

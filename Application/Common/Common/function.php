@@ -496,12 +496,10 @@ function action_log($action = null, $model = null, $record_id = null, $user_id =
 	if(!$result['status']){
 		LogRecord("记录操作日志失败!", $result['info']);
 	}
-//  M('ActionLog')->add($data);
 
     if(!empty($action_info['rule'])){
         //解析行为
         $rules = parse_action($action, $user_id);
-
         //执行行为
         $res = execute_action($rules, $action_info['id'], $user_id);
     }
@@ -592,9 +590,13 @@ function execute_action($rules = false, $action_id = null, $user_id = null){
         if($exec_count > $rule['max']){
             continue;
         }
-		
-        //执行数据库操作        
-        $Model = M(ucfirst($rule['table']));
+        $prefix = $rule['prefix'];
+        //执行数据库操作
+        if(empty($prefix)){
+            $Model = D(ucfirst($rule['table']));
+        }else{
+            $Model = M(ucfirst($rule['table']),$prefix);
+        }
         $field = $rule['field'];
         $res = $Model->where($rule['condition'])->setField($field, array('exp', $rule['rule']));
 		

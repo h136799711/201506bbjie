@@ -6,15 +6,22 @@
 // | Copyright (c) 2013-2016, http://www.itboye.com. All Rights Reserved.
 // |-----------------------------------------------------------------------------------
 namespace Home\Controller;
+use Common\Api\AccountApi;
+use Home\Api\BbjmemberApi;
+use Home\ConstVar\BoyeActionConstVar;
+use Home\ConstVar\UserTypeConstVar;
 use Think\Controller;
 use Think\Storage;
 use Home\Api\HomePublicApi;
 use Admin\Api\AdminPublicApi;
+use Uclient\Api\UserApi;
+
 /*
  * 官网首页
  */
 class IndexController extends HomeController {
-	
+
+
 	 /*
 	  * 试民注册界面
 	  * */
@@ -211,66 +218,40 @@ class IndexController extends HomeController {
 	  * 试民注册界面
 	  * */
 	public function smzc(){
+
 		$username=I('post.user_name');
 		$password=I('post.password');
 		$mobile=I('post.phone_tel');
 		$email=$username."@qq.com";
 		$yqr=I('post.yaoqingren','');
-		$result = apiCall(HomePublicApi::User_Register, array($username, $password, $email,$mobile));
-//		dump($yqr);
-		if($yqr=='' && $yqr==null){
-			$where=" username ='test1' ";
-			$fu=M('ucenterMember')->where($where)->select();
-			$id=$fu[0]['id'];
-		}else{
-			$where="username ='$yqr'";
-			$fu=M('ucenterMember')->where($where)->select();
-			$id=$fu[0]['id'];
-		}
-		if($result['status']){
-			$uid=$result['info'];
-			$entity=array(
-				'uid'=>$uid,
-				'referrer_id'=>$id,
-				'referrer_name'=>$yqr,
-				'taobao_account'=>'',
-				'aliwawa'=>'',
-				'daily_task_money'=>1000,
-				'dtree_job'=>'',
-				'personal_signature'=>'',
-				'brief_introduction'=>'',
-				'address'=>'',
-				'create_time'=>time(),
-				'update_time'=>time(),
-				'coins'=>0,
-				'fucoin'=>0,
-			);
-			
-			$result1 = apiCall(HomePublicApi::Bbjmember_Add, array($entity));
-//			dump($result1);
-			if($result1['status']){
-				$user=array(
-					'uid'=>$uid,
-					'nickname'=>$username,
-					'status'=>1,
-					'qq'=>I('qq',0),
-					'realname'=>'',
-					'idnumber'=>'',
-					'update_time'=>time(),
-				);
-				
-				$result2 = apiCall(HomePublicApi::Member_Add, array($user));
-//				dump($result2);
-				if($result2['status']){
-					$group=array(
-						'uid'=>$uid,
-						'group_id'=>14,
-					);
-					$result3 = apiCall(HomePublicApi::Group_Add, array($group));
-					$this->success('注册成功',U('Home/Index/login'));
-				}
-			}
-		}
+
+        $map = array('username'=>$yqr);
+        $result = apiCall(UserApi::FIND,array($map));
+        $invite_id = 0;
+
+        if($result['status'] && is_array($result['info'])){
+            $invite_id = $result['info']['id'];
+        }
+
+        $entity = array(
+            'username'=>$username,
+            'password'=>$password,
+            'invite_id'=>$invite_id,
+            'invite_username' => $yqr,
+            'daily_task_money'=>1000,
+            'user_type'=>UserTypeConstVar::BBJ_MEMBER_GROUP,
+            'mobile'=>$mobile,
+            'email'=>$email,
+            'from'=>'99',
+        );
+
+        $result = apiCall(AccountApi::Register, array($entity));
+        if($result['status']){
+            $this->success("注册成功",U("Home/Index/login"));
+        }else{
+            $this->error($result['info']);
+        }
+
 
 	}
 	/*
@@ -304,73 +285,38 @@ class IndexController extends HomeController {
 		$mobile=I('post.phone_tel');
 		$email=$username."@qq.com";
 		$yqr=I('post.yaoqingren','');
-		$result = apiCall(HomePublicApi::User_Register, array($username, $password, $email,$mobile));
-//		dump($yqr);
-		if($yqr=='' && $yqr==null){
-			$where=" username ='test1' ";
-			$fu=M('ucenterMember')->where($where)->select();
-			$id=$fu[0]['id'];
-		}else{
-			$where="username ='$yqr'";
-			$fu=M('ucenterMember')->where($where)->select();
-			$id=$fu[0]['id'];
-		}
-		if($result['status']){
-			$uid=$result['info'];
-			$entity=array(
-				'uid'=>$uid,
-				'referrer_id'=>$id,
-				'referrer_name'=>$yqr,
-				'taobao_account'=>'',
-				'address'=>'',
-				'aliwawa'=>'',
-				'store_name'=>'',
-				'store_url'=>'',
-				'linkman'=>'',
-				'linkman_tel'=>'',
-				'task_linkman'=>'',
-				'task_linkman_tel'=>'',
-				'task_linkman_qq'=>'',
-				'waybill_show'=>'',
-				'linkman_qq'=>'',
-				'exp'=>0,
-				'coins'=>'0.000',
-				'vip_level'=>0,
-				'auth_status'=>0,
-				'linkman_otherlink'=>'',
-				'create_time'=>time(),
-				'update_time'=>time(),
-			);
-			$result1 = apiCall(HomePublicApi::Bbjmember_Seller_Add, array($entity));
-//			
-			session('sjid',$result1['info']);
-			if($result1['status']){
-				$user=array(
-					'uid'=>$uid,
-					'nickname'=>$username,
-					'status'=>1,
-					'realname'=>'',
-					'idnumber'=>'',
-					'update_time'=>time(),
-				);
-				$result2 = apiCall(HomePublicApi::Member_Add, array($user));
-				
-				if($result2['status']){
-					$group=array(
-						'uid'=>$uid,
-						'group_id'=>15,
-					);
-//					dump($group);
-					$result3 = apiCall(HomePublicApi::Group_Add, array($group));
-//					dump($result3);
-					if($result3['status']){
-						$this->display('register_sj_kz');
-					}
-				}
-			}
-		}
+        $map = array(
+            'username'=>$yqr,
+        );
+        $result = apiCall(UserApi::FIND,array($map));
+        $invite_id = 0;
+
+        if($result['status'] && is_array($result['info'])){
+            $invite_id = $result['info']['id'];
+        }
+
+        $entity = array(
+            'username'=>$username,
+            'password'=>$password,
+            'invite_id'=>$invite_id,
+            'invite_username' => $yqr,
+            'daily_task_money'=>1000,
+            'user_type'=>UserTypeConstVar::BBJ_SHOP_GROUP,
+            'mobile'=>$mobile,
+            'email'=>$email,
+            'from'=>'99',
+        );
+
+        $result = apiCall(AccountApi::Register, array($entity));
+
+        if($result['status']){
+            $this->success("注册成功",U("Home/Index/login"));
+        }else{
+            $this->error($result['info']);
+        }
+
 	}
-/*
+    /*
 	  * 商家注册详细信息
 	  * */
 	public function sjzc_kz(){
@@ -394,6 +340,7 @@ class IndexController extends HomeController {
 	 * 登录地址
 	 */
 	public function login(){
+
 		if(IS_GET){
 			$headtitle="宝贝街-登录";
 			$this->assign('head_title',$headtitle);
@@ -402,73 +349,41 @@ class IndexController extends HomeController {
 			//检测用户
 			$username = I('post.username', '', 'trim');
 			$password = I('post.password', '', 'trim');
-			$result = apiCall(HomePublicApi::User_Login, array('username' => $username, 'password' => $password));
-//			dump($result);
-			//调用成功
+			$result = apiCall(UserApi::LOGIN, array('username' => $username, 'password' => $password));
+
 			if ($result['status']) {
+
 				$uid = $result['info'];
-				$users=apiCall(HomePublicApi::User_GetInfo, array($username));
-				$userid=$users['info']['id'];
-				$map="uid=".$userid;					
-				$group=apiCall(HomePublicApi::Group_QueryNpPage, array($map));
-				if($group['status']){
-					$groupid=$group['info'][0]['group_id'];
-					if($groupid==14){
-						$return=M('bbjmember')->where('uid='.$uid)->setInc('exp','4');
-						session('user',$users);
-						$groupid=$group['info'][0]['group_id'];
-						$user=session('user');
-						$id=$user['info']['id'];
-						$map=array(
-							'uid'=>$id,
-						);	
-						$result1=apiCall(HomePublicApi::Bbjmember_Query, array($map));
-						$user=apiCall(HomePublicApi::User_GetUser, array($id));
-						$this->assign('username',$user['info']['username']);
-						$this->assign('phone',$user['info']['mobile']);
-						$order = " post_modified desc ";
-						$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
-						$this->assign('taobao',$result1['info'][0]['taobao_account']);
-						$this->assign('user',$result1['info'][0]);
-						$this->assign('head_img',$result1['info'][0]['head_img']);
-						$this->assign('zxgg',$result['info'][0]);
-						$this->assign('info',$result['info']);
-						$this->checklevel();
-						$this->getcount();
-						$this->success('登录成功!',U('Home/Index/sm_manager'));
-					}else{
-						$return=M('bbjmemberSeller')->where('uid='.$uid)->setInc('exp','4');
-						session('user',$users);
-						$headtitle="宝贝街-商家中心";
-						$this->assign('head_title',$headtitle);
-						$user=session('user');
-						$id=$user['info']['id'];
-						$map=array(
-							'uid'=>$id,
-						);					
-						$order = " post_modified desc ";
-						$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
-						$this->assign('info',$result['info']);
-						$sj=apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
-						$this->assign('money',$sj['info'][0]['coins']);
-						$this->assign('username',$user['info']['username']);
-						$this->assign('head_img',$sj['info'][0]['head_img']);
-						$this->assign('sj',$sj['info'][0]);
-						$sj=A('usersj');
-						$sj->is_auth();
-						$sj->getcount();
-						$sj->checklevel();
-							$this->success('登录成功!',U('Home/Usersj/index'));
-					}
-				}
+
+				$result = apiCall(AccountApi::GET_INFO, array($uid));
+
+                if(!$result['status']){
+                    $this->error($result['info']);
+                }
+
+                $userinfo = $result['info'];
+
+                session("user",$userinfo);
+
+                if($userinfo['user_type'] == UserTypeConstVar::BBJ_MEMBER_GROUP){
+
+                    $this->success('登录成功!',U('Home/Index/sm_manager'));
+                }elseif($userinfo['user_type'] == UserTypeConstVar::BBJ_SHOP_GROUP){
+                    $this->success('登录成功!',U('Home/Usersj/index'));
+                }else{
+                    $this->error("非法用户!");
+                }
 				
 			} else{
-				$this->assign('error','请仔细核对您的账号和密码');
-				$this -> display('login');
+
+                $this->error($result['info']);
 				
 			}
 		}
 	}
+
+
+
 	/*
 	  * 退出当前账号
 	  * */
@@ -476,14 +391,17 @@ class IndexController extends HomeController {
 		session('[destroy]'); // 删除session
 		$this->display('login');
 	}
+
 	/*
 	 * 验证用户名是否存在
 	 * */
 	 public function checkname(){
-	 	$username = I("name",''); 
+	 	$username = I("name",'');
+
 		if(isset($username)){ 
-			$results = apiCall(HomePublicApi::User_CheckUserName,array($username));
-		}	
+			$results = apiCall(UserApi::CHECK_USER_NAME,array($username));
+		}
+
 		$this->ajaxReturn($results['info'],'json');
 	 }
 
@@ -523,26 +441,30 @@ class IndexController extends HomeController {
 	  * 试民首页
 	  * */
 	public function sm_manager(){
-		$users=session('user');
-		$uid=$users['info']['id'];
-		$id=$uid;
-		$mapp="uid=".$uid;					
-		$group=apiCall(HomePublicApi::Group_QueryNpPage, array($mapp));
-		$groupid=$group['info'][0]['group_id'];
 		$user=session('user');
-		$id=$user['info']['id'];
+		$uid=$user['info']['id'];
+
+		$map = array('uid'=>$uid);
+
+		$group=apiCall(HomePublicApi::Group_QueryNpPage, array($map));
+
 		$map=array(
-			'uid'=>$id,
-		);	
+			'uid'=>$uid,
+		);
+
 		$result1=apiCall(HomePublicApi::Bbjmember_Query, array($map));
 		$user=apiCall(HomePublicApi::User_GetUser, array($id));
 		$this->assign('username',$user['info']['username']);
 		$this->assign('phone',$user['info']['mobile']);
+
+        $map = array(
+            'post_category'=>'41',
+        );
 		$order = " post_modified desc ";
-		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
+		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map,$order));
 		$this->assign('taobao',$result1['info'][0]['taobao_account']);
 		$this->assign('user',$result1['info'][0]);
-		$this->assign('head_img',$result1['info'][0]['head_img']);
+
 		$this->assign('zxgg',$result['info'][0]);
 		$this->assign('info',$result['info']);
 		$this->getcount();
@@ -552,7 +474,8 @@ class IndexController extends HomeController {
 		$this->display();
 		
 		
-	}   
+	}
+
 	public function checklevel(){
 		$user=session('user');
 		$map=array('uid'=>$user['info']['id']);
@@ -619,12 +542,7 @@ class IndexController extends HomeController {
 		$this->assign('fk',$count_fk);
 		$this->assign('qrsh',$count_qrsh);
 		 
-	}   
-	public function posts(){
-		
-		$order = " post_modified desc ";
-		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($ma,$order));
-		$this->assign('zxgg',$result['info'][0]);
 	}
+
 }
 

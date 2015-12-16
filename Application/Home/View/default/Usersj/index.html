@@ -25,16 +25,17 @@
 										<table style="width: 100%;">
 											<tbody>
 												<tr>
-													<td style="vertical-align: top;width:160px;">
+													<td style="vertical-align: top;width:160px;text-align: center;">
 														<div class="page_head_img">
-															<a class="index_touxiang" href="javascript:void(0)">
-																<if condition="$head_img eq '' ">
+                                                            <a style="font-size: 13px;" href="{:U('Home/Usersj/avatar')}" class="" >
+																<if condition="$user['head'] eq '' ">
 																	<img src="__IMG__/default_user_portrait.gif" alt="">
 																	<else/>
-																	<img src="{$head_img}" alt="">
+																	<img src="{$user.head}" alt="">
 																</if>
-																<button style="height: 25%; width: 100%; font-size: 13px; opacity: 0.2;" type="button" value="" data-am-modal="{target: '#doc-modal-2', closeViaDimmer: 0, width:600, height: 300}" class="icon-edit">点此更换头像</button>
-															</a>
+                                                                <span>点此更换头像</span>
+                                                            </a>
+
 															<br><span class="am-badge am-badge-success am-round" style="font-size: 12px;">等级：{$level}级</span>
 														</div>
 													</td>
@@ -43,34 +44,33 @@
 
 														<div style="margin: 30px 20px;">
 															<p>
-																{$username} </p>
+																{$user.nickname} </p>
 															<p>
-																<if condition="$sj.vip_level eq 1">
+																<if condition="$user.vip_level eq 1">
 																	会员等级 : vip会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">续费或开通超级会员</a> ]
 																</if>
-																<if condition="$sj.vip_level eq 2">
+																<if condition="$user.vip_level eq 2">
 																	会员等级 : 超级会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">续费超级会员</a> ]
 																</if>
-																<if condition="$sj.vip_level eq 0">
+																<if condition="$user.vip_level eq 0">
 																	会员等级 : 普通会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">开通会员</a> ]
 																</if>
 
 															</p>
 
 															<p>
-																可用余额 : <span class="number"><span class="price">{$sj.coins}</span>元</span>
+																可用余额 : <span class="number"><span class="price">{$user.coins}</span>元</span>
 																[ <a class="text-link small" href="{:U('Home/Usersj/sj_zjgl')}">查看试福钱庄</a> ]
 															</p>
 
 															<p>
-																绑定旺旺 :{$sj.aliwawa} </p>
+																绑定旺旺 :{$user.aliwawa} </p>
+															<p>
+																店铺名 : {$user.store_name} </p>
 
 															<p>
-																店铺名 : {$sj.store_name} </p>
-
-															<p>
-																联系人 : {$sj.linkman} </p>
-															<if condition="$sj['aliwawa'] eq ''">
+																联系人 : {$user.linkman} </p>
+															<if condition="$user['aliwawa'] eq ''">
 
 																<else/>
 																<div class="alert alert-warning in fade"><a href="javascript:void(0)" class="close" data-dismiss="alert" type="button">×</a>您还没有对您的主旺旺进行认证，请先认证您的主旺旺 <a class="text-info" href="{:U('Home/Usersj/sj_zhxx')}">前往验证</a>
@@ -88,23 +88,7 @@
 						</div>
 
 						<div class="span6">
-							<div class="widget-box">
-								<div class="widget-title">
-									<h5>最新公告</h5>
-									 </div>
-								<div class="widget-content">
-									<div style="height:270px;padding:30px 15px 0;line-height: 28px;">
-										<ul class="gg">
-											<volist name="info" id="vo">
-												<li>
-													<span class="pull-right muted"><span title="{$vo.post_date|date='m-d h:i',###}">{$vo.post_date|date='m-d h:i',###}</span></span>
-													<a class="" href="{:U('Home/Index/gfggxx',array('id'=>$vo['id']))}" target="_blank"><span title="{$vo.post_title}">{$vo.post_title}</span></a>
-												</li>
-											</volist>
-										</ul>
-									</div>
-								</div>
-							</div>
+                            {:W('Public/notice')}
 						</div>
 					</div>
 
@@ -124,10 +108,10 @@
 															<tr>
 																<td>
 																	<span class="small">自助选择任务试民:</span>
-																	<if condition="$sj['task_gettype'] eq 1">
-																		<a style="color: red;" class="text-info small" tooltip="开启之后您的任务试民将由您自己审核通过" href="{:U('Home/SJActivity/changestatus',array('id'=>$sj['id'],'status'=>1))}">已关闭</a>
+																	<if condition="$user['task_gettype'] eq 1">
+																		<a style="color: red;" class="text-info small" tooltip="开启之后您的任务试民将由您自己审核通过" href="{:U('Home/SJActivity/changestatus',array('id'=>$user['id'],'status'=>1))}">已关闭</a>
 																		<else/>
-																		<a style="color: darkgreen;" class="text-info small" tooltip="关闭之后您的任务试民将由试民自己领取" href="{:U('Home/SJActivity/changestatus',array('id'=>$sj['id'],'status'=>2))}">已开启</a>
+																		<a style="color: darkgreen;" class="text-info small" tooltip="关闭之后您的任务试民将由试民自己领取" href="{:U('Home/SJActivity/changestatus',array('id'=>$user['id'],'status'=>2))}">已开启</a>
 																	</if>
 																</td>
 																</td>
@@ -191,7 +175,7 @@
 												<input type="hidden" name="picurl" id="cover_id" value="" />
 												<div class="upload-img-box">
 												</div>
-												<button class="btn-success" type="submit">确认上传</button>
+												<button class="am-btn-success" type="submit">确认上传</button>
 											</div>
 										</form>
 										<script type="text/javascript">
@@ -210,6 +194,8 @@
 											});
 
 											function uploadPicture(file, data) {
+
+
 												var data = $.parseJSON(data);
 												var src = '';
 												if (data.status) {
@@ -222,7 +208,7 @@
 													//console.info('http://localhost/github/201506bbjie'+data.path);
 													//alert($("#cover_id").val());
 												} else {
-													//alert(data.status);
+                                                    alert_msg
 													$.scojs_message(data.info, $.scojs_message.TYPE_OK);
 												}
 											}
@@ -233,49 +219,6 @@
 							</div>
 						</div>
 
-						<!--<div class="span3">
-
-							<div class="widget-box">
-								<div class="widget-title">
-									<h5>10天数据统计</h5>
-								</div>
-								<div class="widget-content">
-									<div class="index_sjtj">
-										<table class="table table-bordered">
-											<colgroup>
-												<col width="50%">
-											</colgroup>
-											<tbody>
-												<tr>
-													<td>
-														<div>挂起任务</div>
-														<div class="text-center">0</div>
-													</td>
-													<td>
-														<div>多次挂起</div>
-														<div class="text-center">0</div>
-													</td>
-												</tr>
-
-												<tr>
-													<td>
-														<div>自动审核/还款</div>
-														<div class="text-center">0</div>
-													</td>
-													<td>
-														<div>投诉反馈</div>
-														<div class="text-center">0</div>
-													</td>
-												</tr>
-
-											</tbody>
-										</table>
-
-									</div>
-								</div>
-							</div>
-
-						</div>-->
 
 					</div>
 				</div>

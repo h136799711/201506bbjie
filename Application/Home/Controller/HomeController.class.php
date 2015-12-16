@@ -12,8 +12,8 @@ use Think\Controller;
 class HomeController extends  Controller {
 	
 	//主题
-	protected $theme = "default";
-	
+	protected $themeType = "default";
+	protected $userinfo;
 	protected function _initialize() {
 		header("X-AUTHOR:ITBOYE.COM");
 		// 获取配置
@@ -28,14 +28,36 @@ class HomeController extends  Controller {
 				define("APP_VERSION", C('APP_VERSION'));
 			}
 		}
-		if(isMobile()){
-			$this->theme = "mobile";
-		}
-		$this->assign("active",0);
-		
+
+        $this->userinfo = session('user');
+
+        $this->assign("user",$this->userinfo);
 		
 	}
-	
+
+    protected function boye_display(){
+        $this->theme($this->themeType)->display();
+    }
+
+    protected function checkLogin(){
+
+        if(empty($this->userinfo)){
+            $this->error("请登录后操作!",U('Home/Index/login'));
+        }else{
+            if(!defined("UID") || UID != $this->userinfo['id']){
+                define("UID",$this->userinfo['id']);
+            }
+        }
+
+    }
+
+
+    protected function updateAvatar($img_url){
+        $this->userinfo['head'] = $img_url;
+        session('user',$this->userinfo);
+    }
+
+
 	
 	
 	/**
@@ -65,11 +87,12 @@ class HomeController extends  Controller {
 		C($config);
 	}
 
-	/**
-	 * 根据配置类型解析配置
-	 * @param  integer $type  配置类型
-	 * @param  string  $value 配置值
-	 */
+    /**
+     * 根据配置类型解析配置
+     * @param  integer $type 配置类型
+     * @param  string $value 配置值
+     * @return array|string
+     */
 	private static function parse($type, $value) {
 		switch ($type) {
 			case 3 :

@@ -12,7 +12,7 @@ use Home\Api\HomePublicApi;
 use Admin\Api\AdminPublicApi;
 
 
-class SMActivityController extends CheckLoginController {
+class SMActivityController extends HomeController {
 
 	/*
 	 * 改变状态

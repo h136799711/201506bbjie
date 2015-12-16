@@ -70,10 +70,10 @@
 											<td>
 												<volist name='user' id='v' >
 													<if condition="$v['uid'] eq $vo['uid']">
-														<if condition="$v['head_img'] eq ''">
+														<if condition="$v['head'] eq ''">
 															<li><img src="__IMG__/default_user_portrait.gif" alt=""></li>
 															<else/>
-															<li><img width="75px" height="75px" src="{$v['head_img']}" class="gray" id="" ></li>
+															<li><img width="75px" height="75px" src="{$v['head']}" class="gray" id="" ></li>
 														</if>
 													</if>
 												</volist>

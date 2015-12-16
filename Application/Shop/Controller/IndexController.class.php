@@ -18,20 +18,7 @@ class IndexController extends ShopController{
 		if(isMobile()){
 			//手机访问
 			//dump("ddd");
-			$showStartPage = true;
-			$last_entry_time = cookie("last_entry_time");
-			if(empty($last_entry_time)){
-				//一小时过期
-				cookie("last_entry_time",time(),3600);
-				$last_entry_time = time();			
-			}elseif(time() - $last_entry_time < 20*60){
-				$showStartPage = false;
-			}else{
-				//一小时过期
-				cookie("last_entry_time",time(),3600);
-			}
-			
-			$this->assign("showstartpage",$showStartPage);
+
 		}else{
 			//电脑端访问
 		}
@@ -42,7 +29,7 @@ class IndexController extends ShopController{
 	 */
 	public function index(){
 		if(isMobile()){
-			//dump("dddd");
+
 			$map = array('uid'=>$this->wxaccount['uid'],'storeid'=>-1,'position'=>C("DATATREE.SHOP_INDEX_BANNERS"));
 			
 			$page = array('curpage'=>0,'size'=>8);
@@ -56,7 +43,7 @@ class IndexController extends ShopController{
 			}
 			
 			$this->assign("banners",$result['info']['list']);
-			
+
 			$map= array('parentid'=>C("DATATREE.STORE_TYPE"));
 			$result = apiCall("Admin/Datatree/query",array($map,$page,$order,$params));
 			
@@ -77,7 +64,7 @@ class IndexController extends ShopController{
 			
 			//获取推荐店铺
 			$result = $this->getRecommendStore();
-			
+
 			$this->assign("rec_stores",$result['info']['list']);
 			
 			//获取首页4格活动
@@ -92,8 +79,7 @@ class IndexController extends ShopController{
 			$order = " post_modified desc ";
 			$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
 			$this->assign('zxgg',$result['info'][0]);
-			
-			
+
 			$map=array();
 			$map["parent"]=0;
 			$result=apiCall(AdminPublicApi::Category_QueryNoPaging, array($map));

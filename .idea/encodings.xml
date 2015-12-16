@@ -1,4 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" />
+  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
+    <file url="file://$PROJECT_DIR$/Application/Admin/Api/ActionApi.class.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Application/Admin/Api/ActionLogApi.class.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Application/Admin/Api/AddonsApi.class.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Application/Admin/Api/AlipayNotifyApi.class.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Application/Admin/Api/AuthGroupAccessApi.class.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Application/Admin/Api/AuthGroupApi.class.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Application/Admin/Api/AuthRuleApi.class.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Application/Admin/Api/ConfigApi.class.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Application/Admin/Api/DatatreeApi.class.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Application/Admin/Api/FreightAddressApi.class.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Application/Admin/Api/FreightTemplateApi.class.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Application/Admin/Api/GroupAccessApi.class.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Application/Admin/Api/HooksApi.class.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Application/Admin/Api/InformationRecordsApi.class.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Application/Admin/Api/InternationalAlipayNotifyApi.class.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Application/Admin/Api/LogApi.class.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Application/Admin/Api/MemberApi.class.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Application/Admin/Api/MenuApi.class.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Application/Admin/Api/MgroupApi.class.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Application/Admin/Api/OrdersPaycodeApi.class.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Application/Admin/Api/ParcelNumberApi.class.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Application/Admin/Api/PostApi.class.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Application/Admin/Api/SecurityCodeApi.class.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Application/Admin/Api/UcenterAdminApi.class.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Application/Admin/Api/UcenterAppApi.class.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Application/Admin/Api/UcenterMemberApi.class.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Application/Admin/Api/UidMgroupApi.class.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Application/Admin/Api/UserExpHisApi.class.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Application/Admin/Api/UserPictureApi.class.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Application/Admin/Api/WeixinLogApi.class.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Application/Home/Controller/AvatarController.class.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Application/Home/View/default/Avatar" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Application/Home/View/default/Widget/avatar_upload.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Application/Uclient/Model/OAuth2TypeModel.class.php" charset="UTF-8" />
+  </component>
 </project>

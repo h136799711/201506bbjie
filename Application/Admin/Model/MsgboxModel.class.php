@@ -10,5 +10,9 @@ namespace Admin\Model;
 use Think\Model;
 
 class MsgboxModel extends Model{
-	
+
+    const  NOT_READ = 0;
+    const READ =  1;
+    const DELETE = 2;
+
 }

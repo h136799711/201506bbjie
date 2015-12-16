@@ -10,5 +10,7 @@ namespace Admin\Model;
 use Think\Model;
 
 class MessageModel extends Model{
-	
+
+
+
 }
