@@ -25,14 +25,13 @@
 					<div class="clearfix">
 						<div class="body">
 							<div class="lc">
-
 								进店流程概述：
 								<br> 1、清除浏览器cookies，使用淘宝号“
-								<em>{$pd.aliwawa}</em>”登录淘宝；<span class="tishi">如何清除cookie？ <span class="tip"></span></span>
+								<em>{$pd.wangwang}</em>”登录淘宝；<span class="tishi">如何清除cookie？ <span class="tip"></span></span>
 								<br> 2、搜索关键字“
 								<em>{$search.search_q}</em>”，并按筛选要求缩小搜索范围；
 								<br> 3、Ctrl+F“
-								<em>{$pd.aliwawa}</em>”核对店铺旺旺；
+								<em>{$pd.wangwang}</em>”核对店铺旺旺；
 								<br> 4、货比三家后，进入店铺；
 								<br> 5、多点开几款宝贝浏览，并
 								<em>收藏</em>宝贝；
@@ -69,11 +68,11 @@
 
 								进店流程概述：
 								<br> 1、打开手机淘宝，使用淘宝号“
-								<em>{$pd.aliwawa}</em>”登录淘宝；
+								<em>{$pd.wangwang}</em>”登录淘宝；
 								<br> 2、搜索关键字“
 								<em>{$search.search_q}</em>”，并按筛选要求缩小搜索范围；
 								<br> 3、查看旺旺名称“
-								<em>{$pd.aliwawa}</em>”核对店铺旺旺；
+								<em>{$pd.wangwang}</em>”核对店铺旺旺；
 								<br> 4、货比三家后，进入店铺；
 								<br> 5、多点开几款宝贝浏览，并
 								<em>收藏</em>宝贝；
@@ -128,21 +127,20 @@
 
 									<p>&gt;&gt; {$search.search_order}</p>
 
-									<p>价格区间:
-										<input style="width:60px;" readonly="readonly" type="text"> -
-										<input style="width:60px;" readonly="readonly" type="text" value="100.00">
-									</p>
+									<!--<p>价格区间:-->
+										<!--<input style="width:60px;" readonly="readonly" type="text"> --->
+										<!--<input style="width:60px;" readonly="readonly" type="text" value="100.00">-->
+									<!--</p>-->
 
-									<p>旺旺在线</p>
 								</div>
 							</div>
 							<div class="m20">
-								<div>3 、按下：<em>Ctrl+F</em>左上角搜索框输入“<em>{$pd.aliwawa}</em>” 查找当前页 (浏览器不同搜索框位置可能有所偏差)
+								<div>3 、按下：<em>Ctrl+F</em>左上角搜索框输入“<em>{$pd.wangwang}</em>” 查找当前页 (浏览器不同搜索框位置可能有所偏差)
 									<br>
 									<small class="muted" style="font-weight: 400;">如果筛选结果一步中未作特殊说明的话，一般在前5页就能找到对应商品。如果未找到，也请您耐心再翻两页</small>
 								</div>
 								<p class="ctrl_f" unselectable="on" onselectstart="return false;">
-									<span>{$pd.aliwawa}</span>
+									<span>{$pd.wangwang}</span>
 								</p>
 							</div>
 
@@ -162,7 +160,7 @@
                 									<span>¥</span> {$pd.price} 
 												</span>
 											</div>
-											<div class="row-2"><i class="title_msk" style="background: url(__IMG__/title_msk.png) 0 -1px no-repeat;display:block;position:absolute;left:60px"></i> {$pd.title} </div>
+											<div class="row-2"><i class="title_msk" style="background: url(__IMG__/title_msk.png) 0 -1px no-repeat;display:block;position:absolute;left:60px"></i> {$pd.pname} </div>
 											<div class="row-3">
 												<div class="pull-right">XX XX</div>
 												
@@ -175,11 +173,12 @@
 									</div>
 								</div>
 							</div>
-							<div class="m20" controller="person/renwu_sousuo" sec_sousuo_url="#" sec_sousuo_data="{&#39;policy&#39;:&#39;SCNhUZPBAR5O8Wdc52qMlqGEOifCYJlXpzb0dQvaHcP6Y7Hh0gbD02pgyQCxDDnP&#39;}">
+							<div class="m20" >
 								<div>5、核对旺旺号</div>
 								<div>
 									<div class="input-append">
-										<input placeholder="请在这里输入找到的旺旺号" type="text" value="" name="" id=""><a id="queren_btn" onclick="return false;" class="btn" href="#">确认掌柜旺旺号</a>
+										<input placeholder="请在这里输入找到的旺旺号" type="text" value="" name="" id="j_input_wangwang">
+                                        <a id="queren_btn" onclick="checkWangwang();" class="btn" href="javascript:void(0);">确认掌柜旺旺号</a>
 									</div>
 								</div>
 							</div>
@@ -189,7 +188,6 @@
 
 				</div>
 
-				<div class="f"></div>
 			</div>
 			<a name="a-xiadan" id="a-xiadan"></a>
 			<div class="renwu_widget">
@@ -220,8 +218,7 @@
 
 						<div class="text-right songti" style="line-height: 30px;margin-bottom: 10px;">
 							<span style="vertical-align:5px;">
-
-        预期支付金额:<span style="font-size: 18px;">≤</span>
+                                预期支付金额:<span style="font-size: 18px;">≤</span>
 							</span>
 							<span class="shuliang price">￥{$pd.price} </span>
 						</div>
@@ -267,7 +264,7 @@
 
 		<div class="renwu_footer">
 			<div class="f1"></div>
-			<div class="text-center small">如有疑问请加入试民官方群<span class="price">（33333333333）</span>或咨询热线：<span class="price">4000-400-000</span>
+			<div class="text-center small">如有疑问请加入试民官方群<span class="price">（{$bbj_qq}）</span>
 			</div>
 		</div>
 	</div>
@@ -275,6 +272,15 @@
 
 <block name="area_footer">
 
-</block>
+    <script type="text/javascript">
+        function checkWangwang(){
+            var wangwang = "{$pd.wangwang}";
+            var input_wangwang = $(".j_input_wangwang").val();
+            if(wangwang != input_wangwang){
+                alertMsg("旺旺号没对上!");
+            }
+        }
 
-/html>
+    </script>
+
+</block>

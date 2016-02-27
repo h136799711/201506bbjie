@@ -80,7 +80,7 @@ class MsgboxApi extends Api{
             ->join("LEFT JOIN common_datatree as dt on dt.id = msg.dtree_type ")
             ->join("LEFT JOIN common_member as member on member.uid = msg.from_id ")
             ->page($page['curpage'] . ',' . $page['size'])
-            ->field("member.nickname,dt.name as msg_type_name,msg.dtree_type,msg.content,msg.title,msg.create_time,msg.send_time,msg.from_id,msg.summary,mb.msg_status")
+            ->field("msg.id as msg_id,mb.id as msg_box_id,member.nickname,dt.name as msg_type_name,msg.dtree_type,msg.content,msg.title,msg.create_time,msg.send_time,msg.from_id,msg.summary,mb.msg_status")
             ->where("mb.to_id = ".$uid." and msg.status = 1 and mb.msg_status < 2")
             ->order("msg.create_time desc")
             ->select();
@@ -92,7 +92,7 @@ class MsgboxApi extends Api{
         }
 
 
-        $count = $this -> model -> where($map) -> count();
+        $count = $this -> model->alias("mb")->join("LEFT JOIN __MESSAGE__ as msg on msg.id = mb.msg_id ") -> where("mb.to_id = ".$uid." and msg.status = 1 and mb.msg_status < 2") -> count();
         // 查询满足要求的总记录数
         $Page = new \Think\Page($count, $page['size']);
 
@@ -124,7 +124,8 @@ class MsgboxApi extends Api{
 //            ->join("LEFT JOIN common_datatree as dt on dt.id = msg.dtree_type ")
 //            ->join("LEFT JOIN common_member as member on member.uid = msg.from_id ")
             ->field("msg.dtree_type,msg.content,msg.title,msg.create_time,msg.send_time,msg.from_id,msg.summary,mb.msg_status")->where("mb.to_id = ".$uid." and msg.status = 1 and mb.msg_status = ".$msg_status)->count();
-
+//        dump($result);
+//        dump($this->model->getLastSql());
 
         if($result === false){
             return $this->apiReturnErr($this->model->getDbError());

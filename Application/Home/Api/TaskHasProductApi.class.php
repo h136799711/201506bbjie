@@ -10,16 +10,42 @@ use \Common\Api\Api;
 use \Home\Model\TaskHasProductModel;
 
 class TaskHasProductApi extends Api{
+
+
+    /**
+     * 统计
+     */
+    const COUNT = "Home/TaskHasProduct/count";
+    /**
+     * 新增
+     */
+    const ADD = "Home/TaskHasProduct/add";
+    /**
+     * 删除
+     */
+    const DELETE = "Home/TaskHasProduct/delete";
+    /**
+     * 不分页查询
+     */
+    const QUERY_NO_PAGING = "Home/TaskHasProduct/queryNoPaging";
+    /**
+     * 分页查询
+     */
+    const QUERY = "Home/TaskHasProduct/query";
+
+    /**
+     * 获取用户信息
+     */
+    const GET_INFO = "Home/TaskHasProduct/getInfo";
+
+    /**
+     * 更新
+     */
+    const SAVE_BY_ID = "Home/TaskHasProduct/saveByID";
+
 	protected function _init(){
 		$this->model = new TaskHasProductModel();
 	}
-//	public function register($username, $password, $email, $mobile = '',$entity,$list,$list2){
-//      $result = $this->model->register($username, $password, $email, $mobile);
-//	    	if($result > 0){//成功
-//	    		return array('status'=>true,'info'=>$result);
-//	    	}else{
-//	    		return array('status'=>false,'info'=>$this->getRegisterError($result));
-//	    	}
-//	}
+
 }
 

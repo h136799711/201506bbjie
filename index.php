@@ -21,13 +21,7 @@ define('APP_DEBUG',true);
 // 运行时文件
 define("APP_PATH","./Application/");
 
-require_once(APP_PATH.'/Common/Conf/auth.php');
-
 define('HTML_PATH',      './Html/'); // 应用静态目录
-
-/**
- *
- */
 
 // 运行时文件
 define("RUNTIME_PATH","../../Runtime/".PROJECT_NAME."/");

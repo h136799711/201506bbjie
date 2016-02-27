@@ -5,7 +5,7 @@ return array(
     
 	'DEFAULT_THEME'=>"default",
 	'TMPL_PARSE_STRING'  =>array(
-     	'__CDN__' =>'http://192.168.0.100/github/itboye_cdn/cdn', // 更改默认的/Public 替换规则
+     	'__CDN__' =>ITBOYE_CDN , // 更改默认的/Public 替换规则
 //   	'__CDN__' => 'http://cdn.itboye.com/Public/V20150526', // 更改默认的/Public 替换规则
 		'__UPLOAD__' => __ROOT__.'/Public/Upload', // 更改默认的/Public 替换规则
 

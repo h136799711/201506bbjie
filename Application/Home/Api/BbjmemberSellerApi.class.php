@@ -12,6 +12,8 @@ use \Home\Model\BbjmemberSellerModel;
 class BbjmemberSellerApi extends Api{
 
 
+    const SET_INC = "Home/BbjmemberSeller/setInc";
+    const SET_DESC = "Home/BbjmemberSeller/setDec";
     /**
      * 新增
      */
@@ -34,17 +36,19 @@ class BbjmemberSellerApi extends Api{
      */
     const GET_INFO = "Home/BbjmemberSeller/getInfo";
 
+    /**
+     * 保存用户信息
+     */
+    const SAVE_BY_ID = "Home/BbjmemberSeller/saveByID";
+
 
     protected function _init(){
 		$this->model = new BbjmemberSellerModel();
 	}
-//	public function register($username, $password, $email, $mobile = '',$entity,$list,$list2){
-//      $result = $this->model->register($username, $password, $email, $mobile);
-//	    	if($result > 0){//成功
-//	    		return array('status'=>true,'info'=>$result);
-//	    	}else{
-//	    		return array('status'=>false,'info'=>$this->getRegisterError($result));
-//	    	}
-//	}
+
+    public function saveByID($uid,$entity){
+        return $this -> save(array('uid' => $uid), $entity);
+    }
+
 }
 

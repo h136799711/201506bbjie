@@ -29,16 +29,13 @@
 							</div>
 							<div class="am-modal-bd">
 								<form class="fms"  method="post">
-								<input type="hidden" name="alww" class="alww" value="">
-								<input type="hidden" name="img" class="img" value="">
-								<input type="hidden" name="title" class="title" value="">
 								<table border="" cellspacing="" cellpadding="" style="margin-top: 10px;">
 									<tr>
 										<td width="20%" style="text-align: right; padding-right: 5px; padding-top: 10px;">
 											商品链接
 										</td>
 										<td style="padding-top: 10px;">
-											<input id="url" name="url" style="border-bottom-left-radius:5px ;border-top-left-radius:5px ;border: 1px solid #ccc;" />
+											<input id="url" name="url" style="width:320px;border-bottom-left-radius:5px ;border-top-left-radius:5px ;border: 1px solid #ccc;" />
 											<input type="button" id="read" style="color:#666; border-bottom-right-radius:5px ;border-top-right-radius:5px ; border: 1px solid #ccc;" value="从淘宝读取信息" />
 										</td>
 									</tr>
@@ -131,7 +128,7 @@
 					
 					
 					<!--更新商品窗口-->
-					<div class="am-modal am-modal-no-btn" tabindex="-1" id="doc-modal-2">
+					<div style="WIDTH: 680PX;" class="am-modal am-modal-no-btn" tabindex="-1" id="doc-modal-2">
 						<div class="am-modal-dialog" style="border-radius: 5px;">
 							<div class="am-modal-hd" style="border-bottom: 1px solid #ccc; text-align: left;font-size:18px;">
 								更新任务商品
@@ -141,10 +138,8 @@
 							</div>
 							<div class="am-modal-bd">
 								<form action="{:U('Home/SJActivity/productedit')}" class="gxfm" method="get">
-								<input type="hidden" name="id" value="{$id}" />
-								<input type="hidden" name="alww" class="alww" value="">
-								<input type="hidden" name="img" class="img" value="">
-								<input type="hidden" name="title" class="title" value="">
+								<input type="hidden" name="id" ID="product_id" value="{$product.id}" />
+
 								<table border="" cellspacing="" cellpadding="" style="margin-top: 10px;">
 									
 									<tr>
@@ -168,7 +163,6 @@
 										<td style="font-size: 12px;padding-top: 10px;">
 											<div class="show1" style="text-align: left;">
 												<img style="float: left; height: 100px; width: 100px;" src="{$product['main_img']}">{$product.title}
-												<br><button id="read1" type="button" class="am-btn-default">更新商品</button>
 											</div>
 										</td>
 									</tr>
@@ -178,7 +172,7 @@
 										</td>
 										<td style="padding-top: 10px;">
 											<input name="price" value="{$product['price']}" style="border-bottom-left-radius:5px ;border-top-left-radius:5px ;border: 1px solid #ccc;" />
-										</td>
+										元</td>
 									</tr>
 									
 									<tr>
@@ -217,6 +211,7 @@
 						</div>
 					</div>
 					<!--更新商品窗口-->
+
 					<h1 style="height: 40px;">
 						<div class="pull-right btn-group">
 							<button id="luruBtn" class="am-btn am-btn-primary am-btn-xs" style="height: 30px;width: 70px; font-size: 12px; padding: 0;border-radius: 5px;" data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 750, height:500}">
@@ -234,38 +229,30 @@
 							</li>
 						</ul>
 					</h1>
-					<div class="jquery-once-1-processed">
-						<div class="p10">
-						</div>
-						<script type="text/javascript">$(function() {
-							$("#ul_start_down li").click(function() {
-								$(this).addClass("active").siblings().removeClass("active");
-								$(".grid-view").eq($(this).index()).show().siblings().hide();
-							})
-						})</script>
+					<div >
 						<ul id="ul_start_down" class="nav nav-tabs" role="menu">
-							<li class="active" role="menuitem">
+							<li <eq name="sale" value="1">class="active" </eq> role="menuitem">
 								<a tabindex="-1" href="{:U('Home/SJActivity/productmanager')}">
 									启用状态商品
 								</a>
 							</li>
-							<li role="menuitem">
-								<a tabindex="-1" href="{:U('Home/SJActivity/productmanager2')}">
+							<li <eq name="sale" value="0">class="active" </eq>  role="menuitem">
+								<a tabindex="-1" href="{:U('Home/SJActivity/productmanager',array('sale'=>0))}">
 									已下架
 								</a>
 							</li>
 						</ul>
-						<form action="{:U('Home/SJActivity/querybyname')}" method="post" class="search_form-processed">
+						<form action="{:U('Home/SJActivity/productmanager')}" method="post" class="search_form-processed">
 							<div class="well well-small">
 								<div class="row">
 									<div class="span4">
 										按名称
-										<input placeholder="搜索宝贝名称" class="mb0" name="name" id="Product_title" type="text" style="height: 30px;">
+										<input placeholder="搜索宝贝名称" class="mb0" VALUE="{$name}" name="name" id="Product_title" type="text" style="height: 30px;">
 									</div>
-									<div class="span4">
-										按宝贝链接
-										<input placeholder="输入宝贝链接搜索" class="mb0" autocomplete="off" onclick="this.select()" name="url" style="height: 30px;" id="Product_url" type="text">
-									</div>
+									<!--<div class="span4">-->
+										<!--按宝贝链接-->
+										<!--<input placeholder="输入宝贝链接搜索" class="mb0" autocomplete="off" onclick="this.select()" name="url" style="height: 30px;" id="Product_url" type="text">-->
+									<!--</div>-->
 									<div class="span2">
 										<button class="btn" type="submit" name="yt0">
 											搜索
@@ -276,7 +263,7 @@
 						</form>
 						<div>
 							<!-- 上架中-->
-							<div class="grid-view" controller="extend/gridview" >
+							<div class="grid-view" >
 								<table class="items table table-hover">
 									<thead>
 										<tr>
@@ -339,33 +326,38 @@
 												</a>
 											</td>
 											<td>
-												<span data-role="inline_edit" fieldid="17224" fieldname="price" required="required" datatype="price" >{$vo.price}</span>
+												<span  >{$vo.price}</span>
 											</td>
 											<td>
-												<span data-role="inline_edit" fieldid="17224" fieldname="weizhi" required="required" method="textarea">{$vo.position}</span>
+												<span >{$vo.position}</span>
 											</td>
 											<td>
-												<span title="2015-06-27 09:10">{$vo.update_time|date='Y-m-d H:i:s',###}</span>
+												<span title="{$vo.update_time|date='Y-m-d H:i:s',###}">{$vo.update_time|date='Y-m-d H:i:s',###}</span>
 											</td>
 											<td>
-												<a  tooltip="更新" modal-title="" visible="1" class="btn btn-mini" href="{:U('Home/SJActivity/productedit',array('id'=>$vo['id']))}" >
+												<a  class="btn btn-mini am-margin-bottom-sm" href="{:U('Home/SJActivity/productmanager',array('sale'=>$vo['is_on_sale'],'id'=>$vo['id']))}" >
 													更新
 												</a>
-
-													
-											
-												<span style="height:3px;display:table;">
-												</span>
+                                                <BR/>
+                                                <BR/>
+                                                <eq name="vo['is_on_sale']" value="1">
 												<a  class="ajax-post btn btn-mini"
-												href="{:U('Home/SJActivity/downpro',array('id'=>$vo['id']))}" target-form="">
+												href="{:U('Home/SJActivity/on_sale',array('sale'=>0,'id'=>$vo['id']))}" target-form="">
 													下架
 												</a>
+                                                    <else/>
+                                                    <a  class="ajax-post btn btn-mini"
+                                                        href="{:U('Home/SJActivity/on_sale',array('sale'=>1,'id'=>$vo['id']))}" target-form="">
+                                                        上架
+                                                    </a>
+                                                </eq>
 											</td>
 										</tr>
 										</volist>
 										</empty>
 									</tbody>
 								</table>
+
 								<!-- 上架中-->
 								
 								<div class="row-fluid">
@@ -373,117 +365,12 @@
 									</div>
 									<div class="span3">
 										<div class="summary">
-											{$showall}
+											{$show}
 										</div>
 									</div>
 								</div>
-								<div class="keys" style="display:none" title="/seller/product">
-									<span>17224</span>
-								</div>
 							</div>
-							<!-- 下架中-->
-							<div style="display: none;" class="grid-view" controller="extend/gridview" >
-								<table class="items table table-hover">
-									<thead>
-										<tr>
-											<th width="40" id="product-grid_c0">
-												<a class="sort-link" href="#">
-													ID
-													<span class="caret">
-													</span>
-												</a>
-											</th>
-											<th id="product-grid_c1">
-												宝贝名称
-											</th>
-											<th width="80" id="product-grid_c2">
-												<a class="sort-link" href="#">
-													单价
-													<span class="caret">
-													</span>
-												</a>
-											</th>
-											<th width="160" id="product-grid_c3">
-												<a class="sort-link" href="#">
-													位置
-													<span class="caret">
-													</span>
-												</a>
-											</th>
-											<th width="100" id="product-grid_c5">
-												<a class="sort-link desc" href="#">
-													最后更新
-													<span class="caret">
-													</span>
-												</a>
-											</th>
-											<th width="60" id="product-grid_c6">
-												操作
-											</th>
-										</tr>
-									</thead>
-									<tbody>
-										<empty name="downpro">
-											暂无商品信息
-											<else/>
-										<volist name="downpro" id="vo">
-										<tr class="odd">
-											<td>
-												{$vo.id}
-											</td>
-											<td>
-												<a data-toggle="modal2" modal-title="查看商品#17332" href="#">
-													<div class="p_img">
-														<img width="56px" height="56px" src="{$vo.main_img}" alt="">
-													</div>
-													<div class="p_title small">
-														{$vo.title}
-														<br>
-														<span class="muted">
-														</span>
-													</div>
-												</a>
-											</td>
-											<td>
-												<span data-role="inline_edit" class="inline_edit" fieldid="17332" fieldname="price" required="required" datatype="price">100.00</span>
-											</td>
-											<td>
-												<span data-role="inline_edit" class="inline_edit" fieldid="17332" fieldname="weizhi" required="required" method="textarea" >{$vo.position}
-												</span>
-											</td>
-											<td>
-												<span title="2015-06-27 09:10">{$vo.update_time|date='Y-m-d H:i:s',###}</span>
-											</td>
-											<td>
-												<a data-role="delete" tooltip="删除" visible="1" class="btn btn-mini" href="{:U('Home/SJActivity/delpro',array('id'=>$vo['id']))}" data-original-title="" title="">
-													删除
-												</a>
-												<span style="height:3px;display:table;">
-												</span>
-												<a data-role="ajax" visible="1" class="btn btn-mini" href="{:U('Home/SJActivity/uppro',array('id'=>$vo['id']))}">
-													启用
-												</a>
-											</td>
-										</tr>
-										</volist>
-										</empty>
-										<button id="gxbtn" tooltip="更新" modal-title="" visible="1" class="btn btn-mini" data-am-modal="{target: '#doc-modal-2', closeViaDimmer: 0, width: 750, height:600}">
-									</tbody>
-								</table>
-								<!-- 下架中-->
-								<div class="row-fluid">
-									<div class="span6 offset3">
-									</div>
-									<div class="span3">
-										<div class="summary">
-											{$downshow}
-										</div>
-									</div>
-								</div>
-								<div class="keys" style="display:none" title="#">
-									<span>17332</span><span>17297</span><span>17223</span>
-								</div>
-							</div>
+
 						</div>
 					</div>
 				</div>
@@ -494,7 +381,7 @@
 </block>
 <block name="area_footer">
 <script type="text/javascript">
-function showLoading() {
+    function showLoading() {
 	$("#J_btn_submit").text("正在提交中....");
 	$("#J_btn_submit").data("query", 1);
 	}
@@ -505,12 +392,15 @@ function showLoading() {
 		$('#gaoji').click(function(){
 			
 			$('.hid').toggle(function(){
-				$('#doc-modal-1 .am-modal-dialog').css('height','600px');
+				$('#doc-modal-1 .am-modal-dialog').css('height','640px');
 			});
 		})
-		if({$id}!=''){
-			$('#gxbtn').click();
-		}
+        if($("#product_id").val() != ''){
+            $('#doc-modal-2').modal();
+        }
+//		if({$id}!=''){
+//			$('#gxbtn').click();
+//		}
 		$("#read").click(function() {
 			var urls=$("#url").val().substr(0,$("#url").val().indexOf('&'));
 			$.getJSON("{:U('Home/SJActivity/checkurl')}",{purl:urls},function(json){ 
@@ -526,11 +416,15 @@ function showLoading() {
 					$.ajax({
 						cache: false,
 						method: "post",
-						url: "{:U('Tool/RemoteProductParser/read',array('r'=>time()))}",
+                        type: "post",
+                        dataType: 'jsonp',
+                        jsonp: 'jsonp',
+                        url: "{:U('Tool/RemoteProductParser/read',array('r'=>time()))}",
+//                        url: "http://bbj.itboye.com/index.php/Tool/RemoteProductParser/read",
 						data: {
 							url: encodeURI(param_url)
 						},
-						dataType: "json",
+//						dataType: "json",
 						beforeSend: function() {
 							showLoading();
 						}
@@ -538,6 +432,7 @@ function showLoading() {
 						$("#read").text("提交");
 						$("#read").data("query", 0);
 						console.log(data);
+
 						if (data.status) {
 							var title =  data.info.title;
 							var wangwang = data.info.wangwang;

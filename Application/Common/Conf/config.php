@@ -17,7 +17,7 @@ return array(
 	'UPGRADE_AUTH_DOMAIN'=>'[AUTH_DOMAIN]',//授权域名
 	
 	'EXPRESS_APPKEY'=>'56104543f69b2498b3e8041d50ad6a71',
-'EXPRESS_SENDURL'=>'http://v.juhe.cn/exp/index',
+    'EXPRESS_SENDURL'=>'http://v.juhe.cn/exp/index',
 	
 	//唯一管理员用户配置	
    'USER_ADMINISTRATOR' => 1, //管理员用户ID
@@ -40,24 +40,13 @@ return array(
 	'URL_HTML_SUFFIX'=>'shtml'	,
     // 路由配置
     'URL_MODEL'                 =>  1, // 如果你的环境不支持PATHINFO 请设置为3
-    // 数据库配置
-    'DB_TYPE'                   =>  'mysql',
-    'DB_HOST'                   =>  '192.168.0.100',//rdsrrbifmrrbifm.mysql.rds.aliyuncs.com
-    'DB_NAME'                   =>  'boye_bbj', //boye_ceping
-    'DB_USER'                   =>  'root',//boye
-    'DB_PWD'                    =>  '1',//bo-ye2015BO-YE
-    'DB_PORT'                   =>  '3306',
-    'DB_PREFIX'                 =>  'itboye_',
-    
-    
+
 	
    //调试
     'LOG_RECORD' => true, // 开启日志记录
     'LOG_TYPE'              =>  'Db',
 	'LOG_LEVEL'  =>'EMERG,ALERT,CRIT,ERR', // 只记录EMERG ALERT CRIT ERR 错误
-    'LOG_DB_CONFIG'=>array(
-		'dsn'=>'mysql://boye_bbj:1@192.168.0.100:3306/boye_bbj' //本地日志数据库
-	),
+
 	
     // Session 配置
     'SESSION_PREFIX' => 'oauth_',

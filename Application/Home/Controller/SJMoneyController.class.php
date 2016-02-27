@@ -6,8 +6,11 @@
 // | Copyright (c) 2013-2016, http://www.itboye.com. All Rights Reserved.
 // |-----------------------------------------------------------------------------------
 namespace Home\Controller;
+use Home\Api\BbjmemberSellerApi;
+use Home\Api\FinAccountBalanceHisApi;
+use Home\Api\FinBankaccountApi;
+use Home\Model\BbjmemberSellerModel;
 use Think\Controller;
-use Think\Storage;
 use Home\Api\HomePublicApi;
 /*
  * 资金提现
@@ -15,110 +18,191 @@ use Home\Api\HomePublicApi;
 class SJMoneyController extends HomeController {
 
 
+    protected function _initialize() {
+        parent::_initialize();
+        $this->checkLogin();
+    }
+
 	/*
-	 * 资金充值
+	 * 资金提现
 	 * */
 	public function deposit() {
 		$money = I('money', '0.000');
-		$skzh = I('skzh', '');
-		$jy_num = I('jy_num', '');
-		$jypz = I('jypz', '');
-		$user = session('user');
-		$entity = array('uid' => $user['info']['id'], 'income' => '000', 'defray' => $money . '.000', 'create_time' => time(), 'notes' => '用于提现', 'dtree_type' => 3, 'status' => 2, );
-		$result = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entity));
+//		$skzh = I('skzh', '');
+//		$jy_num = I('jy_num', '');
+//		$jypz = I('jypz', '');
+
+		$entity = array('uid' => $this->uid,
+            'income' => '000',
+            'defray' => $money . '.000',
+            'create_time' => time(),
+            'notes' => '用于提现',
+            'dtree_type' => 3,
+            'status' => 2, );
+		$result = apiCall(FinAccountBalanceHisApi::ADD, array($entity));
+
+        $entity = array(
+            'coins'=>$this->userinfo['coins'] - $money,
+            'frozen_money'=>$this->userinfo['frozen_money'] + $money,
+        );
+
+        $result = apiCall(BbjmemberSellerApi::SAVE_BY_ID,array($this->uid,$entity));
+
 		if ($result['status']) {
-			$map = array('uid' => $user['info']['id'], );
-			$id = $user['info']['id'];
-			$rets = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
-			if ($rets['status']) {
-				$this -> success('你的充值请求已经提交，正在审核...', U('Home/Usersj/sj_zjgl'));
-			}
-			
+			$this -> success('你的充值请求已经提交，正在审核...', U('Home/Usersj/sj_zjgl'));
 		}
 	}
 	/**
 	 * 充值
-	 * 
+	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 */
 	public function recharge(){
-		$user = session('user');
-		$entity = array('uid' => $user['info']['id'],'imgurl'=>I('picurl'),'income' => I('post.money','').'.000' , 'defray' => '0.000', 'create_time' => time(), 'notes' => I('post.zhanghao','').'流水号：'.I("post.stnum",''), 'dtree_type' => 1, 'status' => 2, );
-		//dump($entity);
-		 $result = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entity));
-		if ($result['status']) {
-				$this -> success('你的充值请求已经提交，正在审核...', U('Home/Usersj/sj_zjgl'));
-			
-			//
-		}
+        $user = $this->userinfo;
+		$entity = array(
+            'uid' => $user['uid'],
+            'imgurl'=>I('picurl'),
+            'income' => I('post.money','').'.000'
+            , 'defray' => '0.000',
+            'create_time' => time(),
+            'notes' => I('post.zhanghao','').'流水号：'.I("post.stnum",''),
+            'dtree_type' => 1,
+            'status' => 2, );
+
+		$result = apiCall(FinAccountBalanceHisApi::ADD, array($entity));
+
+        if ($result['status']) {
+    		$this -> success('你的充值请求已经提交，正在审核...', U('Home/Usersj/sj_zjgl'));
+		}else{
+            $this->error($result['info']);
+        }
 	}
+
 	/**
 	 * 开通vip
-	 * 
+	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 */
 	public function vip() {
-		$money = I('money', '');
-		
-		$user = session('user');
-		$map = array('uid' => $user['info']['id'], );
-		$id = $user['info']['id'];
-		$pwd = I('pwd', '');
-		$result = apiCall(HomePublicApi::User_GetbyID, array($id));
-		$password = $result['info']['password'];
-		$pp = think_ucenter_md5($pwd, UC_AUTH_KEY);
-		if ($password == $pp) {
-			$rets = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
-			$coin=$rets['info'][0]['coins'];
-//			dump($coin);dump($money);
-			if($coin<$money){
-				$this->error('余额不足');
-			}else{
-				
-				$lv = I('lv', '1');
-				$ap = array('vip_level' => $lv, );
-				$return = apiCall(HomePublicApi::Bbjmember_Seller_SaveByUID, array($id, $ap));
-				if ($return['status']) {
-					$entity = array('uid' => $id, 'defray' => $money . '.000', 'income' => '0.000', 'create_time' => time(), 'notes' => '用于开通会员'.I('time','').'个月', 'dtree_type' => 4, 'status' => 1, );
-					$resulta = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entity));
-					if ($resulta['status']) {
-						$return1=M('bbjmemberSeller')->where('uid='.$id)->setDec('coins',$money);
-						$this -> success('恭喜！你的服务已经成功开通...', U('Home/Usersj/index'));
-					}
-				}
-			}
-			
-		} else {
-			$this -> error('密码错误  ，无法进行此操作');
-		}
+        // 会员价格
+        $level = array(
+            'vip'=>array(
+                '1'=>300, //一个月
+                '3'=>810, //3个月
+                '6'=>1440,//6个月
+                '12'=>2160,//12个月
+            ),
+            'svip'=>array(
+                '1'=>600,
+                '3'=>1620,
+                '6'=>2880,
+                '12'=>4320,
+            ),
+        );
+
+        $month = $this->_param('month','','请选择充值时长');
+        $type = $this->_param('type','','请选择会员类型');
+        $money = $level[$type][$month];
+
+        $coin = $this->userinfo['coins'];
+        $pwd = $this->_param('pwd','','请输入密码');
+        $password = think_ucenter_md5($pwd,UC_AUTH_KEY);
+        if($password != $this->userinfo['password']){
+            $this->error("登录密码错误");
+        }
+
+        $cur_vip_level = $this->userinfo['vip_level'];
+        $start_time = time();//会员过期时间
+
+        if($cur_vip_level == BbjmemberSellerModel::VIP_TYPE_SUPER
+            && $type == 'vip'){
+            $this->error("您当前是超级VIP，不能充值一般VIP");
+        }
+
+
+        $coin = $coin - $money;
+
+        if($coin < 0){
+            $this->error('余额不足');
+        }else{
+            $lv  = 0;
+            if($type == 'svip'){
+                $lv = 2;
+            }elseif($type == 'vip'){
+                $lv =  1;
+            }
+
+            if($cur_vip_level == $lv && $this->userinfo['vip_expire_time'] > 0){
+                $start_time = $this->userinfo['vip_expire_time'];//一般会员，充值 超级会员 ，则过期时间从当前时间算起
+            }
+
+            $expire_time = $start_time + ($month * 30 * 24 * 3600);
+
+            $entity = array(
+                'vip_level'=>$lv,
+                'vip_expire_time'=>$expire_time,
+                'coins'=>$coin,
+            );
+
+            $result = apiCall(BbjmemberSellerApi::SAVE_BY_ID, array($this->uid, $entity));
+
+            if ($result['status']) {
+                $this->reloadUserInfo();
+
+                $entity = array('uid' => $this->uid,
+                    'defray' => $money . '.000',
+                    'income' => '0.000',
+                    'create_time' => time(),
+                    'notes' => '用于开通'.$type.'会员'.$month.'个月',
+                    'dtree_type' => 4,
+                    'status' => 1,
+                    );
+                apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entity));
+                $this->success("您的服务已经开通",U('Home/Usersj/index'));
+            }else{
+                $this->error('充值失败');
+            }
+        }
 
 	}
+
 	/**
 	 * 绑定银行卡
-	 * 
+	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 */
 	public function addbank() {
-		$pwd = I('pwd', '');
-		$user = session('user');
-		$uid = $user['info']['id'];
-		//think_ucenter_md5($password, UC_AUTH_KEY)
-		$result = apiCall(HomePublicApi::User_GetbyID, array($uid));
-		$password = $result['info']['password'];
-		$pp = think_ucenter_md5($pwd, UC_AUTH_KEY);
-		if ($password == $pp) {
-			$entity = array('uid' => $user['info']['id'], 'bank_name' => I('bank', ''), 'bank_account' => I('bank_num', ''), 'create_time' => time(), 'status' => 0, 'notes' => '', 'cardholder' => I('name', ''), 'province' => I('sheng', ''), 'city' => I('shi', ''), );
-			$map = array('uid' => $user['info']['id'], );
-			$info = apiCall(HomePublicApi::FinBankaccount_Query, array($map));
-			if ($info['info'] == null) {
-				$add = apiCall(HomePublicApi::FinBankaccount_Add, array($entity));
-				$this -> success('绑定成功', U('Home/Usersj/sj_zjgl'));
-			} else {
-				$id = $info['info'][0]['id'];
-				$update = apiCall(HomePublicApi::FinBankaccount_SaveByID, array($id, $entity));
-				$this -> success('修改成功', U('Home/Usersj/sj_zjgl'));
-			}
-		} else {
-			$this -> error('登录密码错误！', U('Home/Usersj/sj_zjgl'));
-		}
-	}
+
+        $pwd = $this->_param('pwd','','请输入密码');
+        $password = think_ucenter_md5($pwd,UC_AUTH_KEY);
+        if($password != $this->userinfo['password']){
+            $this->error("登录密码错误");
+        }
+
+        $entity = array('uid' => $this->uid,
+            'bank_name' => I('bank', ''),
+            'bank_account' => I('bank_num', ''),
+            'create_time' => time(),
+            'status' => 0,
+            'notes' => '',
+            'cardholder' => I('name', ''),
+            'province' => I('sheng', ''),
+            'city' => I('shi', '')
+            );
+
+        $map = array('uid' => $this->uid, );
+
+        $result = apiCall(FinBankaccountApi::GET_INFO, array($map));
+
+        if ($result['info'] == null) {
+            $result = apiCall(FinBankaccountApi::ADD, array($entity));
+        } else {
+            $id = $result['info']['id'];
+            $result = apiCall(FinBankaccountApi::SAVE_BY_ID, array($id, $entity));
+        }
+        if($result['status']){
+            $this -> success('操作成功', U('Home/Usersj/sj_zjgl'));
+	    }else{
+            $this -> success('操作失败', U('Home/Usersj/sj_zjgl'));
+        }
+    }
 	
 
 }

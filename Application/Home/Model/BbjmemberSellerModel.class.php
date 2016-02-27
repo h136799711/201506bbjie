@@ -13,4 +13,24 @@ namespace Home\Model;
  */
 class BbjmemberSellerModel extends \Think\Model{
 
+    /**
+     * 试民自主领取
+     */
+    const SELF_GET = 1;
+
+    /**
+     * 商家选择
+     */
+    const SELLER_SELECT =  2;
+
+    /**
+     * 一般VIP等级
+     */
+    const VIP_TYPE_NORMAL = 1;
+    /**
+     * 超级VIP等级
+     */
+    const VIP_TYPE_SUPER = 2;
+
+
 }

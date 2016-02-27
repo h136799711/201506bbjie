@@ -2,7 +2,11 @@
 
 <block name="area_header">
 	<link rel="stylesheet" href="__CSS__/shangjia.css">
-
+    <style type="text/css">
+        .read_msg{
+            color: #90A9B1;
+        }
+    </style>
 </block>
 
 <block name="area_body">
@@ -31,9 +35,8 @@
 									<tr style="border: 1px solid #ccc; background: white; height: 37px;">
 										<td style="display:none;">
 											编号
-											<!--<input type="checkbox" name="znxx_checkedAll" />-->
 										</td>
-										<td style="padding-left: 20px;">是否阅读</td>
+										<td class="text-center">是否阅读</td>
 										<td>发件人</td>
 										<td>主题</td>
 										<td>发件时间</td>
@@ -41,36 +44,40 @@
 									</tr>
 								</thead>
 								<tbody>
-									<empty name='info'>
+									<empty name='list'>
 										<tr>
 											<td colspan="6" class="empty"><span class="empty">没有找到数据.</span>
 											</td>
 										</tr>
 										<else/>
-										<volist name="info" id="vo">
-											<tr style="border: 1px solid #ccc; height: 37px; font-size: 12px;">
+										<volist name="list" id="vo">
+
+											<tr
+                                            <if condition="$vo['msg_status'] eq 1">class="read_msg"</if> style="border: 1px solid #ccc; height: 37px; font-size: 12px;">
 												<td style="display:none;">
 													{$vo.id}
 													<input type="hidden" id="mbchakan{$vo.id}" value="{$vo.id}" />
 												</td>
-												<td>
+												<td class="text-center">
 													<if condition="$vo['msg_status'] eq 0">未读</if>
 													<if condition="$vo['msg_status'] eq 1">已读</if>
 												</td>
+                                                <td>
+                                                    <span id="my-popover">
+                                                        <eq name="vo['from_id']" value="0">
+                                                            系统
+                                                            <else/>
+                                                            {$vo.nickname}
+                                                        </eq>
+                                                    </span>
+                                                </td>
 
-												<volist name='msg' id='v'>
-													<if condition="$v['id'] eq $vo['msg_id']">
-														
-														<td> <span id="my-popover">{$v.title}</span></td>
-
-														<td>{$v.summary}</td>
-														<td>{$v.create_time|date='m-d h:i',###}</td>
-														<td>
-															<a style=" font-size: 12px; padding: 3px;" id="look" class="am-btn am-btn-danger "  href="{:U('Home/Usersj/detail',array('mbid'=>$vo['id'],'msid'=>$vo['msg_id']))}">查看</a>
-															<a style="font-size: 12px; padding: 3px;" class="am-btn am-btn-danger " href="{:U('Home/Index/delsjxx',array('mbid'=>$vo['id']))}">删除</a>
-														</td>
-													</if>
-												</volist>
+                                                <td>{$vo.summary}</td>
+                                                <td>{$vo.create_time|date='Y-m-d h:i:s',###}</td>
+                                                <td>
+                                                    <a class="am-btn am-btn-danger "  href="{:U('Home/Usersj/detail',array('msg_box_id'=>$vo['msg_box_id'],'msg_id'=>$vo['msg_id']))}"><i class="am-icon-eye"></i>详细</a>
+                                                    <!--<a  class="ajax-get am-btn am-btn-danger " href="{:U('Home/Index/del_msg',array('msg_id'=>$vo['msg_id']))}">删除</a>-->
+                                                </td>
 
 											</tr>
 										</volist>

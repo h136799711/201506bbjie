@@ -6,22 +6,14 @@
 // | Copyright (c) 2013-2016, http://www.itboye.com. All Rights Reserved.
 // |-----------------------------------------------------------------------------------
 namespace Shop\Controller;
+use Cms\Api\PostApi;
 use Home\Api\HomePublicApi;
 use Admin\Api\AdminPublicApi;
 
 class IndexController extends ShopController{
 	
 	protected function _initialize(){
-		//dump("ddd");
-		//parent::_initialize();
-		
-		if(isMobile()){
-			//手机访问
-			//dump("ddd");
-
-		}else{
-			//电脑端访问
-		}
+        parent::_initialize();
 	}
 	
 	/**
@@ -77,7 +69,7 @@ class IndexController extends ShopController{
 			//电脑端访问
 			
 			$order = " post_modified desc ";
-			$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
+			$result = apiCall(PostApi::QUERY_NO_PAGING,array($map, $order));
 			$this->assign('zxgg',$result['info'][0]);
 
 			$map=array();

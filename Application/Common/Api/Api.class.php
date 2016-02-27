@@ -312,12 +312,14 @@ abstract class Api {
 			return $this->apiReturnSuc($result);
 		}
 	}
-	/**
-	 * query 不分页
-	 * @param $map 查询条件
-	 * @param $order 排序条件
-	 * @param $fields 只获取指定字段
-	 */
+
+    /**
+     * query 不分页
+     * @param $map array 查询条件
+     * @param $order string 排序条件
+     * @param $fields string 只获取指定字段
+     * @return array
+     */
 	public function queryNoPaging($map = null, $order = false, $fields = false) {
 		$query = $this->model;
 		if(!is_null($map)){

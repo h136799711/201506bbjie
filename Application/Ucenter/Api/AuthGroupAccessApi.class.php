@@ -11,7 +11,10 @@ namespace Ucenter\Api;
 use Ucenter\Model\AuthGroupAccessModel;
 
 class AuthGroupAccessApi extends \Common\Api\Api{
-	
+
+    const ADD = "Admin/AuthGroupAccess/add";
+    const QUERY_NO_PAGING = "Admin/AuthGroupAccess/queryNoPaging";
+
 	protected function _init(){
 		$this->model = new AuthGroupAccessModel();
 	}

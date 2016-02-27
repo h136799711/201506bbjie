@@ -14,44 +14,45 @@ use Think\Controller;
 class RemoteProductParserController extends Controller{
 
     public function read_search(){
-        if(IS_POST){
-            $url = I('post.url','','urldecode');
 
-            $which = $this->whichUrl($url);
+        $url = I('get.url','','urldecode');
 
-            switch($which){
+        $return_jsonp = array();
+        $return_jsonp['status']=false;
+        $jsonp = I('get.jsonp','');
 
-                case 1:
-                    $parser = new \Tool\Logic\TaobaoParserLogic($url);
-                    break;
-                case 2:
-                    $parser = new \Tool\Logic\TmallParserLogic($url);
-                    break;
-                default:
-                    $this->error("请输入正确的商品搜索页地址!");
-                    break;
-            }
+        $which = $this->whichUrl($url);
 
-            $return_info = $parser->read_search();
-
-            if(is_null($return_info)){
-                $this->error("无法识别此链接!");
-            }
-
-            $return_info['ori_url'] = $url;
-           	//dump($return_info);
-            if(IS_AJAX){
-//                var_dump($return_info);
-                $this->success($return_info);
-            }else{
-                $this->assign("return_info",$return_info);
-                $this->display();
-            }
-
-        }else{
-            $this->display();
+        switch($which){
+            case 1:
+                $parser = new \Tool\Logic\TaobaoParserLogic($url);
+                break;
+            case 2:
+                $parser = new \Tool\Logic\TmallParserLogic($url);
+                break;
+            default:
+                $return_jsonp['status']=false;
+                $return_jsonp['info'] = "请输入正确的商品搜索页地址!";
+                echo $jsonp."(".json_encode($return_jsonp).")";
+                exit;
+                break;
         }
 
+        $return_info = $parser->read_search();
+
+        if(is_null($return_info)){
+            $return_jsonp['status']=false;
+            $return_jsonp['info'] = "无法识别此链接!";
+            echo $jsonp."(".json_encode($return_jsonp).")";
+            exit;
+        }
+
+        $return_info['ori_url'] = $url;
+
+        $return_jsonp['status']=true;
+        $return_jsonp['info'] = $return_info;
+        echo $jsonp."(".json_encode($return_jsonp).")";
+        exit;
     }
 
 
@@ -61,8 +62,8 @@ class RemoteProductParserController extends Controller{
      * 读取商品页面信息
      */
     public function read(){
-        if(IS_POST){
-            $url = I('post.url','','urldecode');
+//        if(IS_POST){
+            $url = I('get.url','','urldecode');
 			
             $url_parse = parse_url($url);
 //			dump(htmlspecialchars_decode($url_parse['query']));
@@ -77,6 +78,10 @@ class RemoteProductParserController extends Controller{
             $parser = null;
             $which = $this->whichUrl($url);
 
+            $return_jsonp = array();
+            $return_jsonp['status']=false;
+            $jsonp = I('get.jsonp','');
+
             switch($which){
 
                 case 1:
@@ -86,25 +91,30 @@ class RemoteProductParserController extends Controller{
                     $parser = new \Tool\Logic\TmallParserLogic($recombineUrl);
                     break;
                 default:
-                    $this->error("请输入正确的商品详情页地址!");
+                    $return_jsonp['info'] = '请输入正确的商品详情页地址!';
+                    echo $jsonp."(".json_encode($return_jsonp).")";
+                    exit;
                     break;
             }
 
             $return_info = $parser->read_detail();
-			
+
+
 
             if(is_null($return_info) || empty($return_info['title']) || empty($return_info['main_img']) || empty($return_info['wangwang']) )	{
-                $this->error("无法识别此链接!");
+                $return_jsonp['status']=false;
+                $return_jsonp['info'] = '无法识别此链接';
+            }else{
+                $return_info['url'] = $recombineUrl;
+                $return_jsonp['status']=true;
+                $return_jsonp['info'] = $return_info;
             }
+            echo $jsonp."(".json_encode($return_jsonp).")";
+            exit;
 
-            $return_info['url'] = $recombineUrl;
-
-            $this->success($return_info);
-
-
-        }else{
-            $this->display();
-        }
+//        }else{
+//            $this->display();
+//        }
     }
 
     /**

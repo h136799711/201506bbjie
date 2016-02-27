@@ -10,16 +10,46 @@ use \Common\Api\Api;
 use \Home\Model\TaskPlanModel;
 
 class TaskPlanApi extends Api{
+
+
+    /**
+     * 求和
+     */
+    const SUM = "Home/TaskPlan/sum";
+    /**
+     * 统计
+     */
+    const COUNT = "Home/TaskPlan/count";
+    /**
+     * 新增
+     */
+    const ADD = "Home/TaskPlan/add";
+    /**
+     * 删除
+     */
+    const DELETE = "Home/TaskPlan/delete";
+    /**
+     * 不分页查询
+     */
+    const QUERY_NO_PAGING = "Home/TaskPlan/queryNoPaging";
+    /**
+     * 分页查询
+     */
+    const QUERY = "Home/TaskPlan/query";
+
+    /**
+     * 获取用户信息
+     */
+    const GET_INFO = "Home/TaskPlan/getInfo";
+
+    /**
+     * 更新
+     */
+    const SAVE_BY_ID = "Home/TaskPlan/saveByID";
+
 	protected function _init(){
 		$this->model = new TaskPlanModel();
 	}
-//	public function register($username, $password, $email, $mobile = '',$entity,$list,$list2){
-//      $result = $this->model->register($username, $password, $email, $mobile);
-//	    	if($result > 0){//成功
-//	    		return array('status'=>true,'info'=>$result);
-//	    	}else{
-//	    		return array('status'=>false,'info'=>$this->getRegisterError($result));
-//	    	}
-//	}
+
 }
 

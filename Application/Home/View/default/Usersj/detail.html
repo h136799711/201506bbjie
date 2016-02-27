@@ -15,36 +15,36 @@
 					<h1>站内信</h1>
 					<div>
 						<ul class="nav nav-tabs" role="menu">
-							<li class="active" role="menuitem"><a tabindex="-1" href="">全部消息</a>
+							<li class="active" role="menuitem">
+                                <a tabindex="-1" href="{:U('Home/Usersj/sj_znxx')}">全部消息</a>
 							</li>
-							<!--<li role="menuitem"><a tabindex="-1" href="">未读消息</a>
-							</li>-->
 						</ul>
 					</div>
-					<div class="jquery-once-1-processed">
-						<div class="pb10">
-						</div>
-						<div id="xiaoxi-grid" class="grid-view" controller="extend/gridview" data-options="{&#39;ajaxUpdate&#39;:[&#39;xiaoxi-grid&#39;],&#39;ajaxVar&#39;:&#39;ajax&#39;,&#39;pagerClass&#39;:&#39;pagination text-center&#39;,&#39;loadingClass&#39;:&#39;grid-view-loading&#39;,&#39;filterClass&#39;:&#39;filters&#39;,&#39;tableClass&#39;:&#39;items table table-hover&#39;,&#39;selectableRows&#39;:2,&#39;enableHistory&#39;:false,&#39;updateSelector&#39;:&#39;{page}, {sort}&#39;,&#39;filterSelector&#39;:&#39;{filter}&#39;,&#39;pageVar&#39;:&#39;Xiaoxi_page&#39;,&#39;arg_id&#39;:&#39;Xiaoxi&#39;}">
+					<div >
+						<div id="xiaoxi-grid" class="grid-view">
 							<table class="items table table-hover">
 								<thead>
 									<tr style="border: 1px solid #ccc; background: white; height: 37px;">
-
 										<td style="font-size:18px;padding-left:20px"><b>{$msg.title}</b></td>
-
 									</tr>
 								</thead>
 								<tbody>
 
+                                <tr>
+                                    <td>
+
+                                        {$msg.content}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+
+                                        {$msg.create_time|date='Y-m-d H:i:s',###}
+                                    </td>
+                                </tr>
 										<tr>
 											<td>
-														
-						{$msg.content}
-											</td>
-										</tr>
-										<tr>
-											<td>
-														
-																				<a style=" font-size: 12px; padding: 3px;" id="look" class="am-btn am-btn-primary am-btn-xl"  href="{:U('Home/Usersj/sj_znxx')}">返回</a>
+                                                <a style=" font-size: 12px; padding: 3px;" id="look" class="am-btn am-btn-primary am-btn-xl"  href="{:U('Home/Usersj/sj_znxx')}"><i class="am-icon-reply"></i>返回</a>
 											</td>
 										</tr>	
 

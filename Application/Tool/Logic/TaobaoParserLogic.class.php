@@ -54,7 +54,7 @@ class TaobaoParserLogic implements IParserLogic{
         $this->url = html_entity_decode(urldecode($this->url));
         $this->url = str_replace(" ","+",$this->url);
 
-        $html = file_get_contents( htmlspecialchars_decode($this->url));
+        $html = $this->getHtml( htmlspecialchars_decode($this->url));
 //		$html = iconv("gb2312", "utf-8//IGNORE",$html);
         $match = array();
 
@@ -142,6 +142,10 @@ class TaobaoParserLogic implements IParserLogic{
         );
 
         return $return_info;
+    }
+
+    private function getHtml($url){
+        return file_get_contents($url);
     }
 
     private function getFormatItems($items,$findProduct){

@@ -9,40 +9,33 @@
 namespace Admin\Controller;
 
 use Cms\Api\PostApi;
+use Cms\Api\VPostInfoApi;
 
 class PostController extends  AdminController{
 	
 	public function index(){
-		//get.startdatetime
-		$startdatetime = I('startdatetime',date('Y/m/d H:i',time()-24*3600),'urldecode');
-		$enddatetime = I('enddatetime',date('Y/m/d H:i',time()+24*3600),'urldecode');
-		
-		//分页时带参数get参数
-		$params = array(
-			'startdatetime'=>$startdatetime,
-			'enddatetime'=>$enddatetime
-		);
-		
-		$startdatetime = strtotime($startdatetime);
-		$enddatetime = strtotime($enddatetime);
-				
-		if($startdatetime === FALSE || $enddatetime === FALSE){
-			LogRecord('INFO:'.$result['info'],'[FILE] '.__FILE__.' [LINE] '.__LINE__);
-			$this->error(L('ERR_DATE_INVALID'));
-		}
-		
+        $title = $this->_param('title','');
+        $post_status = $this->_param('post_status','draft');
+
 		$map = array();
-		
-		$map['post_modified'] = array(array('EGT',$startdatetime),array('elt',$enddatetime),'and'); 
-		
+        $params = array();
+
+        $params['post_status'] = $post_status;
+        $map['post_status'] = $post_status;
+        if(!empty($title)){
+            $map['title'] = $title;
+            $params['title'] = $title;
+        }
+
 		$page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));
 		$order = " post_modified desc ";
-		//
-		$result = apiCall(PostApi::QUERY,array($map,$page,$order,$params));
-		//
+
+		$result = apiCall(VPostInfoApi::QUERY,array($map,$page,$order,$params));
+
 		if($result['status']){
-			$this->assign('startdatetime',$startdatetime);
-			$this->assign('enddatetime',$enddatetime);
+
+            $this->assign('post_status',$post_status);
+            $this->assign('title',$title);
 			$this->assign('show',$result['info']['show']);
 			$this->assign('list',$result['info']['list']);
 			$this->display();
@@ -71,9 +64,11 @@ class PostController extends  AdminController{
 				'comment_status'=>I('commen_status','closed'),
 				'post_parent'=>0,
 				'post_type'=>'post_type',
-				'comment_count'=>0
+				'comment_count'=>0,
+                'post_date'=>time(),
+                'post_modified'=>time(),
 			);
-			
+
 			$result = apiCall(PostApi::ADD, array($entity));
 			
 			if(!$result['status']){

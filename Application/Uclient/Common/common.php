@@ -7,17 +7,7 @@
 // | Author: 麦当苗儿 <zuojiazi@vip.qq.com> <http://www.zjzit.cn>
 // +----------------------------------------------------------------------
 
-if(!function_exists('think_ucenter_md5')){
 
-/**
- * 系统非常规MD5加密方法
- * @param  string $str 要加密的字符串
- * @return string 
- */
-function think_ucenter_md5($str, $key = 'ThinkUCenter'){
-	return '' === $str ? '' : md5(sha1($str) . $key);
-}
-}
 /**
  * 系统加密方法
  * @param string $data 要加密的字符串

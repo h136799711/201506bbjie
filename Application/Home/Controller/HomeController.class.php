@@ -7,6 +7,7 @@
 // |-----------------------------------------------------------------------------------
 
 namespace Home\Controller;
+use Common\Api\AccountApi;
 use Think\Controller;
 
 class HomeController extends  Controller {
@@ -14,8 +15,9 @@ class HomeController extends  Controller {
 	//主题
 	protected $themeType = "default";
 	protected $userinfo;
+    protected $uid;
 	protected function _initialize() {
-		header("X-AUTHOR:ITBOYE.COM");
+
 		// 获取配置
 		$this -> getConfig();
 		
@@ -30,8 +32,9 @@ class HomeController extends  Controller {
 		}
 
         $this->userinfo = session('user');
-
+        $this->uid = $this->userinfo['id'];
         $this->assign("user",$this->userinfo);
+        $this->assign("username",$this->userinfo['username']);
 		
 	}
 
@@ -51,16 +54,47 @@ class HomeController extends  Controller {
 
     }
 
+    protected function reloadUserInfo(){
+        $this->checkLogin();
+        $result = apiCall(AccountApi::GET_INFO,array(UID));
+        if($result['status']){
+            $this->userinfo = $result['info'];
+            session('user',$this->userinfo);
+        }else{
+            $this->error($result['info']);
+        }
+    }
 
     protected function updateAvatar($img_url){
         $this->userinfo['head'] = $img_url;
         session('user',$this->userinfo);
     }
 
+    protected function updateTaskGetType($status){
+        $this->userinfo['task_gettype'] = $status;
+        session('user',$this->userinfo);
+    }
 
-	
-	
-	/**
+
+    public function _param($key,$default='',$empty_msg=''){
+        $value = I('get.'.$key,$default);
+
+        if(strlen($value) == 0 || $value == $default){
+            $value = I('post.'.$key,$default);
+        }
+
+        if(strlen($value) == 0 || $value == $default){
+            if(!empty($empty_msg)){
+                $this->error($empty_msg);
+            }
+        }
+
+        return $value;
+    }
+
+
+
+    /**
 	 * 从数据库中取得配置信息
 	 */
 	protected function getConfig() {

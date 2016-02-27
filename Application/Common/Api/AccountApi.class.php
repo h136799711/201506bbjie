@@ -14,6 +14,7 @@ use Admin\Api\MemberApi;
 use Home\Api\BbjmemberApi;
 use Home\Api\BbjmemberSellerApi;
 use Home\ConstVar\UserTypeConstVar;
+use Ucenter\Api\AuthGroupAccessApi;
 use Uclient\Api\UserApi;
 
 class AccountApi {
@@ -56,6 +57,7 @@ class AccountApi {
 
         $member_info = $result['info'];
         $result = $this->getUserInfoByUserGroup($uid);
+
         if(!$result['status']){
             return array('status' => false, 'info' => $result['info']);
         }elseif(empty($result['info'])){
@@ -63,7 +65,6 @@ class AccountApi {
         }
 
         $extra_info = $result['info'];
-
         $info = array_merge($user_info,$member_info,$extra_info);
 
 
@@ -77,7 +78,6 @@ class AccountApi {
      * @return array
      */
     public function register($entity){
-
         if (!isset($entity['username']) || !isset($entity['password']) || !isset($entity['from'])) {
             return array('status' => false, 'info' => "账户信息缺失!");
         }
@@ -186,19 +186,24 @@ class AccountApi {
         $invite_id = $entity['invite_id'];
         $invite_username = $entity['invite_username'];
         $daily_task_money = $entity['daily_task_money'];
+        $aliwawa = $entity['aliwawa'];
+        $taobao_account = isset($entity['taobao_account'])?$entity['taobao_account']:"";
+
+        $address = $entity['address'];
+        $store_name = $entity['store_name'];
+        $qq = $entity['qq'];
         if($user_type == UserTypeConstVar::BBJ_MEMBER_GROUP){
             //试民
             $member = array(
                 'uid'=>$uid,
                 'referrer_id'=>$invite_id,
                 'referrer_name'=>$invite_username,
-                'taobao_account'=>'',
-                'aliwawa'=>'',
+                'taobao_account'=>$taobao_account,
                 'daily_task_money'=>$daily_task_money,
                 'dtree_job'=>'',
                 'personal_signature'=>'',
                 'brief_introduction'=>'',
-                'address'=>'',
+                'address'=>$address,
                 'create_time'=>time(),
                 'update_time'=>time(),
                 'coins'=>0,
@@ -212,7 +217,7 @@ class AccountApi {
                 'uid'=>$uid,
                 'group_id'=>UserTypeConstVar::BBJ_MEMBER_GROUP,
             );
-            $result = apiCall(AuthGroupApi::ADD, array($group));
+            $result = apiCall(AuthGroupAccessApi::ADD, array($group));
             return $result;
 
         }elseif($user_type == UserTypeConstVar::BBJ_SHOP_GROUP){
@@ -221,18 +226,18 @@ class AccountApi {
                 'uid'=>$uid,
                 'referrer_id'=>$invite_id,
                 'referrer_name'=>$invite_username,
-                'taobao_account'=>'',
-                'address'=>'',
-                'aliwawa'=>'',
-                'store_name'=>'',
+                'taobao_account'=>$taobao_account,
+                'address'=>$address,
+                'aliwawa'=>$aliwawa,
+                'store_name'=>$store_name,
                 'store_url'=>'',
                 'linkman'=>'',
                 'linkman_tel'=>'',
                 'task_linkman'=>'',
                 'task_linkman_tel'=>'',
-                'task_linkman_qq'=>'',
-                'waybill_show'=>'',
-                'linkman_qq'=>'',
+                'task_linkman_qq'=>$qq,
+                'waybill_show'=>$aliwawa,
+                'linkman_qq'=>$qq,
                 'exp'=>0,
                 'coins'=>'0.000',
                 'vip_level'=>0,
@@ -253,7 +258,7 @@ class AccountApi {
                 'group_id'=>UserTypeConstVar::BBJ_SHOP_GROUP,
             );
 
-            $result = apiCall(AuthGroupApi::ADD, array($group));
+            $result = apiCall(AuthGroupAccessApi::ADD, array($group));
             return $result;
 
         }else{
@@ -265,7 +270,8 @@ class AccountApi {
         $map = array(
             'uid'=>$uid,
         );
-        $result = apiCall(AuthGroupApi::QUERY_NO_PAGING,array($map));
+
+        $result = apiCall(AuthGroupAccessApi::QUERY_NO_PAGING,array($map));
 
         if(!$result['status']){
             return $result;
@@ -275,14 +281,15 @@ class AccountApi {
         $map = array(
             'uid'=>$uid,
         );
+
         foreach($group_list as $vo){
-            if($vo['id'] == UserTypeConstVar::BBJ_SHOP_GROUP){
+            if($vo['group_id'] == UserTypeConstVar::BBJ_SHOP_GROUP){
                 $result = apiCall(BbjmemberSellerApi::GET_INFO,array($map));
                 if(is_array($result['info'])){
                     $result['info']['user_type'] = UserTypeConstVar::BBJ_SHOP_GROUP;
                 }
                 return $result;
-            }elseif($vo['id'] == UserTypeConstVar::BBJ_MEMBER_GROUP){
+            }elseif($vo['group_id'] == UserTypeConstVar::BBJ_MEMBER_GROUP){
                 $result = apiCall(BbjmemberApi::GET_INFO,array($map));
                 if(is_array($result['info'])){
                     $result['info']['user_type'] = UserTypeConstVar::BBJ_SHOP_GROUP;

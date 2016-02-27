@@ -521,4 +521,21 @@ class AdminController extends CheckLoginController {
 		}
 	}
 
+    public function _param($key,$default='',$empty_msg=''){
+        $value = I('get.'.$key,'');
+        if(empty($value)){
+            $value = I('post.'.$key,'');
+        }
+
+        if(empty($value)){
+            if(!empty($empty_msg)){
+                $this->error($empty_msg);
+            }else{
+                return $default;
+            }
+        }
+
+        return $value;
+    }
+
 }

@@ -33,6 +33,11 @@ class BbjmemberApi extends Api{
      */
     const GET_INFO = "Home/Bbjmember/getInfo";
 
+    /**
+     * 保存用户信息
+     */
+    const SAVE_BY_ID = "Home/Bbjmember/saveByID";
+
 	protected function _init(){
 		$this->model = new BbjmemberModel();
 	}

@@ -41,7 +41,7 @@
 							<td>{$v.create_time|date='m-d h:i',###}</td>
 							<td>
 						<a style=" font-size: 12px; padding: 3px;" id="look" class="am-btn am-btn-danger " href="{:U('Home/Usersm/detail',array('mbid'=>$vo['id'],'msid'=>$vo['msg_id']))}">查看</a>
-						<a style="font-size: 12px; padding: 3px;" class="am-btn am-btn-danger " href="{:U('Home/Index/delxx',array('id'=>$vo['id']))}">删除</a>
+						<a style="font-size: 12px; padding: 3px;" class="am-btn am-btn-danger ajax-get" href="{:U('Home/Index/del_msg',array('id'=>$vo['id']))}">删除</a>
 						</td>
 						</if>
 						</volist>

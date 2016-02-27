@@ -19,14 +19,13 @@
 	</style>
 	<link type="text/css" rel="stylesheet" href="__CDN__/comp/wxuploader.css?v=__APP_VERSION__" />
 	<link rel="stylesheet" type="text/css" href="__CDN__/nprogress/nprogress.css" />
-	<script type="text/javascript" src="__CDN__/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 	<link type="text/css" rel="stylesheet" src="__UPLOAD__/jquery-uploadify/3.2.1/uploadify.css" />
 	<script type="text/javascript" src="__UPLOAD__/jquery-uploadify/3.2.1/jquery.uploadify.min.js"></script>
 </block>
 
 <block name="area_body">
 	<include file='Widget/sjtop' />
-	<div class="seller_main clearfix" controller="seller/common">
+	<div class="seller_main clearfix" >
 		<div class="seller_content_wrap">
 			<div class="seller_content" style="padding-top: 10px;">
 
@@ -36,42 +35,39 @@
 						<div class="l">
 							<div class="l1">
 								<div><span class="t">资金概况</span>
-									<button style="height: 28px; width: 70px; border-radius:5px ; font-size: 12px ; text-align: center;" class="am-btn am-btn-primary am-btn-xs" data-am-modal="{target: '#doc-modal-2', closeViaDimmer: 0, width:600, height: 700}">充值</button>&nbsp;
-									<button style="height: 28px; width: 70px; border-radius:5px ; font-size: 12px ; text-align: center;" class="am-btn am-btn-primary am-btn-xs" data-am-modal="{target: '#doc-modal-3', closeViaDimmer: 0, width:600, height: 220}">提现</button>&nbsp;</div>
+									<button style="font-size: 12px ; text-align: center;" class="am-btn am-btn-primary am-btn-xs" data-am-modal="{target: '#doc-modal-2', closeViaDimmer: 0, width:600, height: 700}">充值</button>&nbsp;
+									<button style="font-size: 12px ; text-align: center;" class="am-btn am-btn-primary am-btn-xs" data-am-modal="{target: '#doc-modal-3', closeViaDimmer: 0, width:600, height: 220}">提现</button>&nbsp;</div>
 								<div class="p20"></div>
 								<div class="row-fluid">
 									<div class="span3">
 										总余额
 										<br>
 										<div class="price">
-											￥{$coins} </div>
+											￥{:($user['coins']+$user['frozen_money'])} </div>
 									</div>
+
 									<div style="margin-left: 50px;" class="span3">
 										可用余额
 										<br>
 										<div class="price">
-											￥{$coins} </div>
+											￥{$user.coins} </div>
 									</div>
 									<div style="margin-left: 50px;" class="span3">
 										冻结金额
 										<br>
 										<div class="price">
-											{$djcoins}</div>
+											{$user.frozen_money}</div>
 									</div>
-									<!--<div class="span3">
-										提现中
-										<br>
-										<div class="price">
-											￥{$sum}.000</div>
-									</div>-->
+
 								</div>
 
 							</div>
 							<div class="l2">
 								<table class="bank" style="width: 100%;">
 									<tr>
-										<td colspan="8"><b style="color: #999;">提现账号 </b>
-											<button class="am-btn am-btn-primary am-btn-xs" style="font-family: '微软雅黑'; font-size: 13px; width: 80px; height: 30px;line-height: 10px; padding: 10px; border-radius:5px ;" data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 650, height: 500}">更换账号</button>
+										<td colspan="8">
+                                            <span>提现账号 </span>
+											<button class="am-btn am-btn-primary am-btn-xs" style="font-size:10px;" data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 650, height: 500}">更换账号</button>
 										</td>
 									</tr>
 
@@ -87,33 +83,8 @@
 
 							</div>
 						</div>
-						<div class="m">
-							<div class="m1">
-								<div class="t text-center">安全中心</div>
-								<div class="p20"></div>
 
-								<ul style="" class="yz">
-									<empty name="email">
-										<i class="am-icon-envelope-o"></i>
-										<li>未认证</li>
-										<else/>
-										<i class="am-icon-envelope-o" style="color: hotpink;"></i>
-										<li>已认证</li>
-									</empty>
-									<empty name="phone">
-										<i class="am-icon-mobile"></i>
-										<li>未认证</li>
-										<else/>
-										<i class="am-icon-mobile" style="color: hotpink;"></i>
-										<li>已认证</li>
-									</empty>
-
-								</ul>
-
-							</div>
-						</div>
-
-						<div class="r">
+						<div style="margin-left: 380px;">
 							<div class="r1">
 								<div class="t">商家充值流程</div>
 								<div class="p20"></div>
@@ -149,7 +120,8 @@
 							<li role="menuitem" onclick="changeBB(2)"><a tabindex="-1" href="javascript:void(0)">充值明细记录</a>
 							</li>
 						</ul>
-						<div id="goodsorder-grid" class="grid-view" controller="extend/gridview" data-options="{'ajaxUpdate':['goodsorder-grid'],'ajaxVar':'ajax','pagerClass':'pagination text-center','loadingClass':'grid-view-loading','filterClass':'filters','tableClass':'price-table table table-hover','selectableRows':1,'enableHistory':false,'updateSelector':'{page}, {sort}','filterSelector':'{filter}','pageVar':'YueLog_page','arg_id':'YueLog'}">
+
+						<div id="goodsorder-grid" class="grid-view"  data-options="{'ajaxUpdate':['goodsorder-grid'],'ajaxVar':'ajax','pagerClass':'pagination text-center','loadingClass':'grid-view-loading','filterClass':'filters','tableClass':'price-table table table-hover','selectableRows':1,'enableHistory':false,'updateSelector':'{page}, {sort}','filterSelector':'{filter}','pageVar':'YueLog_page','arg_id':'YueLog'}">
 							<table class="price-table table table-hover">
 								<thead>
 									<tr>
@@ -159,7 +131,7 @@
 										<th width="150" id="goodsorder-grid_c2">名称｜备注</th>
 										<th width="100" id="goodsorder-grid_c3">收入</th>
 										<th width="100" id="goodsorder-grid_c4">支出</th>
-										<th width="100" id="goodsorder-grid_c5">余额</th>
+										<th width="100" id="goodsorder-grid_c5">类型</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -176,8 +148,7 @@
 												<td>{$v.notes}</td>
 												<td>+{$v.income}</td>
 												<td>-{$v.defray}</td>
-												<td>{$coins}</td>
-										
+												<td>{:getFinaceType($v['dtree_type'])}</td>
 											</tr>
 										</volist>
 										<tr><td colspan="6">{$show}</td></tr>
@@ -189,12 +160,12 @@
 							</div>
 							
 							</table>
-							
+							<!-- 提现 -->
 							<table class="price-table table table-hover" style="display: none;">
 								<thead>
 									<tr>
 										<th width="80" id="goodsorder-grid_c0">
-											<a class="sort-link" href="/seller/price/index?status=2&amp;MemberTixian_sort=id">编号<span class="caret"></span></a>
+											<a class="sort-link" >编号</a>
 										</th>
 										<th width="100" id="goodsorder-grid_c1"><a class="sort-link" href="#">提现金额<span class="caret"></span></a>
 										</th>
@@ -211,35 +182,37 @@
 									</tr>
 								</thead>
 								<tbody>
-									<empty name="tixian">
+									<empty name="list_3">
 										<tr>
 											<td colspan="6" class="empty"><span class="empty">没有找到数据.</span>
 											</td>
 										</tr>
 										<else />
-										<volist name="tixian" id="v">
+										<volist name="list_3" id="vo">
 											<tr>
-												<td>{$v.id}</td>
-												<td>-{$v.defray}</td>
+												<td>{$vo.id}</td>
+												<td>{$vo.defray}</td>
 												<td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
 												<td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
-												<td><if condition="$v.status eq 1">正常</if><if condition="$v.status eq 2">审核中</if><if condition="$v.status eq 3">冻结中</if></td>
-												<td><if condition="$v.dtree_type eq 1">后台充值</if><if condition="$v.dtree_type eq 2">系统奖励</if><if condition="$v.dtree_type eq 3">提现</if></td>
-												<td>{$v.notes}</td>
+												<td><if condition="$vo.status eq 1">正常</if><if condition="$vo.status eq 2">审核中</if><if condition="$vo.status eq 3">冻结中</if></td>
+												<td>
+
+                                                    提现
+                                                </td>
+												<td>{$vo.notes}</td>
 											</tr>
 										</volist>
-										<tr><td colspan="6">{$show2}</td></tr>
+										<tr><td colspan="6">{$show_3}</td></tr>
 									</empty>
 								</tbody>
 							</table>
-														
+
 							<table class="price-table table table-hover" style="display: none;">
 								<thead>
 									<tr>
 										<th width="60" id="goodsorder-grid_c0">
 											<a class="sort-link" href="#">编号<span class="caret"></span></a>
 										</th>
-										<th width="100" id="goodsorder-grid_c1">收款帐号</th>
 										<th width="80" id="goodsorder-grid_c2"><a class="sort-link" href="#">充值金额<span class="caret"></span></a>
 										</th>
 										
@@ -250,25 +223,25 @@
 									</tr>
 								</thead>
 								<tbody>
-									<empty name="chongzhi">
+									<empty name="list_1">
 										<tr>
 											<td colspan="6" class="empty"><span class="empty">没有找到数据.</span>
 											</td>
 										</tr>
 										
 										<else />
-										<volist name="chongzhi" id="v">
+										<volist name="list_1" id="vo">
 											<tr>
-												<td>{$v.id}</td>
-												<td>{$username}</td>
-												<td>+{$v.income}</td>
-												<td>{$v.create_time|date='Y-m-d H:i:s',###}</td>
-												<td><if condition="$v.status eq 1">正常</if><if condition="$v.status eq 2">审核中</if><if condition="$v.status eq 3">冻结中</if></td>
-												<td><if condition="$v.dtree_type eq 1">后台充值</if><if condition="$v.dtree_type eq 2">系统奖励</if><if condition="$v.dtree_type eq 3">提现</if></td>
-												<td>{$v.notes}</td>
+												<td>{$vo.id}</td>
+												<td>+{$vo.income}</td>
+												<td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+												<td><if condition="$vo.status eq 1">正常</if><if condition="$vo.status eq 2">审核中</if><if condition="$vo.status eq 3">冻结中</if></td>
+												<td><if condition="$vo.dtree_type eq 1">后台充值</if>
+                                                </td>
+												<td>{$vo.notes}</td>
 											</tr>
 										</volist>
-										<tr><td colspan="6">{$show3}</td></tr>
+										<tr><td colspan="6">{$show_1}</td></tr>
 									</empty>
 								</tbody>
 							</table>
@@ -284,7 +257,7 @@
 				<div class="am-modal-hd">更换提现账号
 					<a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
 				</div>
-				<form action="{:U('Home/Usersm/addbank')}" method="post">
+				<form action="{:U('Home/SJMoney/addbank')}" class="j_bank_form" method="post">
 					<div class="am-modal-bd" style="margin-left: 100px;">
 						<table>
 							<tr>
@@ -310,7 +283,8 @@
 										<option value="农村商业银行">农村商业银行</option>
 										<option value="广东南粤银行">广东南粤银行</option>
 										<option value="上海银行">上海银行</option>
-									</select><br><span style="color: forestgreen;">推荐使用银行卡提现，每日提现三次且不收取手续费</span>
+									</select>
+
 								</td>
 							</tr>
 							<tr>
@@ -337,7 +311,7 @@
 							
 						</table>
 					</div>
-					<input style="font-family: '微软雅黑'; font-size: 13px; border-radius:5px ; margin-top: -8px;" class="am-btn-danger am-btn-xs" type="submit" value="确认" />
+					<a href="{:U('Home/SJMoney/addbank')}"  class="am-btn-danger am-btn am-btn-xs ajax-post" target-form="j_bank_form" >确认</a>
 				</form>
 			</div>
 		</div>
@@ -350,7 +324,7 @@
 			</div>
 			<div class="am-modal-bd" style="text-align: center;">
 				<div style=" background: lightgoldenrodyellow; margin-top: 5px; color: red;">转账时请备注你的宝贝街账号 "{$username}"</div>
-				<form action="{:U('Home/SJMoney/recharge')}" method="post" enctype="multipart/form-data"> 
+				<form class="j_zjgl_form" action="{:U('Home/SJMoney/recharge')}" method="post" enctype="multipart/form-data">
 				<table style=" width: 100%;color: #666;">
 					<tr>
 						<td style="width: 20%;" align="right">收款帐号:</td>
@@ -367,8 +341,7 @@
 					<tr>
 						<td align="right">充值金额:</td>
 						<td align="left" style="padding: 10px;">
-							<input name="money" type="number" style="width:150px;height: 30px;border-bottom-left-radius: 5px;border-top-left-radius: 5px;border: 1px solid #ccc;" />
-							<input type="button" style="border: 1px solid #ccc;width:50px;height: 30px;border-bottom-right-radius: 5px;border-top-right-radius: 5px;" disabled="disabled" value="元" />
+							<input name="money" type="number" style="width:150px;height: 30px;border-bottom-left-radius: 5px;border-top-left-radius: 5px;border: 1px solid #ccc;" />元
 						</td>
 					</tr>
 					<tr>
@@ -426,12 +399,10 @@
 					</tr>
 					<tr>
 						<td align="center" colspan="2">
-							<button type="submit" class="am-btn am-btn-primary am-radius am-btn-sm">
+							<button type="submit" target-form="j_zjgl_form" class="ajax-post am-btn am-btn-primary am-radius am-btn-sm">
 								提交
 							</button>
-							<button type="button" class="am-btn am-btn-default am-radius am-btn-sm">
-								取消
-							</button>
+                            <a href="javascript: void(0)" class=" am-btn am-btn-default am-radius am-btn-sm" data-am-modal-close>取消</a>
 						</td>
 					</tr>
 				</table>
@@ -456,13 +427,13 @@
 				<div class="am-modal-hd">提现
 					<a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
 				</div>
-				<form action="{:U('Home/SJMoney/deposit')}" method="post">
+				<form class="j_deposit_form" action="{:U('Home/SJMoney/deposit')}" method="post">
 					<div class="">
 						请输入提款金额：
 						<input type="number" name="money" id="money" />
 						<br /><span style="font-size: 12px; color: forestgreen;">提现金额不得大于总金额</span>
 					</div>
-					<input id="qr" style="font-family: '微软雅黑'; font-size: 13px; border-radius:5px ; margin-top: -8px;" class="am-btn-danger am-btn-xs" type="submit" value="确认" />
+                    <a target-form="j_deposit_form" href="{:U('Home/SJMoney/deposit')}" class="ajax-post am-btn am-btn-sm am-btn-primary">确认</a>
 				</form>
 			</div>
 		</div>
@@ -488,12 +459,14 @@
 		
 				})
 				$('#tixian').click(function(){
-					if( {$coins}  <1){
+                    var coins = {$user.coins};
+					if( coins  <1){
 						alert('不能提现，提现金额最低为1元');
 					}
 				})
 				$('#qr').click(function(){
-					if($('#money').val()>{$coins}){
+                    var coins = {$user.coins};
+					if($('#money').val() > coins ){
 				  		alert('你还没有这么多钱！！');
 				  		return false;
 					}

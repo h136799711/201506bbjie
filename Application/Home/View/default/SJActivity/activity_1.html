@@ -198,10 +198,14 @@
 				 * */
 			$("#read").click(function() {
 
-				if('{$auth_status}'==0){
+                var auth_status = {$user.auth_status};
+                var vip_level = {$user.vip_level};
+                var aliwawa = "{$user.aliwawa}";
+
+				if(auth_status == 0){
 					alert('您的账号未通过认证，通过认证才能发布任务');
 				}else{
-					if({$vip_level}==0){
+					if(vip_level == 0){
 						if($(".title").text()==''){
 							var query = $("#J_btn_submit").data("query");
 						if (query == 1) {
@@ -211,12 +215,13 @@
 						var param_url = $("#url").val();
 						$.ajax({
 							cache: false,
-							method: "post",
 							url: "{:U('Tool/RemoteProductParser/read',array('r'=>time()))}",
+//                            url: "http://www.bammar.com/index.php/Tool/RemoteProductParser/read",
+                            dataType: 'jsonp',
+                            jsonp: 'jsonp',
 							data: {
 								url: encodeURI(param_url)
 							},
-							dataType: "json",
 							beforeSend: function() {
 								showLoading();
 							}
@@ -227,7 +232,7 @@
 							if (data.status) {
 								var title =  (data.info.title).substring(14,50);
 								var wangwang = data.info.wangwang;
-								if ('{$aliwawa}'.trim() == wangwang.trim()) {
+								if (aliwawa == wangwang.trim()) {
 									var aaa=$('#url').val();
 									$('.show').empty();
 									$('.show').append();
@@ -263,13 +268,14 @@
 						}
 						var param_url = $("#url").val();
 						$.ajax({
-							cache: false,
-							method: "post",
-							url: "{:U('Tool/RemoteProductParser/read',array('r'=>time()))}",
+                            cache: false,
+                            url: "{:U('Tool/RemoteProductParser/read',array('r'=>time()))}",
+//                            url: "http://www.bammar.com/index.php/Tool/RemoteProductParser/read",
+                            dataType: 'jsonp',
+                            jsonp: 'jsonp',
 							data: {
 								url: encodeURI(param_url)
 							},
-							dataType: "json",
 							beforeSend: function() {
 								showLoading();
 							}
@@ -280,7 +286,9 @@
 							if (data.status) {
 								var title =  (data.info.title).substring(14,50);
 								var wangwang = data.info.wangwang;
-								if ('{$aliwawa}'.trim() == wangwang.trim()) {
+                                var repo = data.info;
+                                repo.model_num_cfg = repo.model_num_cfg || "";
+								if (aliwawa == wangwang.trim()) {
 									var aaa=$('#url').val();
 									$('.show').empty();
 									$('.show').append();
@@ -386,11 +394,15 @@
 						if(nev%2==0){
 //						var minTitle= repo.title.substring(10);
 						if(repo.title!=undefined){
-							if('{$auth_status}'==0){
+                            var auth_status = {$user.auth_status};
+                            var vip_level = {$user.vip_level};
+                            var aliwawa =  "{$user.aliwawa}";
+
+							if(auth_status == 0){
 								alert('您的账号未通过认证，通过认证才能发布任务');
 							}else{
-								if({$vip_level}==0){
-									if ('{$aliwawa}'.trim() == repo.wangwang.trim()) {
+								if(vip_level == 0){
+									if (aliwawa == repo.wangwang.trim()) {
 										$('.show').empty();
 										$('.show').append();
 										if ($(".title").text() == '') {
@@ -403,12 +415,11 @@
 										}
 									}else{
 											$('#doc-modal-1 .am-modal-dialog').css('height', '580px');
-											$(".show").html("<font color='red'>该商品的铺主为：" + repo.wangwang + "</font><br><font color='red'>您的阿里旺旺为：" + '{$aliwawa}' + "</font><br><font color='red'>请录入您自己的商品</font>");
+											$(".show").html("<font color='red'>该商品的铺主为：" + repo.wangwang + "</font><br><font color='red'>您的阿里旺旺为：" + aliwawa + "</font><br><font color='red'>请录入您自己的商品</font>");
 									}
 								}else{
-									if ('{$aliwawa}'.trim() == repo.wangwang.trim()) {
+									if (aliwawa == repo.wangwang.trim()) {
 										$('.show').empty();
-										//$('.show').append();
 										if ($(".title").text() == '') {
 									
 											$(".img").html("<input type='hidden' name='img[]' value='"+repo.main_img +"'>"+"<img src='" + repo.main_img + "' alt='图片' style='height:80px;width:80px;folat:left;'  />");
@@ -436,7 +447,7 @@
 										}
 									}else{
 											$('#doc-modal-1 .am-modal-dialog').css('height', '580px');
-											$(".show").html("<br><font color='red'>该商品的铺主为：" + repo.wangwang + "</font><br><font color='red'>您的阿里旺旺为：" + '{$aliwawa}' + "</font><br><font color='red'>请录入您自己的商品</font>");
+											$(".show").html("<br><font color='red'>该商品的铺主为：" + repo.wangwang + "</font><br><font color='red'>您的阿里旺旺为：" + aliwawa + "</font><br><font color='red'>请录入您自己的商品</font>");
 									}
 								}
 							}

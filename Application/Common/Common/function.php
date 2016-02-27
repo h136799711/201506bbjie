@@ -713,3 +713,54 @@ function get_action($id = null, $field = null){
 	
     return $ret;
 }
+
+/**
+ * 资金变动类型
+ * @param $type
+ * @return string
+ */
+function getFinaceType($type){
+    switch($type) {
+        case 1:
+            return "充值";
+        case 2:
+            return "奖励";
+        case 3:
+            return "提现";
+        case 4:
+            return "开通VIP";
+        case 5:
+            return "任务押金";
+        case 5:
+            return "返还任务佣金";
+        default:
+            return "未知";
+            break;
+    }
+}
+
+function getEnterWay($way){
+
+    switch($way) {
+        case 0:
+            return "不限";
+        case 1:
+            return "搜索模式";
+        case 2:
+            return "老客户模式";
+        case 3:
+            return "手机模式";
+        default:
+            return "未知";
+            break;
+    }
+}
+
+/**
+ * 系统非常规MD5加密方法
+ * @param  string $str 要加密的字符串
+ * @return string
+ */
+function think_ucenter_md5($str, $key = 'ThinkUCenter'){
+    return '' === $str ? '' : md5(sha1($str) . $key);
+}

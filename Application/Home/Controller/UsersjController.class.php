@@ -6,28 +6,20 @@
 // | Copyright (c) 2013-2016, http://www.itboye.com. All Rights Reserved.
 // |-----------------------------------------------------------------------------------
 namespace Home\Controller;
+use Admin\Api\MessageApi;
 use Admin\Api\MsgboxApi;
-use Admin\Model\MessageModel;
 use Admin\Model\MsgboxModel;
-use Cms\Api\PostApi;
+use Home\Api\BbjmemberSellerApi;
+use Home\Api\FinAccountBalanceHisApi;
+use Home\Api\FinBankaccountApi;
 use Think\Controller;
-use Think\Storage;
 use Home\Api\HomePublicApi;
-use Admin\Api\AdminPublicApi;
 
 /*
  * 官网首页
  */
-class UsersjController extends HomeController {
+class UsersjController extends SjController {
 
-
-    protected function _initialize(){
-        parent::_initialize();
-        $this->checkLogin();
-
-        $this->wdcount();
-        $this->is_auth();
-    }
 
 	/*
 	 * 商家中心
@@ -41,7 +33,6 @@ class UsersjController extends HomeController {
 			'uid'=>UID,
 		);
 
-		$this->checklevel();
 		$this->getcount();
 
         $this->boye_display();
@@ -61,14 +52,15 @@ class UsersjController extends HomeController {
 	 * 商家账号信息
 	 * */
 	public function sj_zhxx(){
-		$headtitle="宝贝街-账号信息";
-		$this->assign('head_title',$headtitle);
-		$user=session('user');
-		$this->assign('username',$user['info']['username']);
+
+		$this->assign('head_title',"宝贝街-账号信息");
+
 		$map=array(
-			'uid'=>$user['info']['id'],
+			'uid'=>$this->userinfo['uid'],
 		);
-		$result=apiCall(HomePublicApi::Bbjmember_Seller_GetInfo, array($map));
+
+		$result=apiCall(BbjmemberSellerApi::GET_INFO, array($map));
+
 		$this->assign('entity',$result['info']);
 
 		$this->display();
@@ -76,35 +68,45 @@ class UsersjController extends HomeController {
 	/*
 	 * 商家基本信息修改
 	 * */
-	public function edit1(){
-		$id=I('id',0);
-		$sheng=I('sheng','');$shi=I('shi','');$qu=I('qu','');$address=I('address');
+	public function edit_base(){
+		$id=I('post.id',0);
+		$sheng=I('sheng','');
+        $shi=I('shi','');
+        $qu=I('qu','');
+        $address=I('address');
+
 		$entity=array(
 			'aliwawa'=>I('aliwawa',''),
 			'store_name'=>I('store_name',''),
 			'store_url'=>I('store_url',''),
 			'address'=>$sheng.$shi.$qu.$address,
+            'auth_status'=>3,
 		);
-		$result=apiCall(HomePublicApi::Bbjmember_Seller_SaveByID, array($id,$entity));
+
+		$result=apiCall(BbjmemberSellerApi::SAVE_BY_ID, array($id,$entity));
+
 		if($result['status']){
+            $this->reloadUserInfo();
 			$this->success('修改成功',U('Home/Usersj/sj_zhxx'));
 		}else{
 			$this->error($result['info']);
 		}
 	}
+
 	/*
 	 * 商家负责人信息修改
 	 * */
-	public function edit2(){
+	public function edit_fzr(){
 		$id=I('id',0);
 		$entity=array(
-			'task_linkman'=>I('rwfzr',''),
-			'task_linkman_tel'=>I('fzrdh',''),
-			'task_linkman_qq'=>I('fzrqq',''),
-			'waybill_show'=>I('ydxs'),
+			'task_linkman'=>I('post.rwfzr',''),
+			'task_linkman_tel'=>I('post.fzrdh',''),
+			'task_linkman_qq'=>I('post.fzrqq',''),
+			'waybill_show'=>I('post.ydxs'),
 		);
-		$result=apiCall(HomePublicApi::Bbjmember_Seller_SaveByID, array($id,$entity));
+		$result=apiCall(BbjmemberSellerApi::SAVE_BY_ID, array($id,$entity));
 		if($result['status']){
+            $this->reloadUserInfo();
 			$this->success('修改成功',U('Home/Usersj/sj_zhxx'));
 		}else{
 			$this->error($result['info']);
@@ -122,8 +124,9 @@ class UsersjController extends HomeController {
 			'linkman_otherlink'=>I('qt',''),
 		);
 //		dump($entity);
-		$result=apiCall(HomePublicApi::Bbjmember_Seller_SaveByID, array($id,$entity));
+        $result=apiCall(BbjmemberSellerApi::SAVE_BY_ID, array($id,$entity));
 		if($result['status']){
+            $this->reloadUserInfo();
 			$this->success('修改成功',U('Home/Usersj/sj_zhxx'));
 		}else{
 			$this->error($result['info']);
@@ -201,59 +204,58 @@ class UsersjController extends HomeController {
 	 * 站内消息
 	 * */
 	public function sj_znxx(){
-		$headtitle="宝贝街-站内消息";
-		$this->assign('head_title',$headtitle);
 
-		$map=array('to_id'=> UID,'msg_status'=>array('neq',MsgboxModel::DELETE));
+		$this->assign('head_title',"宝贝街-站内消息");
+
+		$map=array('to_id'=> UID);
 
 		$page = array('curpage' => I('get.p', 0), 'size' => 10);
 
-		$order=array('id'=>'desc');
-		$result = apiCall(MsgboxApi::QUERY_BY_UID_AND_MSG_STATUS,array(UID,0,$page,$order));
+		$order =  ' id desc ';
+		$result = apiCall(MsgboxApi::QUERY_BY_UID_AND_MSG_STATUS,array(UID,$page,$order));
 
 		$this->assign('list',$result['info']['list']);
 		$this->assign('show',$result['info']['show']);
 
 
-		$this->wdcount();
-		$this->is_auth();
-
 		$this->display();
 	}
+
 	public function detail(){
-		$id=I('mbid',0);
-		$id2=I('msid',0);
-		$user=session('user');
-		$map=array('msg_status'=>1);
-		$result = apiCall(AdminPublicApi::Msgbox_SavebyId, array($id,$map));
-		//$message = apiCall(AdminPublicApi::Message_Query, array($id2));
-		//$this->assign('msg',$message['info']);
-		$headtitle="宝贝街-站内消息";
-		$this->assign('head_title',$headtitle);
-		$this->assign('username',$user['info']['username']);
-		$this->is_auth();
-		$this->wdcount();
-		$message = M('message'); 
-		$msg=$message->find($id2); 
-		$this->assign("msg",$msg);
+
+        $msg_id = I('get.msg_id',0);
+        $msg_box_id = I('get.msg_box_id',0);
+        $this->assign('head_title' , "宝贝街-站内消息");
+
+
+        $entity = array('msg_status'=>MsgboxModel::READ);
+
+		$result = apiCall(MsgboxApi::SAVE_BY_ID, array($msg_box_id,$entity));
+
+        if(!$result['status']){
+            $this->error($result['info']);
+        }
+
+        $result = apiCall(MessageApi::GET_INFO,array(array('id'=>$msg_id)));
+
+        if($result['status']){
+            $this->assign("msg",$result['info']);
+        }
+
 		$this->display();
 	}
 	/*
 	 * VIP开通
+	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 * */
 	public function sj_viptd(){
-		$headtitle="宝贝街-VIP通道";
-		$this->assign('head_title',$headtitle);
-		$user=session('user');
-		$uid = $user['info']['id'];
-		$map = array('uid' => $uid, );
-		$result = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
-		$this -> assign('coins', $result['info'][0]['coins']);
-		$this -> assign('vip', $result['info'][0]['vip_level']);
-		$this->assign('username',$user['info']['username']);
-		$this->is_auth();
-//		dump($result);
-		$this->wdcount();
+
+		$this->assign('head_title',"宝贝街-VIP通道");
+        $this->reloadUserInfo();
+		$user= $this->userinfo;
+
+		$this -> assign('coins', $user['coins']);
+		$this -> assign('vip', $user['vip_level']);
 		$this->display();
 	}
 	/*
@@ -262,146 +264,90 @@ class UsersjController extends HomeController {
 	public function sj_sfkt(){
 		$headtitle="宝贝街-商家课堂";
 		$this->assign('head_title',$headtitle);
-		$user=session('user');
-		$this->assign('username',$user['info']['username']);
-		$this->wdcount();
+
 		$this->display();
 	}
 	/*
 	 * 商家资金管理
+	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 * */
 	public function sj_zjgl(){
-		$headtitle="宝贝街-资金管理";
-		$this->assign('head_title',$headtitle);
-		$user=session('user');
-		$uid = $user['info']['id'];
+
+		$this->assign('head_title',"宝贝街-资金管理");
+
+		$uid = UID;
 		$map = array('uid' => $uid, );
-		$mapv = array('uid' => $uid,'status'=>2 );
-		$info = apiCall(HomePublicApi::FinBankaccount_Query, array($map));
-		$result = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
-		$user = apiCall(HomePublicApi::User_GetUser, array($uid));
-		$page = array('curpage' => I('get.p', 0), 'size' => 6);
-		$jyjl = apiCall(HomePublicApi::FinAccountBalanceHis_QueryAll, array($map, $page));
-		
-		$we=array('uid' => $uid, 'dtree_type'=>1);$where=array('uid' => $uid, 'dtree_type'=>3);
-		$chongzhi = apiCall(HomePublicApi::FinAccountBalanceHis_QueryAll, array($we));
-		$tixian = apiCall(HomePublicApi::FinAccountBalanceHis_QueryAll, array($where));
-		$this->assign('chongzhi',$chongzhi['info']['list']);
-		$this->assign('tixian',$tixian['info']['list']);
-		$this->assign('all',$jyjl['info']['list']);
-		$this -> assign('sum', $sum);
-		$this -> assign('show', $jyjl['info']['show']);
-		$this -> assign('show2', $tixian['info']['show']);
-		$this -> assign('show3', $chongzhi['info']['show']);
-		if($result['info'][0]['auth_status']==1){
-			$this -> assign('email', $user['info']['email']);
-			$this -> assign('phone', $user['info']['mobile']);
-		}
-		$this -> assign('coins', $result['info'][0]['coins']);
-		$this -> assign('djcoins', $result['info'][0]['frozen_money']);
-		$this -> assign('bank', $info['info'][0]);
-		$this->assign('username',$user['info']['username']);
+        $page = array('curpage' => I('get.p', 0), 'size' => 10);
+        $order = "create_time desc";
+
+        $result = apiCall(FinAccountBalanceHisApi::QUERY, array($map, $page,$order));
+        $this->assign('all',$result['info']['list']);
+        $this->assign('show',$result['info']['show']);
+
+        $info = apiCall(FinBankaccountApi::GET_INFO, array($map));
+
+		$this -> assign('bank', $info['info']);
+
+        //充值
+        $map['dtree_type'] = 1;
+        $result = apiCall(FinAccountBalanceHisApi::QUERY, array($map, $page,$order));
+        $this->assign('list_1',$result['info']['list']);
+        $this->assign('show_1',$result['info']['show']);
+        //
+        $map['dtree_type'] = 3;
+        $result = apiCall(FinAccountBalanceHisApi::QUERY, array($map, $page,$order));
+        $this->assign('list_3',$result['info']['list']);
+        $this->assign('show_3',$result['info']['show']);
+        $this->reloadUserInfo();
 
 		$this->display();
 	}
+
+
+    /*
+     * 获取统计数据
+     * */
+    public function getcount(){
+        $user=session('user');
+        $count_wtj=0;$count_ddsh=0;$count_qrhk=0;
+        $map=array('uid'=>$user['info']['id']);
+        $result=apiCall(HomePublicApi::Task_Query, array($map));
+        for ($i=0; $i <count($result['info']) ; $i++) {
+            //订单未提交
+            $map1=array('task_id'=>$result['info'][$i]['id'],'do_status'=>1);
+            $result1[]=apiCall(HomePublicApi::Task_His_Query, array($map1));
+            //待订单审核
+            $map2=array('task_id'=>$result['info'][$i]['id'],'do_status'=>3);
+            $result2[]=apiCall(HomePublicApi::Task_His_Query, array($map2));
+            //待确认还款
+            $map3=array('task_id'=>$result['info'][$i]['id'],'do_status'=>4);
+            $result3[]=apiCall(HomePublicApi::Task_His_Query, array($map3));
+            if(count($result1[$i]['info'])!=0){
+                $count_wtj=count($result1[$i]['info']);
+            }
+            if(count($result2[$i]['info'])!=0){
+                $count_ddsh=count($result2[$i]['info']);
+            }
+            if(count($result3[$i]['info'])!=0){
+                $count_qrhk=count($result3[$i]['info']);
+            }
+        }
+
+        $this->assign('wtj',$count_wtj);
+        $this->assign('ddsh',$count_ddsh);
+        $this->assign('qrhk',$count_qrhk);
+
+    }
+
 	/*
 	 * 退出登录
 	 * */
 	public function exits(){
-		
 		session('[destroy]'); // 删除session
 		F('wdcount2',NULL);
 		$this->display('Index/login');
 	}
-	/*
-	 * 获取统计数据
-	 * */
-	public function getcount(){
-		$user=session('user');
-		$count_wtj=0;$count_ddsh=0;$count_qrhk=0;
-		$map=array('uid'=>$user['info']['id']);
-		$result=apiCall(HomePublicApi::Task_Query, array($map));
-		for ($i=0; $i <count($result['info']) ; $i++) {
-			//订单未提交 
-			$map1=array('task_id'=>$result['info'][$i]['id'],'do_status'=>1);
-			$result1[]=apiCall(HomePublicApi::Task_His_Query, array($map1));
-			//待订单审核
-			$map2=array('task_id'=>$result['info'][$i]['id'],'do_status'=>3);
-			$result2[]=apiCall(HomePublicApi::Task_His_Query, array($map2));
-			//待确认还款
-			$map3=array('task_id'=>$result['info'][$i]['id'],'do_status'=>4);
-			$result3[]=apiCall(HomePublicApi::Task_His_Query, array($map3));
-			if(count($result1[$i]['info'])!=0){
-				$count_wtj=count($result1[$i]['info']);
-			}
-			if(count($result2[$i]['info'])!=0){
-				$count_ddsh=count($result2[$i]['info']);
-			}
-			if(count($result3[$i]['info'])!=0){
-				$count_qrhk=count($result3[$i]['info']);
-			}
-		}
-//dump($count_wtj);
-//dump($result2);
-//dump($count_qrhk);
-		$this->assign('wtj',$count_wtj);
-		$this->assign('ddsh',$count_ddsh);
-		$this->assign('qrhk',$count_qrhk);
-		 
-	}
-	/*
-	 *获得未读消息
-	 * */
-	 public function wdcount(){
-         $cnt = S('c_msg_not_read_cnt');
-         if(is_null($cnt) || $cnt === false){
-             $result = apiCall(MsgboxApi::COUNT_BY_UID_AND_MSG_STATUS,array(UID,MsgboxModel::READ));
-             if($result['status']){
-                 $cnt = count($result['info']);
-             }else{
-                 $cnt = 0;
-             }
-             S('c_msg_not_read_cnt',$cnt,300);
-         }
-         $this->assign("not_read_msg_cnt",$cnt);
-
-	 }
-
-	 public function is_auth(){
-		$this->assign('auto_status',$this->userinfo['auto_status']);
-	 }
-	/*
-	 * 检测用户vip等级
-	 * */
-	public function checklevel(){
-        $this->checkLogin();
-
-        $exp  = $this->userinfo['exp'];
-
-        if($exp < 100){
-            $this->assign('level',1);
-            $this->assign('exp',$exp-0);
-        }else if($exp>=100 && $exp<200){
-            $this->assign('level',2);
-            $this->assign('exp',$exp-100);
-        }else if($exp>=200 && $exp<300){
-            $this->assign('level',3);
-            $this->assign('exp',$exp-200);
-        }else if($exp>=300 && $exp<400){
-            $this->assign('level',4);
-            $this->assign('exp',$exp-300);
-        }else if($exp>=400 && $exp<500){
-            $this->assign('level',5);
-            $this->assign('exp',$exp-400);
-        }else if($exp>=500 && $exp<600){
-            $this->assign('level',6);
-            $this->assign('exp',$exp-500);
-        }else if($exp>=600 && $exp<700){
-            $this->assign('level',7);
-            $this->assign('exp',$exp-600);
-        }
 
 
-	}    
 	
 }

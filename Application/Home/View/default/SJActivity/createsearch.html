@@ -19,14 +19,20 @@
 	<script type="text/javascript">
 		$(function(){
 			$('#parseBtn').click(function(){
+                if($('#parseBtn').text() == '正在解析...'){
+                    return;
+                }
 				var parseUrl=$('#url').val();
+                $('#parseBtn').text("正在解析...");
 				$.ajax({
-					cache:false,
-					type:"post",
 					data:{url:encodeURI(parseUrl)},
-					url:"{:U('Tool/RemoteProductParser/read_search',array('r'=>time()))}",
-					//url:"{:U('Tool/RemoteProductParser/read_search')}",
-					dataType:"json",
+
+                    dataType: 'jsonp',
+                    jsonp: 'jsonp',
+//                    url: "{:U('Tool/RemoteProductParser/read_search',array('r'=>time()))}",
+//                    url: "http://bbj.itboye.com/index.php/Tool/RemoteProductParser/read_search",
+                    url: "http://www.bammar.com/index.php/Tool/RemoteProductParser/read_search",
+
 					success:function(result){
 						if(result.status==0){
 							alert(result.info);
@@ -66,7 +72,9 @@
 						}
 						
 					}
-				});
+				}).always(function(){
+                    $('#parseBtn').text("解析搜索");
+                });;
 				
 			})
 			
@@ -110,31 +118,25 @@
 
 						if(repo.title != undefined){
 
-							if('{$aliwawa}'==repo.wangwang){
-							
-							var minTitle= repo.title.substring(0,20)+"...";
-							$("#product_base_info img").attr('src',repo.main_img);
-							$("#product_base_info .controls .font_title").html(repo.title);
-							     
-							$("#product_base_info .controls .font_time").html(new Date(parseInt(repo.update_time) * 1000).toLocaleString().replace(/:\d{1,2}$/,' '));
-							$("#product_base_info .controls .input_url").val(repo.link);
-							$("#product_base_info").show();
-							//alert($("#div_searchCondition .img").size());
-							$("input[name='pid']").val(repo.id);
-							
-							
-							$("#div_searchCondition img").attr("src",repo.main_img);
-							$("#div_searchCondition .font_title1").html(repo.title);
-							$("#div_searchCondition .font_price1").html(repo.price);
+                            var minTitle= repo.title.substring(0,20)+"...";
 
-							$("#div_searchCondition .font_wangwang").html(repo.wangwang.substring(0,3));
+                            $("#product_base_info img").attr('src',repo.main_img);
+                            $("#product_base_info .controls .font_title").html(repo.title);
 
-								
-							}else{
-//								alert('请更换你绑定旺旺的商品');
-							}
-							
-							
+                            $("#product_base_info .controls .font_time").html(new Date(parseInt(repo.update_time) * 1000).toLocaleString().replace(/:\d{1,2}$/,' '));
+                            $("#product_base_info .controls .input_url").val(repo.link);
+                            $("#product_base_info").show();
+                            //alert($("#div_searchCondition .img").size());
+                            $("input[name='pid']").val(repo.id);
+
+
+                            $("#div_searchCondition img").attr("src",repo.main_img);
+                            $("#div_searchCondition .font_title1").html(repo.title);
+                            $("#div_searchCondition .font_price1").html(repo.price);
+
+                            $("#div_searchCondition .font_wangwang").html(repo.wangwang.substring(0,3));
+
+                            console.log(minTitle,repo.title,repo.text);
 							return minTitle || repo.text;
 						}else{
 							return repo.title || repo.text;
@@ -182,15 +184,9 @@
 											<a tabindex="-1" href="javascript:void(0)">关键词</a>
 										</li>
 										<li role="menuitem"><a tabindex="-1" href="{:U('Home/SJActivity/zdysele')}">自定义</a>
-											
 										</li>
 										<li role="menuitem"><a tabindex="-1" href="{:U('Home/SJActivity/phonesele')}">手机搜索</a>
-											
 										</li>
-										<!--<li visible="1" tooltip="手机关键词仅分配手机任务时可使用" role="menuitem" data-original-title="" title=""><a tabindex="-1" href="#">手机关键词</a>
-										</li>
-										<li visible="1" tooltip="手机关键词仅分配手机任务时可用" role="menuitem" data-original-title="" title=""><a tabindex="-1" href="#">手机自定义</a>
-										</li>-->
 									</ul>
 								</div>
 							</div>

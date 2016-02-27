@@ -10,6 +10,14 @@ use \Common\Api\Api;
 use \Common\Model\ProductSearchWayModel;
 
 class ProductSearchWayApi extends Api{
+
+    const QUERY = 'Home/ProductSearchWay/query';
+    const QUERY_NO_PAGING = 'Home/ProductSearchWay/queryNoPaging';
+    const SAVE_BY_ID = 'Home/ProductSearchWay/saveByID';
+    const ADD = 'Home/ProductSearchWay/add';
+    const DELETE = 'Home/ProductSearchWay/delete';
+    const GET_INFO = 'Home/ProductSearchWay/getInfo';
+
 	protected function _init(){
 		$this->model = new ProductSearchWayModel();
 	}

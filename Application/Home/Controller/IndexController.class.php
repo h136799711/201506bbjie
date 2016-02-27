@@ -6,6 +6,10 @@
 // | Copyright (c) 2013-2016, http://www.itboye.com. All Rights Reserved.
 // |-----------------------------------------------------------------------------------
 namespace Home\Controller;
+use Admin\Api\MsgboxApi;
+use Admin\Model\MsgboxModel;
+use Admin\Model\PictureModel;
+use Cms\Api\PostApi;
 use Common\Api\AccountApi;
 use Home\Api\BbjmemberApi;
 use Home\ConstVar\BoyeActionConstVar;
@@ -38,6 +42,7 @@ class IndexController extends HomeController {
 		$this->assign('head_title',$headtitle);
 		$this->display();
 	}
+
 	/*
 	  * 首页
 	  * */
@@ -45,6 +50,7 @@ class IndexController extends HomeController {
 		
 		$this->redirect('Shop/Index/index');
 	}
+
 	/*
 	  * 福品专场
 	  * */
@@ -141,7 +147,7 @@ class IndexController extends HomeController {
 		$map=array();
 		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
 		$this->assign('zxgg',$result['info'][0]);
-		
+
 		//查询公告标题
 		$map['parentid']=21;
 		$result=apiCall(AdminPublicApi::Datatree_Query,array($map));
@@ -176,36 +182,24 @@ class IndexController extends HomeController {
 	  * 官方公告信息
 	  * */
 	public function gfggxx(){
-		$map=array();
-		$order = " post_modified desc ";
-		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
-		$this->assign('zxgg',$result['info'][0]);
-	
-	
-		$headtitle="宝贝街-官方公告信息";
-		$this->assign('head_title',$headtitle);
+
+        $this->getLastestNotice();
+
+		$this->assign('head_title',"宝贝街-官方公告信息");
 
 		//查询公告标题
 		$map=array();
 		$map['parentid']=21;
 		$result=apiCall(AdminPublicApi::Datatree_Query,array($map));
 		$this->assign('ggTitle',$result['info']['list']);
-		
+
 		//根据id查询公告文章
-		$map=array();
-		$map['id']=I('id');
-		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map));
+		$map = array();
+		$map['id'] = I('id');
+		$result = apiCall(PostApi::GET_INFO,array($map));
 		
-		$this->assign('gg',$result['info'][0]);
-		
-		$map=array();
-		$map['id']=$result['info'][0]['post_category'];
-		$result=apiCall(AdminPublicApi::Datatree_QueryNoPaging,array($map));
-		$this->assign('ggct',$result['info'][0]);
-		
-		
-		$users=session('user');
-		$this->assign('username',session('user')['info']['username']);
+		$this->assign('gg',$result['info']);
+
 		$this->display();
 	}
 	/*
@@ -257,28 +251,25 @@ class IndexController extends HomeController {
 	/*
 	 * 删除站内信息
 	 * */
-	public function delsjxx(){
-		$mbid=I('mbid',0);
-		$map=array('msg_status'=>2);
-		$result=apiCall(AdminPublicApi::Msgbox_SavebyId, array($mbid,$map));
+	public function del_msg(){
+
+		$id  = I('get.id',0);
+
+		$map = array('msg_status'=> MsgboxModel::DELETE);
+
+		$result=apiCall(MsgboxApi::SAVE_BY_ID, array($id,$map));
+
 		if($result['status']){
-			$this->success('操作成功！',U('Home/Usersj/sj_znxx'));
+            $this->success('操作成功！',U('Home/Usersj/sj_znxx'));
 		}
+
 	}
-	/*
-	 * 删除站内信息
-	 * */
-	public function delsmxx(){
-		$mbid=I('mbid',0);
-		$map=array('msg_status'=>2);
-		$result=apiCall(AdminPublicApi::Msgbox_SavebyId, array($mbid,$map));
-		if($result['status']){
-			$this->success('操作成功！',U('Home/Usersm/sm_znxx'));
-		}
-	}
-/*
-	  * 商家注册基本信息
-	  * */
+
+    /*
+	 * 商家注册基本信息
+	 *
+     *
+     * */
 	public function sjzc(){
 		$username=I('post.user_name');
 		$password=I('post.password');
@@ -288,6 +279,7 @@ class IndexController extends HomeController {
         $map = array(
             'username'=>$yqr,
         );
+
         $result = apiCall(UserApi::FIND,array($map));
         $invite_id = 0;
 
@@ -307,48 +299,51 @@ class IndexController extends HomeController {
             'from'=>'99',
         );
 
-        $result = apiCall(AccountApi::Register, array($entity));
+        session('seller_info',$entity);
 
-        if($result['status']){
-            $this->success("注册成功",U("Home/Index/login"));
-        }else{
-            $this->error($result['info']);
-        }
-
+        $this->redirect("Home/Index/register_sj_kz");
 	}
     /*
 	  * 商家注册详细信息
 	  * */
 	public function sjzc_kz(){
-		
-		$id=session('sjid');
-		$entity=array(
-			'store_name'=>I('post.dpname',''),
-			'aliwawa'=>I('alww',''),
-			'linkman_qq'=>I('post.qq'),
-			'linkman'=>I('post.lxr'),
-			'address'=>I('post.jydz'),
-		);
-		$result1 = apiCall(HomePublicApi::Bbjmember_Seller_SaveByID, array($id,$entity));
-		if ($result1['status']) {
-			$headtitle="宝贝街-登录";
-			$this->assign('head_title',$headtitle);
-			$this->display('login');
-		}
+
+        if(IS_GET){
+            $this->assign('head_title',"宝贝街-商家注册");
+            $this->display();
+        }else{
+
+            $entity = session('seller_info');
+
+            $entity['store_name'] = I('post.dpname','');
+            $entity['aliwawa'] = I('post.alww','');
+            $entity['qq'] = I('post.qq','');
+            $entity['linkman'] = I('post.lxr','');
+            $entity['address'] = I('post.jydz','');
+            $result = apiCall(AccountApi::Register, array($entity));
+
+            session('seller_info',null);
+            if ($result['status']) {
+                $this->success("注册成功",U("Home/Index/login"));
+            }else{
+                $this->error("请重新注册",U("Home/Index/register_sj"));
+            }
+        }
 	}
+
 	/**
 	 * 登录地址
 	 */
 	public function login(){
 
 		if(IS_GET){
-			$headtitle="宝贝街-登录";
-			$this->assign('head_title',$headtitle);
+			$this->assign('head_title',"宝贝街-登录");
 			$this->display();
 		}else{
 			//检测用户
 			$username = I('post.username', '', 'trim');
 			$password = I('post.password', '', 'trim');
+
 			$result = apiCall(UserApi::LOGIN, array('username' => $username, 'password' => $password));
 
 			if ($result['status']) {
@@ -358,7 +353,7 @@ class IndexController extends HomeController {
 				$result = apiCall(AccountApi::GET_INFO, array($uid));
 
                 if(!$result['status']){
-                    $this->error($result['info']);
+                    $this->error("登录失败!".$result['info']);
                 }
 
                 $userinfo = $result['info'];
@@ -366,7 +361,6 @@ class IndexController extends HomeController {
                 session("user",$userinfo);
 
                 if($userinfo['user_type'] == UserTypeConstVar::BBJ_MEMBER_GROUP){
-
                     $this->success('登录成功!',U('Home/Index/sm_manager'));
                 }elseif($userinfo['user_type'] == UserTypeConstVar::BBJ_SHOP_GROUP){
                     $this->success('登录成功!',U('Home/Usersj/index'));
@@ -381,8 +375,6 @@ class IndexController extends HomeController {
 			}
 		}
 	}
-
-
 
 	/*
 	  * 退出当前账号
@@ -414,7 +406,7 @@ class IndexController extends HomeController {
 	        $return  = array('status' => 1, 'info' => '上传成功', 'data' => '');
 	
 	        /* 调用文件上传组件上传文件 */
-	        $Picture = D('Picture');
+	        $Picture = new PictureModel();
 	        $pic_driver = C('PICTURE_UPLOAD_DRIVER');
 	        $info = $Picture->upload(
 	            $_FILES,
@@ -544,5 +536,15 @@ class IndexController extends HomeController {
 		 
 	}
 
+    /**
+     * 获取最新公告信息
+     */
+    private function getLastestNotice(){
+        $map = array();
+        $order = " post_modified desc ";
+
+        $result = apiCall(PostApi::GET_INFO,array($map, $order));
+        $this->assign('zxgg',$result['info']);
+    }
 }
 

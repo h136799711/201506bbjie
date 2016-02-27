@@ -43,20 +43,23 @@
 													<td style="vertical-align: top;">
 
 														<div style="margin: 30px 20px;">
-															<p>
-																{$user.nickname} </p>
-															<p>
-																<if condition="$user.vip_level eq 1">
-																	会员等级 : vip会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">续费或开通超级会员</a> ]
-																</if>
-																<if condition="$user.vip_level eq 2">
-																	会员等级 : 超级会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">续费超级会员</a> ]
-																</if>
-																<if condition="$user.vip_level eq 0">
-																	会员等级 : 普通会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">开通会员</a> ]
-																</if>
+                                                            <p>
+                                                                <if condition="$user.vip_level eq 1">
+                                                                    会员等级 : vip会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">续费或开通超级会员</a> ]
+                                                                </if>
+                                                                <if condition="$user.vip_level eq 2">
+                                                                    会员等级 : 超级会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">续费超级会员</a> ]
+                                                                </if>
+                                                                <if condition="$user.vip_level eq 0">
+                                                                    会员等级 : 普通会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">开通会员</a> ]
+                                                                </if>
 
-															</p>
+                                                            </p>
+                                                            <p>
+                                                                <if condition="$user.vip_level neq 0">
+                                                                到期时间: {:date("Y-m-d H:i:s",$user['vip_expire_time'])}
+                                                                </if>
+                                                            </p>
 
 															<p>
 																可用余额 : <span class="number"><span class="price">{$user.coins}</span>元</span>
@@ -64,17 +67,33 @@
 															</p>
 
 															<p>
-																绑定旺旺 :{$user.aliwawa} </p>
+																绑定旺旺 :
+                                                                <empty name="user['aliwawa']">
+                                                                    <a class="am-btn am-link-btn"  href="{:U('Home/Usersj/sj_zhxx')}">点击绑定</a>
+                                                                    <else/>
+                                                                    {$user.aliwawa}
+                                                                </empty>
+                                                            </p>
 															<p>
-																店铺名 : {$user.store_name} </p>
+																店铺名 :
+
+                                                                <empty name="user['store_name']">
+                                                                    <a class="am-btn am-link-btn"  href="{:U('Home/Usersj/sj_zhxx')}">点击绑定</a>
+                                                                    <else/>
+                                                                    {$user.store_name}
+                                                                </empty>
+                                                            </p>
 
 															<p>
-																联系人 : {$user.linkman} </p>
-															<if condition="$user['aliwawa'] eq ''">
-
-																<else/>
+																联系人 :<empty name="user['linkman']">
+                                                                <a class="am-btn am-link-btn" href="{:U('Home/Usersj/sj_zhxx')}">点击填写</a>
+                                                                <else/>
+                                                                {$user.linkman}
+                                                            </empty>
+                                                            </p>
+                                                            <eq name="auth_status" value="0">
 																<div class="alert alert-warning in fade"><a href="javascript:void(0)" class="close" data-dismiss="alert" type="button">×</a>您还没有对您的主旺旺进行认证，请先认证您的主旺旺 <a class="text-info" href="{:U('Home/Usersj/sj_zhxx')}">前往验证</a>
-															</if>
+															</eq>
 															</div>
 														</div>
 
@@ -109,9 +128,9 @@
 																<td>
 																	<span class="small">自助选择任务试民:</span>
 																	<if condition="$user['task_gettype'] eq 1">
-																		<a style="color: red;" class="text-info small" tooltip="开启之后您的任务试民将由您自己审核通过" href="{:U('Home/SJActivity/changestatus',array('id'=>$user['id'],'status'=>1))}">已关闭</a>
+																		<a style="color: red;" data-no-alert="true" class="ajax-get text-info small" tooltip="开启之后您的任务试民将由您自己审核通过" href="{:U('Home/SJActivity/changestatus',array('id'=>$user['id'],'status'=>1))}">已关闭</a>
 																		<else/>
-																		<a style="color: darkgreen;" class="text-info small" tooltip="关闭之后您的任务试民将由试民自己领取" href="{:U('Home/SJActivity/changestatus',array('id'=>$user['id'],'status'=>2))}">已开启</a>
+																		<a style="color: darkgreen;" data-no-alert="true"  class="ajax-get text-info small" tooltip="关闭之后您的任务试民将由试民自己领取" href="{:U('Home/SJActivity/changestatus',array('id'=>$user['id'],'status'=>2))}">已开启</a>
 																	</if>
 																</td>
 																</td>
@@ -224,7 +243,9 @@
 				</div>
 			</div>
 		</div>
+
 		<include file='Widget/sjleft' />
+
 	</div>
 </block>
 

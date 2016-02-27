@@ -5,20 +5,27 @@
 	<style type="text/css">
 		#begin_time,#end_time,#count{ height: 30px;}
 		#yw1 li{list-style-type: none;}
+        body{
+            font-size: 10px;
+        }
+        .am-modal select{
+            font-size: 10px;
+        }
+
 	</style>
 </block>
 
 <block name="area_body">
 
 	<include file='Widget/sjtop' />
-	<div class="seller_main clearfix" controller="seller/common">
+	<div class="seller_main clearfix" >
 		<div class="seller_content_wrap">
 
 			<div class="seller_content" style="padding-top: 10px;">
 
 					<div class="task-head">
 						<div class="breadcrumbs">
-							<a href="">淘宝活动</a>&gt;<span>任务计划管理：{$task['task_name']}</span>
+							<a href="{:U('Home/SJActivity/sj_tbhd')}">淘宝活动</a>&gt;<span>任务计划管理：{$task['task_name']}</span>
 						</div>
 					</div>
 
@@ -26,17 +33,16 @@
 
 						<div class="renwu-head">
 							<ul class="product-image">
-								<volist name='jihuas' id='c' >
-									<if condition="$c['task_id'] eq $task['id']">
-									<volist name='pro' id='v' key='a' ><if condition="$c['pid'] eq $v['id']"><li><img width="75px" height="75px" src="{$v['main_img']}" class="gray" id="" ></li></if></volist>
-									</if>
+								<volist name='products' id='vo' >
+                                    <li><img width="75px" height="75px" src="{$vo['main_img']}" class="gray" ></li>
 								</volist>
 							</ul>
 							<div class="task-tongji">
 								<div class="tongji">
-									<span>总份数:<i>{$task_play['task_cnt']}</i></span>
-									<span>任务中:<i>{$fcount}</i></span>
-									<span>已完成:<i>{$scount}</i></span>
+									<span>总份数:<i>{$all_plan_total}</i></span>
+									<span>任务中:<i>{$doing_cnt}</i></span>
+                                    <span>已完成:<i>{$done_cnt}</i></span>
+                                    <span>其它:<i>{$other_cnt}</i></span>
 									<span style="margin-left: 20px;">单份任务金:<i>{$task['task_gold']}</i>元</span>
 								</div>
 								
@@ -48,62 +54,52 @@
 						</div>
 
 						<div class="renwuku jquery-once-1-processed">
-							<div id="yw1" class="grid-view" controller="extend/gridview" >
+							<div id="yw1" class="grid-view">
 								<table class="items table table-hover">
 									<thead>
 										<tr>
-											<th width="80" id="yw1_c0">搜索商品</th>
-											<th id="yw1_c1">关键字/搜索名称</th>
-											<th width="160" class="text-center" id="yw1_c2">模式限定</th>
-											<th width="100" id="yw1_c3">任务状态</th>
-											<th width="160" class="text-center" id="yw1_c4">领取状况</th>
-											<th class="text-center" width="100" id="yw1_c5"><a class="sort-link" href="">任务时间<span class="caret"></span></a>
+											<th width="120" class="text-center" id="yw1_c2">模式限定</th>
+											<th width="120" class="text-center" id="yw1_c4">领取状况</th>
+											<th class="text-center" width="220" id="yw1_c5">
+                                                任务时间
 											</th>
 											<th width="80" id="yw1_c6">操作</th>
 										</tr>
 									</thead>
 									<tbod y>
-										<volist name='tp' id='tp'>
+										<volist name='plan_list' id='vo'>
 										<tr class="odd">
-											<td>
-												<volist name='jihuas' id='c' >
-													<if condition="$c['task_id'] eq $tp['task_id']">
-													<volist name='pro' id='v' key='a' ><if condition="$c['pid'] eq $v['id']"><li><img width="75px" height="75px" src="{$v['main_img']}" class="gray" id="" ></li></if></volist>
-													</if>
-												</volist>
-											</td>
-											<td><volist name='jihuas' id='c' >
-													<if condition="$c['task_id'] eq $tp['task_id']">
-													<volist name='pro' id='v' key='a' ><if condition="$c['pid'] eq $v['id']"><li>{$c['pname']}</li><br></if></volist>
-													</if>
-												</volist>
-												<!--<a data-toggle="modal2" class="text-info small" modal-title="更改搜索设置" href="">更改搜索设置</a>-->
-											</td>
-											<td class="text-center">普通搜索</td>
-											<td class="text-center"> </td>
+                                            <td>
+                                                {:getEnterWay($vo['enter_way'])}
+                                            </td>
 											<td class="text-center">
 												<div>
-													<div class="small muted">已分配：<i>{$fcount}</i>
+													<div class="small muted">未分配：<i id="wfp">{$vo.yuecount}</i>
 													</div>
-													<div class="small muted">未分配：<i id="wfp">{$tp.yuecount}</i>
+													<div class="small muted">总份数：<i id="zfs">{$vo.task_cnt}</i>
 													</div>
-													<div class="small muted">总份数：<i id="zfs">{$tp.task_cnt}</i>
-													</div>
-												</div>&nbsp;</td>
+												</div>
+                                            </td>
 											<td class="text-center">
 												<div class="small">
-													<div class="inline-block" style="width:80px;">{$tp.start_time|date='m-d H:i',###}-{$tp.end_time|date='m-d H:i',###}</div>&nbsp;&nbsp;
-													<div class="inline-block" style="vertical-align:-3px;"><a data-toggle="modal2" modal-title="更新任务时间" href="http://www.shifujie.net/seller/sf/renwuku/shijian?id=31834"><i class="s_icon edit1"></i></a>
+													<div class="inline-block" >{$vo.start_time|date='Y-m-d H:i',###} 到 {$vo.end_time|date='Y-m-d H:i',###}</div>
+
+													<div class="inline-block" style="vertical-align:-3px;">
+                                                        <a data-toggle="modal2" href="javascript:void(0)">
+                                                            <i class="s_icon edit1"></i>
+                                                        </a>
 													</div>
 												</div>
 											</td>
 											<td>
-												<div class="renwu-caozuo small"><a target="_blank" href="{:U('Home/SJActivity/alluser',array('id'=>$tp['task_id']))}">查看试民</a>
-													<br><a class="xgfs" data-am-modal="{target: '#doc-modal-2', closeViaDimmer: 0, width:350, height:150}" data-toggle="modal2"  href="javascript:void(0)">修改份数</a>
-													<br><a class="xgsj" data-am-modal="{target: '#doc-modal-3', closeViaDimmer: 0, width:650, height:150}" data-toggle="modal2"  href="javascript:void(0)">修改时间</a>
-													<input type="hidden" name="id" id="id" value="{$tp.id}" />
-													<!--<br><a data-role="ajax" href="{:U('Home/SJActivity/zanting',array('id'=>$vo['id']))}" id="yt1">暂停任务</a>-->
-												</div>&nbsp;</td>
+												<div class="renwu-caozuo small">
+                                                    <a target="_blank" href="{:U('Home/SJActivity/alluser',array('id'=>$tp['task_id']))}">查看试民</a>
+													<br>
+                                                    <a class="j_update_task" data-task-count="{$vo.task_cnt}" data-task-id="{$vo.id}" href="javascript:void(0)">修改任务信息</a>
+
+
+												</div>&nbsp;
+                                            </td>
 										</tr>
 										</volist>
 									</tbody>
@@ -114,8 +110,7 @@
 										<div class="summary">{$show}</div>
 									</div>
 								</div>
-								<div class="keys" style="display:none" title=""><span>31834</span>
-								</div>
+
 							</div>
 						</div>
 	
@@ -124,135 +119,147 @@
 			</div>
 			<include file='Widget/sjleft' />
 		</div>
+
+
 		<div class="am-modal am-modal-no-btn" tabindex="-1" id="doc-modal-1">
-						<div class="am-modal-dialog" style="border-radius: 5px;">
-							<div class="am-modal-hd" style="border-bottom: 1px solid #ccc; text-align: left;font-size:18px;">
-								<font color="orangered">发放任务</font>
-								<a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>
-									&times;
-								</a>
-							</div>
-							<div class="am-modal-bd">
-								<form action="{:U('Home/SJActivity/create_tp')}" class="createfm" method="post">
-									<input type="hidden" name="tid" id="tid" value="{$task['id']}" />
-									<input type="hidden" name="zong" id="zong" value="" />
-								<table style="margin-left: 100px; line-height:50px;" cellspacing="" cellpadding="" style="margin-top: 10px;">
-									<tr>
-										<td width="20%" style="text-align: right; padding-right: 5px; padding-top: 10px;">
-											对应任务：
-										</td>
-										<td style="padding-top: 10px;">
-											{$task['task_name']}
-										</td>
-									</tr>
-									<tr>
-										<td style="text-align: right;padding-right: 5px;padding-top: 10px;">
-											
-										</td>
-										<td style="font-size: 12px;padding-top: 10px;">
-											任务金试民<font id="zrwj" color="orangered">{$task['task_gold']}</font>=试民下单金额：<font id="xdje" color="orangered"></font> + 邮费：<font id="ysyf" color="orangered">{$task['task_postage']}</font>
-										</td>
-									</tr>
-									<tr>
-										<td style="text-align: right;padding-right: 5px;padding-top: 10px;">
-											进店方式：
-										</td>
-										<td style="font-size: 12px;padding-top: 10px;">
-											<select name="sele_type">
-												<option value="0">不限</option>
-												<option value="1">搜索模式（试民通过搜索进入店铺）</option>
-												<option value="2">老客户模式（试民通过收藏夹或购物车进入店铺）</option>
-												<option value="3">手机搜索（试民通过手机搜索商品进入店铺）</option>
-											</select>
-										</td>
-									</tr>
-									<tr>
-										<td style="text-align: right;padding-right: 5px;padding-top: 10px;">
-											发放时间：
-										</td>
-										<td style="padding-top: 10px;">
-												从<input type="datetime-local" name="stime" style="width: 44%; height: 30px; font-size: 15px;"  placeholder="{$create_play.start_time|date='m-d H:i',###}" value="">到
-							       			<input type="datetime-local" style="width: 44%; font-size: 15px; height: 30px;" name="etime" id="date" value="" />
-										</td>
-									</tr>
-									<tr>
-										<td style="padding-top: 10px;text-align: right;padding-right: 5px;">
-											发放份数：
-										</td>
-										<td style="font-size: 12px;padding-top: 10px;">
-											<input type="number" name="count" id="count" value="" />&nbsp;&nbsp;您的账户余额：<font color="orangered">{$money}</font>
-										</td>
-									</tr>
-									
-									<tr>
-										<td style="padding-top: 10px;">
-										</td>
-										<td style="padding-top: 10px;">
-											<button id="addok" target-form="createfm" type="button" url="{:U('Home/SJActivity/create_tp')}" class="ajax-post am-btn am-btn-primary am-btn-xs" style="width: 80px; height:30px;padding: 0;border-radius: 5px; ">
-												保存
-											</button>
-										</td>
-									</tr>
-								</table>
-								</form>
-							</div>
-						</div>
-					</div>
-					<!--修改份数窗口-->
-					<div class="am-modal am-modal-no-btn" tabindex="-1" id="doc-modal-2">
-						<div class="am-modal-dialog" style="border-radius: 5px;border-bottom: 1px solid #ccc;">
-							<div class="am-modal-hd" style="font-size:12px;">
-								修改任务份数
-								<a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>
-									&times;
-								</a>
-								<form class="fm" action="{:U('Home/SJActivity/upcount')}" method="post">
-									<input type="hidden" name="dfmoney" id="dfmoney" value="{$task['task_gold']}" />
-									<input type="hidden" name="sid" id="sid" value="" /><br>
-								<div style="text-align: center;">
-									修改任务份数：<input type="number" min="1" style="width:100px; height: 30px;" id="rwcount" name="rwcount" value="" /><br>
-									<button id="xgfsok" url="{:U('Home/SJActivity/upcount')}" target-form="fm" class="ajax-post" type="button">确定</button>
-								</div>
-								</form>
-								
-							</div>
-							<div class="am-modal-bd">
-								
-							</div>
-						</div>
-					</div>
-					<!--修改份数窗口-->
+            <div class="am-modal-dialog" style="border-radius: 5px;">
+                <div class="am-modal-hd" style="border-bottom: 1px solid #ccc; text-align: left;font-size:18px;">
+                    <font color="orangered">发放任务</font>
+                    <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>
+                        &times;
+                    </a>
+                </div>
+                <div class="am-modal-bd">
+                    <form action="{:U('Home/SJActivity/create_tp')}" class="createfm am-form am-form-horizontal" method="post">
+                        <input type="hidden" name="tid" id="tid" value="{$task['id']}" />
+                        <input type="hidden" id="defray" name="defray" value="0" />
+
+                        <div class="am-form-group am-g">
+                            <label class="am-u-lg-2 am-u-md-2 am-form-label">对应任务</label>
+                            <div class="am-u-lg-10 am-u-md-10 am-text-left">
+                                {$task['task_name']}, 单份任务金{$task['task_gold']} = 下单金额: {$task['task_brokerage']} + 邮费：{$task['task_postage']}
+                            </div>
+                        </div>
+                        <div class="am-form-group am-g">
+                            <label class="am-u-lg-2 am-u-md-2 am-form-label ">对应任务</label>
+                            <div class="am-u-lg-10 am-u-md-10 am-text-left">
+                                {$task['task_name']}
+                            </div>
+                        </div>
+
+                        <div class="am-form-group am-g">
+                            <label class="am-u-lg-2 am-u-md-2 am-form-label">进店方式</label>
+                            <div class="am-u-lg-10 am-u-md-10 am-text-left">
+                                <select name="sele_type" class="am-form-field">
+                                    <option value="0">不限</option>
+                                    <option value="1">搜索模式（试民通过搜索进入店铺）</option>
+                                    <option value="2">老客户模式（试民通过收藏夹或购物车进入店铺）</option>
+                                    <option value="3">手机搜索（试民通过手机搜索商品进入店铺）</option>
+                                </select>
+
+                            </div>
+                        </div>
+
+                        <div class="am-form-group am-datepicker-date">
+                            <label class="am-u-lg-2 am-u-md-2 am-form-label">生效时间</label>
+                            <div class="am-u-lg-10 am-u-md-10 am-text-left am-cf">
+
+                                <input type="text" class="am-fl" style="width:160px;" data-am-datepicker readonly  name="stime" value="{:date('Y-m-d',time())}">
+                                <div class="am-fl">&nbsp;&nbsp;-&nbsp;&nbsp;</div>
+                               <input type="text" class="am-fl"  style="width:160px;" name="etime" data-am-datepicker readonly value="{:date('Y-m-d',time()+24*3600*7)}" />
+
+                            </div>
+                        </div>
+                        <div class="am-form-group am-g">
+                            <label class="am-u-lg-2 am-u-md-2 am-form-label">发放份数</label>
+                            <div class="am-u-lg-10 am-u-md-10 am-text-left">
+                                <input type="text" name="count" id="count" value="" />&nbsp;&nbsp;
+                                您的账户余额：<font color="orangered">{$user.coins}</font>
+                            </div>
+                        </div>
+                        <div class="am-form-group am-g">
+
+                            <label class="am-u-lg-2 am-u-md-2 am-form-label">&nbsp;</label>
+
+                            <div class="am-u-lg-10 am-u-md-10">
+                                <a href="{:U('Home/SJActivity/create_tp')}" target-form="createfm" class="ajax-post am-btn am-btn-sm am-btn-primary">
+                                    保存
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
 					
-					<!--修改任务时间-->
-					<div class="am-modal am-modal-no-btn" tabindex="-1" id="doc-modal-3">
-						<div class="am-modal-dialog" style="border-radius: 5px;border-bottom: 1px solid #ccc;">
-							<div class="am-modal-hd" style="font-size:12px;">
-								修改任务时间
-								<a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>
-									&times;
-								</a>
-								<form class="fm " action="{:U('Home/SJActivity/uptime')}" method="post">
-									<input type="hidden" name="timeid" id="timeid" value="" />
-								 <div class="" style="">
-							      	从<input type="datetime-local" name="stime" style="width: 40%; height: 30px; font-size: 15px;"  placeholder="{$create_play.start_time|date='m-d H:i',###}" value="">到
-							       <input type="datetime-local" style="width: 40%; font-size: 15px; height: 30px;" name="etime" id="date" value="" /><br>
-							       	<button type="submit" >确认</button>
-							       	
-							    </div>
-								</form>
-								
-							</div>
-							<div class="am-modal-bd">
-								
-							</div>
-						</div>
-					</div>
-					<!--修改任务时间-->
+        <!--修改任务时间-->
+        <div class="am-modal am-modal-no-btn" tabindex="-1" id="update_modal">
+            <div class="am-modal-dialog" style="border-radius: 5px;border-bottom: 1px solid #ccc;">
+                <div class="am-modal-hd" style="font-size:12px;">
+                    修改任务
+                    <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>
+                        &times;
+                    </a>
+
+                </div>
+                <div class="am-modal-bd">
+
+                    <form class="fm j_update_time_form am-cf" action="{:U('Home/SJActivity/uptime')}" method="post">
+
+                        <input type="hidden" name="task_id" class="j_task_id" />
+
+                        <div class="am-form-group am-cf">
+                            <label class="am-u-lg-3 am-u-md-3 am-form-label">任务份数</label>
+                            <div class="am-u-lg-9 am-u-md-9 am-text-left am-cf">
+                                <input type="text"  name="rwcount" class="j_rwcount" value="" />
+                            </div>
+                        </div>
+
+                        <div class="am-form-group am-cf am-datepicker-date">
+                            <label class="am-u-lg-3 am-u-md-3 am-form-label">生效时间</label>
+                            <div class="am-u-lg-9 am-u-md-9 am-text-left am-cf">
+                                <input type="text" class="am-fl" style="width:160px;" data-am-datepicker readonly  name="stime" value="{:date('Y-m-d',time())}">
+                                <div class="am-fl">&nbsp;&nbsp;-&nbsp;&nbsp;</div>
+                                <input type="text" class="am-fl"  style="width:160px;" name="etime" data-am-datepicker readonly value="{:date('Y-m-d',time()+24*3600*7)}" />
+
+                            </div>
+                        </div>
+                        <div class="am-form-group  am-cf">
+                            <label class="am-u-lg-2 am-u-md-2 am-form-label">&nbsp;</label>
+                            <div class="am-u-lg-10 am-u-md-10 am-text-left am-cf">
+                                <a href="{:U('Home/SJActivity/uptime')}" target-form="j_update_time_form"  class="am-btn am-btn-sm am-btn-primary ajax-post ">确认</a>
+                            </div>
+                        </div>
+
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--修改任务时间-->
 </block>
 
 <block name="area_footer">
 	<script type="text/javascript">
+
+
+
 		$(function(){
+
+            $(".j_update_task").click(function(ev){
+                var task_id = $(ev.target).data('task-id');
+                var task_count = $(ev.target).data('task-count');
+
+
+                $("#update_modal").modal();
+
+                $("#update_modal .j_update_time_form .j_task_id").val(task_id);
+                $("#update_modal .j_update_time_form .j_rwcount").val(task_count);
+
+            })
+
+
 			var zrwj= $('#zrwj').text();
 			var ysyf= $('#ysyf').text();
 			var xdje= Number(zrwj)-Number(ysyf);
@@ -275,26 +282,8 @@
 						return true;
 					}
 				}
-			})
-			$('.xgfs').click(function(){
-				var a=$(this).parent().find("input[name='id']").val();
-				$('#sid').val(a);
-			})
-			$('.xgsj').click(function(){
-				var a=$(this).parent().find("input[name='id']").val();
-				$('#timeid').val(a);
-			})
-			$('#xgfsok').click(function(){
-				var count=$('#rwcount').val();
-				var sum=Number(count)*Number(zrwj);
-				if('{$money}'<sum){
-						alert('您的余额不足以支付任务佣金');
-						return false;
-					}else{
-						$('#zong').val(sum);
-						return true;
-					}
-			})
+			});
+
 		})
 	</script>
 </block>

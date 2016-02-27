@@ -17,18 +17,13 @@
 						</li>
 					</ul>
 					<div class="vip_wrap">
-						<form class="form-horizontal " 
-						id="yw0" action="{:U('Home/SJMoney/vip')}" method="post" novalidate="novalidate">
-							<input type="hidden" name="sgrade" ng-value="sgrade" ng-init="sgrade=2" value="2">
-							<input type="hidden" name="form_id" value="kaitong_form">
-							<input type="hidden" name="price" ng-value="price" value="NaN">
-							<input type="hidden" id="moneya" name="money" value=""/>
-							<input type="hidden" id="lv" name="lv">
-							<div class="control-group">
+
+						<form class="form-horizontal j_vip_form" action="{:U('Home/SJMoney/vip')}" method="post" novalidate="novalidate">
+							<input type="hidden" name="type" id="lv" value="vip" />
+                            <div class="control-group">
 								<label class="control-label">
 									<if condition="$vip eq 0">
 									开通服务
-									
 									<else/>
 									续费服务
 									</if>
@@ -45,24 +40,23 @@
 										<div class="ng-svip">费用：600元/月</div>
 										<div>
 											<if condition="$vip eq 1">
-												当前会员等级 : vip会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">vip会员</a> ]
-																		
+												当前会员等级 : [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">vip会员</a> ]
 											</if>
 											<if condition="$vip eq 2">
-												当前会员等级 : 超级vip会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">超级vip会员</a> ]
+												当前会员等级 : [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">超级vip会员</a> ]
 											</if>
 											<if condition="$vip eq 0">
-												当前会员等级 : 普通会员 [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">普通会员</a> ]
+												当前会员等级 :  [ <a class="text-link small" href="{:U('Home/Usersj/sj_viptd')}">普通会员</a> ]
 											</if>
+                                            到期时间: <span>{:date('Y-m-d H:i:s',$user['vip_expire_time'])}</span>
 										</div>
 									</div>
 								</div>
 							</div>
-
 							<div class="control-group">
 								<label class="control-label" for="xufei_type">开通时间</label>
 								<div class="controls">
-									<select name="time" id="xufei_type" class="ng-pristine ng-valid">
+									<select name="month" id="xufei_type" class="ng-pristine ng-valid">
 										<option value="">请选择服务时长</option>
 										<option value="1">1个月(无折扣)</option>
 										<option value="3">3个月 (9折优惠)</option>
@@ -74,7 +68,6 @@
 							<div class="control-group clearfix" style="margin-top:-10px;line-height:1.2em;">
 								<label class="control-label">&nbsp;</label>
 								<div class="controls" style="padding-top:8px;">会员时间越长，折扣越高，最高更可享受6折优惠</div>
-								<p style="color: red;">会员不可累积开通，请认真选择会员等级和时间（过期后才能重新开通哦）</p>
 							</div>
 							<div class="control-group">
 								<label class="control-label">应付金额</label>
@@ -88,26 +81,22 @@
 									</div>
 								</div>
 							</div>
-
 							<div class="control-group">
 								<label class="control-label">支付方式</label>
-								<div class="controls text">账户可用余额 <span class="price">{$coins}</span> 元, <a class="text-info" target="_blank" href="http://www.shifujie.net/seller/price">查看钱庄</a>
+								<div class="controls text">账户可用余额 <span class="price">{$coins}</span> 元, <a class="text-info" target="_blank" href="{:U('Home/Usersj/sj_zjgl')}">查看钱庄</a>
 								</div>
 							</div>
-							<!-- ngIf: price>0.00 -->
-
 							<div class="control-group">
 								<label class="control-label" for="password">登录密码</label>
 								<div class="controls">
 									<input required="required" type="password" value="" name="pwd" id="password"><span class="help-inline">你需要输入密码才能做该操作</span>
 								</div>
 							</div>
-							
-							
-						</form>
-						<div class="form-actions" style="margin-left: 20%;">
-								<button id="qrvip"  style="background-color: red; color: #FFFFFF;" name="yt0">确认开通</button>
-						</div>
+						    <div class="form-actions" >
+                                <label class="control-label">&nbsp;</label>
+								<a href="{:U('Home/SJMoney/vip')}"  target-form="j_vip_form" class="ajax-post am-btn am-btn-sm am-btn-primary"  >确认开通</a >
+						    </div>
+                        </form>
 					</div>
 				</div>
 			</div>
@@ -121,9 +110,9 @@
 	<script type="text/javascript">
 		$(function(){
 			$('.ng-svip').hide();
-			$('#lv').val('1');
+			$('#lv').val('vip');
 			$('#vip').click(function(){
-				$('#lv').val('1');
+				$('#lv').val('vip');
 				$('.ng-svip').hide();
 				$('.ng-vip').show();
 				$(this).addClass('vip');
@@ -133,7 +122,7 @@
 				
 			})
 			$('#svip').click(function(){
-				$('#lv').val('2');
+				$('#lv').val('svip');
 				$('.ng-vip').hide();
 				$('.ng-svip').show();
 				$(this).addClass('vip');
@@ -152,26 +141,11 @@
 					dz=0.8;
 				}else if($(this).val()==12){
 					dz=0.6;
-					
 				}
 				$('#yingfu').text(($("#vipPrice").val()*$(this).val()*dz));
 				$('#moneya').val($("#vipPrice").val()*$(this).val()*dz);
 			})
-			$('#qrvip').click(function(){
-				var mon=parseFloat($('#yingfu').text().trim());
-				var yue=parseFloat($('.price').text().trim());
-//				alert(mon);alert(yue);
-				if(yue<mon){
-					alert('您的余额不足以支付此次交易，请前往充值');
-				}else{
-					if('{$vip}'!=0){
-						alert('您已开通vip,请等待到期后继续开通');
-					}else{
-						$('#yw0').submit();
-					}
-//					
-				}
-			})
+
 		})
 	</script>
 </block>

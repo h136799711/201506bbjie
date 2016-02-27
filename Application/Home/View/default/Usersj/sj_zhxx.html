@@ -34,26 +34,24 @@
 	<div class="seller_main clearfix" controller="seller/common">
 		<div class="seller_content_wrap">
 			<div class="seller_content" style="padding-top: 10px;">
-
 				<div class="content">
 					<h1>账户信息</h1>
-
 					<div class="row">
 						<div class="span10">
-
 							<div class="widget-box">
 								<div class="widget-title">
 									<h5>商家认证信息</h5>
 								</div>
 								<div class="widget-content">
 									<div class="form-wrap">
-										<form  class="form-horizontal"  action="{:U('Home/Usersj/edit1')}" method="post" >
 
-											<input type="hidden" value="{$entity['id']}" name="id" id="form_id">
+										<form  class="j_edit_form <eq name="entity['auth_status']" value="3">am-hide</eq> <eq name="entity['auth_status']" value="2">am-hide</eq>  <eq name="entity['auth_status']" value="1">am-hide</eq> form-horizontal edit_base_form"  action="{:U('Home/Usersj/edit_base')}" method="post" >
+
+											<input type="hidden" value="{$entity['uid']}" name="id" id="form_id">
 											<div class="control-group">
 												<label class="control-label">会员名</label>
 												<div class="controls">
-													<input readonly="readonly" type="text" value="{$username}" name="" id="">
+													<input readonly="readonly" type="text" value="{$user.username}" name="" id="">
 												</div>
 											</div>
 											<div class="control-group">
@@ -74,45 +72,73 @@
 													<input class="span5" type="text" value="{$entity['store_url']}" name="store_url" id="taobao_link">
 												</div>
 											</div>
-											<div controller="person/address">
-												<div id="region">
-													<div class="control-group">
-														<label class="control-label" for="region_id">所在地</label>
-														<div class="controls">
-															<select id="loc_province" style="width:120px;">
-															</select>
-															<select id="loc_city" style="width:120px; margin-left: 10px">
-															</select>
-															<select id="loc_town" style="width:120px;margin-left: 10px">
-															</select>
-															<input type="hidden" name="sheng" class="sheng" />
-															<input type="hidden" name="shi" class="shi" />
-															<input type="hidden" name="qu" class="qi" /> </div>
-													</div>
-													<input id="region_id" class="mls_id" name="Store[region_id]" type="hidden">
-													<input class="mls_names" name="Store[region_name]" id="Store_region_name" type="hidden">
-												</div>
-											</div>
-											<div class="control-group">
-												<label class="control-label" for="Store_address">经营地址</label>
-												<div class="controls">
-													<textarea maxlength="120" style="height:100px;width:365px;" name="address" id="Store_address">{$entity['address']}</textarea>
-												</div>
-											</div>
-											<if condition="$auto_status eq 0">
-												<div class="form-actions">
-													<button type="submit" style="height: 28px; width: 70px; border-radius:5px ; font-size: 12px ; text-align: center;" class="am-btn am-btn-primary am-btn-xs" >提交认证</button>
-												</div>
-												<else/>
-												<font style="margin-left: 180px;" color="orangered">您的资料已经认证成功,如果修改资料需要重新验证,请谨慎修改！</font>
-												<div class="form-actions">
-													<button type="submit" style="height: 28px; width: 70px; border-radius:5px ; font-size: 12px ; text-align: center;" class="am-btn am-btn-primary am-btn-xs" >重新认证</button>
-												</div>
-											</if>
+
+                                            <div class="control-group">
+                                                <label class="control-label" for="region_id">所在地</label>
+
+                                                <div class="controls j_address_show <empty name="entity['address']">am-hide</empty>">
+                                                    <span>{$entity.address}</span>
+                                                    <a href="javascript:void(0)" onclick="showAddress();">修改</a>
+                                                </div>
+
+                                                <div class="controls j_address_edit  <notempty name="entity['address']">am-hide</notempty>">
+                                                    <select id="loc_province" style="width:120px;"></select>
+                                                    <select id="loc_city" style="width:120px; margin-left: 10px"></select>
+                                                    <select id="loc_town" style="width:120px;margin-left: 10px"></select>
+                                                    <input type="hidden" name="sheng" class="sheng" />
+                                                    <input type="hidden" name="shi" class="shi" />
+                                                    <input type="hidden" name="qu" class="qi" />
+                                                </div>
+
+                                            </div>
+
+                                            <div class="form-actions">
+                                                <a class="am-btn am-btn-sm am-btn-danger ajax-post" target-form="edit_base_form" href="{:U('Home/Usersj/edit_base')}" >提交认证</a>
+                                            </div>
 											
 										</form>
-									</div>
 
+                                        <form class="j_info_form am-form am-form-horizontal <eq name="entity['auth_status']" value="0">am-hide</eq> ">
+
+                                <eq name="entity['auth_status']" value="3"><div CLASS="am-u-sm-12 am-text-danger am-margin-bottom-sm">您的帐号信息正在重新审核中...</div>
+                                    </eq>
+                                <eq name="entity['auth_status']" value="2"><div CLASS="am-u-sm-12 am-text-danger am-margin-bottom-sm">您的帐号信息被驳回，请仔细检查是否填写正确</div>
+                                    </eq>
+                                <eq name="entity['auth_status']" value="1"><div CLASS="am-u-sm-12 am-text-danger am-margin-bottom-sm">您的资料已经认证成功,如果修改资料需要重新审核,请谨慎修改！</div>
+                                </eq>
+
+
+                                            <div class="am-form-group">
+                                                <div class="am-u-sm-2 am-text-right">会员名</div>
+                                                <div class="am-u-sm-10 ">
+                                                    {$user.username}
+                                                </div>
+                                            </div>
+                                            <div class="am-form-group">
+                                                <div class="am-u-sm-2 am-text-right">绑定旺旺</div>
+                                                <div class="am-u-sm-10 ">
+                                                    {$entity.aliwawa}
+                                                </div>
+                                            </div>
+                                            <div class="am-form-group">
+                                                <div class="am-u-sm-2 am-text-right">店铺名称</div>
+                                                <div class="am-u-sm-10 ">
+                                                    {$entity.store_name}
+                                                </div>
+                                            </div>
+                                            <div class="am-form-group">
+                                                <div class="am-u-sm-2 am-text-right">店铺网址</div>
+                                                <div class="am-u-sm-10 ">
+                                                    {$entity.store_url}
+                                                </div>
+                                            </div>
+
+                                            <div class="form-actions">
+                                                <a class="am-btn am-btn-sm am-btn-danger" onclick="showBaseForm();" href="javascript:void(0)" >重新认证</a>
+                                            </div>
+                                        </form>
+
+                                    </div>
 								</div>
 							</div>
 
@@ -123,8 +149,10 @@
 								</div>
 								<div class="widget-content">
 									<div class="form-wrap">
-										<form class="form-horizontal"  action="{:U('Home/Usersj/edit2')}" method="post" >
-											<input type="hidden" name="id" value="{$entity['id']}" >
+										<form class="form-horizontal fzr_form"  action="{:U('Home/Usersj/edit_fzr')}" method="post" >
+
+											<input type="hidden" name="id" value="{$entity.uid}" >
+
 											<div class="control-group">
 												<label class="control-label" for="xs_wang">运单显示</label>
 												<div class="controls">
@@ -138,21 +166,25 @@
 													<input type="text"  name="rwfzr" id="renwu_fzr" value="{$entity['task_linkman']}" ><span class="help-inline">试民搜索进店、任务时寻求帮助</span>
 												</div>
 											</div>
+
 											<div class="control-group">
 												<label class="control-label" for="renwu_tel">负责人电话</label>
 												<div class="controls">
 													<input  type="text" value="{$entity['task_linkman_tel']}" name="fzrdh" id="renwu_tel">
 												</div>
 											</div>
+
 											<div class="control-group">
 												<label class="control-label" for="renwu_qq">负责人QQ</label>
 												<div class="controls">
 													<input type="text" value="{$entity['task_linkman_qq']}" name="fzrqq" id="renwu_qq">
 												</div>
 											</div>
+
 											<div class="form-actions">
-												<button type="submit" style="height: 28px; width: 70px; border-radius:5px ; font-size: 12px ; text-align: center;" class="am-btn am-btn-primary am-btn-xs" >保存</button>
+                                                <a class="am-btn am-btn-sm am-btn-danger ajax-post" target-form="fzr_form" href="{:U('Home/Usersj/edit_fzr')}" >保存</a>
 											</div>
+
 										</form>
 									</div>
 
@@ -165,8 +197,8 @@
 								</div>
 								<div class="widget-content">
 									<div class="form-wrap">
-										<form class="form-horizontal"  action="{:U('Home/Usersj/edit3')}" method="post" >
-											<input type="hidden" value="{$entity['id']}" name="id" >
+										<form class="form-horizontal form3"  action="{:U('Home/Usersj/edit3')}" method="post" >
+											<input type="hidden" value="{$entity.uid}" name="id" >
 											<div class="control-group">
 												<label class="control-label" for="owner_name">联系人</label>
 												<div class="controls">
@@ -192,8 +224,9 @@
 												</div>
 											</div>
 											<div class="form-actions">
-												<button type="submit" style="height: 28px; width: 70px; border-radius:5px ; font-size: 12px ; text-align: center;" class="am-btn am-btn-primary am-btn-xs" >保存</button>
-											</div>
+                                                <a class="am-btn am-btn-sm am-btn-danger ajax-post" target-form="form3" href="{:U('Home/Usersj/edit3')}" >保存</a>
+
+                                             </div>
 										</form>
 									</div>
 
@@ -210,5 +243,15 @@
 </block>
 
 <block name="area_footer">
+    <script type="text/javascript">
+        function showAddress(){
+            $(".j_address_edit").removeClass("am-hide");
+            $(".j_address_show").addClass("am-hide");
+        }
+        function showBaseForm(){
+            $(".j_edit_form").removeClass("am-hide");
+            $(".j_info_form").addClass("am-hide");
+        }
+    </script>
 	
 </block>
