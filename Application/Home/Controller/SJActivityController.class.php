@@ -14,6 +14,7 @@ use Home\Api\TaskHasProductApi;
 use Home\Api\TaskHisApi;
 use Home\Api\TaskPlanApi;
 use Home\Api\TaskProductApi;
+use Home\Api\VTaskHisInfoApi;
 use Home\Api\VTaskProductInfoApi;
 use Home\Api\VTaskProductSearchWayApi;
 use Home\Model\BbjmemberSellerModel;
@@ -118,24 +119,32 @@ class SJActivityController extends SjController {
 	}
 	/*
 	 * 全部试民
+	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 * */
 	public function alluser(){
-		$user = session('user');
-		$headtitle = "宝贝街-所有试民";
-		$this -> assign('head_title', $headtitle);
-		$this -> assign('username', $user['info']['username']);
-		$id=array('task_id'=>I('id',0));
-		$mm=array('id'=>I('id',0));
-		$results = apiCall(HomePublicApi::TaskHasProduct_Query, array($map4));
-		$result=apiCall(HomePublicApi::Task_His_Query, array($id));
-		$result_user=apiCall(HomePublicApi::Bbjmember_Query, array());
-		$result_tast = apiCall(HomePublicApi::Task_Query, array($mm));
-		$producta = apiCall(HomePublicApi::Product_Query, array($pid));
-		$this -> assign('jihuas', $results['info']);
-		$this->assign('task',$result_tast['info'][0]);
-		$this->assign('user',$result_user['info']);
-		$this->assign('taskplan',$result['info']);
-		$this -> assign('pro', $producta['info']);
+		$this -> assign('head_title', "宝贝街-所有试民");
+        $task_id = I('get.id',0);
+
+        $result = apiCall(TaskApi::GET_INFO,array(array('id'=>$task_id)));
+
+        if($result['status']){
+            $this->assign("task",$result['info']);
+        }
+
+        $map = array('task_id' => $task_id);
+        //任务包含的商品
+        $result = apiCall(VTaskProductInfoApi::QUERY_NO_PAGING,array($map));
+        $products = $result['info'];
+
+        $this -> assign('products', $products);
+
+
+        $result  = apiCall(VTaskHisInfoApi::QUERY,array($map));
+
+        $this -> assign('list', $result['info']['list']);
+        $this -> assign('show', $result['info']['show']);
+
+        $this->display();
 
 	}
 	/**
@@ -294,6 +303,7 @@ class SJActivityController extends SjController {
 	}
 	/*
 	 * 改变任务状态
+	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 * */
 	public function changestatus() {
 
@@ -305,7 +315,7 @@ class SJActivityController extends SjController {
 
         $entity = array('task_gettype' => $status);
 
-        $result = apiCall(BbjmemberSellerApi::SAVE_BY_ID, array(UID, $entity));
+        $result = apiCall(BbjmemberSellerApi::SAVE_BY_ID, array($this->uid, $entity));
 
         if ($result['status']) {
             $this->updateTaskGetType($status);

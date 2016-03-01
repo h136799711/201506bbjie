@@ -56,6 +56,7 @@ class AccountApi {
         }
 
         $member_info = $result['info'];
+
         $result = $this->getUserInfoByUserGroup($uid);
 
         if(!$result['status']){
@@ -87,7 +88,7 @@ class AccountApi {
             return array('status'=>false,'info'=>'用户名的长度必须大于6小于64');
         }
 
-        if(!preg_match("/^[a-zA-Z]{1}[a-zA-Z0-9_]{6,64}$/",$username)){
+        if(!preg_match("/^[a-zA-Z]{1}[a-zA-Z0-9_]{5,63}$/",$username)){
             return array('status'=>false,'info'=>'账户名必须为字母、数字或下划线的组合且第一个必须为字母!');
         }
 
@@ -189,7 +190,9 @@ class AccountApi {
         $aliwawa = $entity['aliwawa'];
         $taobao_account = isset($entity['taobao_account'])?$entity['taobao_account']:"";
 
-        $address = $entity['address'];
+        $address = isset($entity['address'])?$entity['address']:"";
+        $aliwawa = isset($entity['aliwawa'])?$entity['aliwawa']:"";
+
         $store_name = $entity['store_name'];
         $qq = $entity['qq'];
         if($user_type == UserTypeConstVar::BBJ_MEMBER_GROUP){
@@ -199,6 +202,7 @@ class AccountApi {
                 'referrer_id'=>$invite_id,
                 'referrer_name'=>$invite_username,
                 'taobao_account'=>$taobao_account,
+                'aliwawa'=>$aliwawa,
                 'daily_task_money'=>$daily_task_money,
                 'dtree_job'=>'',
                 'personal_signature'=>'',
@@ -282,6 +286,7 @@ class AccountApi {
             'uid'=>$uid,
         );
 
+
         foreach($group_list as $vo){
             if($vo['group_id'] == UserTypeConstVar::BBJ_SHOP_GROUP){
                 $result = apiCall(BbjmemberSellerApi::GET_INFO,array($map));
@@ -292,7 +297,7 @@ class AccountApi {
             }elseif($vo['group_id'] == UserTypeConstVar::BBJ_MEMBER_GROUP){
                 $result = apiCall(BbjmemberApi::GET_INFO,array($map));
                 if(is_array($result['info'])){
-                    $result['info']['user_type'] = UserTypeConstVar::BBJ_SHOP_GROUP;
+                    $result['info']['user_type'] = UserTypeConstVar::BBJ_MEMBER_GROUP;
                 }
                 return $result;
 

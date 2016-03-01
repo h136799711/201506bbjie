@@ -9,48 +9,44 @@
 		<include file="Widget/top_left" />
 		<div class="div_right">
 
-			<div class="div_minTitleAnQuan">
-				<h3>站内信息</h3>
-				<!--<a href="#" class="a_button" style="margin-left:30px;">删除</a>
-				<a href="#" class="a_button">标记为已读</a>-->
+			<div class="">
+				<h3 CLASS="am-margin-sm">站内信息</h3>
 			</div>
 			<div class="div_minContent" style="padding: 20px;">
 
-				<table style="width: 1020px; margin-top: 9px; color: #848383;text-align: center;">
+				<table class="am-table am-table-bordered am-table-radius am-table-striped">
+                    <thead>
+                        <tr >
+                            <th>是否阅读</th>
+                            <th>主题</th>
+                            <th>发件时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
 
-					<tr style="border: 1px solid #ccc; background: white; height: 37px;">
-						<td>
-							编号<!--<input type="checkbox" name="znxx_checkedAll" />-->
-						</td>
-						<td style="padding-left: 20px;">是否阅读</td>
-						<td>发件人</td>
-						<td>主题</td>
-						<td>发件时间</td>
-						<td>操作</td>
-					</tr>
-					<volist name="info" id="vo">
-					<tr style="border: 1px solid #ccc; height: 37px; font-size: 12px;">
-						<td>
-							{$vo.id}<input type="hidden" id="mbid" value="{$vo.id}"  />
-						</td>
-						<td><if condition="$vo['msg_status'] eq 0">未读</if><if condition="$vo['msg_status'] eq 1">已读</if></td>
-						<volist name='msg' id='v'>
-							<if condition="$v['id'] eq $vo['msg_id']">
-								<td> <span id="my-popover">{$v.title}</span></td>
-							<td>{$v.summary}</td>
-							<td>{$v.create_time|date='m-d h:i',###}</td>
-							<td>
-						<a style=" font-size: 12px; padding: 3px;" id="look" class="am-btn am-btn-danger " href="{:U('Home/Usersm/detail',array('mbid'=>$vo['id'],'msid'=>$vo['msg_id']))}">查看</a>
-						<a style="font-size: 12px; padding: 3px;" class="am-btn am-btn-danger ajax-get" href="{:U('Home/Index/del_msg',array('id'=>$vo['id']))}">删除</a>
-						</td>
-						</if>
-						</volist>
-						
-					</tr>
-					</volist>
-					
+                    <tbody>
+                        <volist name="info" id="vo">
+                        <tr>
+
+                            <td>
+                                <if condition="$vo['msg_status'] eq 0">未读</if>
+                                <if condition="$vo['msg_status'] eq 1">已读</if>
+                            </td>
+
+                            <td>{$vo.summary}</td>
+
+                            <td>{$vo.create_time|date='Y-m-d h:i',###}</td>
+
+                            <td>
+                                <a class="am-btn-xs am-btn am-btn-default" href="{:U('Home/Usersm/detail',array('msg_id'=>$vo['msg_id']))}">查看</a>
+                            </td>
+
+                        </tr>
+                        </volist>
+                    </tbody>
+
 				</table>
-				<div style="margin-left: 60%;">{$show}</div>
+				<div >{$show}</div>
 			</div>
 		</div>
 	</div>

@@ -26,7 +26,7 @@ return array(
 	// 程序版本
 	// DONE:移到数据库中
 	// 显示运行时间
-	'SHOW_RUN_TIME'=>true,
+//	'SHOW_RUN_TIME'=>true,
 //	'SHOW_ADV_TIME'=>true,
 	// 显示数据库操作次数
 	'SHOW_DB_TIMES'=>true,

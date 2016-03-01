@@ -104,26 +104,30 @@
 
                                             </td>
                                         </tr>
-                                        <tr>
-                                                <div class="am-cf">
                                                     <volist name="vo['_products']" id="p">
+                                                        <tr>
+                                                            <div class="am-cf">
 
                                                         <td colspan="1">
                                                             {$key+1}
                                                         </td>
-                                                        <td colspan="2">
-                                                        <div class="am-fl am-margin-right-sm"><img src="{$p.main_img}" alt="任务商品图片" class="am-img-responsive am-round" style="width: 40px;height:40px;"/>
+                                                        <td colspan="1">
+                                                        <div class="am-fl am-margin-right-sm">
+                                                            <img src="{$p.main_img}" alt="任务商品图片" class="am-img-responsive am-round" style="width: 40px;height:40px;"/>
                                                         </div>
                                                         </td>
-                                                        <td colspan="3">
+                                                        <td colspan="4">
                                                             {$p.pname}
                                                         </td>
-                                                        <td colspan="2">
+                                                        <td colspan="1">
                                                             {$p.price}元
                                                         </td>
+                                                        <td>
+                                                            <a  class="am-btn-sm am-btn-link am-btn" target="_blank" href="{:U('Home/SJActivity/rws',array('pid'=>$p['pid'],'id'=>$vo['id']))}">预览任务书</a>
+                                                        </td>
+                                                            </div>
+                                                        </tr>
                                                     </volist>
-                                                </div>
-                                        </tr>
                                         <tr class="margin">
                                             <td colspan="8">
 

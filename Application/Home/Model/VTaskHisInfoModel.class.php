@@ -6,22 +6,11 @@
 // | Copyright (c) 2013-2015, http://www.gooraye.net. All Rights Reserved.
 // |-----------------------------------------------------------------------------------
 
-namespace Cms\Model;
-use Think\Model;
+namespace Home\Model;
 
-class PostModel extends Model{
-
-    /**
-     * 文章类型
-     * @var array
-     */
-    const TYPE_NOTICE_FOR_SHOP = "41";
-
-    const TYPE_NOTICE_FOR_NORMAL_MEMBER = "42";
-
-    const TYPE_NOTICE_FOR_ALL = "31";
-
-	protected $_validate = array(
-		
-   	);
+/**
+ * 视图
+ */
+class VTaskHisInfoModel extends \Think\Model{
+    protected $trueTableName = "v_task_his_info";
 }

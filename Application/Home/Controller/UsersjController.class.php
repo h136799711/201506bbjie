@@ -42,6 +42,7 @@ class UsersjController extends SjController {
 
 	/*
 	 * 用户头像上传
+	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 * */
 	public function avatar(){
         $this->boye_display();
@@ -308,9 +309,9 @@ class UsersjController extends SjController {
      * 获取统计数据
      * */
     public function getcount(){
-        $user=session('user');
+
         $count_wtj=0;$count_ddsh=0;$count_qrhk=0;
-        $map=array('uid'=>$user['info']['id']);
+        $map=array('uid'=>$this->uid);
         $result=apiCall(HomePublicApi::Task_Query, array($map));
         for ($i=0; $i <count($result['info']) ; $i++) {
             //订单未提交

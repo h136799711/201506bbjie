@@ -53,75 +53,68 @@
 					</thead>
 
 					<tbody style="font-size: 12px;">
-						<volist name="pross" id="v">
-							<foreach name="task" item="vo">
-								<if condition="$v['task_id'] eq $vo['id']">
-									<input type="hidden" name="" id="thid" value="{$v['id']}" />
-									<tr style="border: 1px solid #ccc; background: #F5F5F5; height: 37px;">
-										<td style="padding-left: 20px;" colspan="6">编号:{$vo.id}任务时间:{$v['get_task_time']	|date='m-d H:i',###}商家:{$vo.aliwawa}</td>
+						<volist name="his_list" id="vo">
+                            <input type="hidden" name="" id="thid" value="{$vo['id']}" />
 
-									</tr>
-									<tr style="border: 1px solid #ccc; height:100px; background:white;">
-										<td>
-											<volist name="v.hasList" id="t" >
-												<img src="{$t['product']['main_img']}" style="float: left; height: 50px; width: 70px; margin-left: 10px;" />
-											</volist>
-											<div style="margin-left:90px;"><font color="red">{$vo['coin']}</font>福币
-												<br /> 超时由系统取消</div>
+                            <tr style="border: 1px solid #ccc; background: #F5F5F5; height: 37px;">
+                                <td style="padding-left: 20px;" colspan="6">
+                                    编号:{$vo.id}任务时间:{$vo['get_task_time']|date='m-d H:i',###}商家:{$vo.aliwawa}</td>
+                            </tr>
+                            <tr style="border: 1px solid #ccc; height:100px; background:white;">
+                                <td>
+                                    <div style="margin-left:90px;"><font color="red">{$vo['coin']}</font>福币<br />
+                                        超时由系统取消
+                                    </div>
+                                </td>
+                                <td>
+                                    小额任务:
+                                    <span class="am-text-danger">+{$vo['coin']}</span>
+                                    福币
+                                </td>
+                                <td>
+                                    <if condition="$vo['tb_orderid'] eq 0">
+
+                                        <a target="_blank" href="{:U('Home/SMActivity/rws',array('id'=>$vo['id'],'taskhisid'=>$vo['id']))}">任务书</a>
+                                        <else/>
+
+                                        <span class="am-text-danger">请点击确认提交任务</span>
+
+                                    </if>
+                                    <br />
+                                    <font color="red">
+                                        ￥<if condition="$vo['tb_price'] eq 0.00">
+                                            {$vo.task_gold}
+                                        <else/>
+                                            {$vo['tb_price']}
+                                        </if>
+                                    </font>
+                                </td>
+                                <td>
+                                    旺旺名：{$vo.aliwawa}
+                                    <br /> 订单：{$vo['tb_orderid']}
+                                    <br /> 返款：{$vo['tb_price']}
+                                </td>
+
+                                <td>
+                                    <input type="hidden" value="{$vo.id}">
+                                    <input type="hidden" id="tpid" value="{$vo.tpid}">
+                                    <if condition="$vo['do_status'] eq 1">
+                                        距离任务完成剩余：<span class="js_countdownwn"  data-until="{$v['get_task_time'] + 2*3600}"></span>
+                                        <br><font class="task_status" color="forestgreen">任务正在进行中...</font><br>
+                                        <if condition="$vo['tb_orderid'] eq 0"><a id='anm2'  style="background-color: orangered; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/qxtask',array('id'=>$v['id'],'tpid'=>$v['tpid']))} ">放弃任务</a>
+
+                                            <else/>
+
+                                            <a id="anm4" style="background-color:forestgreen; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/qrtask',array('id'=>$v['id']))}">确认任务</a>
+                                        </if>
+                                    </if>
+
 										</td>
 										<td>
-											<br /> 小额任务: <font color="red">+{$vo['coin']}</font>福币</td>
-										<td>
-											<if condition="$v['tb_orderid'] eq 0">
-												<a target="_blank" href="{:U('Home/SMActivity/rws',array('id'=>$vo['id'],'taskhisid'=>$v['id']))}">任务书</a>
-												<else/>
-												<font color="red">请点击确认提交任务</font> ！
-											</if>
-											
-											<br />
-											<font color="red">￥<if condition="$v['tb_price'] eq 0.00">{$vo.task_gold}<else/>{$v['tb_price']}</if></font>
-										</td>
-										<td>
-											旺旺名：{$vo.aliwawa}
-											<br /> 订单：{$v['tb_orderid']}
-											<br /> 返款：{$v['tb_price']}
-										</td>
-										<td>
-											<input type="hidden" value="{$v.id}">
-											<input type="hidden" id="tpid" value="{$v.tpid}">
-											<if condition="$v['do_status'] eq 1">
-												距离任务完成剩余：<span class="js_countdownwn"  data-until="{$v['get_task_time'] + 2*3600}"></span>
-												<br><font class="task_status" color="forestgreen">任务正在进行中...</font><br>
-												<if condition="$v['tb_orderid'] eq 0">
-												<a id='anm2'  style="background-color: orangered; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/qxtask',array('id'=>$v['id'],'tpid'=>$v['tpid']))} ">放弃任务</a>
-												<else/>
-												<a id="anm4" style="background-color:forestgreen; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/qrtask',array('id'=>$v['id']))}">确认任务</a>
-												</if>
-											</if>
-											<if condition="$v['do_status'] eq 1"><font color="forestgreen">任务进行中</font></if>
-											<if condition="$v['do_status'] eq 2"><font color="forestgreen">任务已完成</font></if>
-											<if condition="$v['do_status'] eq 3"><font color="forestgreen">待审核订单</font></if>
-											<if condition="$v['do_status'] eq 4"><font color="forestgreen">待确认返款</font></if>
-											<if condition="$v['do_status'] eq 8"><font color="forestgreen">已驳回</font></if>
-											<if condition="$v['do_status'] eq 7"><font color="forestgreen">待确认收货</font></if>
-											<if condition="$v['do_status'] eq 0"><font color="forestgreen">已取消</font>
-											</if>
-										</td>
-										<td>
-											
-											<if condition="$v['do_status'] eq 1"><font color="forestgreen"><a id='anm3' target="_blank" style="background-color:forestgreen; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/rws',array('id'=>$vo['id'],'taskhisid'=>$v['id']))}">开始任务</a> </font></if>
-											<if condition="$v['do_status'] eq 2"><font color="forestgreen">任务已完成</font></if>
-											<if condition="$v['do_status'] eq 3"><font color="forestgreen">待审核订单</font></if>
-											<if condition="$v['do_status'] eq 4"><font color="forestgreen">待确认返款</font></if>
-											<if condition="$v['do_status'] eq 8"><font color="forestgreen"><a id='anm3' target="_blank" style="background-color:forestgreen; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/editrws',array('id'=>$vo['id'],'taskhisid'=>$v['id']))}">修改订单信息</a></font></if>
-											<if condition="$v['do_status'] eq 7"><font color="forestgreen">待确认收货</font></if>
-											<if condition="$v['do_status'] eq 0"><font color="forestgreen">已取消</font>
-											</if>
-										
+
 										</td>
 									</tr>
-								</if>
-							</foreach>
+
 						</volist>
 					</tbody>
 				</table>

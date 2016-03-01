@@ -126,11 +126,11 @@
 														<col width="30%">
 															<tr>
 																<td>
-																	<span class="small">自助选择任务试民:</span>
-																	<if condition="$user['task_gettype'] eq 1">
-																		<a style="color: red;" data-no-alert="true" class="ajax-get text-info small" tooltip="开启之后您的任务试民将由您自己审核通过" href="{:U('Home/SJActivity/changestatus',array('id'=>$user['id'],'status'=>1))}">已关闭</a>
+																	<span class="small">我选试民:</span>
+																	<if condition="$user['task_gettype'] eq 2">
+																		<a style="color: red;" data-no-alert="true" class="ajax-get text-info small" tooltip="开启之后您的任务试民将由您自己审核通过" href="{:U('Home/SJActivity/changestatus',array('id'=>$user['id'],'status'=>1))}">否</a>
 																		<else/>
-																		<a style="color: darkgreen;" data-no-alert="true"  class="ajax-get text-info small" tooltip="关闭之后您的任务试民将由试民自己领取" href="{:U('Home/SJActivity/changestatus',array('id'=>$user['id'],'status'=>2))}">已开启</a>
+																		<a style="color: darkgreen;" data-no-alert="true"  class="ajax-get text-info small" tooltip="关闭之后您的任务试民将由试民自己领取" href="{:U('Home/SJActivity/changestatus',array('id'=>$user['id'],'status'=>2))}">是</a>
 																	</if>
 																</td>
 																</td>

@@ -17,5 +17,12 @@ function isMobile(){
 	return $mobileDetect->isMobile();
 }
 
+function mask_string($str){
 
+    $new_str = mb_substr($str,0,5);
+
+    $new_str .= '***'.mb_substr($str,mb_strlen($str)-5,5);
+
+    return $new_str;
+}
 

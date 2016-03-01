@@ -19,13 +19,15 @@
 					<div class="am-panel-bd" style="height:350px;">
 						<div style="margin-left: 30px; margin-top: 50px; width: 100px; float: left;">
 							<a class="index_touxiang" href="javascript:void(0)">
+
 								<if condition="$user['head'] eq '' ">
-								<img height="80px" width="80px" src="__IMG__/default_user_portrait.gif" alt="">
+								    <img height="80px" width="80px" src="__IMG__/default_user_portrait.gif" alt="">
 								<else/>
-									<img height="100px" width="100%" src="$user['head']" alt="">
+									<img height="100px" width="100%" src="{$user['head']}" alt="">
 								</if>
-								<button style="height: 25%; width: 100%; font-size: 13px; opacity: 0.2;" type="button" 
-								value="" data-am-modal="{target: '#doc-modal-2', closeViaDimmer: 0, width:600, height: 300}" class="icon-edit">点此更换头像</button>
+
+                                <a href="{:U('Home/Usersm/avatar')}" class="am-margin-top-sm am-btn am-btn-xs am-btn-primary" >点此更换头像</a>
+
 							</a>
 							<span class="am-badge am-badge-success am-round" style="margin-top: 5px; margin-left: 10px;">等级：{$level}级</span>
 						</div>
@@ -43,15 +45,15 @@
 										</div>
 									</td>
 								</tr>
-								<tr>
-									<td style="text-align: right;">我的勋章:</td>
-									<td style="padding:0;">
-										<img src="__IMG__/25.png" width="20" />
-									</td>
-								</tr>
+								<!--<tr>-->
+									<!--<td style="text-align: right;">我的勋章:</td>-->
+									<!--<td style="padding:0;">-->
+										<!--<img src="__IMG__/25.png" width="20" />-->
+									<!--</td>-->
+								<!--</tr>-->
 								<tr>
 									<td style="text-align: right;">联系电话:</td>
-									<td>{$phone}<a href="">修改</a> </td>
+									<td>{$user.mobile} </td>
 								</tr>
 								<tr>
 									<td style="text-align: right;">我的福币:</td>
@@ -67,9 +69,10 @@
 									<td style="text-align: right;">任务状态:</td>
 									<td>
 										<if condition="$user['task_status'] eq 1">
-											<button id="start" type="button" class="am-btn am-btn-primary am-active am-round">({$user['daily_task_money']}元)</button>
+
+											<a href="{:U('Home/SMActivity/changestatus',array('type'=>'on'))}"  class="ajax-get am-btn am-btn-primary am-active am-round">({$user['daily_task_money']}元)</button>
 											<else/>
-											<button id="start" type="button" class="am-btn am-btn-default am-active am-round">任务未开启</button>
+                                                <a href="{:U('Home/SMActivity/changestatus',array('type'=>'off'))}" class="ajax-get am-btn am-btn-default am-active am-round">任务未开启</button>
 										</if>
 										
 									</td>
@@ -81,11 +84,21 @@
 				</div>
 
 				<div class="am-panel am-panel-default" style="width: 35%; float: left; margin-left: 10px;border-radius:5px;">
-					<div class="am-panel-hd">最新公告<span style="margin-left:280px;"><a href="{:U('Home/Index/gfgg')}" style="font-size: 12px;">更多>></a></span> </div>
+					<div class="am-panel-hd am-cf">
+                        最新公告
+
+                        <div class="am-text-xs am-fr" >
+                            <a href="{:U('Home/Index/gfgg')}" TARGET="_blank" > 更多>> </a>
+                        </div>
+                    </div>
 					<div class="am-panel-bd" style="height: 350px; font-size:12px;">
 						<ul style="line-height: 30px;">
-							<volist name="info" id="vo">
-								<li><a class="" href="{:U('Home/Index/gfggxx',array('id'=>$vo['id']))}" target="_blank"><span title="{$vo.post_title}">{$vo.post_title}</span></a></li>
+							<volist name="sm_post_list" id="vo2">
+								<li>
+                                    <a href="{:U('Home/Index/gfggxx',array('id'=>$vo['id']))}" target="_blank">
+                                        <span >{$vo2.post_title}</span>
+                                    </a>
+                                </li>
 							</volist>
 						</ul>
 					</div>
@@ -96,7 +109,7 @@
 						<div class="am-panel-bd" style="">
 							<table border="0" style="font-size: 12px;">
 								<tr>
-									<td width="300">淘宝账号: {$taobao} <a href="javascript:void(0)" data-am-modal="{target: '#my-alert'}">设置</a> </td>
+									<td width="300">淘宝账号: {$user.taobao_account} <a href="javascript:void(0)" data-am-modal="{target: '#my-alert'}">设置</a> </td>
 									<!--<td>手机任务: 关闭 <a href="">设置</a> </td>-->
 									<td rowspan="2" style="">
 										<button id="gettask" class="am-btn am-btn-default am-btn-sm am-round" style="margin-left: 50px;">领取宝贝任务</button>
@@ -220,51 +233,8 @@
 									</div>
 								</div>
 							</div>
-					<!--<div class="am-panel am-panel-default" style="border-radius:5px;">
-						<div class="am-panel-hd">任务指数</div>
-						<div class="am-panel-bd" style="font-size: 12px;">
-							<table>
-								<tr>
-									<td align="right">任务情况:</td>
-									<td>累计成功完成试福 0个</td>
-								</tr>
-								<tr>
-									<td align="right">放弃率:</td>
-									<td>-</td>
-								</tr>
-								<tr>
-									<td align="right">下单满意度:</td>
-									<td>还没被评价过！</td>
-								</tr>
-								<tr>
-									<td align="right">收货满意度:</td>
-									<td>还没被评价过！</td>
-								</tr>
-								<tr>
-									<td align="right">任务违规: </td>
-									<td></td>
-								</tr>
 
-							</table>
-							<div style="background: #f3ebef;">
 
-								<table>
-									<tr>
-										<td align="right">淘宝客：</td>
-										<td>0</td>
-										<td align="right">提前收货确认：</td>
-										<td>0</td>
-									</tr>
-									<tr>
-										<td align="right">秒　拍：</td>
-										<td>0</td>
-										<td align="right">淘宝未好评：</td>
-										<td>0</td>
-									</tr>
-								</table>
-							</div>
-						</div>
-					</div>-->
 
 				</div>
 
@@ -272,14 +242,16 @@
 		</div>
 	</div>
 	<div class="am-modal am-modal-alert" tabindex="-1" id="my-alert">
-		<form action="{:U('Home/Usersm/settaobao')}" method="post">
+		<form action="{:U('Home/Usersm/settaobao')}" class="tb_form" method="post">
 		<div class="am-modal-dialog">
 			<div class="am-modal-hd" style="color: orangered;">设置淘宝账号</div>
 			<div class="am-modal-bd">
-				淘宝账号：<input id="tbid" type="text" name="taobao">
+				淘宝账号：<input id="tbid" type="text" name="taobao" value="{$user.taobao_account}">
 			</div>
 			<div class="am-modal-footer">
-				<button style="margin-top: 10px; background-color: orangered; border: 0; color: #FFFFFF;" type="submit" >确定绑定</button>
+                 <a href="{:U('Home/Usersm/settaobao')}" target-form="tb_form" class="ajax-get am-btn am-btn-sm am-btn-primary">
+				    确定绑定
+                 </a>
 			</div>
 		</div>
 		</form>
@@ -307,10 +279,8 @@
 					}
 				}
 				
-			})
-			$("#start").click(function(){
-				window.location.href="{:U('Home/SMActivity/changestatus')}";
-			})
+			});
+
 //			$(".js_frm_gp_buylimit input[type=radio]").click(function(){
 //				console.log($(this).val());
 //				console.log($(".js_frm_gp_buylimit input[type=text]"));

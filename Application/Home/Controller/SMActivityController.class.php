@@ -6,6 +6,7 @@
 // | Copyright (c) 2013-2016, http://www.itboye.com. All Rights Reserved.
 // |-----------------------------------------------------------------------------------
 namespace Home\Controller;
+use Home\Api\BbjmemberApi;
 use Think\Controller;
 use Think\Storage;
 use Home\Api\HomePublicApi;
@@ -16,25 +17,27 @@ class SMActivityController extends HomeController {
 
 	/*
 	 * 改变状态
+	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 * */
 	public function changestatus(){
-		$user=session('user');
-		$map=array('uid'=>$user['info']['id']);
-		$id=$user['info']['id'];
-		$result=apiCall(HomePublicApi::Bbjmember_Query,array($map));
-		if($result['info'][0]['task_status']==0){
-			$mapa=array('task_status'=>1);
-			$result=apiCall(HomePublicApi::Bbjmember_SaveByID,array($id,$mapa));
-			if($result['status']){
-				$this->success('状态设置成功',U('Home/Index/sm_manager'));
-			}
-		}else{
-			$mapa=array('task_status'=>0);
-			$result=apiCall(HomePublicApi::Bbjmember_SaveByID,array($id,$mapa));
-			if($result['status']){
-				$this->success('状态设置成功',U('Home/Index/sm_manager'));
-			}
-		}
+        $type = I('get.type','');
+        if($type == 'on'){
+            $status = 1;
+        }else{
+            $status = 0;
+        }
+
+        $entity = array('task_status' => $status);
+
+        $result=apiCall(BbjmemberApi::SAVE_BY_ID,array($this->uid,$entity));
+
+        if($result['status']){
+            $this->reloadUserInfo();
+            $this->success('状态设置成功',U('Home/Usersm/manager_rw'));
+        }else{
+            $this->error($result['info']);
+        }
+
 	}
 	/*
 	 * 确认收货
@@ -70,29 +73,36 @@ class SMActivityController extends HomeController {
 			$this->error('未知错误');
 		}
 	}
+
 	/*
 	 * 改变任务金
+	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 * */
 	public function taskmoney(){
-		$user = session('user');
-		$id=$user['info']['id'];
-		$entity=array('daily_task_money'=>I('tmoney','0'));
-		$result = apiCall(HomePublicApi::Bbjmember_SaveByID,array($id,$entity));
+
+
+		$entity=array('daily_task_money'=>I('post.tmoney','0'));
+		$result = apiCall(BbjmemberApi::SAVE_BY_ID,array($this->uid,$entity));
 		if($result['status']){
+            $this->reloadUserInfo();
 			$this->success('修改成功',U('Home/Usersm/manager_rw'));
-		}
+		}else{
+            $this->error('未知错误');
+        }
 	}
 	/*
 	 * 设置淘宝
+	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 * */
 	public function settaobao(){
-		$user = session('user');
-		$id=$user['info']['id'];
-		$entity=array('taobao_account'=>I('taobao','无'));
-		$result = apiCall(HomePublicApi::Bbjmember_SaveByID,array($id,$entity));
+		$entity=array('taobao_account'=>I('post.taobao','无'));
+        $result = apiCall(BbjmemberApi::SAVE_BY_ID,array($this->uid,$entity));
 		if($result['status']){
+            $this->reloadUserInfo();
 			$this->success('修改成功',U('Home/Usersm/manager_rw'));
-		}
+		}else{
+            $this->error("未知错误");
+        }
 		
 	}
 	/*

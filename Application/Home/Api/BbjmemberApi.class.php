@@ -41,13 +41,10 @@ class BbjmemberApi extends Api{
 	protected function _init(){
 		$this->model = new BbjmemberModel();
 	}
-//	public function register($username, $password, $email, $mobile = '',$entity,$list,$list2){
-//      $result = $this->model->register($username, $password, $email, $mobile);
-//	    	if($result > 0){//成功
-//	    		return array('status'=>true,'info'=>$result);
-//	    	}else{
-//	    		return array('status'=>false,'info'=>$this->getRegisterError($result));
-//	    	}
-//	}
+
+    public function saveByID($uid,$entity){
+        return $this->save(array('uid'=>$uid),$entity);
+    }
+
 }
 

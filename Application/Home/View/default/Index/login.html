@@ -28,12 +28,14 @@
 						<input type="text" name="username" id="textfield2" class="login_004" placeholder="用户名" >
 						
 							<br><br><span style="color: red; font-size: 13px;">{$error}</span>
-						<input type="password" name="password" id="textfield" class="login_005">
+						<input type="password" name="password" id="textfield"  placeholder="密码"  class="login_005">
 						<div class="login_006">
 							<input type="checkbox" name="auto_login" id="checkbox"> 自动登录 <span><!--<a href="#">忘记密码</a>--></span>
 						</div>
 						<div class="submit">
-							<button url="{:U('Home/Index/login')}" target-form="fm" data-no-alert="true" class="ajax-post am-btn-warning" style="padding: 10px; width: 100px;">登录</button>
+							<a href="{:U('Home/Index/login')}" style="width: 265px;" target-form="fm" data-no-alert="true" class="ajax-post am-center am-btn-block am-btn am-btn-sm am-btn-danger">
+                                登录
+                            </a>
 						</div>
 					</form>
 				</div>

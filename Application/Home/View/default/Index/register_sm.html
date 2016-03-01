@@ -22,7 +22,7 @@
 					</DIV>
 					<div class="bbj_sm">
 						<DIV class="register-form" controller="app/register">
-							<FORM class="form-horizontal" id="yw0" action="{:U('Home/Index/smzc')}" method="post">
+							<FORM class="form-horizontal reg_sm_form"   action="{:U('Home/Index/smzc')}" method="post">
 								<DIV class="control-group">
 									<LABEL class="control-label" for="user_name">
 										<I class="required">*</I>用户名：</LABEL>
@@ -96,13 +96,22 @@
 										</LABEL>
 									</DIV>
 								</DIV>
-								<BUTTON name="yt0" id="sb" class="register_submit btn" type="submit">立即注册</BUTTON>
+
+                                <DIV class="control-group">
+                                    <DIV class="controls">
+                                    <a href="{:U('Home/Index/smzc')}" target-form="reg_sm_form" data-no-alert="true" class="ajax-post am-btn-warning"
+                                        style="padding: 10px; width: 100px;">立即注册</a>
+                                    </DIV>
+                                </DIV>
+
 							</FORM>
 							<DIV class="right">
+
 								<DIV class="login">
 									<A href="{:U('Home/Index/login')}"></A>
 									<SPAN>我已注册,点击登录</SPAN>
 								</DIV>
+
 								<DIV class="jieshao"> 我想免费获得喜欢的商品，乐享不花钱的商品带来的惊喜！所以我要注册试民福币账号！ </DIV>
 							</DIV>
 						</DIV>

@@ -9,70 +9,91 @@
 	<div class="div_all">
 	<include file="Widget/top_left" />
 		
-		<div class="div_right">
+		<div class="div_right" STYLE="BACKGROUND: #F9EFF3;">
 			<div class="div_minTitle">
 				<h3>任务设置</h3>
 			</div>
 			<div class="div_minContent" style="padding: 20px;">
 				<div style="background: white; width: 1000px; height: 100px; border-radius:9px; border: 1px solid #ccc;">
 					<div style="line-height: 60px; margin-left:50px;">
-						当前任务状态：<if condition="$member['task_status'] eq 1"><a href="" style="text-decoration: none;  background: #ff698e; padding: 5px; color:
-						 white; border-radius: 5px;">任务开启中（{$member['daily_task_money']}元）</a>日任务金额：
-						 <font color="#b94a48" style="font-family: Verdana,Tahoma,arial;">￥{$member['daily_task_money']}</font><else/>
-						任务未开启<a href="{:U('Home/SMActivity/changestatus')}" style="background-color: orangered; color: #FFFFFF; height: 20px; width: 30px; padding: 3px; cursor: pointer;">点击开启</a> 
+						当前任务状态：
+                        <if condition="$user['task_status'] eq 1">
+
+                        <a href="javascript:void(0);" style="text-decoration: none;  background: #ff698e; padding: 5px; color:
+						 white; border-radius: 5px;">任务开启中（{$user['daily_task_money']}元）</a>日任务金额：
+						 <font color="#b94a48" style="font-family: Verdana,Tahoma,arial;">￥{$user['daily_task_money']}</font><else/>
+						任务未开启<a class="ajax-get am-btn am-btn-xs am-btn-danger" href="{:U('Home/SMActivity/changestatus',array('type'=>'on'))}" >点击开启</a>
 						</if>
-						
+
 					</div>
 					<div style="margin-left:100px;font-size: 12px;">
-						您如果有事不能接宝贝活动，请及时 <a href="{:U('Home/SMActivity/changestatus')}" style="text-decoration: none; color: #b94a48;">关闭任务状态</a>
+						您如果有事不能接宝贝活动，请及时 <a class="ajax-get"  href="{:U('Home/SMActivity/changestatus',array('type'=>'close'))}" style="text-decoration: none; color: #b94a48;">关闭任务状态</a>
 					</div>
 
 				</div>
 
 				<div class="div_minSet">
 					<ul>
-						<if condition="$member['daily_task_money'] eq '' "><li id="tsz" class="li_first">未设置</li><else/><li id="tsz" class="li_first">已设置</li></if>
+						<if condition="$user['daily_task_money'] eq '' "><li id="tsz" class="li_first">未设置</li><else/><li id="tsz" class="li_first">已设置</li></if>
 						<li class="li_title">日任务金额 </li>
-						<li style="width:70%; text-align: center;"><font color="red">{$member['daily_task_money']}</font>元(每天接受任务的总金额，限额越高机会越多)</li>
-						<li class="li_last"><a id="sqtask" href="javascript:void(0)">收起</a>
+						<li class="am-text-left" style="width:70%; ">
+                            <span class="am-text-danger">{$user['daily_task_money']}</span>
+                            元(每天接受任务的总金额，限额越高机会越多)</li>
+						<li class="li_last">
+                            <a id="sqtask" href="javascript:void(0)">收起</a>
 						</li>
 					</ul>
 				</div>
+
 				<div class="div_minSetInfo" id="task_money">
-					<form id="tkform" action="{:U('Home/SMActivity/taskmoney')}" method="post">
-					日任务金额
-					
-					<input id="tmoney" name="tmoney" style=" line-height: normal; list-style: none; margin-left: 10px; border-bottom-left-radius: 3px; border-top-left-radius: 3px; border: 1px solid #ccc; " />
-					<input type="button"  style=" list-style: none;border-bottom-right-radius: 3px;  line-height: normal; border-top-right-radius: 3px; border: 1px solid #ccc;" disabled="disabled" value="元" />
-					<input type="button" id="taskmoneychange" value="确认修改" style="list-style:none; line-height: normal; background: #d13f3a; margin-left: 10px; border:none; color: white; border-radius: 3px; font-size: 14px; padding:5px; " />
-					</form>
+					<form class="tkform am-form am-form-inline" action="{:U('Home/SMActivity/taskmoney')}" method="post">
+
+                        <div class="am-form-group">
+                            日任务金额
+                            <input id="tmoney" name="tmoney" class="am-form-field" />
+                            元
+                        </div>
+
+                        <a target-form="tkform" href="{:U('Home/SMActivity/taskmoney')}" class="ajax-post am-btn am-btn-sm am-btn-primary">确认修改</a>
+
+                    </form>
 				</div>
 
 				<div class="div_minSet" style="">
 					<ul>
-						<if condition="$member['taobao_account'] eq '' "><li id="tbsz" class="li_first">未设置</li><else/><li id="tbsz" class="li_first">已设置</li></if>
-						
-						<li class="li_title">淘宝账号 </li>
-						<li style="width:70%; text-align: center;">{$member['taobao_account']} 实名认证</li>
+
+						<empty name="user['taobao_account']">
+
+                            <li id="tbsz" class="li_first">未设置</li>
+                            <else/>
+                            <li id="tbsz" class="li_first">已设置</li></if>
+                        </empty>
+
+						<li class="li_title">淘宝账号 &nbsp; </li>
+						<li class="am-text-left" style="width:70%;">{$user['taobao_account']}</li>
 						<li class="li_last"><a id="sqtb" href="javascript:void(0)">收起</a>
 						
 						</li>
 					</ul>
 				</div>
 				<div class="div_minSetInfo" id="tb">
-					<form id="tbform" action="{:U('Home/SMActivity/settaobao')}" method="post">
-					淘宝账号
-					
-					<input name="taobao" style=" line-height: normal; list-style: none; margin-left: 10px; border-bottom-left-radius: 3px; border-top-left-radius: 3px; border: 1px solid #ccc; " />
-					<input type="button" id="settaobao" value="设置" style=" line-height: normal; list-style:none; background: #d13f3a; border:none; color: white; border-bottom-right-radius: 3px;border-top-right-radius:3px; font-size: 14px; padding:3px; " /> <a href="" style="text-decoration: none; margin-left: 20px;">管理淘宝号</a>
+					<form class="tbform am-form am-form-inline" action="{:U('Home/SMActivity/settaobao')}" method="post">
+
+                        <div class="am-form-group">
+                            淘宝账号
+                            <input name="taobao" class="am-form-field" />
+                        </div>
+
+                        <a target-form="tbform" href="{:U('Home/SMActivity/settaobao')}" class="ajax-post am-btn am-btn-sm am-btn-primary">确认修改</a>
+
 					</form>
 				</div>
 
 				<div class="div_minSet" style="">
 					<ul>
 						<if condition="($user['email'] eq '') && ($user['mobile'] eq '') "><li id="psz" class="li_first">未设置</li><else/><li id="psz" class="li_first">已设置</li></if>
-						<li class="li_title">联系方式</li>
-						<li style="width:70%; text-align: center;">邮箱: {$user['email']} 手机号: {$user['mobile']}</li>
+						<li class="li_title">联系方式 &nbsp;</li>
+						<li  class="am-text-left"  style="width:70%; ">邮箱: {$user['email']} 手机号: {$user['mobile']}</li>
 						<li class="li_last"><a id="sqphone" href="javascript:void(0)">收起</a>
 						</li>
 					</ul>
@@ -85,29 +106,29 @@
 					</div>
 				</div>
 
-				<div class="div_minSet" style="">
-					<ul>
-						<li class="li_first">已设置</li>
-						<li class="li_title">淘福任务 </li>
-						<li style="width:70%; text-align: center;">获取更多的任务机会</li>
-						<li class="li_last"><a href="#">收起</a>
-						</li>
-					</ul>
-				</div>
-				<div class="div_minSetInfo" style="line-height: 40px; text-align: left;" id="taofu">
-					<div style="font-size: 12px; margin-left: 50px;">
-						关闭淘福任务 <font color="#b94a48" style="font-size: 14px; margin-left: 5px;">停止接受淘福任务,同时失去淘福勋章</font>
-						<input type="button" value="暂停淘福" style="list-style:none; background: #f9a732; border:none; color: white; border-radius: 3px;  padding:2px; margin-left: 20px; "
-						/>
-					</div>
-					<div style="font-size: 12px; color: #CCCCCC; padding-left:120px;">
-						你可以接收由商家发布的淘福任务，此任务由商家发出物流，所以不能选择兑换宝贝商品，但是，可以获取全额的福币。同时，还可以获得【淘福章】一枚!
-					</div>
-				</div>
+				<!--<div class="div_minSet" style="">-->
+					<!--<ul>-->
+						<!--<li class="li_first">已设置</li>-->
+						<!--<li class="li_title">淘福任务 &nbsp; </li>-->
+						<!--<li style="width:70%; text-align: center;">获取更多的任务机会</li>-->
+						<!--<li class="li_last"><a href="#">收起</a>-->
+						<!--</li>-->
+					<!--</ul>-->
+				<!--</div>-->
+				<!--<div class="div_minSetInfo" style="line-height: 40px; text-align: left;" id="taofu">-->
+					<!--<div style="font-size: 12px; margin-left: 50px;">-->
+						<!--关闭淘福任务 <font color="#b94a48" style="font-size: 14px; margin-left: 5px;">停止接受淘福任务,同时失去淘福勋章</font>-->
+						<!--<input type="button" value="暂停淘福" style="list-style:none; background: #f9a732; border:none; color: white; border-radius: 3px;  padding:2px; margin-left: 20px; "/>-->
+					<!--</div>-->
+
+					<!--<div style="font-size: 12px; color: #CCCCCC; padding-left:120px;">-->
+						<!--你可以接收由商家发布的淘福任务，此任务由商家发出物流，所以不能选择兑换宝贝商品，但是，可以获取全额的福币。同时，还可以获得【淘福章】一枚!-->
+					<!--</div>-->
+				<!--</div>-->
 
 				<div class="div_minDl">
 
-					<dl>
+					<dl style="margin-top: 1.6rem;">
 						<dt>1、任务设置</dt>
 						<dd>试民中心-任务设置</dd>
 						<dd class="dd_last">设置好任务参数，并且是开启状态，即可正常接收宝贝任务。</dd>

@@ -6,12 +6,16 @@
 // | Copyright (c) 2013-2016, http://www.itboye.com. All Rights Reserved.
 // |-----------------------------------------------------------------------------------
 namespace Home\Controller;
+use Admin\Api\DatatreeApi;
 use Admin\Api\MsgboxApi;
 use Admin\Model\MsgboxModel;
 use Admin\Model\PictureModel;
 use Cms\Api\PostApi;
+use Cms\Api\VPostInfoApi;
+use Cms\Model\PostModel;
 use Common\Api\AccountApi;
 use Home\Api\BbjmemberApi;
+use Home\Api\TaskHisApi;
 use Home\ConstVar\BoyeActionConstVar;
 use Home\ConstVar\UserTypeConstVar;
 use Think\Controller;
@@ -25,6 +29,12 @@ use Uclient\Api\UserApi;
  */
 class IndexController extends HomeController {
 
+    public function _initialize(){
+
+        parent::_initialize();
+
+        $this->getLastestNotice();
+    }
 
 	 /*
 	  * 试民注册界面
@@ -140,42 +150,31 @@ class IndexController extends HomeController {
 	}
 	/*
 	  * 官方公告
+	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	  * */
 	public function gfgg(){
-		//查询最新通知
-		$order = " post_modified desc ";
-		$map=array();
-		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
-		$this->assign('zxgg',$result['info'][0]);
 
 		//查询公告标题
-		$map['parentid']=21;
-		$result=apiCall(AdminPublicApi::Datatree_Query,array($map));
-		$this->assign('ggTitle',$result['info']['list']);
-		//dump($result['info']['list']);
-		$post_category=I('post_category');
-		$map=array();
-		$map['post_category']=$post_category;
-		$page=array();
+
+        $map['parentid'] = 21;
+
+        $result = apiCall(DatatreeApi::QUERY_NO_PAGING,array($map));
+        $this->assign('ggTitle',$result['info']);
+
+		$post_category = I('get.post_category','');
+
+		$map = array();
+
+		$map['post_category'] = $post_category;
+
 		$page = array('curpage' => I('get.p', 0), 'size' => 2);
-		$result=apiCall(AdminPublicApi::Post_Query,array($map,$page));
-		
-		
+
+		$result=apiCall(VPostInfoApi::QUERY,array($map,$page));
+
 		$this->assign('list',$result['info']['list']);
 		$this->assign('show',$result['info']['show']);
-		
-		$map=array();
-		$map['id']=$post_category;
-		$result=apiCall(AdminPublicApi::Datatree_QueryNoPaging,array($map));
-		//dump($post_category);
-		$this->assign('ggct',$result['info'][0]);
-		
-		
-		
-		$headtitle="宝贝街-官方公告";
-		$this->assign('head_title',$headtitle);
-		$users=session('user');
-		$this->assign('username',session('user')['info']['username']);
+
+		$this->assign('head_title',"宝贝街-官方公告");
 		$this->display();
 	}
 	/*
@@ -183,23 +182,27 @@ class IndexController extends HomeController {
 	  * */
 	public function gfggxx(){
 
-        $this->getLastestNotice();
 
 		$this->assign('head_title',"宝贝街-官方公告信息");
 
-		//查询公告标题
-		$map=array();
-		$map['parentid']=21;
-		$result=apiCall(AdminPublicApi::Datatree_Query,array($map));
-		$this->assign('ggTitle',$result['info']['list']);
+        $map['parentid'] = 21;
 
+        $result = apiCall(DatatreeApi::QUERY_NO_PAGING,array($map));
+        $this->assign('ggTitle',$result['info']);
+
+		//查询公告标题
+		$map = array();
 		//根据id查询公告文章
 		$map = array();
-		$map['id'] = I('id');
-		$result = apiCall(PostApi::GET_INFO,array($map));
+
+        $id = I('get.id',0);
+        if(!empty($id)){
+		    $map['id'] = $id;
+        }
+
+		$result = apiCall(VPostInfoApi::GET_INFO,array($map));
 		
 		$this->assign('gg',$result['info']);
-
 		$this->display();
 	}
 	/*
@@ -210,6 +213,7 @@ class IndexController extends HomeController {
 	}
 	/*
 	  * 试民注册界面
+	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	  * */
 	public function smzc(){
 
@@ -237,6 +241,7 @@ class IndexController extends HomeController {
             'mobile'=>$mobile,
             'email'=>$email,
             'from'=>'99',
+            'aliwawa'=>'',
         );
 
         $result = apiCall(AccountApi::Register, array($entity));
@@ -349,7 +354,6 @@ class IndexController extends HomeController {
 			if ($result['status']) {
 
 				$uid = $result['info'];
-
 				$result = apiCall(AccountApi::GET_INFO, array($uid));
 
                 if(!$result['status']){
@@ -431,113 +435,83 @@ class IndexController extends HomeController {
 	}
 	/*
 	  * 试民首页
+	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	  * */
 	public function sm_manager(){
-		$user=session('user');
-		$uid=$user['info']['id'];
 
-		$map = array('uid'=>$uid);
+        $this->checkLogin();
+        $this->checklevel();
+        $this->getNoticeForSm();
 
-		$group=apiCall(HomePublicApi::Group_QueryNpPage, array($map));
-
-		$map=array(
-			'uid'=>$uid,
-		);
-
-		$result1=apiCall(HomePublicApi::Bbjmember_Query, array($map));
-		$user=apiCall(HomePublicApi::User_GetUser, array($id));
-		$this->assign('username',$user['info']['username']);
-		$this->assign('phone',$user['info']['mobile']);
-
-        $map = array(
-            'post_category'=>'41',
-        );
-		$order = " post_modified desc ";
-		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map,$order));
-		$this->assign('taobao',$result1['info'][0]['taobao_account']);
-		$this->assign('user',$result1['info'][0]);
-
-		$this->assign('zxgg',$result['info'][0]);
-		$this->assign('info',$result['info']);
-		$this->getcount();
-		$this->checklevel();
-		$Usersm=A('Usersm');
-		$Usersm->posts();
 		$this->display();
-		
-		
-	}
-
-	public function checklevel(){
-		$user=session('user');
-		$map=array('uid'=>$user['info']['id']);
-		$result=apiCall(HomePublicApi::Bbjmember_Query,array($map));
-		if($result['status']){
-			$exp=$result['info'][0]['exp'];
-			if($exp<100){
-				$this->assign('level',1);
-				$this->assign('exp',$exp-0);
-			}else if($exp>=100 && $exp<200){
-				$this->assign('level',2);
-				$this->assign('exp',$exp-100);
-			}else if($exp>=200 && $exp<300){
-				$this->assign('level',3);
-				$this->assign('exp',$exp-200);
-			}else if($exp>=300 && $exp<400){
-				$this->assign('level',4);
-				$this->assign('exp',$exp-300);
-			}else if($exp>=400 && $exp<500){
-				$this->assign('level',5);
-				$this->assign('exp',$exp-400);
-			}else if($exp>=500 && $exp<600){
-				$this->assign('level',6);
-				$this->assign('exp',$exp-500);
-			}else if($exp>=600 && $exp<700){
-				$this->assign('level',7);
-				$this->assign('exp',$exp-600);
-			}
-		}
-	} 
-/*
-	 * 获取统计数据
-	 * */
-
-	public function getcount(){
-		$user=session('user');
-		$count_bh=0;$count_zajx=0;$count_qx=0;$count_sh=0;$count_fk=0;$count_qrsh=0;
-		$map=array('uid'=>$user['info']['id']);
-		$result=apiCall(HomePublicApi::Task_His_Query, array($map));
-		for ($i=0; $i <count($result['info']) ; $i++) {
-			if($result['info'][$i]['do_status']==4){
-				$count_fk=$count_fk+1;
-			}
-			if($result['info'][$i]['do_status']==3){
-				$count_sh=$count_sh+1;
-			}
-			if($result['info'][$i]['do_status']==8){
-				$count_bh=$count_bh+1;
-			}
-			if($result['info'][$i]['do_status']==1){
-				$count_zajx=$count_zajx+1;
-			}
-			if($result['info'][$i]['do_status']==0){
-				$count_qx=$count_qx+1;
-			}
-			if($result['info'][$i]['do_status']==7){
-				$count_qrsh=$count_qrsh+1;
-			}
-		}
-		$this->assign('bh',$count_bh);
-		$this->assign('za',$count_zajx);
-		$this->assign('qx',$count_qx);
-		$this->assign('sh',$count_sh);
-		$this->assign('fk',$count_fk);
-		$this->assign('qrsh',$count_qrsh);
-		 
 	}
 
     /**
+     *
+     */
+	public function checklevel(){
+
+        $exp = $this->userinfo['exp'];
+        if($exp<100){
+            $this->assign('level',1);
+            $this->assign('exp',$exp-0);
+        }else if($exp>=100 && $exp<200){
+            $this->assign('level',2);
+            $this->assign('exp',$exp-100);
+        }else if($exp>=200 && $exp<300){
+            $this->assign('level',3);
+            $this->assign('exp',$exp-200);
+        }else if($exp>=300 && $exp<400){
+            $this->assign('level',4);
+            $this->assign('exp',$exp-300);
+        }else if($exp>=400 && $exp<500){
+            $this->assign('level',5);
+            $this->assign('exp',$exp-400);
+        }else if($exp>=500 && $exp<600){
+            $this->assign('level',6);
+            $this->assign('exp',$exp-500);
+        }else if($exp>=600 && $exp<700){
+            $this->assign('level',7);
+            $this->assign('exp',$exp-600);
+        }
+
+	}
+
+
+    /*
+	 * 获取统计数据
+     * @author 老胖子-何必都 <hebiduhebi@126.com>
+	 * */
+
+	public function getcount(){
+
+
+	}
+
+    /**
+     * 获取试民的文件信息
+     * @author 老胖子-何必都 <hebiduhebi@126.com>
+     */
+    private function getNoticeForSm(){
+
+        $map = array();
+
+        $map['post_category'] = array('in',array(PostModel::TYPE_NOTICE_FOR_NORMAL_MEMBER,PostModel::TYPE_NOTICE_FOR_ALL));
+
+        $order = " post_modified desc ";
+
+        $page = array('curpage'=>0,'size'=>6);
+
+        $result = apiCall(VPostInfoApi::QUERY,array($map , $page, $order));
+
+
+        $this->assign('sm_post_list',$result['info']['list']);
+
+    }
+
+    /**
      * 获取最新公告信息
+     * @author 老胖子-何必都 <hebiduhebi@126.com>
      */
     private function getLastestNotice(){
         $map = array();

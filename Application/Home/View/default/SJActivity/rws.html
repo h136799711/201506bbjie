@@ -210,7 +210,21 @@
 							<div class="ovh">
 								<ul>
 									<li>
-										
+                                        <div class="am-fl">
+                                            <img src="{$pd.main_img}" style="width: 160px;height:120px;" alt="主图">
+                                        </div>
+                                        <div class="am-fl am-margin-left-sm">
+
+                                            <p>{:mask_string($pd['pname'])}</p>
+                                            <p>规格: <empty name="pd['sku']">试民自由选择<else/>{$pd.sku}</empty></p>
+                                            <p>单价: {$pd.price}</p>
+
+                                        </div>
+                                        <div class="am-fr">
+                                            <div class="am-padding-sm" style="border: dashed 1px #f08300;">
+                                                位置信息: {$search.search_condition}
+                                            </div>
+                                        </div>
 									</li>
 								</ul>
 							</div>
