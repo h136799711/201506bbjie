@@ -12,6 +12,8 @@ use Home\Api\BbjmemberSellerApi;
 use Home\Api\FinAccountBalanceHisApi;
 use Home\Api\HomePublicApi;
 use Home\Api\ProductSearchWayApi;
+use Home\Api\VBbjmemberInfoApi;
+use Home\Api\VBbjmemberSellerInfoApi;
 use Home\Api\VTaskProductSearchWayApi;
 use Home\ConstVar\UserTypeConstVar;
 use Home\Model\BbjmemberSellerModel;
@@ -86,8 +88,12 @@ class BBJVIPController extends AdminController{
         if($userinfo['user_type'] == UserTypeConstVar::BBJ_MEMBER_GROUP){
             //试民
             if($dtree_type == 3){//提现
+                $left_frozen_money = $userinfo['frozen_money'] - $defray;
+                if($left_frozen_money < 0){
+                    $this->error("该账户出现异常!");
+                }
                 $entity = array(
-                    'coins'=>$userinfo['coins'],
+                    'frozen_money'=>$left_frozen_money,
                 );
                 $result = apiCall(BbjmemberApi::SAVE_BY_ID,array($uid,$entity));
             }
@@ -103,8 +109,11 @@ class BBJVIPController extends AdminController{
             }elseif($dtree_type == 3){
                 //提现
                 $entity = array(
-                    'frozen_money'=>$userinfo['frozen_money'] - $defray,
+                    'frozen_money'=> $userinfo['frozen_money'] - $defray,
                 );
+                if($entity['frozen_money'] < 0){
+                    $this->error("该账户出现异常!");
+                }
 
                 $result = apiCall(BbjmemberSellerApi::SAVE_BY_ID,array($uid,$entity));
 
@@ -178,30 +187,17 @@ class BBJVIPController extends AdminController{
 	}
 	/**
 	 * 会员管理
+     * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 * */
 	public function vipmanager(){
 		$page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));
-		$result=apiCall(HomePublicApi::Bbjmember_Seller_QueryAll, array($maps,$page));
-		$result1=apiCall(HomePublicApi::UcenterUser_Query, array());
-		$map=array('dtree_type'=>4);
-		//$order=" create_time desc ";
-		$result2=apiCall(HomePublicApi::FinAccountBalanceHis_Query, array($map,$order));
-		for($i=0;$i<count($result['info']['list']);$i++){
-			for($j=0;$j<count($result2['info']);$j++){
-				if($result['info']['list'][$i]['uid']==$result2['info'][$j]['uid']){
-					$result['info']['list'][$i]['time']=$result2['info'][$j]['create_time'];
-					$result['info']['list'][$i]['text']=$result2['info'][$j]['notes'];
-					continue;
-				}
-			}
-			
-		}
-		//dump($result);
-		
-		$this->assign('seller',$result['info']['list']);
-		$this->assign('sellershow',$result['info']['show']);
-		$this->assign('user',$result1['info']);
-		$this->assign('jilu',$result2['info']);
+        $map = array();
+
+		$result = apiCall(VBbjmemberSellerInfoApi::QUERY, array($map,$page));
+
+		$this->assign('list',$result['info']['list']);
+		$this->assign('show',$result['info']['show']);
+
 		$this->display();
 	}
 	/*
@@ -220,6 +216,11 @@ class BBJVIPController extends AdminController{
 		}
 		
 	}
+
+    /**
+     * 试民
+     * @author 老胖子-何必都 <hebiduhebi@126.com>
+     */
 	public function checksm(){
         $taobao = I('post.taobao','');
         if(empty($taobao)){
@@ -250,35 +251,36 @@ class BBJVIPController extends AdminController{
 		$this->assign('show',$result['info']['show']);
 		$this->display();
 	}
+
+    /**
+     * 试民管理
+     * @author 老胖子-何必都 <hebiduhebi@126.com>
+     */
 	public function managersm(){
-		$username=I('username','');
-		if (!empty($username)) {
+		$username = $this->_param('username','');
+
+        $map = array();
+        $param = array();
+        if (!empty($username)) {
 			$map['username'] = array('like','%'. $username . '%');
+            $param['username'] = $username;
 		}
-		$page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));
-		$result=apiCall(HomePublicApi::Bbjmember_QueryAll, array($maps,$page));
-		$result1=apiCall(HomePublicApi::UcenterUser_Query, array($map));
-		$this->assign('jilu',$result['info']['list']);
+
+        $page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));
+        $order = "create_time desc";
+
+        $result = apiCall(VBbjmemberInfoApi::QUERY, array($map,$page,$order,$param));
+
+		$this->assign('list',$result['info']['list']);
 		$this->assign('show',$result['info']['show']);
-		$this->assign('user',$result1['info']);
+
 		$this->display();
 	}
-	public function delete_sm(){
-		$uid=array('uid'=>I('id'));
-		$id=array('id'=>I('id'));
-		$result=apiCall(HomePublicApi::Bbjmember_Del, array($uid));
-		if($result['status']){
-			$result1=apiCall(HomePublicApi::UcenterUser_Del, array($id));
-			if($result1['status']){
-				$result2=apiCall(HomePublicApi::Member_Del, array($uid));
-				if($result2['status']){
-					$this->success('删除成功',U('Admin/BBJVIP/managersm'));
-				}
-			}
-		
-		}
-	}
 
+    /**
+     * 商家审核
+     * @author 老胖子-何必都 <hebiduhebi@126.com>
+     */
 	public function checksj(){
         $aliwawa = I('post.aliwawa','');
         if(empty($aliwawa)){
@@ -298,9 +300,10 @@ class BBJVIPController extends AdminController{
             'auth_status'=>$auth_status,
             'aliwawa'=>$aliwawa,
         );
+
 		$page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));
         $order = "update_time desc";
-		$result=apiCall(BbjmemberSellerApi::QUERY, array($map,$page,$order,$params));
+		$result=apiCall(VBbjmemberSellerInfoApi::QUERY, array($map,$page,$order,$params));
 
         $this->assign("auth_status",$auth_status);
         $this->assign("aliwawa",$aliwawa);
@@ -309,54 +312,65 @@ class BBJVIPController extends AdminController{
 
 		$this->display();
 	}
+
+    /**
+     * 管理商家
+     * @author 老胖子-何必都 <hebiduhebi@126.com>
+     */
 	public function managersj(){
-		$username=I('username','');
-		if (!empty($username)) {
+		$username = $this->_param('username','');
+
+        $map = array();
+        $params = array();
+        if (!empty($username)) {
 			$map['username'] = array('like','%'. $username . '%');
+            $params['username'] = $username;
 		}
 		
 		$page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));
-		$result=apiCall(HomePublicApi::Bbjmember_Seller_QueryAll, array($maps,$page));
-		$result1=apiCall(HomePublicApi::UcenterUser_Query, array($map));
-		$this->assign('jilu',$result['info']['list']);
+        $order = "create_time desc";
+        $result = apiCall(VBbjmemberSellerInfoApi::QUERY,array($map,$page,$order,$params));
+
+		$this->assign('list',$result['info']['list']);
 		$this->assign('show',$result['info']['show']);
-		$this->assign('user',$result1['info']);
+
 		$this->display();
 	}
-	
-	public function delete_sj(){
-		$uid=array('uid'=>I('id'));
-		$id=array('id'=>I('id'));
-		$result=apiCall(HomePublicApi::Bbjmember_Seller_Del, array($uid));
-		if($result['status']){
-			$result1=apiCall(HomePublicApi::UcenterUser_Del, array($id));
-			if($result1['status']){
-				$result2=apiCall(HomePublicApi::Member_Del, array($uid));
-				if($result2['status']){
-					$this->success('删除成功',U('Admin/BBJVIP/managersj'));
-				}
-			}
-		}
-	}
-	public function checksuccess(){
 
-		$id=I('id');
+    /**
+     * 试民 和 商家的审核
+     * @author 老胖子-何必都 <hebiduhebi@126.com>
+     */
+	public function check_user(){
+
+		$id=I('get.id',0);
+        $type = I('get.type','0');
+
 		$entity=array('auth_status'=>1);
-		$result=apiCall(HomePublicApi::Bbjmember_SaveByID, array($id,$entity));
-//		dump($result);
-		if($result['status']){
-			$this->success('审核成功',U('Admin/BBJVIP/checksm'));
-		}
+
+        if($type == 0){
+            $result=apiCall(BbjmemberApi::SAVE_BY_ID, array($id,$entity));
+
+            if($result['status']){
+                $this->success('审核成功',U('Admin/BBJVIP/checksm'));
+            }
+        }else{
+            $result=apiCall(BbjmemberSellerApi::SAVE_BY_ID, array($id,$entity));
+
+            if($result['status']){
+                $this->success('审核成功',U('Admin/BBJVIP/checksj'));
+            }
+        }
+
+        if(!$result['status']){
+            $this->error($result['info']);
+        }
 	}
+
 	public function checksuccesssj(){
 
 		$id=I('id');
 		$entity=array('auth_status'=>1);
-		$result=apiCall(HomePublicApi::Bbjmember_Seller_SaveByID, array($id,$entity));
-//		dump($result);
-		if($result['status']){
-			$this->success('审核成功',U('Admin/BBJVIP/checksj'));
-		}
 	}
 	public function checksb(){
 
@@ -369,24 +383,22 @@ class BBJVIPController extends AdminController{
 		}
 	}
 
-	public function view(){
-		$map=array('uid'=>I('id'));
-		$result=apiCall(HomePublicApi::Bbjmember_Query, array($map));
-		$result1=apiCall(HomePublicApi::UcenterUser_Query, array($maps));
-		if($result['info']=='' ||$result['info']==null ){
-			$result=apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
-			$result1=apiCall(HomePublicApi::UcenterUser_Query, array($maps));
-			if($result['status']){
-				$this->assign('user',$result1['info']);
-				$this->assign('entity',$result['info'][0]);
-				$this->display();
-			}
-		}else{
-			$this->assign('user',$result1['info']);
-			$this->assign('entity',$result['info'][0]);
-			$this->display();
-		}
+
+    /**
+     * 查看用户信息
+     * @author 老胖子-何必都 <hebiduhebi@126.com>
+     */
+	public function view_user(){
+		$map=array('uid'=>I('get.id',0));
+
+        $uid = I('get.id',0);
+
+        $result = apiCall(AccountApi::GET_INFO,array($uid));
+
+        $this->assign("user_info",$result['info']);
+        $this->display();
 	}
+
 	/*
 	 * 所有任务
 	 * */

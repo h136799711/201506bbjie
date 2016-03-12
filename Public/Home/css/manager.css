@@ -54,3 +54,14 @@ a{color: black;}
 .fx{ font-size: 1.6rem;width: 100%; text-align: center; height: 30px; margin-top: 5px; line-height: 30px; font-weight: 300; margin: 8px;}
 .zj{ font-size: 1.6rem;width: 100%; text-align: center; height: 30px; margin-top: 5px; line-height: 30px; font-weight: 300; margin: 8px;}
 .a_button{ padding: 5px 10px; border-radius: 3px; background: #C52B47;  color: white;text-decoration: none; font-size: 14px; }
+.btn-fix-am{
+    padding: 4px 5px;
+    border-radius: 3px;
+    font-size: 12px;
+}
+#j_task_log_modal .j_content{
+    background: #eee;
+}
+#j_task_log_modal,#j_task_log_modal .am-modal-dialog{
+    background: #FFFFFF;
+}

@@ -7,6 +7,10 @@
 // |-----------------------------------------------------------------------------------
 
 namespace Tool\Controller;
+use Home\Api\TaskHisApi;
+use Home\Api\TaskLogApi;
+use Home\Model\TaskHisModel;
+use Home\Model\TaskLogModel;
 use Think\Controller;
 
 /**
@@ -18,14 +22,14 @@ class TaskController extends Controller{
 //		$key = I('get.key','');
 
 		//20分钟以内的请求只处理一次
-		$prev_pro_time = S('TASK_PROCESS_TIME');
-		if($prev_pro_time === false){
-			S('TASK_PROCESS_TIME',time(),20*60);
-		}else{
-			echo "Cached-Time: ". date("Y-m-d H:i:s",$prev_pro_time);
-			//缓冲处理
-			exit();
-		}
+//		$prev_pro_time = S('TASK_PROCESS_TIME');
+//		if($prev_pro_time === false){
+//			S('TASK_PROCESS_TIME',time(),20*60);
+//		}else{
+//			echo "Cached-Time: ". date("Y-m-d H:i:s",$prev_pro_time);
+//			//缓冲处理
+//			exit();
+//		}
 		
 	}
 	
@@ -33,10 +37,11 @@ class TaskController extends Controller{
 	 * 任务自动处理\异步
 	 */
 	public function index(){
-		
+		header('Content-type',"text/html");
 		$url = C('SITE_URL').'/index.php/Tool/Task/aysnc';
 		fsockopenRequest($url);
-		echo "Accept Request!";
+        echo "if(typeof(aysncTask) == 'undefined'){console.log('accept request');}else{";
+		echo "aysncTask('Accept Request!')}";
 	}
 	
 	/**
@@ -47,11 +52,46 @@ class TaskController extends Controller{
 		ignore_user_abort(true); // 后台运行
 		set_time_limit(0); // 取消脚本运行时间的超时上限
 		
-		$this->toRecieved();
-		$this->toCompleted();
-		$this->toCancel();
+//		$this->toRecieved();
+//		$this->toCompleted();
+//		$this->toCancel();
+        $this->cancelTaskHis();
 	}
-	
+
+    /**
+     * 1天内未提交订单信息的话
+     * 自动取消任务
+     */
+    private function cancelTaskHis(){
+        $interval = 24*3600;
+        $limit = 20;
+
+        $result = apiCall(TaskHisApi::GET_NEED_CANCEL_TASK_HIS,array($interval,$limit));
+
+        if(!$result['status']){
+            LogRecord($result['info'], __FILE__.__LINE__);
+        }else{
+
+            $list = $result['info'];
+            $now_time = time();
+            foreach($list as $vo){
+                $notes = "超过".($interval/3600).'小时，系统自动取消任务';
+                $entity = array(
+                    'task_id'=>$vo['task_id'],
+                    'plan_id'=>$vo['tpid'],
+                    'uid'=>$vo['uid'],
+                    'task_his_id'=>$vo['id'],
+                    'dtree_type'=>TaskLogModel::TYPE_CANCEL_TASK,
+                    'notes'=>$notes,
+                    'log_time'=>$now_time,
+                );
+                $result = apiCall(TaskLogApi::ADD,array($entity));
+                $result = apiCall(TaskHisApi::SAVE_BY_ID,array($vo['id'],array('do_status'=>TaskHisModel::DO_STATUS_CANCEL)));
+            }
+
+            addWeixinLog("更新订单为取消影响记录数：".$result['info']);
+        }
+    }
 	
 	/**
 	 * 

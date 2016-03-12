@@ -13,7 +13,7 @@ define('UC_API_TYPE', 'Model'); //可选值 Model / Service
 define('UC_DB_DSN', 'mysql://root:fdc656d3e7@localhost:3306/boye_bbj'); // 数据库连接，使用Model方式调用API必须配置此项
 define('UC_TABLE_PREFIX', 'itboye_'); // 数据表前缀，使用Model方式调用API必须配置此项
 
-define("ITBOYE_CDN","http://cdn.bbj.itboye.com");
+define("ITBOYE_CDN","http://bbj.cdn.itboye.com");
 
 return array(
 

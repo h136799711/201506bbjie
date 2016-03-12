@@ -63,7 +63,7 @@
 
 															<p>
 																可用余额 : <span class="number"><span class="price">{$user.coins}</span>元</span>
-																[ <a class="text-link small" href="{:U('Home/Usersj/sj_zjgl')}">查看试福钱庄</a> ]
+																[ <a class="text-link small" href="{:U('Home/Usersj/sj_zjgl')}">查看换宝钱庄</a> ]
 															</p>
 
 															<p>
@@ -126,11 +126,11 @@
 														<col width="30%">
 															<tr>
 																<td>
-																	<span class="small">我选试民:</span>
+																	<span class="small">自助选择任务试民: </span>
 																	<if condition="$user['task_gettype'] eq 2">
-																		<a style="color: red;" data-no-alert="true" class="ajax-get text-info small" tooltip="开启之后您的任务试民将由您自己审核通过" href="{:U('Home/SJActivity/changestatus',array('id'=>$user['id'],'status'=>1))}">否</a>
+																		<a style="color: red;" data-no-alert="true" class="ajax-get text-info small" tooltip="开启之后您的任务试民将由您自己审核通过" href="{:U('Home/SJActivity/changestatus',array('id'=>$user['id'],'status'=>1))}">已关闭</a>
 																		<else/>
-																		<a style="color: darkgreen;" data-no-alert="true"  class="ajax-get text-info small" tooltip="关闭之后您的任务试民将由试民自己领取" href="{:U('Home/SJActivity/changestatus',array('id'=>$user['id'],'status'=>2))}">是</a>
+																		<a style="color: darkgreen;" data-no-alert="true"  class="ajax-get text-info small" tooltip="关闭之后您的任务试民将由试民自己领取" href="{:U('Home/SJActivity/changestatus',array('id'=>$user['id'],'status'=>2))}">已开启</a>
 																	</if>
 																</td>
 																</td>
@@ -149,7 +149,7 @@
 								<div class="widget-content">
 									<div style="padding:10px 20px 0;">
 										<div class="row-fluid" style="padding:15px 0;">
-											<div class="span2">试福任务</div>
+											<div class="span2">换宝任务</div>
 											<div class="span2">待确认还款： <span class="number text-error">{$wtj}</span>
 											</div>
 											<div class="span2">待审核订单： <span class="number text-error">{$ddsh}</span>

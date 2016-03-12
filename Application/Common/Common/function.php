@@ -743,13 +743,7 @@ function getEnterWay($way){
 
     switch($way) {
         case 0:
-            return "不限";
-        case 1:
-            return "搜索模式";
-        case 2:
-            return "老客户模式";
-        case 3:
-            return "手机模式";
+            return "关键词搜索";
         default:
             return "未知";
             break;

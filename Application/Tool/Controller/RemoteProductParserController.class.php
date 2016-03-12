@@ -64,7 +64,11 @@ class RemoteProductParserController extends Controller{
     public function read(){
 //        if(IS_POST){
             $url = I('get.url','','urldecode');
-			
+
+            if(empty($url)){
+                $url = I('post.url','','urldecode');
+            }
+
             $url_parse = parse_url($url);
 //			dump(htmlspecialchars_decode($url_parse['query']));
             $output = array();
@@ -132,6 +136,7 @@ class RemoteProductParserController extends Controller{
         if(!(strpos($url, "taobao.com") === false)){
             return 1;
         }
+        dump($url);
 
         return 0;
     }

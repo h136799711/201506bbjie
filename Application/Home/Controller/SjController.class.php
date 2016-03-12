@@ -11,15 +11,18 @@ namespace Home\Controller;
 
 use Admin\Api\MsgboxApi;
 use Admin\Model\MsgboxModel;
+use Home\Api\LevelAuthApi;
 
 class SjController extends HomeController {
 
+    protected $level_auth ;
 
     protected function _initialize(){
         parent::_initialize();
         $this->checkLogin();
         $this->checklevel();
         $this->not_read_msg_count();
+        $this->getLevelAuth();
 
         $this->assign('auth_status',$this->userinfo['auth_status']);
     }
@@ -77,4 +80,60 @@ class SjController extends HomeController {
 
     }
 
+    private function getLevelAuth(){
+        $level  = $this->userinfo['level'];
+        $result = apiCall(LevelAuthApi::GET_INFO,array(array('level'=>$level)));
+        if($result['status']){
+            $this->level_auth = $result['info'];
+        }
+    }
+
+    /**
+     * 是否有多链接权限
+     * true 有
+     */
+    protected function hasMulLink(){
+        return $this->level_auth['mul_link'] == 1;
+    }
+
+    /**
+     * 是否有自定义搜索的权限
+     * true 有
+     */
+    protected function hasCustomSearch(){
+        return $this->level_auth['custom_search'] == 1;
+    }
+
+
+    /**
+     * 是否有商家发件的权限
+     * true 有
+     */
+    protected function hasSellerDeliver(){
+        return $this->level_auth['seller_deliver'] == 1;
+    }
+
+    /**
+     * 宝贝可以拥有的数量
+     *
+     */
+    protected function getProductNumber(){
+        return $this->level_auth['product_num'];
+    }
+
+    /**
+     * 宝贝可以拥有的数量
+     *
+     */
+    protected function getSearchNumber(){
+        return $this->level_auth['search_num'];
+    }
+
+    /**
+     * 任务每天发放的数量
+     *
+     */
+    protected function getTaskNumber(){
+        return $this->level_auth['task_num'];
+    }
 }

@@ -13,4 +13,36 @@ namespace Home\Model;
  * FinBankaccountModel 用户组与用户对应表
  */
 class FinAccountBalanceHisModel extends \Think\Model{
+
+    /**
+     * 提现
+     */
+    const TYPE_WITHDRAW = 87;
+
+    /**
+     * 充值
+     */
+    const TYPE_RECHARGE = 88;
+
+    /**
+     * 创建任务计划冻结资金
+     */
+    const TYPE_FREEZE_CREATE_TASK_PLAN = "83";
+
+    /**
+     * 取消任务计划冻结资金
+     */
+    const TYPE_UNFREEZE_DELETE_TASK_PLAN = "84";
+
+
+    /**
+     * 审核一个做任务的人 冻结一次资金
+     */
+    const TYPE_FREEZE_WHEN_PASS_ONE = "85";
+    /**
+     * 任务结算时返还多余资金
+     */
+    const TYPE_UNFREEZE_WHEN_TASK_OVER = "85";
+
+
 }

@@ -6,6 +6,8 @@
 // | Copyright (c) 2013-2016, http://www.itboye.com. All Rights Reserved.
 // |-----------------------------------------------------------------------------------
 namespace Home\Controller;
+use Home\Api\BbjmemberApi;
+use Home\Api\FinAccountBalanceHisApi;
 use Think\Controller;
 use Think\Storage;
 use Home\Api\HomePublicApi;
@@ -16,33 +18,46 @@ class SMMoneyController extends HomeController {
 	
 	/*
 	 * 资金提现
+	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 * */
 	 public function deposit(){
-	 	$money=I('money','0.000');
-		$user=session('user');
-		$entity=array(
-			'uid'=>$user['info']['id'],
+         $money=I('post.money','0.000');
+         $money = floatval($money);
+         $entity=array(
+			'uid'=>$this->uid,
 			'defray'=>$money,
-			'income'=>'0.000',
+			'income'=>'0.00',
 			'create_time'=>time(),
 			'notes'=>'用于提现',
 			'dtree_type'=>3,
 			'status'=>2,
-		);
-		 $result = apiCall(HomePublicApi::FinAccountBalanceHis_Add,array($entity));
+         );
+
+         if($money <= 0){
+             $this->error("提现金额不能必须大于0");
+         }
+         $left_coins = $this->userinfo['coins'] - $money;
+         if($left_coins < 0){
+             $this->error("提现金额不能大于账户余额");
+         }
+
+		 $result = apiCall(FinAccountBalanceHisApi::ADD,array($entity));
 		 if($result['status']){
-		 	$map=array('uid'=>$user['info']['id'],);
-			 $id=$user['info']['id'];
-			$rets = apiCall(HomePublicApi::Bbjmember_Query,array($map));
-		 	$ap=array(
-				'coins'=>$rets['info'][0]['coins']-$money,
-				'frozen_money'=>$rets['info'][0]['frozen_money']+$money,
-			);
-			$return = apiCall(HomePublicApi::Bbjmember_SaveByID,array($id,$ap));
-			if($return['status']){
-				$this->success('你的提现请求已经提交，正在审核...',U('Home/Usersm/sm_bbqz'));
-			}
-//		 	
+
+            $entity = array(
+                'coins'=>$left_coins,
+                'frozen_money'=>$this->userinfo['frozen_money'] + $money,
+            );
+
+            $return = apiCall(BbjmemberApi::SAVE_BY_ID,array($this->uid,$entity));
+
+            if($return['status']){
+                $this->reloadUserInfo();
+                $this->success('你的提现请求已经提交，正在审核...',U('Home/Usersm/sm_bbqz'));
+            }else{
+                $this->error("提交失败!");
+            }
+
 		 }
 	 }
 	 

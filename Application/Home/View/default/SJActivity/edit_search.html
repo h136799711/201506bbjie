@@ -7,14 +7,22 @@
 	<script type="text/javascript" src="__CDN__/select2/4.0.0/js/i18n/zh-CN.js"></script>
 	<link type="text/css" rel="stylesheet" href="__CDN__/select2/4.0.0/css/select2.min.css" />
 	<style type="text/css">
-		.select2-results__options{ background: white;width: 465px;}
-			/*.select2-container{ background: white;}
-			.select2-dropdown--below{ background: white;}*/
-			.select2-search--dropdown{
-				width: 465px;
-				margin-top: -85px;
-				background: white;
-			}
+		.select2-results__options{
+            background: white;
+            width: 465px;
+        }
+
+		.select2-search--dropdown{
+            width: 465px;
+            margin-top: -85px;
+            background: white;
+        }
+
+        .ali_wang{
+            background: url(__IMG__/ali_wang.png) 0 -2px no-repeat;
+            vertical-align:middle;
+        }
+
 	</style>
 	<script type="text/javascript">
 		$(function(){
@@ -103,37 +111,21 @@
 			  	}, 
 				  	minimumInputLength: 0,
 					templateSelection: function (repo) {
-						
-						//var minTitle= repo.title.substring(10);
-						if(repo.title!=undefined){
-							if('{$aliwawa}'==repo.wangwang){
-							
-							var minTitle= repo.title.substring(0,20)+"...";
-							$("#product_base_info img").attr('src',repo.main_img);
-							$("#product_base_info .controls .font_title").html(repo.title);
-							     
-							$("#product_base_info .controls .font_time").html(new Date(parseInt(repo.update_time) * 1000).toLocaleString().replace(/:\d{1,2}$/,' '));
-							$("#product_base_info .controls .input_url").val(repo.link);
-							$("#product_base_info").show();
-							//alert($("#div_searchCondition .img").size());
-							$("input[name='pid']").val(repo.id);
-							
-							
-							$("#div_searchCondition img").attr("src",repo.main_img);
-							$("#div_searchCondition .font_title1").html(repo.title);
-							$("#div_searchCondition .font_price1").html(repo.price);
-							
-							$("#div_searchCondition .font_wangwang").html(repo.wangwang.substring(0,3));
-							
-								
+						console.log(repo);
+
+						if(repo.title != undefined && repo.title.length > 0){
+
+							if("{$user.aliwawa}" == repo.wangwang.trim()){
+                                rebind(repo);
 							}else{
+                                console.log(repo.wangwang);
 								alert('请更换你绑定旺旺的商品');
 							}
 							
 							
-							return minTitle || repo.text;
-						}else{
 							return repo.title || repo.text;
+						}else{
+							return repo.text;
 						}
 		  				
 					},
@@ -150,22 +142,34 @@
 			});
 			
 			
-		})
+		});
+        function rebind(repo){
+            var minTitle= repo.title.substring(0,20)+"...";
+            $("#product_base_info img").attr('src',repo.main_img);
+            $("#product_base_info .controls .font_title").html(repo.title);
+
+            $("#product_base_info .controls .font_time").html(new Date(parseInt(repo.update_time) * 1000).toLocaleString().replace(/:\d{1,2}$/,' '));
+            $("#product_base_info .controls .input_url").val(repo.link);
+
+            $("input[name='pid']").val(repo.id);
+
+            $(".j_taobao_item .j_main_img img").attr("src",repo.main_img);
+            $(".j_taobao_item .j_price").html(repo.price);
+            $(".j_taobao_item .j_title").html(repo.title);
+
+            $("#div_searchCondition .font_wangwang").html(repo.wangwang.substring(0,3));
+        }
 	</script>
 
 </block>
 
 <block name="area_body">
 	<include file='Widget/sjtop' />
-	<div class="seller_main clearfix" controller="seller/common">
+	<div class="seller_main clearfix" >
 		<div class="seller_content_wrap">
 			<div class="seller_content" style="padding-top: 10px;">
-
 				<div class="content">
-
 					<h1>搜索编辑</h1>
-
-					<div class="p20"></div>
 					<div>
 
 						<form class="form-horizontal jquery-once-1-processed create2-processed ng-scope ng-valid ng-dirty" controller="extend/ajax_form,seller/sousuo_create2,extend/angular" id="yw0" action="#" method="post" novalidate="novalidate">
@@ -177,13 +181,9 @@
 										<li class="active" role="menuitem">
 											<a tabindex="-1" href="javascript:void(0)">关键词</a>
 										</li>
-										<li role="menuitem"><a tabindex="-1" href="{:U('Home/SJActivity/zdysele')}">自定义</a>
-											
+										<li role="menuitem">
+                                            <a tabindex="-1" href="{:U('Home/SJActivity/zdysele')}">自定义</a>
 										</li>
-										<!--<li visible="1" tooltip="手机关键词仅分配手机任务时可使用" role="menuitem" data-original-title="" title=""><a tabindex="-1" href="#">手机关键词</a>
-										</li>
-										<li visible="1" tooltip="手机关键词仅分配手机任务时可用" role="menuitem" data-original-title="" title=""><a tabindex="-1" href="#">手机自定义</a>
-										</li>-->
 									</ul>
 								</div>
 							</div>
@@ -192,57 +192,47 @@
 								<label class="control-label">
 									搜索商品
 								</label>
-
 								<div class="controls">
-
 									<div class="filter-controls pull-left" style="">
-										<form action="" class="addToGroupForm" method="post" style="">
-											<input type="hidden" name="groupid" value="{$groupid}" style="" />
-											<select style="width:465px;padding: 10px 15px;font-size: 15px;" id="user_select2" name="uid" class="form-control">
-												<option></option>
-											</select>
-
-										</form>
+										<select style="width:465px;padding: 10px 15px;font-size: 15px;" id="user_select2" name="uid" class="form-control">
+											<option value="{$search.id}">{$search.title}</option>
+										</select>
 									</div>
 
-									<span class="help-inline">选择需要优化搜索的商品</span> </div>
+									<span class="help-inline">选择需要优化搜索的商品</span>
+                                </div>
+
 							</div>
 
-							<div id="product_base_info" class="" style="margin-top: 15px; margin-left: 103px;">
-								<div url="#">
-									<div class="control-group">
-										<volist name="pros" id="vo">
-											<if condition="$search['pid'] eq $vo['id']">
-											<div class="control-label" style="float: left;">
-												<img class="img" style="height: 140px; width: 120px; float: left;"  src="{$vo['main_img']}" alt="">
-											</div>
-											<div class="controls" style="margin-left: 110px;">
-												<p class="pb10" style="margin-top: 8px;">
-													商品名称 : <font class="font_title">{$vo['title']}</font> </p>
-												<p class="pb10">商品链接 :
-													<input readonly="readonly" style="width:395px" type="text" value="{$vo['link']}" class="input_url">
-												</p>
-												<p>最后更新 : <font class="font_time">{$vo.update_time|date='Y-m-d H:i:s',###}</font>  </p>
-											</div>
-											</if>
-										</volist>
-									</div>
-								</div>
+							<div id="product_base_info" class="am-cf" style="margin-top: 15px;padding-left: 90px;">
+                                <div class="control-label" style="float: left;width:120px;">
+                                    <img class="img" class="am-img-responsive"  src="{$search.main_img}" alt="">
+                                </div>
+                                <div class="controls" style="margin-left: 125px;">
+                                    <p class="pb10" style="margin-top: 8px;">
+                                        商品名称 : <font class="font_title">{$search.title}</font> </p>
+                                    <p class="pb10">商品链接 :
+                                        <input readonly="readonly" style="width:395px" type="text" value="{$search.link}" class="input_url">
+                                    </p>
+                                    <p>最后更新 : <font class="font_time">{$search.update_time|date='Y-m-d H:i:s',###}</font>  </p>
+                                </div>
+
 							</div>
-							<div class="control-group" style="margin-left:103px;">
+							<div class="control-group am-cf am-margin-top-sm" >
+                                <label class="control-label">搜索链接
+                                </label>
 								<div class="controls">
 									<div class="input-append">
-										<label style="float: left;">搜索链接</label>
 										<input style="width:386px; margin-left:20px;" autocomplete="off" ng-model="url" type="text" value="{$search['search_url']}" name="url" id="url" class="ng-valid ng-dirty">
 										<input type="button" class="btn" id="parseBtn" value="解析搜索">
 									</div>
 									<p class="help-block" style="color: red;">如果提示“无法解析此地址”,请更换搜索关键字多次尝试,关键字字数不少于5位</p>
 									<p class="help-block">从淘宝/天猫搜索找到对应商品的搜索页面的链接</p>
 								</div>
-							</div> 
-
+							</div>
 						</form>
 					</div>
+
 					<div id="sousuo_preview">
 						<div>
 							<form class="form-horizontal j_search_form jquery-once-1-processed" controller="extend/ajax_form" id="yw0" action="{:U('Home/SJActivity/save')}" method="post" novalidate="novalidate">
@@ -279,47 +269,48 @@
 											<label class="control-label">搜索结果</label>
 
 											<div class="controls">
+                                                <div class="theme_taobao_item_wrap">
+                                                    <div class="j_taobao_item theme_taobao">
+                                                        <img class="j_main_img img" src="{$search.main_img}" alt="">
+                                                        <div class="row-1">
+                                                        <span class="pull-right">XX人付款</span>
+                                                        <span class="price">
+                                                            <span>¥</span>
+                                                            <span class="j_price">{$search.price}</span>
+                                                        </span>
+                                                        </div>
 
-												<div unselectable="on" onselectstart="return false;">
-													<volist name="pros" id="vo">
-														<if condition="$search['pid'] eq $vo['id']">
-													<div class="theme_taobao_item_wrap">
-														<div class="theme_taobao">
-															
-																
-																<img class="img" src="{$vo['main_img']}" alt="">
-																
-															
-															<div class="row-1">
-																<span class="pull-right">XX人付款</span>
-																<span class="price">
+                                                        <div class="row-2"> <i class="title_msk" style="background: url(__IMG__/title_msk.png) 0 -1px no-repeat;display:block;position:absolute;left:60px"></i>
+                                                           <span class="j_title">{$search.title}</span>
+                                                        </div>
 
-                <span>¥</span> <font class="font_price1">{$vo['price']}</font> </span>
-															</div>
-															<div class="row-2"><i class="title_msk" style="background: url(__IMG__/title_msk.png) 0 -1px no-repeat;display:block;position:absolute;left:60px"></i>
-																<font class="font_title1">{$vo['title']}</font> </div>
-															<div class="row-3">
-																<div class="pull-right">XX XX</div>
-																<i class="goods_store" style="url(__IMG__/goods_store.png) 0 0 no-repeat;vertical-align:middle"></i>
-																<span><font class="font_wangwang">{$aliwawa}</font><i class="ali_wang" style="background: url(__IMG__/ali_wang.png)  0 -2px no-repeat;vertical-align:middle"></i></span>
-															</div>
-															<div class="row-4">
-																<i class="pull-right wangwang" style="background: url(__IMG__/wangwang.png) 0 0px no-repeat;vertical-align:middle"></i> &nbsp;
-															</div>
-														</div>
-													</div>
-													</if>
-													</volist>
-												</div>
+                                                        <div class="row-3">
+                                                            <div class="pull-right">XX XX</div>
+                                                            <i class="goods_store"></i><span>
+                                                            <if condition=" mb_strlen($search['wangwang']) gt 4">
+                                                                {:mb_substr($search['wangwang'],0,1)}
+                                                                <i class="ali_wang" style="width: {:(mb_strlen($search['wangwang'])-4)}em" ></i>
+                                                                {:mb_substr($search['wangwang'],mb_strlen($search['wangwang'])-3,3)}
+                                                                <else/>
+                                                                {:mb_substr($search['wangwang'],0,1)}<i class="ali_wang" style="width: 2em" ></i>
+
+                                                            </if>
+                                                            </span>
+                                                        </div>
+
+                                                        <div class="row-4">
+                                                            <i class="pull-right wangwang"></i>
+                                                            &nbsp;
+                                                        </div>
+                                                    </div>
+                                                </div>
 											</div>
 										</div>
 
 									</div>
 									<div class="control-group">
-										<div id="div_search_result" class="controls">
-
-											<!--<div class="alert alert-warning in fade"><a href="#" class="close" data-dismiss="alert" type="button">×</a></div> -->
-										</div>
+										<div id="div_search_result" >
+                                        </div>
 									</div>
 
 									<div class="form-actions">
@@ -339,5 +330,6 @@
 </block>
 
 <block name="area_footer">
+
 
 </block>

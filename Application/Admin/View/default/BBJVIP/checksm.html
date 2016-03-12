@@ -48,16 +48,17 @@
 					<thead>
 						<tr>
 							<th>
-							</th>
-							<th>
 								用户ID
 							</th>
 							<th>
 								淘宝号
 							</th>
 							<th>
-								时间
+								注册时间
 							</th>
+                            <th>
+                                推荐人
+                            </th>
 							<th>
 								状态
 							</th>
@@ -75,22 +76,37 @@
 							<volist name="list" id="vo">
 									<tr>
 										<td>
-										<td>
 											{$vo.uid}
 										</td>
 										<td>
-											{$vo.taobao_account}
+											<a href="{:U('Admin/BBJVIP/view_user',array('id'=>$vo['uid']))}">
+                                                <empty name="vo['taobao_account']">
+                                                    [无淘宝帐号]
+                                                    <else/>
+                                                    {$vo.taobao_account}
+                                                </empty>
+                                            </a>
 										</td>
-										<td>
-											{$vo.create_time|date='Y-m-d h:i:s',###}
-										</td>
+                                        <td>
+                                            {$vo.create_time|date='Y-m-d h:i:s',###}
+                                        </td>
+                                        <td>
+                                            <empty name="vo['referrer_id']">
+                                                [无推荐人]
+                                                <else/>
+                                                <a href="{:U('Admin/BBJVIP/view_user',array('id'=>$vo['referrer_id']))}">
+                                                    {$vo.referrer_name}
+                                                </a>
+                                            </empty>
+
+                                        </td>
 										<td>
                                             <if condition="$vo['auth_status'] eq 1">已通过</if>
                                             <if condition="$vo['auth_status'] eq 0">待审核</if>
                                             <if condition="$vo['auth_status'] eq 2">被驳回</if>
 										</td>
 										<td>
-											<a href="{:U('Admin/BBJVIP/checksuccess',array('id'=>$vo['uid']))}"  class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>通过</a>
+											<a href="{:U('Admin/BBJVIP/check_user',array('type'=>'0','id'=>$vo['uid']))}"  class="ajax-get btn btn-sm btn-primary"><i class="fa fa-eye"></i>通过</a>
 											<a href="{:U('Admin/BBJVIP/checksb',array('id'=>$vo['uid']))}" class="ajax-get confirm btn btn-sm btn-danger"><i class="fa fa-reply"></i>驳回</a>
 										</td>
 									</tr>

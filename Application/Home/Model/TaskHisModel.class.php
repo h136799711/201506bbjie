@@ -12,32 +12,49 @@ namespace Home\Model;
  * AuthGroupAccessModel 用户组与用户对应表
  */
 class TaskHisModel extends \Think\Model{
-//任务状态 (1:任务进行中,2:已完成 3: 待审核订单 4: 确认还款 5: 挂起中 6.待发货 7. 试民收获 8. 已驳回 9.未开始，0: 放弃｜取消)
-    const DO_STATUS_DOING = 1;
-    const DO_STATUS_DONE = 2;
-    const DO_STATUS_WAIT_CHECK = 3;
-    const DO_STATUS_RETURN_MONEY = 4;
-
-    const DO_STATUS_RESUME = 5;
+//任务状态 ( 2:已完成 3: 待审核订单 4: 确认还款 5: 挂起中 6.待发货 7. 试民收货 8. 已驳回 9.未开始，0: 放弃｜取消)
 
     /**
-     * 待发货
+     * 等待返款
      */
-    const DO_STATUS_WAIT_DELIVER = 6;
+    const DO_STATUS_WAIT_RETURN = 97;
+
     /**
-     * 收货
+     * 已提交订单
      */
-    const DO_STATUS_RECEIVED = 7;
+    const DO_STATUS_SUBMIT_ORDER = 91;
+
     /**
-     * 驳回
+     * 已完成
      */
-    const DO_STATUS_REJECT = 8;
+    const DO_STATUS_DONE = 95;
+
     /**
-     * 未开始
+     * 订单审核通过
      */
-    const DO_STATUS_NOT_START = 9;
+    const DO_STATUS_PASS = 92;
+
+    /**
+     * 订单审核失败
+     */
+    const DO_STATUS_REJECT = 93;
+
+    /**
+     * 未开始、刚领取任务
+     */
+    const DO_STATUS_NOT_START = 90;
+
     /**
      * 放弃 | 取消
      */
-    const DO_STATUS_CANCEL = 0;
+    const DO_STATUS_CANCEL = 96;
+    //合法支付
+    const PAY_TYPE_LEGAL = 101;
+    //信用卡
+    const PAY_TYPE_CREIDT_CARD = 102;
+    //花呗支付
+    const PAY_TYPE_HUABEI = 103;
+    protected $_auto = array(
+        array('update_time', NOW_TIME, self::MODEL_BOTH),
+    );
 }

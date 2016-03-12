@@ -254,6 +254,7 @@ class TaobaoParserLogic implements IParserLogic{
      */
     public function read_detail(){
 
+
         if(empty($this->url)){
             return null;
         }
@@ -266,21 +267,41 @@ class TaobaoParserLogic implements IParserLogic{
             'main_img'=>'',
             'wangwang'=>'',
         );
+
         //旺旺读取正则
         $wangwang_pattern = '/<a class="tb-seller-name" (.*?)>(.*?)<\/a>/is';
         preg_match($wangwang_pattern, $html,$match);
 
         $return_info['wangwang'] = $match[2];
         //主图读取正则
-        $mainimg_pattern = '/<img id="J_ImgBooth"(.*?)data-src="(.*?)"(.*?)>/is';
+        $mainimg_pattern = '/<img id="J_ImgBooth"(.*?)src="(.*?)"(.*?)\/>/is';
 
         preg_match($mainimg_pattern, $html,$match);
         $return_info['main_img'] = $match[2];
         //商品标题读取正则
-        $title_pattern = '/<meta name="keywords" content="(.*?)"(.*?)\/>/is';
+        $title_pattern = '/<title>(.*?)<\/title>/is';
         preg_match($title_pattern, $html,$match);
 
         $return_info['title'] = $match[1];
+
+
+        $title_pattern = '/data-title="(.*?)"/is';
+        preg_match($title_pattern, $html,$match);
+
+        if(count($match) >= 2){
+            $return_info['title'] = $match[1];
+        }
+
+        //商品货号读取正则
+        $match = array();
+        $code_pattern = '/货号:(.*?)<\/li>/is';
+        preg_match($code_pattern, $html,$match);
+
+        if(count($match) >= 2) {
+            $return_info['code'] = trim(trim($match[1]),'&nbsp;');
+        }else{
+            $return_info['code'] = '';
+        }
 
         return $return_info;
     }

@@ -23,7 +23,7 @@
 								用户ID
 							</th>
 							<th>
-								用户昵称
+								用户登录帐号
 							</th>
 							<th>
 								邮箱
@@ -35,10 +35,7 @@
 								VIP等级
 							</th>
 							<th>
-								开通时间
-							</th>
-							<th>
-								开通时长
+								过期时间
 							</th>
 							<th>
 								操作
@@ -46,33 +43,26 @@
 						</tr>
 					</thead>
 					<tbody>
-						<empty name="seller">
+						<empty name="list">
 							<tr>
 								<td colspan="7" class="text-center">{:L('NO_DATA')}</td>
 							</tr>
 							<else/>
-							<volist name="seller" id="vo">
+							<volist name="list" id="vo">
 								<tr>
 									<td>
-										<input type="checkbox" value="{$vo.id}" name="ids[]" class="selectitem" /></td>
+										<input type="checkbox" value="{$vo.uid}" name="ids[]" class="selectitem" /></td>
 									<td>
 										{$vo.uid}
 									</td>
-									
 									<td>
-										<volist name='user' id='v'>
-											<if condition="$vo['uid'] eq $v['id']">{$v.username}</if>
-										</volist>
+                                        <a href="{:U('Admin/BBJVIP/view_user',array('id'=>$vo['uid']))}">{$vo.username}</a>
 									</td>
 									<td>
-										<volist name='user' id='v'>
-											<if condition="$vo['uid'] eq $v['id']">{$v.email}</if>
-										</volist>
+                                        {$vo.email}
 									</td>
 									<td>
-										<volist name='user' id='v'>
-											<if condition="$vo['uid'] eq $v['id']">{$v.mobile}</if>
-										</volist>
+                                        {$vo.mobile}
 									</td>
 									<td>
 										<if condition="$vo['vip_level'] eq 0">普通</if>
@@ -80,26 +70,14 @@
 										<if condition="$vo['vip_level'] eq 2">超级VIP</if>
 									</td>
 									<td>
-										<if condition="$vo['vip_level'] eq 0">
+										<if condition="$vo['vip_expire_time'] eq 0">
 											暂无
 										<else/>
-										
-											{$vo.time|date='Y-m-d h:i:s',###}
-										
+											{$vo.vip_expire_time|date='Y-m-d h:i:s',###}
 										</if>
 									</td>
 									<td>
-										<if condition="$vo['vip_level'] eq 0">
-											暂无
-										<else/>
-										
-											{$vo.text}
-										
-										</if>
-									</td>
-									<td>
-										<!--<a href="{:U('Admin/BBJVIP/changevip',array('id'=>$vo['id']))}"  class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>修改VIP</a>-->
-										<a href="{:U('Admin/BBJVIP/quxiaovip',array('id'=>$vo['id']))}" class="ajax-get confirm btn btn-sm btn-danger"><i class="fa fa-trash"></i>撤销VIP</a>
+										<a href="{:U('Admin/BBJVIP/quxiaovip',array('id'=>$vo['uid']))}" class="ajax-get confirm btn btn-sm btn-danger"><i class="fa fa-trash"></i>撤销VIP</a>
 									</td>
 								</tr>
 

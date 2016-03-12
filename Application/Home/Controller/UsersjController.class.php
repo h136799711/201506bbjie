@@ -12,6 +12,7 @@ use Admin\Model\MsgboxModel;
 use Home\Api\BbjmemberSellerApi;
 use Home\Api\FinAccountBalanceHisApi;
 use Home\Api\FinBankaccountApi;
+use Home\Api\VFinAccountBalanceHisApi;
 use Think\Controller;
 use Home\Api\HomePublicApi;
 
@@ -281,7 +282,7 @@ class UsersjController extends SjController {
         $page = array('curpage' => I('get.p', 0), 'size' => 10);
         $order = "create_time desc";
 
-        $result = apiCall(FinAccountBalanceHisApi::QUERY, array($map, $page,$order));
+        $result = apiCall(VFinAccountBalanceHisApi::QUERY, array($map, $page,$order));
         $this->assign('all',$result['info']['list']);
         $this->assign('show',$result['info']['show']);
 

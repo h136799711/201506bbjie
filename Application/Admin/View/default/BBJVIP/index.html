@@ -59,7 +59,7 @@
                                 凭证
                             </th>
                             <th>
-                                收入,支出
+                                收支
                             </th>
 							<th>
 								时间
@@ -86,12 +86,22 @@
 									<td>
                                         {:getFinaceType($vo['dtree_type'])}
 									</td>
-                                    <td><a href="{$vo.imgurl}" target="_blank" >
-                                        <img src="{$vo.imgurl}" alt="凭证" style="width: 120px;height:60px;" /></a>
+                                    <td>
+                                        <empty name="$vo['imgurl']">
+                                            没有凭证
+                                            <else/>
+                                            <a href="{$vo.imgurl}" target="_blank" >
+                                                <img src="{$vo.imgurl}" alt="凭证" style="width: 120px;height:60px;" />
+                                            </a>
+                                        </empty>
                                     </td>
                                     <td>
-                                        +{$vo.income}，
-                                        -{$vo.defray}
+                                        <if condition="$vo['income'] gt 0">
+                                            +{$vo.income}
+                                        </if>
+                                        <if condition="$vo['defray'] gt 0">
+                                            -{$vo.defray}，
+                                        </if>
                                     </td>
 									<td>
 										{$vo.create_time|date='Y-m-d h:i:s',###}

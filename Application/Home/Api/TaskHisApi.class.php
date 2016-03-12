@@ -42,9 +42,33 @@ class TaskHisApi extends Api{
      * 更新
      */
     const SAVE_BY_ID = "Home/TaskHis/saveByID";
+    /**
+     * 获取需要系统自动取消的任务
+     */
+    const GET_NEED_CANCEL_TASK_HIS = "Home/TaskHis/getNeedCancelTaskHis";
 
 	protected function _init(){
 		$this->model = new TaskHisModel();
 	}
+
+    /**
+     * 获取需要系统自动取消的任务
+     * @param $interval
+     * @param $limit
+     * @return array
+     */
+    public function getNeedCancelTaskHis($interval,$limit){
+
+        $map = array();
+        $map['do_status'] = TaskHisModel::DO_STATUS_NOT_START;
+        $map['get_task_time'] = array('lt',time()-$interval);
+        $result = $this -> model -> where($map)->limit(0,$limit)->select();
+        if($result === false){
+            return $this->apiReturnErr($this->model->getDbError());
+        }
+        return $this->apiReturnSuc($result);
+
+    }
+
 }
 

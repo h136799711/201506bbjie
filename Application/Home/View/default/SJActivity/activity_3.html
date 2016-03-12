@@ -3,38 +3,16 @@
 <block name="area_header">
 	<link rel="stylesheet" href="__CSS__/shangjia.css">
 	<link rel="stylesheet" href="__CSS__/ystep.css">
-	<script>
-		 //根据jQuery选择器找到需要加载ystep的容器
-		 //loadStep 方法可以初始化ystep
-		
-		$(".ystep4").loadStep({
-			size: "large",
-			color: "blue",
-			steps: [{
-				title: "发起",
-				content: "获取淘宝链接"
-			}, {
-				title: "设置",
-				content: "详细设置"
-			}, {
-				title: "募款",
-				content: "乐捐项目上线接受公众募款"
-			}, {
-				title: "执行",
-				content: "项目执行者线下开展救护行动"
-			}, {
-				title: "结项",
-				content: "项目执行者公示善款使用报告"
-			}]
-		});
-		
-		$(".ystep4").setStep(2);
-	</script>
+    <style type="text/css">
+        .am-table>tbody>tr>td{
+            border: 0px;;
+        }
+    </style>
 </block>
 
 <block name="area_body">
 	<include file='Widget/sjtop' />
-	<div class="seller_main clearfix" controller="seller/common">
+	<div class="seller_main clearfix" >
 		<div class="seller_content_wrap">
 			<div class="seller_content" style="padding-top: 10px;">
 
@@ -69,24 +47,24 @@
 								
 								$(".ystep4").setStep(3);
 							</script>
-							<form id="fm" action="{:U('Home/SJActivity/over')}" method="post">
-								<table>
+							<form id="fm" class="over_form" action="{:U('Home/SJActivity/activity_3')}" method="post">
+								<table class="am-table">
 									<tr>
-										<td width="15%" style="text-align:right;padding-top: 20px;">任务名称：</td>
+										<td width="25%" style="text-align:right;padding-top: 20px;">任务名称：</td>
 										<td style="padding-top: 20px;">
-											<input id="taskname" name="taskname" class="am-form-field am-radius" />
+											<input id="taskname" name="task_name" class="am-form-field am-radius" />
 										</td>
 									</tr>
 									<tr>
 										<td style="text-align:right;padding-top: 20px;">聊天暗语：</td>
 										<td style="padding-top: 20px;">
-											<input id="liaotiananyu" name="liaotiantext" class="am-form-field am-radius" placeholder="无须暗语则不填写" />
+											<input id="liaotiananyu" name="chat_argot" class="am-form-field am-radius" placeholder="无须暗语则不填写" />
 										</td>
 									</tr>
 									<tr>
 										<td style="text-align:right;padding-top: 20px;">订单留言：</td>
 										<td style="padding-top: 20px;">
-											<input id="dingdanliuyan" name="dingdantext" placeholder="无须订单留言则不填写" class="am-form-field am-radius" />
+											<input id="dingdanliuyan" name="notes" placeholder="无须订单留言则不填写" class="am-form-field am-radius" />
 										</td>
 									</tr>
 									<volist name='tak' id='vo'>
@@ -98,7 +76,7 @@
 							</form>
 							<center>
 								<button id="up" type="button" class="am-btn am-btn-secondary" style="margin-top: 5px;">上一步</button>
-								<button id="wc" type="button" class="am-btn am-btn-secondary" style="margin-top: 5px;">确认创建</button>
+                                <a target-form="over_form" class="ajax-post am-btn am-btn-sm am-btn-primary" href="{:U('Home/SJActivity/activity_3')}" >确认创建</a>
 							</center>
 						</div>
 

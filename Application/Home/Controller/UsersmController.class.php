@@ -6,13 +6,24 @@
 // | Copyright (c) 2013-2016, http://www.itboye.com. All Rights Reserved.
 // |-----------------------------------------------------------------------------------
 namespace Home\Controller;
+use Admin\Api\DatatreeApi;
+use Admin\Api\MemberApi;
 use Admin\Api\MessageApi;
 use Admin\Api\MsgboxApi;
+use Admin\Model\DatatreeModel;
 use Admin\Model\MsgboxModel;
 use Cms\Api\VPostInfoApi;
+use Home\Api\AddressApi;
 use Home\Api\BbjmemberApi;
+use Home\Api\FinAccountBalanceHisApi;
+use Home\Api\FinBankaccountApi;
+use Home\Api\TaskHisApi;
+use Home\Api\VBbjmemberSellerInfoApi;
 use Home\Api\VMsgInfoApi;
 use Home\Api\VTaskHisInfoApi;
+use Home\Api\VTaskProductInfoApi;
+use Home\Model\FinAccountBalanceHisModel;
+use Home\Model\TaskHisModel;
 use Think\Controller;
 use Home\Api\HomePublicApi;
 use Admin\Api\AdminPublicApi;
@@ -23,10 +34,12 @@ class UsersmController extends HomeController {
 
     public function _initialize(){
         parent::_initialize();
-
+        $this->checkLogin();
         $upload_url = C('SITE_URL').'/index.php/Home/Avatar/upload';
         $this->getLastestNotice();
         $this->not_read_msg_cnt();
+        $this->get_doing_task_cnt();
+
         $this->assign("upload_url",$upload_url);
     }
 
@@ -40,50 +53,19 @@ class UsersmController extends HomeController {
 
 	/*
 	 * 试民资料
-	 *
+	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 * */
 	public function index() {
-		
 
-		$userid = $user['info']['id'];
-		//		dump($userid);
-		$map = array('uid' => $userid, );
-		$result = apiCall(HomePublicApi::Member_Query, array($map));
-		$results = apiCall(HomePublicApi::Bbjmember_Query, array($map));
-		$this -> assign('info', $results['info']);
-		$this -> assign('mum', $result['info'][0]);
-		$this -> assign('cs_xx', 'sed');
-		$this->posts();
-//		dump($result);
+        $result = apiCall(DatatreeApi::QUERY_NO_PAGING,array(array('parentid'=>'46')));
+
+        if($result['status']){
+            $this->assign("job_list",$result['info']);
+        }
 
 		$this -> display('manager_info');
 	}
-	
-	public function email(){
-		$id=I('id',0);
-		$entity=array('email'=>I('email',''));
-//		dump($entity);dump($id);
-		$result=apiCall(HomePublicApi::User_SaveByID, array($id,$entity));
-		if($result['status']){
-			$this->success('修改成功',U('Home/Usersm/sm_aqzx'));
-		}else{
-			$this->error($result['info']);
-		}
-	}
-	/*
-	 * 商家手机绑定
-	 * */
-	public function phone(){
-		$id=I('id',0);
-		$entity=array('mobile'=>I('phone',''));
-//		dump($entity);
-		$result=apiCall(HomePublicApi::User_SaveByID, array($id,$entity));
-		if($result['status']){
-			$this->success('修改成功',U('Home/Usersm/sm_aqzx'));
-		}else{
-			$this->error($result['info']);
-		}
-	}
+
 	/*
 	 * 试民任务设置
 	 * @author 老胖子-何必都 <hebiduhebi@126.com>
@@ -99,42 +81,39 @@ class UsersmController extends HomeController {
 
 	/*
 	 * 试民钱庄
+	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 * */
 	public function sm_bbqz() {
 
+        $this->reloadUserInfo();
 		$this -> assign('head_title', "宝贝街-宝贝钱庄");
 
-		$uid = $user['info']['id'];
+        //获取绑定的提现银行帐号信息
+		$uid = $this->uid;
 		$map = array('uid' => $uid, );
-		$maps = array('uid' => $uid, 'dtree_type'=>3);
-		$info = apiCall(HomePublicApi::FinBankaccount_Query, array($map));
-		$result = apiCall(HomePublicApi::Bbjmember_Query, array($map));
-		$user = apiCall(HomePublicApi::User_GetUser, array($uid));
-		$result1 = apiCall(HomePublicApi::Bbjmember_Query, array($map));
-		$page = array('curpage' => I('get.p', 0), 'size' => 6);
-		$jyjl = apiCall(HomePublicApi::FinAccountBalanceHis_QueryAll, array($map, $page));
-		$jyjls = apiCall(HomePublicApi::FinAccountBalanceHis_QueryAll, array($maps, $page));
-		$all = apiCall(HomePublicApi::FinAccountBalanceHis_Query, array($map));
-		$jilus = $all['info'];
-		foreach ($jilus as $key => $value) {
-			if ($value['dtree_type'] == 3) {
-				$sum += $value['defray'];
-			}
-		}
+        $result = apiCall(FinBankaccountApi::GET_INFO, array($map));
 
-		$this -> assign('jilu', $jyjl['info']['list']);
-		$this -> assign('jilus', $jyjls['info']['list']);
-		$this -> assign('sum', $sum);
-		$this -> assign('show', $jyjl['info']['show']);
-		$this -> assign('shows', $jyjls['info']['show']);
-		if($resulta['info'][0]['auth_status']==1){
-			$this -> assign('email', $user['info']['email']);
-			$this -> assign('phone', $user['info']['mobile']);
-		}
-		$this -> assign('cs_zj', 'sed');
-		$this -> assign('coins', $result['info'][0]['coins']);
-		$this -> assign('frozen_money', $result['info'][0]['frozen_money']);
-		$this -> assign('bank', $info['info'][0]);
+        $this->assign("bank",$result['info']);
+
+        $result = apiCall(DatatreeApi::QUERY_NO_PAGING,array(array('parentid'=>DatatreeModel::BANK_LIST)));
+
+        $this->assign("bank_list",$result['info']);
+
+
+        //收支明细
+
+        $result = apiCall(FinAccountBalanceHisApi::QUERY,array($map));
+
+        $this->assign("detail_list",$result['info']['list']);
+        $this->assign("detail_show",$result['info']['show']);
+
+
+        //提现明细
+        $map['dtree_type'] = FinAccountBalanceHisModel::TYPE_WITHDRAW;
+        $result = apiCall(FinAccountBalanceHisApi::QUERY,array($map));
+
+        $this->assign("withdraw_list",$result['info']['list']);
+        $this->assign("withdraw_show",$result['info']['show']);
 
 
 		$this -> display();
@@ -155,6 +134,7 @@ class UsersmController extends HomeController {
         }
 		
 	}
+
 	/*
 	 * 预定商品
 	 * */
@@ -164,7 +144,6 @@ class UsersmController extends HomeController {
 
 		$this -> assign('username', $user['info']['username']);
 		$this -> assign('cs_yd', 'sed');
-
 
 		$this -> display();
 	}
@@ -188,34 +167,25 @@ class UsersmController extends HomeController {
 	 * 已邀请的小伙伴
 	 * */
 	public function sm_sfkt() {
-		$headtitle = "宝贝街-已邀请的伙伴";
-		$this -> assign('head_title', $headtitle);
 
-		$this -> assign('username', $user['info']['username']);
-		$map=array('referrer_id'=>$user['info']['id']);
+		$this -> assign('head_title', "宝贝街-已邀请的伙伴");
+
+		$map=array('referrer_id'=>$this->uid);
 		$result=apiCall(HomePublicApi::Bbjmember_Query,array($map));
 		$results=apiCall(HomePublicApi::Bbjmember_Seller_Query,array($map));
 		$users=apiCall(HomePublicApi::UcenterUser_Query,array());
 		$this->assign('suser',$result['info']);
 		$this->assign('sjuser',$results['info']);
 		$this->assign('auser',$users['info']);
-		$index=A('Index');
-		$index->getcount();
-		$this->posts();
 		$this -> display();
 	}
 	/*
 	 * 收藏活动
 	 * */
 	public function sm_schd() {
-		$headtitle = "宝贝街-收藏活动";
-		$this -> assign('head_title', $headtitle);
 
-		$this -> assign('cs_sc', 'sed');
-		$this->posts();
-		$index=A('Index');
-		$index->getcount();
-		$this -> assign('username', $user['info']['username']);
+		$this -> assign('head_title', "宝贝街-收藏活动");
+
 		$this -> display();
 		
 	}
@@ -232,75 +202,19 @@ class UsersmController extends HomeController {
 		$this->assign('product',$result['info']);
 		$this->assign('exchange',$re['info']);
 
-		$this -> assign('username', $user['info']['username']);
 		$this -> display();
 	}
-	/*
-	 * 活动
-	 * @author 老胖子-何必都 <hebiduhebi@126.com>
-	 * */
-	public function sm_bbhd() {
 
 
-		$map    = array('uid'=>$this->uid,'do_status'=>1);
-		$page   = array('curpage' => I('get.p', 0), 'size' => 5);
-		$result = apiCall(VTaskHisInfoApi::QUERY,array($map,$page));
-
-        $his_list = $result['info']['list'];
-		for ($i = 0; $i < count($his_list); $i++) {
-
-			$id = $his_list[$i]['task_id'];
-			$map = array('task_id' => $id);
-            $result = apiCall(VTaskHisInfoApi::GET_INFO, array($map));
-            $his_list[$i]['hasList']= $result['info'];
-
-		}
-
-		$this->assign('his_list',$his_list);
-		$this->assign('show',$result['info']['show']);
-
-		$this -> display();
-	}
-	/*
-	 * 试民安全资料认证
-	 * */
-	public function sm_aqzx() {
-		$headtitle = "宝贝街-安全中心";
-		$this -> assign('head_title', $headtitle);
-
-		$this->posts();
-		$this -> assign('username', $user['info']['username']);
-		$this -> assign('phone', $user['info']['mobile']);
-		$this -> assign('email', $user['info']['email']);
-		$this->assign('user',$user['info']);
-		$this -> assign('cs_aq', 'sed');
-
-		$this -> display();
-	}
 	/*
 	 * 幸福一点
 	 * */
 	public function sm_xfyd() {
-		$headtitle = "宝贝街-幸福一点";
-		$this -> assign('head_title', $headtitle);
+		$this -> assign('head_title', "宝贝街-幸福一点");
 
-
-		$this -> assign('cs_xf', 'sed');
-		$this -> assign('username', $user['info']['username']);
 		$this -> display();
 	}
-	/*
-	 * 勋章管理
-	 * */
-	public function sm_xzgl() {
-		$headtitle = "宝贝街-勋章管理";
-		$this -> assign('head_title', $headtitle);
 
-
-		$this -> assign('cs_xz', 'sed');
-		$this -> assign('username', $user['info']['username']);
-		$this -> display();
-	}
 	/*
 	 * 站内消息
 	 * @author 老胖子-何必都 <hebiduhebi@126.com>
@@ -339,53 +253,66 @@ class UsersmController extends HomeController {
 		$this->assign("msg",$result['info']);
 		$this->display();
 	}
+
 	/*
 	 * 试民添加银行卡信息
+	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 * */
 	public function addbank() {
-		$pwd = I('pwd', '');
+		$pwd = I('post.pwd', '');
 
 		$uid = $this->uid;
-		//think_ucenter_md5($password, UC_AUTH_KEY)
-		$result = apiCall(HomePublicApi::User_GetbyID, array($uid));
-		$password = $result['info']['password'];
+
+		$password = $this->userinfo['password'];
 		$pp = think_ucenter_md5($pwd, UC_AUTH_KEY);
 		if ($password == $pp) {
 			$entity = array('uid' => $this->uid, 'bank_name' => I('bank', ''), 'bank_account' => I('bank_num', ''), 'create_time' => time(), 'status' => 0, 'notes' => '', 'cardholder' => I('name', ''), 'province' => I('sheng', ''), 'city' => I('shi', ''), );
 			$map = array('uid' => $this->uid, );
-			$info = apiCall(HomePublicApi::FinBankaccount_Query, array($map));
-			if ($info['info'] == null) {
-				$add = apiCall(HomePublicApi::FinBankaccount_Add, array($entity));
+			$result = apiCall(FinBankaccountApi::GET_INFO, array($map));
+			if ($result['info'] == null) {
+				$add = apiCall(FinBankaccountApi::ADD, array($entity));
 				$this -> success('绑定成功', U('Home/Usersm/sm_bbqz'));
 			} else {
-				$id = $info['info'][0]['id'];
-				$update = apiCall(HomePublicApi::FinBankaccount_SaveByID, array($id, $entity));
+				$id = $result['info']['id'];
+				$update = apiCall(FinBankaccountApi::SAVE_BY_ID, array($id, $entity));
 				$this -> success('修改成功', U('Home/Usersm/sm_bbqz'));
 			}
 		} else {
 			$this -> error('登录密码错误！', U('Home/Usersm/sm_bbqz'));
 		}
 	}
+
 	/*
 	 * 试民收货地址管理
+	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 * */
 	public function address() {
 
 		if (IS_GET) {
-			$headtitle = "宝贝街-收货地址";
-			$this -> assign('head_title', $headtitle);
-			$this -> assign('username', $user['info']['username']);
 
+			$this -> assign('head_title', "宝贝街-收货地址");
 			$uid = $this->uid;
 			$map = array('uid' => $uid, );
-			$result = apiCall(HomePublicApi::Address_Query, array($map));
-			$this -> assign('address', $result['info']);
-			$this->posts();
-			$this -> assign('cs_dz', 'sed');
+			$result = apiCall(AddressApi::QUERY, array($map));
+
+            $this -> assign('list', $result['info']['list']);
+            $this -> assign('show', $result['info']['show']);
+
 			$this -> display('manager_address');
 		} else {
-			$ars = array('uid' => $this->uid, 'country' => "中国", 'province' => I('sheng'), 'city' => I('shi'), 'area' => I('qu'), 'detail' => I('address', ''), 'contact_name' => I('name', ''), 'mobile' => I('mobile', ''), 'telphone' => I('phone', ''), 'post_code' => I('yb', ''), 'create_time' => time(), );
-			$result = apiCall(HomePublicApi::Address_Add, array($ars));
+			$entity = array(
+                'uid' => $this->uid,
+                'country' => "中国",
+                'province' => I('post.province',''),
+                'city' => I('post.city',''),
+                'area' => I('post.area',''),
+                'detail' => I('post.address', ''),
+                'contact_name' => I('post.name', ''),
+                'mobile' => I('post.mobile', ''),
+                'telphone' => I('post.phone', ''),
+                'post_code' => I('post.yb', ''),
+                'create_time' => time(), );
+			$result = apiCall(AddressApi::ADD, array($entity));
 
 			if ($result['status']) {
 				$this -> success("操作成功！", U('Home/Usersm/address'));
@@ -393,72 +320,103 @@ class UsersmController extends HomeController {
 		}
 
 	}
-	
-	 
 	/*
-	 * 试民资料添加
+	 * 试民资料添加/更新
+	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 * */
-	public function add() {
+	public function update() {
 
 		$id = $this->uid;
-		$year = I('year', 0);
-		$month = I('month', 0);
-		$day = I('day', 0);
-		$bir = $year . '-' . $month . '-' . $day;
-		//		dump($bir);
-		$sm = array('birthday' => $bir, 'sex' => I('sex', 0), 'qq' => I('qq', '1'), 'realname' => I('realname', ''), );
-		$sheng = I('sheng');
-		$shi = I('shi');
-		$qu = I('qu', '');
-		$smm = array('dtree_job' => I('zhiye', ''), 'personal_signature' => I('grqm', ''), 'brief_introduction' => I('grjj', ''), 'address' => $sheng . $shi . $qu . I('address', ''), );
-//		dump($smm);
-		$result = apiCall(HomePublicApi::Member_SaveByID, array($id, $sm));
+
+
+		$sm = array(
+            'sex' => I('post.sex', 0),
+            'qq' => I('post.qq', '1'),
+            'realname' => I('post.realname', ''),
+            );
+
+		$result = apiCall(MemberApi::SAVE_BY_ID, array($id, $sm));
 		if ($result['status']) {
-			$results = apiCall(HomePublicApi::Bbjmember_SaveByID, array($id, $smm));
-			if ($results['status']) {
-				$this -> success("操作成功！", U('Home/Usersm/index'));
-			}
+
+            $entity = array(
+                'dtree_job'=>I('post.job',''),
+                'personal_signature'=>I('post.personal_signature',''),
+                'brief_introduction'=>I('post.brief_introduction',''),
+                'contact_tel'=>I('post.tel',''),
+            );
+            $result = apiCall(BbjmemberApi::SAVE_BY_ID,array($id,$entity));
+
+            if ($result['status']) {
+                $this->reloadUserInfo();
+                $this->success("操作成功！", U('Home/Usersm/index'));
+            }
 		}
+
+        $this->error("操作失败!");
 	}
 	/*
 	 * 试民收货地址修改
+	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 * */
 	public function edit() {
+
+        $id = I('get.id',0);
+
 		if (IS_GET) {
 
-			$id = I('id');
-			$map = array('id' => $id, );
-			$uid = $this->uid;
-			$map1 = array('uid' => $uid, );
-			$result1 = apiCall(HomePublicApi::Address_Query, array($map1));
-			//			dump($result);
-			$this -> assign('address', $result1['info']);
-			$result = apiCall(HomePublicApi::Address_Query, array($map));
-			$this -> assign('addres', $result['info']);
+
+            $map = array('uid' => $this->uid);
+            $result = apiCall(AddressApi::QUERY, array($map));
+
+            $this -> assign('list', $result['info']['list']);
+            $this -> assign('show', $result['info']['show']);
+
+			$result = apiCall(AddressApi::GET_INFO, array(array('id'=>$id)));
+
+            if($result['status']){
+                $this->assign("address",$result['info']);
+            }
+
 			$this -> display('manager_edit');
 		} else {
-			$id = I('id', 0);
-			$ars = array('country' => "中国", 'province' => I('sheng'), 'city' => I('shi'), 'area' => I('qu'), 'detail' => I('address', ''), 'contact_name' => I('name', ''), 'mobile' => I('mobile', ''), 'telphone' => I('phone', ''), 'post_code' => I('yb', ''), );
-			$result = apiCall(HomePublicApi::Address_SaveByID, array($id, $ars));
 
-			if ($result['status']) {
-				$this -> success("修改成功！", U('Home/Usersm/address'));
-			}
+            $entity = array(
+                'country' => "中国",
+                'province' => I('post.province',''),
+                'city' => I('post.city',''),
+                'area' => I('post.area',''),
+                'detail' => I('post.address', ''),
+                'contact_name' => I('post.name', ''),
+                'mobile' => I('post.mobile', ''),
+                'telphone' => I('post.phone', ''),
+                'post_code' => I('post.yb', '')
+            );
+
+            $result = apiCall(AddressApi::SAVE_BY_ID, array($id,$entity));
+
+            if ($result['status']) {
+                $this -> success("操作成功！", U('Home/Usersm/address'));
+            }else{
+                $this -> error("操作失败! ");
+            }
 		}
 
 	}
 	/*
 	 * 试民收货地址删除
+	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 * */
 	public function del() {
 
-		$id = I('id');
+		$id = I('get.id');
 		$map = array('id' => $id, );
-		//		dump($map);
-		$result = apiCall(HomePublicApi::Address_Del, array($map));
-		$this -> success("删除成功！", U('Home/Usersm/address'));
-	}
-	
+		$result = apiCall(AddressApi::DELETE, array($map));
+        if($result['status']){
+		    $this -> success("删除成功！", U('Home/Usersm/address'));
+	    }else{
+            $this->error($result['info']);
+        }
+    }
 	/*
 	 * 计时器改变任务状态
 	 * */
@@ -470,6 +428,23 @@ class UsersmController extends HomeController {
 			$this->success('时间超时，由系统取消',U('Home/Usersm/sm_bbhd'));
 		}
 	}
+
+    /**
+     * 获取试民正在进行的任务数
+     * @author 老胖子-何必都 <hebiduhebi@126.com>
+     */
+    private function get_doing_task_cnt(){
+
+        $map = array('uid'=>$this->uid);
+        $map['do_status'] = array('not in',array(TaskHisModel::DO_STATUS_CANCEL,TaskHisModel::DO_STATUS_DONE));
+        $result = apiCall(TaskHisApi::COUNT,array($map));
+        if($result['status']){
+            $this->assign('doing_task',$result['info']);
+        }else{
+            $this->assign('doing_task',0);
+        }
+    }
+
 
     /**
      * 未读消息

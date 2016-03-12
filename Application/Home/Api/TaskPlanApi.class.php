@@ -11,7 +11,14 @@ use \Home\Model\TaskPlanModel;
 
 class TaskPlanApi extends Api{
 
-
+    /**
+     * 增
+     */
+    const SET_INC = "Home/TaskPlan/setInc";
+    /**
+     * 减
+     */
+    const SET_DEC = "Home/TaskPlan/setDec";
     /**
      * 求和
      */
@@ -38,9 +45,10 @@ class TaskPlanApi extends Api{
     const QUERY = "Home/TaskPlan/query";
 
     /**
-     * 获取用户信息
+     * 获取一条信息
      */
     const GET_INFO = "Home/TaskPlan/getInfo";
+
 
     /**
      * 更新

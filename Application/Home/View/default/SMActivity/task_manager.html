@@ -1,0 +1,200 @@
+<extend name="template/base_index" >
+
+<block name="area_header">
+    <link rel="stylesheet" href="__CSS__/manager.css" />
+    <style type="text/css">
+        #b,#d,#c{color: orangered;}
+    </style>
+</block>
+
+<block name="area_body">
+    <div class="div_all">
+        <include file="Widget/top_left" />
+        <div class="div_right">
+
+            <div class="div_minTitle">
+                <h3>宝贝活动</h3>
+            </div>
+            <div class="div_minContent" style="padding: 20px;">
+
+                <table style="border-top: 1px solid #ccc; width: 1100px; margin-top: 9px;">
+                    <thead>
+                    <tr>
+                        <td colspan="6" style=" height: 120px; ">
+                            <!--<form class="am-form-inline" action="{:U('Home/SMActivity/chazhao')}" method="post" style="float: left;">-->
+                                <!--<div class="am-form-group">-->
+                                    <!--<input name="txt" class="am-form-field am-form-field-sm am-radius" placeholder="请输入订单编号" />-->
+                                <!--</div>-->
+                                <!--<button type="submit" class="am-btn am-btn-sm am-btn-primary am-radius" >搜索</button>-->
+                            <!--</form>-->
+
+								<span class="am-text-sm" style="margin-left: 20px;">
+									<a href="{:U('Home/SMActivity/task_manager',array('do_status'=>'doing'))}" <eq name="status" value="doing">style="color: red;"<else/>style="color: #999;"</eq> >进行中任务</a>
+                                    <a <eq name="status" value="reject">style="color: red;" <else/> style="color: #999;" </eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'reject'))}" >被驳回<font color="red">{$bh}</font></a>
+                                    <a <eq name="status" value="submit">style="color: red;" <else/> style="color: #999;" </eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'submit'))}" >等待审核<font color="red">{$sh}</font></a>
+                                    <a <eq name="status" value="pass">style="color: red;" <else/> style="color: #999;" </eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'pass'))}" >待确认收货<font color="red">{$qrsh}</font></a>
+                                    <a <eq name="status" value="wait_return">style="color: red;" <else/> style="color: #999;" </eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'wait_return'))}" >等待返款<font color="red">{$fk}</font></a>
+                                    <a <eq name="status" value="cancel">style="color: red;" <else/> style="color: #999;" </eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'cancel'))}" >取消/放弃</a><font color="red">{$qx}</font></a>
+								</span>
+
+                        </td>
+                    </tr>
+                    <tr style="border: 1px solid #ccc; background: #F5F5F5; height: 37px;">
+                        <td style="padding-left: 20px;">换宝信息</td>
+                        <!--<td>额外奖励</td>-->
+                        <td>任务金额</td>
+                        <td>淘宝帐号/订单号</td>
+                        <td>任务步骤</td>
+                        <td>操作</td>
+                    </tr>
+                    <tr style=" height: 5px;">
+                        <td colspan="6"></td>
+
+                    </tr>
+                    </thead>
+
+                    <tbody style="font-size: 12px;">
+
+                    <volist name="his_list" id="vo">
+                        <input type="hidden" name="" id="thid" value="{$vo['id']}" />
+
+                        <tr style="border: 1px solid #ccc; background: #F5F5F5; height: 37px;">
+                            <td style="padding-left: 20px;" colspan="6">
+                                编号:{$vo.id} 时间:{$vo['get_task_time']|date='Y-m-d H:i',###} 商家:{$vo['_seller']['store_name']}</td>
+                        </tr>
+                        <tr style="border: 1px solid #ccc; height:100px; background:white;">
+                            <td>
+                                <volist name="vo._products" id="p" >
+                                   <img src="{$p.main_img}" style="float: left; height: 50px; width: 70px; margin-left: 10px;" />
+                                </volist>
+                                <div style="margin-left:90px;">
+                                    <span class="am-text-danger"> + {$vo['coin']} </span> 福币<br />
+
+                                </div>
+                            </td>
+                            <!--<td>-->
+                                <!--小额任务:-->
+                                <!--<span class="am-text-danger">+{$vo['coin']}</span>-->
+                                <!--福币-->
+                            <!--</td>-->
+                            <td>
+                                <empty name="$vo['tb_orderid']">
+                                    <a target="_blank" style="color: blue;" class="" href="{:U('Home/SMActivity/rws',array('id'=>$vo['id']))}">任务书</a>
+                                    <else/>
+                                    <span class="am-text-danger">请点击确认提交任务</span>
+                                </empty>
+                                <br />
+                                <font color="red">
+                                    ￥<if condition="$vo['tb_price'] eq 0.00">
+                                    {$vo.task_gold}
+                                    <else/>
+                                    {$vo['tb_price']}
+                                </if>
+                                </font>
+                            </td>
+                            <td>
+                                旺旺名：{$user.taobao_account}
+                                <br /> 订单：<empty name="vo['tb_orderid']">-<else/>{$vo.tb_orderid}</empty>
+                                <br /> 返款：
+                                <if condition="$vo['tb_price'] gt 0">{$vo.tb_price}
+                                    <else/>
+                                    -
+                                </if>
+                            </td>
+                            <td>
+                                <input type="hidden" value="{$vo.id}">
+                                <input type="hidden" id="tpid" value="{$vo.tpid}">
+
+                                <if condition="$vo['do_status'] eq $status_not_start">
+                                    订单未提交：<span class="js_countdownwn"  data-until="{$vo['get_task_time'] + 24*3600}"></span>
+                                    <br/>
+                                    <empty name="vo['tb_orderid']">
+                                        <a  class="btn-fix-am am-btn-danger btn-fix-am ajax-get confirm" href="{:U('Home/SMActivity/qxtask',array('task_id'=>$vo['task_id'],'id'=>$vo['id'],'tpid'=>$vo['tpid']))} ">放弃任务</a>
+                                    </empty>
+
+                                    <else/>
+                                    {$vo.do_status_name}
+                                </if>
+
+
+                            </td>
+                            <td>
+                                <a  target="_blank" href="{:U('Home/SMActivity/rws',array('id'=>$vo['id']))}" class="btn-fix-am am-btn am-btn-sm am-btn-primary btn-fix-am">开始任务</a>
+                                <a href="javascript:void(0);" data-href="{:U('Home/TaskLog/view',array('task_his_id'=>$vo['id']))}" class="j_view_log btn-fix-am am-margin-left-sm am-btn am-btn-sm am-btn-default btn-fix-am">淘宝日志</a>
+                            </td>
+                        </tr>
+
+                    </volist>
+
+                    </tbody>
+                </table>
+                <div class="div_tishi" style=" height: 180px;">
+                    <ul>
+                        <li style="font-size:16px; font-weight: bold;color: black;">温馨提示：</li>
+                        <li>1:在与商家旺旺聊天时，请勿使用”试用“、“换宝”、“还款”等字眼！！！</li>
+                        <li>2:请严格按照任务书要求做任务，收到货后请先在淘宝平台对您提交的订单进行确认收货并5分好评哦！！！</li>
+                        <li>3:任务过程中有任务问题（包括但不限于返款问题）请联系宝贝街客服进行处理，勿在旺旺上催促商家审核订单、确认返款！！！</li>
+                        <li>4:在淘宝上下单时，请一定要用在本站申请活动的时候提交的淘宝帐号下单哦！！！</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="am-modal am-modal-alert" tabindex="-1" id="j_task_log_modal">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd am-text-left">#日志查看# <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a></div>
+            <div class="am-modal-bd">
+                <i class="am-icon-spinner am-icon-spin j_loading"></i>
+                <div class="j_content"></div>
+            </div>
+        </div>
+    </div>
+
+
+</block>
+
+<block name="area_footer">
+    <script type="text/javascript" src="__CDN__/sco1.0.2-8/js/sco.countdown.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            $(".js_countdownwn").each(function(index,item){
+                var thid = $('#thid').val();
+                var until = $(item).data("until");
+                until = parseInt(until);
+                thid = parseInt(thid);
+                $(item).scojs_countdown({until: until,id:thid});
+                if($('.js_countdownwn').text() ==null ||$('.js_countdownwn').text()==''){
+                    $('.js_countdownwn').text('已超时！！');
+                    $('.task_status').css('color','red');
+                    $('#anm1,#anm2,#anm3,#anm4').hide();
+                }else{
+                    $('.task_status').css('color','green');
+                    $('#anm1,#anm2,#anm3,#anm4').show();
+                }
+
+            });
+
+            $('.j_view_log').each(function(index,item) {
+                $(item).click(function(ev){
+                    $("#j_task_log_modal").find(".j_loading").show();
+                    $('#j_task_log_modal').modal({width:720,height:480});
+                    var url = $(ev.target).data("href");
+                    $.get(url, function(result){
+//                        console.log(result);
+                        $("#j_task_log_modal").find(".j_loading").hide();
+                        $("#j_task_log_modal").find(".j_content").html(result);
+
+                    }, 'html');
+
+                });
+
+            });
+
+
+        });
+    </script>
+
+
+
+</block>

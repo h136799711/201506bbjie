@@ -2,6 +2,9 @@
 <block name="area_header">
 	<link rel="stylesheet" href="__CSS__/shangjia2.css">
 	<style type="text/css">
+        .am-popover{
+         font-size: 12px;
+        }
 		.show img {
 			width: 80px;
 			height: 80px;
@@ -135,23 +138,26 @@
 														</a>
 													</td>
 													<td>
-														关键词
+														{$vo.type_name}
 													</td>
 
-													<td>
-														<if condition="$vo['status'] eq 1">正常</if>
+													<td class="am-cf ">
+														<if condition="$vo['status'] eq 1">启用</if>
 														<if condition="$vo['status'] eq 0">暂停</if>
                                                         <if condition="$vo['status'] eq 2">审核中</if>
                                                         <if condition="$vo['status'] eq 3">已驳回</if>
+                                                        <if condition=" (time() - $vo['update_time']) gt $expire_time ">
+                                                            <div  class="am-text-danger am-text-xs ">
+                                                                <small title="不影响已分配任务，但不能分配给新任务">已过期</small>
+                                                            </div>
+                                                        </if>
 													</td>
 
 													<td>
 														<if condition="$vo['status'] eq 1">
-															<span class="js_countdownwn" data-until="{$vo['update_time'] +5*24*3600}"></span>
+                                                            {:date('Y-m-d H:i',$vo['update_time'])}
 														</if>
-														<if condition="$vo['status'] eq 0">
-															不可用
-														</if>
+
                                                         <if condition="$vo['status'] eq 2">
                                                             正在审核
                                                         </if>
@@ -161,18 +167,18 @@
 													</td>
 													<td>
 														<if condition="$vo['status'] eq 1">
-															<a tooltip="暂停" class="btn btn-mini" href="{:U('Home/SJActivity/ztsele',array('id'=>$a['id']))}">暂停</a>
-															<a tooltip="更新" class="btn btn-mini" href="{:U('Home/SJActivity/edit_search',array('id'=>$a['id']))}">更新</a>
+															<a tooltip="暂停" class="btn btn-mini ajax-get" href="{:U('Home/SJActivity/ztsele',array('id'=>$vo['id']))}">暂停</a>
+															<a tooltip="更新" class="btn btn-mini" href="{:U('Home/SJActivity/edit_search',array('id'=>$vo['id']))}">更新</a>
 														</if>
 														<if condition="$vo['status'] eq 0">
-															<a tooltip="开启" modal-title="" visible="1" class="btn btn-mini" href="{:U('Home/SJActivity/startsele',array('id'=>$a['id']))}">开启</a>
+															<a tooltip="开启" modal-title="" visible="1" class="btn btn-mini  ajax-get" href="{:U('Home/SJActivity/startsele',array('id'=>$vo['id']))}">开启</a>
 
 														</if>
                                                         <if condition="$vo['status'] eq 2">
                                                             等待管理员审核
                                                         </if>
                                                         <if condition="$vo['status'] eq 3">
-                                                            <a tooltip="更新" class="btn btn-mini" href="{:U('Home/SJActivity/edit_search',array('id'=>$a['id']))}">重新更新</a>
+                                                            <a tooltip="更新" class="btn btn-mini" href="{:U('Home/SJActivity/edit_search',array('id'=>$vo['id']))}">重新更新</a>
                                                         </if>
 													</td>
 												</tr>
@@ -213,7 +219,7 @@
 		    	thid = parseInt(thid);
 		    	$(item).scojs_countdown({until: until,id:thid});
 		    	if($(item).text()==null || $(item).text()==''){
-		    		$('.js_countdownwn').text('已过期');
+//		    		$('.js_countdownwn').text('很久以前');
 		    	}
 		    });
 		  

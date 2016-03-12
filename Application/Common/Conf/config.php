@@ -2,7 +2,10 @@
 /**
  * (c) Copyright 2014 hebidu. All Rights Reserved. 
  */
- 
+
+
+define('VIRTUAL_CURRENCY','元宝');//虚拟货币的单位
+define('VIRTUAL_RATE',4);//对1元人民币的汇率
 
 return array(
 
@@ -26,12 +29,12 @@ return array(
 	// 程序版本
 	// DONE:移到数据库中
 	// 显示运行时间
-//	'SHOW_RUN_TIME'=>true,
+	'SHOW_RUN_TIME'=>true,
 //	'SHOW_ADV_TIME'=>true,
 	// 显示数据库操作次数
 	'SHOW_DB_TIMES'=>true,
 	// 显示操作缓存次数
-//	'SHOW_CACHE_TIMES'=>true,
+	'SHOW_CACHE_TIMES'=>true,
 	// 显示使用内存
 //	'SHOW_USE_MEM'=>true,
 	// 显示调用函数次数

@@ -361,7 +361,7 @@ abstract class Api {
 			$query = $query->field($fields);
 		}
 		$list = $query -> page($page['curpage'] . ',' . $page['size']) -> select();
-		
+
 
 		if ($list === false) {
 			$error = $this -> model -> getDbError();

@@ -10,6 +10,12 @@ namespace Admin\Model;
 use Think\Model;
 
 class DatatreeModel extends Model{
+
+    /**
+     * 银行列表
+     */
+    const BANK_LIST = "51";
+
 	
 	protected $tablePrefix = 'common_';
 	 

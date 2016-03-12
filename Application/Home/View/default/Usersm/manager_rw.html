@@ -50,11 +50,11 @@
 
                         <div class="am-form-group">
                             日任务金额
-                            <input id="tmoney" name="tmoney" class="am-form-field" />
+                            <input id="tmoney" name="tmoney" value="{$user.daily_task_money}" class="am-form-field am-padding-xs" />
                             元
                         </div>
 
-                        <a target-form="tkform" href="{:U('Home/SMActivity/taskmoney')}" class="ajax-post am-btn am-btn-sm am-btn-primary">确认修改</a>
+                        <a target-form="tkform" href="{:U('Home/SMActivity/taskmoney')}" class="btn-fix-am ajax-post am-btn am-btn-sm am-btn-primary">确认修改</a>
 
                     </form>
 				</div>
@@ -81,10 +81,10 @@
 
                         <div class="am-form-group">
                             淘宝账号
-                            <input name="taobao" class="am-form-field" />
+                            <input name="taobao" value="{$user.taobao_account}" class="am-form-field am-padding-xs" />
                         </div>
 
-                        <a target-form="tbform" href="{:U('Home/SMActivity/settaobao')}" class="ajax-post am-btn am-btn-sm am-btn-primary">确认修改</a>
+                        <a target-form="tbform" href="{:U('Home/SMActivity/settaobao')}" class="btn-fix-am ajax-post am-btn am-btn-sm am-btn-primary">确认修改</a>
 
 					</form>
 				</div>

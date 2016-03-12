@@ -47,3 +47,14 @@ color:#333333;
 
 .main{width: 500px; margin: 200px auto}
 .main select{margin-left: 50px;width: 130px; }
+.btn-fix-am{
+    padding: 4px 5px;
+    border-radius: 3px;
+    font-size: 12px;
+}
+#j_task_log_modal .j_content{
+    background: #eee;
+}
+#j_task_log_modal,#j_task_log_modal .am-modal-dialog{
+    background: #FFFFFF;
+}

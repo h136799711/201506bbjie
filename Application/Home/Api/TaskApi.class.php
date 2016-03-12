@@ -11,7 +11,8 @@ use \Home\Model\TaskModel;
 
 class TaskApi extends Api{
 
-
+    const SET_DESC = "Home/Task/setDec";
+    const SET_INC = "Home/Task/setInc";
     /**
      * 新增
      */

@@ -3,12 +3,59 @@
 <block name="area_header">
 	<link rel="stylesheet" href="__CSS__/shangjia.css">
 	<link rel="stylesheet" href="__CSS__/rws.css">
+    <style type="text/css">
+        .info_seller{
+            background: url(__IMG__/rws-fixed.png);
+            position: fixed;
+            right: 10px;
+            width: 275px;
+            height: 240px;
+            z-index: 100;
+            top: 100px;
+        }
+        .info_seller .contact_name{
+            width: 160px;
+            margin: 0 auto;
+            text-align: center;
+            margin-top: 30px;
+        }
+        .info_seller .contact_qq{
+            width: 160px;
+            margin: 0 auto;
+            text-align: center;
+            margin-top: 8px;
+        }
+
+        .info_seller .contact_tel{
+            width: 160px;
+            margin: 0 auto;
+            text-align: center;
+            margin-top: 8px;
+        }
+        .info_seller .faq{
+            margin-top: 60px;
+            text-align: center;
+            font-size: 12px;
+        }
+    </style>
 </block>
 
 <block name="area_body">
-	<div controller="person/common">
+	<div >
+        <div class="info_seller">
+            <p class="faq">（请使用以下联系方式联系商家)</p>
+            <p class="contact_name am-text-warning">
+                商家联系人：{$seller.task_linkman}
+            </p>
+            <p class="contact_qq am-text-warning">
+                QQ：{$seller.task_linkman_qq}
+            </p>
+            <p class="contact_tel am-text-warning">
+                电话：{$seller.task_linkman_tel}
+            </p>
+        </div>
+		<div class="renwu3-processed">
 
-		<div controller="person/renwu3" class="renwu3-processed">
 			<div class="head_wrap clearfix">
 				<div class="renwu_head">
 
@@ -29,12 +76,10 @@
 								进店流程概述：
 								<br> 1、清除浏览器cookies，使用淘宝号“
 								<em>{$user.taobao_account}</em>”登录淘宝；<span class="tishi">如何清除cookie？ <span class="tip"></span></span>
-								<br> 2、搜索关键字“
-								<volist name="pd" id="v">
-								<em>{$v['info'][0]['title']}</em>”，并按筛选要求缩小搜索范围；
-								</volist>
-								<br> 3、Ctrl+F“
-								<em>{$pds.aliwawa}</em>”核对店铺旺旺；
+								<br> 2、搜索关键字"
+								<em>{$task_info.search_q}</em>"，并按筛选要求缩小搜索范围；
+								<br> 3、Ctrl+F"
+								<em>{$seller.aliwawa}</em>"核对店铺旺旺；
 								<br> 4、货比三家后，进入店铺；
 								<br> 5、多点开几款宝贝浏览，并
 								<em>收藏</em>宝贝；
@@ -281,7 +326,6 @@
 																</label>
 																</p>
 
-															</script>
 
 															<div class="control-group">
 																<label class="control-label" for="zhifu_price">订单支付金额：</label>
@@ -337,7 +381,7 @@
 															</div>
 
 															<div class="control-group">
-																<label style="margin-right:20px;" class="control-label" for="check_fb">我的试福选择：</label><br>
+																<label style="margin-right:20px;" class="control-label" for="check_fb">我的换宝选择：</label><br>
 																<div class="controls"><span id="check_fb"><label class="radio"><input value="2" id="check_fb_0" checked="checked" type="radio" name="check_fb"> 我要福币<i class="mjz">(8福币+精美小礼品)</i></label> </div>
 															</div>
 															
@@ -406,19 +450,22 @@
 													<div class="sp sp_shifu">
 														<div class="img">
 															<img src="__IMG__/zhijing.jpg" alt=""> </div>
-														<div class="xuanze"><i></i>已选择福币，包裹里还有小惊喜，一定要签收呦~</div>
+														<div class="xuanze">
+                                                            <i></i>已选择福币，包裹里还有小惊喜，一定要签收呦~
+                                                        </div>
 													</div>
 													</if>
 													<div class="sp sp_shifu hide" id="shifu_goods">
 														<div class="old">
 															<a href="" target="_blank" class="img">
 																<i></i>
-																<img src="__IMG__/shiyong_default.jpg" alt=""> </a>
+                                                            </a>
 															<p>
 																<a target="_blank" href=""></a>
 															</p>
 														</div>
 													</div>
+
 												</div>
 											</td>
 										</tr>

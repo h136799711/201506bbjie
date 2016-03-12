@@ -7,32 +7,25 @@
 	<link href="__CDN__/select2/3.5.2/select2.css" rel="stylesheet" />
 	<link rel="stylesheet" href="__CSS__/manager.css" />
 	<script type="text/javascript">
-		$(function(){
-				$('#loc_province').change(function(){
-					var sheng=$('#loc_province option:selected').text();
-					$('.sheng').val(sheng);
-				})
-				$('#loc_city').change(function(){
-					var shi=$('#loc_city option:selected').text();
-					$('.shi').val(shi);
-				})
-				$('#loc_town').change(function() {
-				//$('input[@name=location_id]').val($(this).val());
-				var qu=$('#loc_town option:selected').text();
-							//var qu=$('#loc_town').select2('data').text
-							//alert(qu);
-				$('.qi').val(qu);
-		
-				})
-				
-			})
-		
-		
-		function del(url){
-			if(confirm("你确定要删除吗？")){
-				window.location.href=url;
-			}
-		}
+        $(function(){
+            $("#loc_province").change(function(){
+                var province = $('#loc_province option:selected').text();
+                $(".j_province").val(province);
+            });
+
+            $("#loc_city").change(function(){
+                var city = $('#loc_city option:selected').text();
+                $(".j_city").val(city);
+            });
+
+            $('#loc_town').change(function(){
+                var area = $('#loc_town option:selected').text();
+                $('.j_area').val(area);
+            })
+
+
+        })
+
 	</script>
 
 </block>
@@ -43,17 +36,16 @@
 		<div class="div_right">
 
 			<div class="div_minTitle">
-				<h3>预定商品</h3>
+				<h3>收货地址信息</h3>
 			</div>
-			<div class="div_minContent" style="padding: 20px;">
+
+			<div class="div_minContent" style="padding-left: 10px;">
 
 				<div class="div_minSet" style="background: #fbf9fa; line-height: 35px; padding-left: 20px; font-size: 14px;">
 					<b>基本资料</b>
 				</div>
 				<div class="div_minInfo">
-					<form action="{:U('Home/Usersm/address')}" method="post">
-
-						<input type="hidden" value="{$v.id}" />
+					<form class="sm_form" action="{:U('Home/Usersm/address')}" method="post">
 						<table>
 							<tr>
 								<td class="td_title">收货人姓名：</td>
@@ -61,20 +53,20 @@
 									<input name="name" style="list-style: none; width: 220px;border-radius:3px;border: 1px solid #ccc;" />
 								</td>
 							</tr>
+
 							<tr>
 								<td class="td_title">所在地区：</td>
 								<td>
-									<select id="loc_province" style="width:120px;">
+                                    <input type="hidden" name="province" class="j_province"/>
+                                    <input type="hidden" name="city" class="j_city"/>
+                                    <input type="hidden" name="area" class="j_area"/>
+									<select id="loc_province" name="loc_province" style="width:120px;">
 									</select>
-									<input type="hidden" name="sheng" class="sheng" />
-									<input type="hidden" name="shi" class="shi" />
-									<input type="hidden" name="qu" class="qi" />
-									<select id="loc_city" style="width:120px; margin-left: 10px">
+									<select id="loc_city" name="loc_city" style="width:120px; margin-left: 10px">
 									</select>
-									<select id="loc_town" style="width:120px;margin-left: 10px">
+									<select id="loc_town" name="loc_area" style="width:120px;margin-left: 10px">
 									</select>
 								</td>
-
 							</tr>
 							<tr>
 								<td class="td_title">详细地址：</td>
@@ -94,28 +86,19 @@
 									<input name="mobile" style="list-style: none; width: 220px;border-radius:3px;border: 1px solid #ccc;" />手机号码必填</td>
 
 							</tr>
-							<!--<tr>
-								<td class="td_title">电话号码：</td>
-								<td>
-									<input name="phone" style="list-style: none; width:50px;border-radius:3px;border: 1px solid #ccc;" />-
-									<input style="list-style: none; width:170px;border-radius:3px;border: 1px solid #ccc;" />-
-									<input style="list-style: none; width:50px;border-radius:3px;border: 1px solid #ccc;" />区号-电话号码-分机</td>
-
-							</tr>-->
 
 							<tr>
 
 								<td colspan="2">
 									<div style="padding: 25px;">
-										<input type="submit" class="am-btn am-btn-danger am-btn-xs" value="确认修改" style="margin-left: 50px;"></input>
-									</div>
+                                        <a target-form="sm_form" href="{:U('Home/Usersm/address')}" class="ajax-post am-btn am-btn-sm am-btn-primary">保存</a>
+                                    </div>
 								</td>
 							</tr>
 						</table>
 					</form>
 				</div>
 				<table style="width: 1020px; margin-top: 9px; color: #848383;">
-
 					<tr style="border: 1px solid #ccc; background: white; height: 37px;">
 						<td style="padding-left: 20px;">收货人</td>
 						<td>所在地</td>
@@ -124,7 +107,7 @@
 						<td>电话/手机</td>
 						<td>操作</td>
 					</tr>
-					<volist name="address" id="vo">
+					<volist name="list" id="vo">
 						<tr style="border: 1px solid #ccc; height: 37px; font-size: 12px;">
 							<td>{$vo.contact_name}</td>
 							<td>{$vo.province} {$vo.city} {$vo.area} </td>
@@ -133,8 +116,7 @@
 							<td>{$vo.mobile}{$vo.telephone}</td>
 							<td>
 								<a class="am-btn am-btn-danger am-btn-xs" href="{:U('Home/Usersm/edit',array('id'=>$vo['id']))}">编辑</a>
-								<a class="am-btn am-btn-danger am-btn-xs" href="javascript:del('{:U('Home/Usersm/del',array('id'=>$vo['id']))}')">删除</a>
-
+								<a class="am-btn am-btn-danger am-btn-xs ajax-get confirm" href="{:U('Home/Usersm/del',array('id'=>$vo['id']))}">删除</a>
 							</td>
 						</tr>
 					</volist>

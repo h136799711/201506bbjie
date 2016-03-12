@@ -16,8 +16,10 @@ use Cms\Model\PostModel;
 use Common\Api\AccountApi;
 use Home\Api\BbjmemberApi;
 use Home\Api\TaskHisApi;
+use Home\Api\VMsgInfoApi;
 use Home\ConstVar\BoyeActionConstVar;
 use Home\ConstVar\UserTypeConstVar;
+use Home\Model\TaskHisModel;
 use Think\Controller;
 use Think\Storage;
 use Home\Api\HomePublicApi;
@@ -242,6 +244,7 @@ class IndexController extends HomeController {
             'email'=>$email,
             'from'=>'99',
             'aliwawa'=>'',
+            'nickname'=>$username,
         );
 
         $result = apiCall(AccountApi::Register, array($entity));
@@ -355,7 +358,6 @@ class IndexController extends HomeController {
 
 				$uid = $result['info'];
 				$result = apiCall(AccountApi::GET_INFO, array($uid));
-
                 if(!$result['status']){
                     $this->error("登录失败!".$result['info']);
                 }
@@ -439,9 +441,19 @@ class IndexController extends HomeController {
 	  * */
 	public function sm_manager(){
 
+        $this->assign("head_title","首页");
         $this->checkLogin();
         $this->checklevel();
         $this->getNoticeForSm();
+        $this->not_read_msg_cnt();
+        $map = array('uid'=>$this->uid);
+        $map['do_status'] = array('not in',array(TaskHisModel::DO_STATUS_CANCEL,TaskHisModel::DO_STATUS_DONE));
+        $result = apiCall(TaskHisApi::COUNT,array($map));
+        if($result['status']){
+            $this->assign('doing_task',$result['info']);
+        }else{
+            $this->assign('doing_task',0);
+        }
 
 		$this->display();
 	}
@@ -519,6 +531,23 @@ class IndexController extends HomeController {
 
         $result = apiCall(PostApi::GET_INFO,array($map, $order));
         $this->assign('zxgg',$result['info']);
+    }
+
+    /**
+     * 未读消息
+     * @author 老胖子-何必都 <hebiduhebi@126.com>
+     */
+    private function not_read_msg_cnt(){
+
+        $result = apiCall(VMsgInfoApi::COUNT,array(array('to_id'=>$this->uid,'msg_status'=>MsgboxModel::NOT_READ)));
+        $not_read_msg_cnt =  $result['info'];
+        if(empty($not_read_msg_cnt)){
+            $not_read_msg_cnt = 0;
+        }
+
+        $this->assign('not_read_msg_cnt',$not_read_msg_cnt);
+
+
     }
 }
 

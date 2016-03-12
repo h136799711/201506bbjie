@@ -16,30 +16,29 @@
 				<h3>宝贝活动</h3>
 			</div>
 			<div class="div_minContent" style="padding: 20px;">
-				<a href="" style="text-decoration: none;color: white; background: #d1343e; padding:10px; border-top-left-radius: 3px; border-top-right-radius: 3px;">全部任务</a>
-				<table style="border-top: 1px solid #ccc; width: 1100px; margin-top: 9px;">
+
+                <table style="border-top: 1px solid #ccc; width: 1100px; margin-top: 9px;">
 					<thead>
 						<tr>
 							<td colspan="6" style=" height: 120px; ">
-								<form action="{:U('Home/SMActivity/chazhao')}" method="post" style="float: left;">
-									<input name="txt" placeholder="请输入订单编号" style="border: 1px solid #ccc; border-bottom-left-radius:7px; border-top-left-radius:7px;" />
-									<input class="am-btn-default" type="submit" value="活动搜索" style="border: 1px solid #ccc;border-bottom-right-radius:7px; border-top-right-radius:7px;" />
-								</form>
+                                <form action="{:U('Home/SMActivity/chazhao')}" method="post" style="float: left;">
+                                    <input name="txt" placeholder="请输入订单编号" style="border: 1px solid #ccc; border-bottom-left-radius:7px; border-top-left-radius:7px;" />
+                                    <input class="am-btn-default" type="submit" value="活动搜索" style="border: 1px solid #ccc;border-bottom-right-radius:7px; border-top-right-radius:7px;" />
+                                </form>
 
 								<span style="font-size: 12px; margin-left: 20px;">
-									<a href="{:U('Home/Usersm/sm_bbhd')}" style="color: red;">所有任务</a>
-									<!--<a href="#" style="color: #999;">新任务<font color="red">0</font></a>-->
-									<a href="{:U('Home/SMActivity/hd_bh')}" style="color: #999;">被驳回<font color="red">{$bh}</font></a>
-									<a href="{:U('Home/SMActivity/hd_waiting')}" style="color: #999;">等待审核<font color="red">{$sh}</font></a>
-									<a href="{:U('Home/SMActivity/hd_sened')}" style="color: #999;">待确认收货<font color="red">{$qrsh}</font></a>
-									<a href="{:U('Home/SMActivity/hd_remoney')}" style="color: #999;">等待返款<font color="red">{$fk}</font></a>
-									<a href="{:U('Home/SMActivity/hd_quxiao')}" style="color: #999;">取消/放弃</a><font color="red">{$qx}</font></a>
+									<a href="{:U('Home/SMActivity/task_manager',array('do_status'=>'1'))}" <eq name="status" value="1">style="color: red;"</eq> >进行中任务</a>
+									<a <eq name="status" value="8">style="color: red;"</eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'8'))}" style="color: #999;">被驳回<font color="red">{$bh}</font></a>
+									<a <eq name="status" value="3">style="color: red;"</eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'3'))}" style="color: #999;">等待审核<font color="red">{$sh}</font></a>
+									<a <eq name="status" value="7">style="color: red;"</eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'7'))}" style="color: #999;">待确认收货<font color="red">{$qrsh}</font></a>
+									<a <eq name="status" value="4">style="color: red;"</eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'4'))}" style="color: #999;">等待返款<font color="red">{$fk}</font></a>
+									<a <eq name="status" value="0">style="color: red;"</eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'0'))}" style="color: #999;">取消/放弃</a><font color="red">{$qx}</font></a>
 								</span>
 
 							</td>
 						</tr>
 						<tr style="border: 1px solid #ccc; background: #F5F5F5; height: 37px;">
-							<td style="padding-left: 20px;">试福信息</td>
+							<td style="padding-left: 20px;">换宝信息</td>
 							<td>额外奖励</td>
 							<td>任务金额</td>
 							<td>淘宝帐号/订单号</td>
@@ -58,10 +57,13 @@
 
                             <tr style="border: 1px solid #ccc; background: #F5F5F5; height: 37px;">
                                 <td style="padding-left: 20px;" colspan="6">
-                                    编号:{$vo.id}任务时间:{$vo['get_task_time']|date='m-d H:i',###}商家:{$vo.aliwawa}</td>
+                                    编号:{$vo.id} 领取任务时间:{$vo['get_task_time']|date='Y-m-d H:i',###} 商家:{$vo['_seller']['aliwawa']}</td>
                             </tr>
                             <tr style="border: 1px solid #ccc; height:100px; background:white;">
                                 <td>
+                                    <volist name="vo._products" id="p" >
+                                        <img src="{$p.main_img}" style="float: left; height: 50px; width: 70px; margin-left: 10px;" />
+                                    </volist>
                                     <div style="margin-left:90px;"><font color="red">{$vo['coin']}</font>福币<br />
                                         超时由系统取消
                                     </div>
@@ -72,14 +74,11 @@
                                     福币
                                 </td>
                                 <td>
-                                    <if condition="$vo['tb_orderid'] eq 0">
-
+                                    <empty name="$vo['tb_orderid']">
                                         <a target="_blank" href="{:U('Home/SMActivity/rws',array('id'=>$vo['id'],'taskhisid'=>$vo['id']))}">任务书</a>
                                         <else/>
-
                                         <span class="am-text-danger">请点击确认提交任务</span>
-
-                                    </if>
+                                    </empty>
                                     <br />
                                     <font color="red">
                                         ￥<if condition="$vo['tb_price'] eq 0.00">
@@ -90,18 +89,19 @@
                                     </font>
                                 </td>
                                 <td>
-                                    旺旺名：{$vo.aliwawa}
+                                    旺旺名：{$vo['_seller']['aliwawa']}
                                     <br /> 订单：{$vo['tb_orderid']}
-                                    <br /> 返款：{$vo['tb_price']}
+                                    <br /> 返款：{$vo.task_gold}
+
                                 </td>
 
                                 <td>
                                     <input type="hidden" value="{$vo.id}">
                                     <input type="hidden" id="tpid" value="{$vo.tpid}">
                                     <if condition="$vo['do_status'] eq 1">
-                                        距离任务完成剩余：<span class="js_countdownwn"  data-until="{$v['get_task_time'] + 2*3600}"></span>
+                                        距离任务完成剩余：<span class="js_countdownwn"  data-until="{$vo['get_task_time'] + 2*3600}"></span>
                                         <br><font class="task_status" color="forestgreen">任务正在进行中...</font><br>
-                                        <if condition="$vo['tb_orderid'] eq 0"><a id='anm2'  style="background-color: orangered; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/qxtask',array('id'=>$v['id'],'tpid'=>$v['tpid']))} ">放弃任务</a>
+                                        <if condition="$vo['tb_orderid'] eq 0"><a id='anm2'  style="background-color: orangered; color: #FFFFFF;padding: 2px;" class="am-btn-default am-round" href="{:U('Home/SMActivity/qxtask',array('id'=>$vo['id'],'tpid'=>$vo['tpid']))} ">放弃任务</a>
 
                                             <else/>
 
@@ -121,7 +121,7 @@
 				<div class="div_tishi" style=" height: 180px;">
 					<ul>
 						<li style="font-size:16px; font-weight: bold;color: black;">温馨提示：</li>
-						<li>1:在与商家旺旺聊天时，请勿使用”试用“、“试福”、“还款”等字眼！！！</li>
+						<li>1:在与商家旺旺聊天时，请勿使用”试用“、“换宝”、“还款”等字眼！！！</li>
 						<li>2:请严格按照任务书要求做任务，收到货后请先在淘宝平台对您提交的订单进行确认收货并5分好评哦！！！</li>
 						<li>3:任务过程中有任务问题（包括但不限于返款问题）请联系宝贝街客服进行处理，勿在旺旺上催促商家审核订单、确认返款！！！</li>
 						<li>4:在淘宝上下单时，请一定要用在本站申请活动的时候提交的淘宝帐号下单哦！！！</li>
@@ -143,7 +143,7 @@
 		    	until = parseInt(until);
 		    	thid = parseInt(thid);
 		    	$(item).scojs_countdown({until: until,id:thid});
-		    	if($('.js_countdownwn').text()==null ||$('.js_countdownwn').text()==''){
+		    	if($('.js_countdownwn').text() ==null ||$('.js_countdownwn').text()==''){
 		    		$('.js_countdownwn').text('已超时！！');
 		    		$('.task_status').css('color','red');
 		    		$('.task_status').text('超时由系统取消！！');
@@ -153,20 +153,8 @@
 		    		$('.task_status').text('超时由系统取消！！');
 		    		$('#anm1,#anm2,#anm3,#anm4').show();
 		    	}
-		    	
-		    	
+
 		    });
-		   
-		   	$('.js_countdownwn').each(function(index,item){
-		   		
-		   		if($(item).text()=='已超时！！'){
-		   			var aaid= $(this).parent().find('input').val();
-		   			var tsid= $('#tpid').val();
-		   			$.getJSON("{:U('Home/SMActivity/timeout')}",{id:aaid,tpid:tsid},function(json){ 
-							alert('任务超时已由系统取消');
-				}); 
-		   		}
-		   	})
 		   	
 		    
 		});

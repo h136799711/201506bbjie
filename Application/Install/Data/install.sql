@@ -4935,7 +4935,7 @@ CREATE TABLE IF NOT EXISTS `itboye_task` (
   `task_status` tinyint(2) NOT NULL COMMENT '（1:启用，2:暂停，3:已结算4:已领取）',
   `coin` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='试福任务表' AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='换宝任务表' AUTO_INCREMENT=3 ;
 
 --
 -- 转存表中的数据 `itboye_task`

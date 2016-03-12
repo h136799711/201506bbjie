@@ -146,9 +146,17 @@
 												<td>{$v.id}</td>
 												<td>{$v.create_time|date='Y-m-d H:i:s',###}</td>
 												<td>{$v.notes}</td>
-												<td>+{$v.income}</td>
-												<td>-{$v.defray}</td>
-												<td>{:getFinaceType($v['dtree_type'])}</td>
+												<td>
+                                                    <if condition="$v['income'] gt 0">
+                                                    +{$v.income}
+                                                    </if>
+                                                </td>
+												<td>
+                                                    <if condition="$v['defray'] gt 0">
+                                                    -{$v.defray}
+                                                    </if>
+                                                </td>
+												<td>{$v.dtree_type_name}</td>
 											</tr>
 										</volist>
 										<tr><td colspan="6">{$show}</td></tr>
@@ -411,7 +419,7 @@
 					<ul>
 						<li style="color:black;font-size: 13px; font-weight: bold; margin-top: 10px;">注意事项：</li>
 						<li style="margin-top: 5px;">1.所有转帐请认准[小明]，并请复制帐号后粘贴使用!</li>
-						<li style="margin-top: 5px;">2.转帐时请备注你的试福街用户名及用途!</li>
+						<li style="margin-top: 5px;">2.转帐时请备注你的换宝街用户名及用途!</li>
 						<li style="margin-top: 5px;">3.为了更加安全，推荐使用银行转帐!</li>
 						<li style="margin-top: 5px;">农业银行 6228480328888888888 小明</li>
 						<li style="margin-top: 5px;">建设银行 6217001546666666666 小明</li>

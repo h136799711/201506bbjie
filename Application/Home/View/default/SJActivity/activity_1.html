@@ -25,7 +25,7 @@
 
 <block name="area_body">
 	<include file='Widget/sjtop' />
-	<div class="seller_main clearfix" controller="seller/common">
+	<div class="seller_main clearfix" >
 		<div class="seller_content_wrap">
 			<div class="seller_content" style="padding-top: 10px;">
 
@@ -73,7 +73,7 @@
 
 								<br />
 								<div class="showsp">
-									<div class="controls">
+									<div class="controls am-cf">
 										<div class="filter-controls pull-left" style=" margin-left: 150px;">
 										
 											<form action="" class="addToGroupForm" method="post" style="">
@@ -83,15 +83,16 @@
 												</select>
 											</form>
 										</div>
-										<a id="gotaobao" href="javascript:void(0)">更换方式</a>
+										<!--<a id="gotaobao" href="javascript:void(0)">更换方式</a>-->
 									</div>
 									<div class="show"></div>
 								</div>
 								
 							</div>
 							<br>
-							<form class="forma1" style="" action="{:U('Home/SJActivity/a1')}" method="post">
-								<input type="hidden" name="aliwawa" value="{$aliwawa}">
+							<form class="forma1" style="" action="{:U('Home/SJActivity/save_1')}" method="post">
+								<input type="hidden" name="aliwawa" value="{$user.aliwawa}">
+                                <input type="hidden" name="selected_pid" id="pid" value="" />
 								<table class="am-table" style="margin-top: 20px; width: 1000px;">
 									<thead>
 										<tr style="background: #EAEAEA;">
@@ -133,7 +134,7 @@
 							</form>
 
 							<center>
-								<font size="-2" color="red">任务最多可以添加3个链接</font>
+								<font size="-2" color="red">任务最多可以添加{$links}个链接</font>
 								<br />
 								<button id="down" type="button" class="am-btn am-btn-secondary" style=" font-size: 12px; margin-top: 5px;">下一步</button>
 							</center>
@@ -149,327 +150,157 @@
 
 <block name="area_footer">
 	<script type="text/javascript">
+
 		var nev=0;
 		function showLoading() {
 			$("#J_btn_submit").text("正在提交中....");
 			$("#J_btn_submit").data("query", 1);
 		}
+
+        function hasExits(id){
+            var pid = $("#pid").val();
+            if(pid.indexOf(id) != -1){
+//                console.log(pid,id);
+                return true;
+            }
+            return false;
+        }
+
+        function appendProduct(num,repo){
+            var pid = $("#pid").val();
+
+            if(pid.indexOf(repo.id) != -1){
+                return;
+            }
+            pid = pid + repo.id+",";
+            $("#pid").val(pid);
+            num = num || "";
+            $(".img"+num).html("<input type='hidden' name='img[]' value='"+repo.main_img +"'>"+"<img src='" + repo.main_img + "' alt='图片' style='height:80px;width:80px;folat:left;'  />");
+            $(".title"+num).html("<input type='hidden' name='title[]' value='"+repo.title +"'>"+"<span name='title'>" +repo.title+ "</span>");
+            $(".guige"+num).html("<input type='text' style='width:150px' name='guige[]' value='"+repo.model_num_cfg+"'>");
+            $(".num"+num).html("<input type='hidden' name='url[]' value='"+repo.link +"'>"+"<input type='text' style='width:50px' name='num[]' value='1'>");
+            $(".xxx"+num).html("<button class='am-btn am-btn-primary am-btn-xs' style='font-size:10px; '>×</button>");
+            $('.price'+num).html("<input type='text' class='am-form-field' style='width:150px' name='price[]' value='"+repo.price+"'> <input class='s_pid' type='hidden'  name='pid[]' value='"+repo.id+"'>");
+        }
+
+        function clearXXX(num){
+            num = num || "";
+            $(".xxx"+num).click(function() {
+
+                $(".img"+num).empty();
+                $(".title"+num).empty();
+                $(".guige"+num).empty();
+                $(".num"+num).empty();
+                $(".xxx"+num).empty();
+                var pid = $(".price"+num+" .s_pid").val();
+                var all_pid = $("#pid").val();
+                all_pid = all_pid.replace(pid+",","");
+                $("#pid").val(all_pid);
+                $('.price'+num).empty();
+
+            });
+        }
+
 		$(function() {
 			$('.controls').show();
 			$('.tbdq').hide();
-			$('#gotaobao').click(function(){
-				$('.tbdq').toggle(function(){
-					
-				})
-				$('.controls').toggle(function(){
-					
-				})
-			})
-			$('#gogoods').click(function(){
-				$('.tbdq').toggle(function(){
-					
-				})
-				$('.controls').toggle(function(){
-					
-				})
-			})
-			
+
 			$('#down').click(function() {
-				
 				if($(".title").text()!='' ){
 					$('.forma1').submit();
 				}else{
 					alert('请先填写完整的商品信息');
 				}
-//				
-			})
+			});
+
 			$("#groups").change(function() {
 				$(".groupForm").submit();
 			});
-			var pro=false;
-			$('#user_select2').change(function() {
-				pro=false;
-			})
-				/*
-				 下拉列表选择
-				 * */
-				/*
-				 从淘宝获取数据
-				 * */
-			$("#read").click(function() {
 
-                var auth_status = {$user.auth_status};
-                var vip_level = {$user.vip_level};
-                var aliwawa = "{$user.aliwawa}";
 
-				if(auth_status == 0){
-					alert('您的账号未通过认证，通过认证才能发布任务');
-				}else{
-					if(vip_level == 0){
-						if($(".title").text()==''){
-							var query = $("#J_btn_submit").data("query");
-						if (query == 1) {
-							alert("正在请求中...");
-							return;
-						}
-						var param_url = $("#url").val();
-						$.ajax({
-							cache: false,
-							url: "{:U('Tool/RemoteProductParser/read',array('r'=>time()))}",
-//                            url: "http://www.bammar.com/index.php/Tool/RemoteProductParser/read",
-                            dataType: 'jsonp',
-                            jsonp: 'jsonp',
-							data: {
-								url: encodeURI(param_url)
-							},
-							beforeSend: function() {
-								showLoading();
-							}
-						}).done(function(data) {
-							$("#read").html("提交");
-							$("#read").data("query", 0);
-							console.log(data);
-							if (data.status) {
-								var title =  (data.info.title).substring(14,50);
-								var wangwang = data.info.wangwang;
-								if (aliwawa == wangwang.trim()) {
-									var aaa=$('#url').val();
-									$('.show').empty();
-									$('.show').append();
-									if ($(".title").text() == '') {
-										$(".img").html("<input type='hidden' name='img[]' value='"+data.info.main_img +"'>"+"<img src='" + data.info.main_img + "' alt='图片' style='height:80px;width:80px;folat:left;'  />");
-										$(".title").html("<input type='hidden' name='title[]' value='"+title +"'>"+"<span name='title'>" +title+ "</span>");
-										$(".guige").html("<input type='text' style='width:50px' name='guige[] ' value='"+repo.model_num_cfg+"'>");
-										$(".num").html("<input type='hidden' name='url[]' value='"+aaa +"'>"+"<input type='text' style='width:50px' name='num[]'>");
-										$(".xxx").html("<button class='am-btn am-btn-primary am-btn-xs' style='font-size:10px; '>×</button>");
-										$('.price').html("<input type='text' style='width:50px' name='price[]'>");
-													
-									} 
-									
-								} else {
-									$('#doc-modal-1 .am-modal-dialog').css('height', '580px');
-									$(".show").html("<br><font color='red'>该商品的铺主为：" + wangwang + "</font><br><font color='red'>您的阿里旺旺为：" + '{$aliwawa}' + "</font><br><font color='red'>请录入您自己的商品</font>");
-								}
-							} else {
-								$('#doc-modal-1 .am-modal-dialog').css('height', '520px');
-								$(".show").html("<font color='red'>" + data.info + "</font>");
-								//							alert(data.)
-							}
-						
-						})
-						}else{
-							alert('普通会员只能添加一个商品');
-						}
-					}else{
-						var query = $("#J_btn_submit").data("query");
-						if (query == 1) {
-							alert("正在请求中...");
-							return;
-						}
-						var param_url = $("#url").val();
-						$.ajax({
-                            cache: false,
-                            url: "{:U('Tool/RemoteProductParser/read',array('r'=>time()))}",
-//                            url: "http://www.bammar.com/index.php/Tool/RemoteProductParser/read",
-                            dataType: 'jsonp',
-                            jsonp: 'jsonp',
-							data: {
-								url: encodeURI(param_url)
-							},
-							beforeSend: function() {
-								showLoading();
-							}
-						}).done(function(data) {
-							$("#read").html("提交");
-							$("#read").data("query", 0);
-							console.log(data);
-							if (data.status) {
-								var title =  (data.info.title).substring(14,50);
-								var wangwang = data.info.wangwang;
-                                var repo = data.info;
-                                repo.model_num_cfg = repo.model_num_cfg || "";
-								if (aliwawa == wangwang.trim()) {
-									var aaa=$('#url').val();
-									$('.show').empty();
-									$('.show').append();
-									if ($(".title").text() == '') {
-										$(".img").html("<input type='hidden' name='img[]' value='"+data.info.main_img +"'>"+"<img src='" + data.info.main_img + "' alt='图片' style='height:80px;width:80px;folat:left;'  />");
-										$(".title").html("<input type='hidden' name='title[]' value='"+title +"'>"+"<span name='title'>" +title+ "</span>");
-										$(".guige").html("<input type='text' style='width:50px' name='guige[] ' value='"+repo.model_num_cfg+"'>");
-										$(".num").html("<input type='hidden' name='url[]' value='"+aaa +"'>"+"<input type='text' style='width:50px' name='num[]'>");
-										$(".xxx").html("<button class='am-btn am-btn-primary am-btn-xs' style='font-size:10px; '>×</button>");
-										$('.price').html("<input type='text' style='width:50px' name='price[]'>");
-													
-									} else if ($(".title").text() != '' && $(".title1").text() == '') {
-										$(".img1").html("<input type='hidden' name='img[]' value="+data.info.main_img  +">"+"<img src='" + data.info.main_img + "' alt='图片' style='height:80px;width:80px;folat:left;'  />");
-										$(".title1").html("<input type='hidden' name='title[]' value='"+title +"'>"+"<span name='title'>"+title+"</span>");
-										$(".guige1").html("<input type='text' style='width:50px' name='guige[]' value='"+repo.model_num_cfg+"'>");
-										$(".num1").html("<input type='hidden' name='url[]' value='"+aaa +"'>"+"<input type='text' style='width:50px' name='num[]'>");
-										$(".xxx1").html("<button class='am-btn am-btn-primary am-btn-xs' style='font-size:10px; '>×</button>");
-										$('.price1').html("<input type='text' style='width:50px' name='price[]'>");
-									} else if ($(".title").text() != '' && $(".title1").text() != '') {
-										$(".img2").html("<input type='hidden' name='img[]' value="+data.info.main_img  +">"+"<img src='" + data.info.main_img + "' alt='图片' style='height:80px;width:80px;folat:left;'  />");
-										$(".title2").html("<input type='hidden' name='title[]' value='"+title +"'>"+"<span name='title'>"+title+"</span>");
-										$(".guige2").html("<input type='text' style='width:50px' name='guige[]' value='"+repo.model_num_cfg+"'>");
-										$(".num2").html("<input type='hidden' name='url[]' value='"+aaa +"'>"+"<input type='text' style='width:50px' name='num[]'>");
-										$(".xxx2").html("<button class='am-btn am-btn-primary am-btn-xs' style='font-size:10px; '>×</button>");
-										$('.price2').html("<input type='text' style='width:50px' name='price[]'>");
-									}
-									
-								} else {
-									$('#doc-modal-1 .am-modal-dialog').css('height', '580px');
-									$(".show").html("<br><font color='red'>该商品的铺主为：" + wangwang + "</font><br><font color='red'>您的阿里旺旺为：" + '{$aliwawa}' + "</font><br><font color='red'>请录入您自己的商品</font>");
-								}
-							} else {
-								$('#doc-modal-1 .am-modal-dialog').css('height', '520px');
-								$(".show").html("<font color='red'>" + data.info + "</font>");
-								//							alert(data.)
-							}
-						
-						})
-					}
-				}
-					
-				})
-				/*
-				 清空单个记录
-				 * */
-			$(".xxx").click(function() {
-				$(".img").empty();
-				$(".title").empty();
-				$(".guige").empty();
-				$(".num").empty();
-				$(".xxx").empty();
-				$('.price').empty();
-			})
-			$(".xxx1").click(function() {
-				$(".img1").empty();
-				$(".title1").empty();
-				$(".guige1").empty();
-				$(".num1").empty();
-				$(".xxx1").empty();
-				$('.price1').empty();
-			})
-			$(".xxx2").click(function() {
-				$(".img2").empty();
-				$(".title2").empty();
-				$(".guige2").empty();
-				$(".num2").empty();
-				$(".xxx2").empty();
-				$('.price2').empty();
-			})
-			$("#user_select2").select2({
-				placeholder: "可输入宝贝名称搜索"	,
-				language: "zh-CN",
-				ajax: {
-				    url: "{:U('SJActivity/select')}",
-				    dataType: 'json',
-				    delay: 250,
-				    data: function (params) {
-				    	var queryParameters = {
-					      q: params.term
-					    }
-	    				return queryParameters;
-				      
-				    },
-				    processResults: function (data, page) {
-				    	if(!data.info){
-				    		data.info = new Array();
-				    		data.info['nodata']="无相关数据";
-				    	}
-				      	// parse the results into the format expected by Select2.
-				      	// since we are using custom formatting functions we do not need to
-				      	// alter the remote JSON data
-				      	return {
-				        	results: data.info
-				      	};
-				    },
-				    cache: true
-			  	}, 
-				  	minimumInputLength: 0,
-					templateSelection: function (repo) {
-						//var nev=0;
-						nev=nev+1;
-						//alert(nev);
-						if(nev%2==0){
-//						var minTitle= repo.title.substring(10);
-						if(repo.title!=undefined){
-                            var auth_status = {$user.auth_status};
-                            var vip_level = {$user.vip_level};
-                            var aliwawa =  "{$user.aliwawa}";
+            /*
+             清空单个记录
+             * */
+            clearXXX("");
+            clearXXX("1");
+            clearXXX("2");
 
-							if(auth_status == 0){
-								alert('您的账号未通过认证，通过认证才能发布任务');
-							}else{
-								if(vip_level == 0){
-									if (aliwawa == repo.wangwang.trim()) {
-										$('.show').empty();
-										$('.show').append();
-										if ($(".title").text() == '') {
-											$(".img").html("<input type='hidden' name='img[]' value='"+repo.main_img +"'>"+"<img src='" + repo.main_img + "' alt='图片' style='height:80px;width:80px;folat:left;'  />");
-											$(".title").html("<input type='hidden' name='title[]' value='"+repo.title +"'>"+"<span name='title'>" +repo.title+ "</span>");
-											$(".guige").html("<input type='text' style='width:150px' name='guige[]' value='"+repo.model_num_cfg+"'>");
-											$(".num").html("<input type='hidden' name='url[]' value='"+repo.link +"'>"+"<input type='text' style='width:50px' name='num[]' value='1'>");
-											$(".xxx").html("<button class='am-btn am-btn-primary am-btn-xs' style='font-size:10px; '>×</button>");
-											$('.price').html("<input type='text' class='am-form-field' style='width:150px' name='price[]' value='"+repo.price+"'> <input type='hidden'  name='pid[]' value='"+repo.id+"'>");
-										}
-									}else{
-											$('#doc-modal-1 .am-modal-dialog').css('height', '580px');
-											$(".show").html("<font color='red'>该商品的铺主为：" + repo.wangwang + "</font><br><font color='red'>您的阿里旺旺为：" + aliwawa + "</font><br><font color='red'>请录入您自己的商品</font>");
-									}
-								}else{
-									if (aliwawa == repo.wangwang.trim()) {
-										$('.show').empty();
-										if ($(".title").text() == '') {
-									
-											$(".img").html("<input type='hidden' name='img[]' value='"+repo.main_img +"'>"+"<img src='" + repo.main_img + "' alt='图片' style='height:80px;width:80px;folat:left;'  />");
-											$(".title").html("<input type='hidden' name='title[]' value='"+repo.title +"'>"+"<span name='title'>" +repo.title+ "</span>");
-											$(".guige").html("<input type='text' style='width:150px' name='guige[]' value='"+repo.model_num_cfg+"'>");
-											$(".num").html("<input type='hidden' name='url[]' value='"+repo.link +"'>"+"<input type='text' style='width:50px' name='num[]' value='1'>");
-											$(".xxx").html("<button class='am-btn am-btn-primary am-btn-xs' style='font-size:10px; '>×</button>");
-											$('.price').html("<input type='text' class='am-form-field' style='width:150px' name='price[]' value='"+repo.price+"'> <input type='hidden'  name='pid[]' value='"+repo.id+"'>");
-														
-										} else if ($(".title").text() != '' && $(".title1").text() == '') {
-											$(".img1").html("<input type='hidden' name='img[]' value="+repo.main_img  +">"+"<img src='" + repo.main_img + "' alt='图片' style='height:80px;width:80px;folat:left;'  />");
-											$(".title1").html("<input type='hidden' name='title[]' value='"+repo.title +"'>"+"<span name='title'>"+repo.title+"</span>");
-											$(".guige1").html("<input type='text' style='width:150px' name='guige[]' value='"+repo.model_num_cfg+"'>");
-											$(".num1").html("<input type='hidden' name='url[]' value='"+repo.link +"'>"+"<input type='text' style='width:50px' name='num[]' value='1'>");
-											$(".xxx1").html("<button class='am-btn am-btn-primary am-btn-xs' style='font-size:10px; '>×</button>");
-											$('.price1').html("<input type='text' class='am-form-field' style='width:150px' name='price[]' value='"+repo.price+"'> <input type='hidden'  name='pid[]' value='"+repo.id+"'>");
-										} else if ($(".title").text() != '' && $(".title1").text() != '') {
-										
-											$(".img2").html("<input type='hidden' name='img[]' value="+repo.main_img  +">"+"<img src='" + repo.main_img + "' alt='图片' style='height:80px;width:80px;folat:left;'  />");
-											$(".title2").html("<input type='hidden' name='title[]' value='"+repo.title +"'>"+"<span name='title'>"+repo.title+"</span>");
-											$(".guige2").html("<input type='text' style='width:150px' name='guige[]' value='"+repo.model_num_cfg+"'>");
-											$(".num2").html("<input type='hidden' name='url[]' value='"+repo.link +"'>"+"<input type='text' style='width:50px' name='num[]' value='1'>");
-											$(".xxx2").html("<button class='am-btn am-btn-primary am-btn-xs' style='font-size:10px; '>×</button>");
-											$('.price2').html("<input type='text' class='am-form-field' style='width:150px' name='price[]' value='"+repo.price+"'><input type='hidden'  name='pid[]' value='"+repo.id+"'>");
-										}
-									}else{
-											$('#doc-modal-1 .am-modal-dialog').css('height', '580px');
-											$(".show").html("<br><font color='red'>该商品的铺主为：" + repo.wangwang + "</font><br><font color='red'>您的阿里旺旺为：" + aliwawa + "</font><br><font color='red'>请录入您自己的商品</font>");
-									}
-								}
-							}
-//							
 
-							//return minTitle || repo.text;
-							//return repo.title || repo.text;
-							return repo.title || repo.text;
-						}else{
-							return repo.title || repo.text;
-						}
-		  				}else{return repo.title || repo.text;}
-					},
-				  templateResult: function (repo) {
-				   		//console.info(repo);
-	      				if (repo.loading) return repo.text;
-						if(repo.nodata) return repo.nodata;
-	      				var markup = '<div style="height:50px"><img style="margin-top:0px; height:50px; float:left; width:50px" src="'+repo.main_img+'" style="width:50px;height:50px;float:left"/>[id:'+repo.id+']'+repo.title+'</div>';
-	      				return $(markup);
-	    			}
-			});
+            $("#user_select2").select2({
+                placeholder: "可输入宝贝名称搜索"	,
+                language: "zh-CN",
+                ajax: {
+                    url: "{:U('SJActivity/select')}",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        var queryParameters = {
+                          q: params.term
+                        }
+                        return queryParameters;
+
+                    },
+                    processResults: function (data, page) {
+                        if(!data.info){
+                            data.info = new Array();
+                            data.info['nodata']="无相关数据";
+                        }
+                        // parse the results into the format expected by Select2.
+                        // since we are using custom formatting functions we do not need to
+                        // alter the remote JSON data
+                        return {
+                            results: data.info
+                        };
+                    },
+                    cache: true
+                    },
+                minimumInputLength: 0,
+                templateSelection: function (repo) {
+
+                    if(hasExits(repo.id)){
+                        console.log(repo.id);
+                        return;
+                    }
+
+                    if(typeof(repo.title) == 'undefined'){
+                        return repo.text;
+                    }
+
+                    var links = {$links};
+                    var aliwawa =  "{$user.aliwawa}";
+
+                    if (aliwawa == repo.wangwang.trim()) {
+                        $('.show').empty();
+                        if ($(".title").text() == '') {
+                            appendProduct("",repo);
+                        } else if ($(".title").text() != '' && $(".title1").text() == '') {
+                            if(links < 2){
+                                return;
+                            }
+                            appendProduct("1",repo);
+                        } else if ($(".title").text() != '' && $(".title1").text() != '') {
+                            if(links < 3){
+                                return;
+                            }
+                            appendProduct("2",repo);
+                        }
+
+                    }else{
+                        $('#doc-modal-1 .am-modal-dialog').css('height', '580px');
+                        $(".show").html("<br><font color='red'>该商品的铺主为：" + repo.wangwang + "</font><br><font color='red'>您的阿里旺旺为：" + aliwawa + "</font><br><font color='red'>请录入您自己的商品</font>");
+                    }
+
+                 return repo.title || repo.text;
+                },
+                templateResult: function (repo) {
+                    //console.info(repo);
+                    if (repo.loading) return repo.text;
+                    if(repo.nodata) return repo.nodata;
+                    var markup = '<div style="height:50px"><img style="margin-top:0px; height:50px; float:left; width:50px" src="'+repo.main_img+'" style="width:50px;height:50px;float:left"/>[id:'+repo.id+']'+repo.title+'</div>';
+                    return $(markup);
+                }
+            });
 			
-		})
+		});
 	</script>
 </block>

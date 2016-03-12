@@ -24,6 +24,10 @@ class BbjmemberSellerModel extends \Think\Model{
     const SELLER_SELECT =  2;
 
     /**
+     * 非会员
+     */
+    const VIP_TYPE_NONE = 0;
+    /**
      * 一般VIP等级
      */
     const VIP_TYPE_NORMAL = 1;

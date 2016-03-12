@@ -6,14 +6,39 @@
 // | Copyright (c) 2013-2016, http://www.itboye.com. All Rights Reserved.
 // |-----------------------------------------------------------------------------------
 namespace Home\Controller;
+use Admin\Model\MsgboxModel;
+use Cms\Api\VPostInfoApi;
+use Home\Api\AddressApi;
 use Home\Api\BbjmemberApi;
+use Home\Api\TaskApi;
+use Home\Api\TaskHasProductApi;
+use Home\Api\TaskHisApi;
+use Home\Api\TaskPlanApi;
+use Home\Api\VBbjmemberSellerInfoApi;
+use Home\Api\VCanDoTaskApi;
+use Home\Api\VMsgInfoApi;
+use Home\Api\VTaskHisInfoApi;
+use Home\Api\VTaskProductInfoApi;
+use Home\Api\VTaskProductSearchWayApi;
+use Home\Model\TaskHisModel;
+use Home\Model\TaskLogModel;
 use Think\Controller;
-use Think\Storage;
 use Home\Api\HomePublicApi;
 use Admin\Api\AdminPublicApi;
 
 
 class SMActivityController extends HomeController {
+
+    public function _initialize(){
+        parent::_initialize();
+        $this->checkLogin();
+        $upload_url = C('SITE_URL').'/index.php/Home/Avatar/upload';
+        $this->getLastestNotice();
+        $this->not_read_msg_cnt();
+        $this->get_doing_task_cnt();
+
+        $this->assign("upload_url",$upload_url);
+    }
 
 	/*
 	 * 改变状态
@@ -95,9 +120,27 @@ class SMActivityController extends HomeController {
 	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 * */
 	public function settaobao(){
-		$entity=array('taobao_account'=>I('post.taobao','无'));
+        $taobao = I('post.taobao','');
+        if(empty($taobao)){
+            $this->error("请填写淘宝帐号");
+        }
+
+        $result = apiCall(BbjmemberApi::GET_INFO,array(array('taobao_account'=>$taobao)));
+
+        if($result['status'] && is_array($result['info'])){
+            $uid = $result['info']['uid'];
+            if($uid != $this->uid){
+                $this->error($taobao."已被其它帐号绑定(".$uid.")");
+            }
+        }
+
+		$entity=array(
+            'taobao_account'=>$taobao,
+            'auth_status'=>1,
+        );
         $result = apiCall(BbjmemberApi::SAVE_BY_ID,array($this->uid,$entity));
 		if($result['status']){
+
             $this->reloadUserInfo();
 			$this->success('修改成功',U('Home/Usersm/manager_rw'));
 		}else{
@@ -129,6 +172,7 @@ class SMActivityController extends HomeController {
 			$this->success('已取消兑换，请选择其他商品',U('Home/Usersm/sm_dhsp'));
 		}
 	}
+
 	/*
 	 * 驳回后修改订单信息
 	 * */
@@ -162,276 +206,188 @@ class SMActivityController extends HomeController {
 			
 		}
 	}
-	/*
-	 * 确认收货
-	 * */
-	public function hd_sened(){
-		$user = session('user');
-		$map = array('uid' => $user['info']['id'], 'do_status' => 7);
-		$page = array('curpage' => I('get.p', 0), 'size' => 5);
-		$result=apiCall(HomePublicApi::Task_His_QueryAll,array($map,$page));
-		for ($i = 0; $i < count($result['info']['list']); $i++) {
-			$id = $result['info']['list'][$i]['task_id'];
-			$map4 = array('task_id' => $id);
-			$result['info']['list'][$i]['hasList']= apiCall(HomePublicApi::TaskHasProduct_Query, array($map4))['info'];
-			for($j=0;$j<count($result['info']['list'][$i]['hasList']);$j++){
-				$pid = array('id' => $result['info']['list'][$i]['hasList'][$j]['pid']);
-				$result['info']['list'][$i]['hasList'][$j]['product'] = apiCall(HomePublicApi::Product_Query, array($pid))['info'][0];
-			}
-		}
-		$tp=$result1['info']['list'];
-		$this -> assign('username', $user['info']['username']);
-		$result2=apiCall(HomePublicApi::Task_Query,array($mapp));
-		$express=apiCall(AdminPublicApi::OrderExpress_Query,array());
-		$this->assign('express',$express['info']);
-		$this->assign('task',$result2['info']);
-		$this->assign('pross',$result['info']['list']);
-		$this->assign('show',$result['info']['show']);
-		$index=A('Index');
-		$index->getcount();
-		$index->posts();
-//		dump($goods);
-		$this -> display();
-	}
-	/*
-	 * 等待确认订单
-	 * */
-	public function hd_waiting(){
-		$headtitle = "宝贝街-等待审核";
-		$this -> assign('cs_sf', 'sed');
-		$this -> assign('head_title', $headtitle);
-		$user = session('user');
-		
-		$map=array('uid'=>$user['info']['id'],'do_status'=>3);
-		$page = array('curpage' => I('get.p', 0), 'size' => 5);
-		$result=apiCall(HomePublicApi::Task_His_QueryAll,array($map,$page));
-		for ($i = 0; $i < count($result['info']['list']); $i++) {
-			$id = $result['info']['list'][$i]['task_id'];
-			$map4 = array('task_id' => $id);
-			$result['info']['list'][$i]['hasList']= apiCall(HomePublicApi::TaskHasProduct_Query, array($map4))['info'];
-			for($j=0;$j<count($result['info']['list'][$i]['hasList']);$j++){
-				$pid = array('id' => $result['info']['list'][$i]['hasList'][$j]['pid']);
-				$result['info']['list'][$i]['hasList'][$j]['product'] = apiCall(HomePublicApi::Product_Query, array($pid))['info'][0];
-			}
-		}
-		$tp=$result1['info']['list'];
-		$this -> assign('username', $user['info']['username']);
-		$result2=apiCall(HomePublicApi::Task_Query,array($mapp));
-		$this->assign('task',$result2['info']);
-		$this->assign('pross',$result['info']['list']);
-		$this->assign('show',$result['info']['show']);
-		$index=A('Index');
-		$index->getcount();
-		$index->posts();
-//		dump($result2);
-		$this -> display();
-	}
 
 	/*
-	 * 等待确认返款
+	 * 任务管理
+	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 * */
-	public function hd_remoney(){
-		$headtitle = "宝贝街-等待返款";
-		$this -> assign('cs_sf', 'sed');
-		$this -> assign('head_title', $headtitle);
-		$user = session('user');
-		
-		$map=array('uid'=>$user['info']['id'],'do_status'=>4);
-		$page = array('curpage' => I('get.p', 0), 'size' => 5);
-		$result=apiCall(HomePublicApi::Task_His_QueryAll,array($map,$page));
-		for ($i = 0; $i < count($result['info']['list']); $i++) {
-			$id = $result['info']['list'][$i]['task_id'];
-			$map4 = array('task_id' => $id);
-			$result['info']['list'][$i]['hasList']= apiCall(HomePublicApi::TaskHasProduct_Query, array($map4))['info'];
-			for($j=0;$j<count($result['info']['list'][$i]['hasList']);$j++){
-				$pid = array('id' => $result['info']['list'][$i]['hasList'][$j]['pid']);
-				$result['info']['list'][$i]['hasList'][$j]['product'] = apiCall(HomePublicApi::Product_Query, array($pid))['info'][0];
-			}
-		}
-		$tp=$result1['info']['list'];
-		$this -> assign('username', $user['info']['username']);
-		$result2=apiCall(HomePublicApi::Task_Query,array($mapp));
-		$this->assign('task',$result2['info']);
-		$this->assign('pross',$result['info']['list']);
-		$this->assign('show',$result['info']['show']);
-		$index=A('Index');
-		$index->getcount();
-		$index->posts();
-		$this -> display();
+	public function task_manager(){
+
+        $this -> assign('head_title', "宝贝街-任务管理");
+        $do_status = I('get.do_status','');
+
+        $map    = array('uid'=>$this->uid);
+        switch($do_status){
+            case "doing":
+                $map['do_status'] = array('not in',array(TaskHisModel::DO_STATUS_CANCEL,TaskHisModel::DO_STATUS_DONE));
+                break;
+            case 'cancel':
+                $map['do_status'] = TaskHisModel::DO_STATUS_CANCEL;
+                break;
+            case 'reject':
+                $map['do_status'] = TaskHisModel::DO_STATUS_REJECT;
+                break;
+            case 'submit':
+                $map['do_status'] = TaskHisModel::DO_STATUS_SUBMIT_ORDER;
+                break;
+            case 'pass':
+                $map['do_status'] = TaskHisModel::DO_STATUS_SUBMIT_ORDER;
+                break;
+            case 'wait_return':
+                $map['do_status'] = TaskHisModel::DO_STATUS_WAIT_RETURN;
+//                $map['order_status'] =
+                break;
+            default:
+
+                break;
+        }
+
+        $page   = array('curpage' => I('get.p', 0), 'size' => 5);
+        $result = apiCall(VTaskHisInfoApi::QUERY,array($map,$page));
+
+        $his_list = $result['info']['list'];
+        for ($i = 0; $i < count($his_list); $i++) {
+
+            //获取发布任务的商家信息
+            $seller_uid = $his_list[$i]['seller_uid'];
+            $map = array('uid' => $seller_uid);
+            $result = apiCall(VBbjmemberSellerInfoApi::GET_INFO, array($map));
+            $his_list[$i]['_seller']= $result['info'];
+
+            //获取任务产品信息
+            $plan_id = $his_list[$i]['tpid'];
+            $map = array('plan_id'=>$plan_id);
+            $result = apiCall(VTaskProductInfoApi::QUERY_NO_PAGING, array($map));
+            $his_list[$i]['_products']= $result['info'];
+        }
+
+        $this->assign('status_not_start',TaskHisModel::DO_STATUS_NOT_START);
+        $this->assign('status',$do_status);
+        $this->assign('his_list',$his_list);
+        $this->assign('show',$result['info']['show']);
+
+        $this -> display();
+
+
 	}
 
-	/*
-	 * 被驳回
-	 * */
-	public function hd_bh(){
-		$headtitle = "宝贝街-被驳回";
-		$this -> assign('cs_sf', 'sed');
-		$this -> assign('head_title', $headtitle);
-		$user = session('user');
-	
-		$map=array('uid'=>$user['info']['id'],'do_status'=>8);
-		$page = array('curpage' => I('get.p', 0), 'size' => 5);
-		$result=apiCall(HomePublicApi::Task_His_QueryAll,array($map,$page));
-		for ($i = 0; $i < count($result['info']['list']); $i++) {
-			$id = $result['info']['list'][$i]['task_id'];
-			$map4 = array('task_id' => $id);
-			$result['info']['list'][$i]['hasList']= apiCall(HomePublicApi::TaskHasProduct_Query, array($map4))['info'];
-			for($j=0;$j<count($result['info']['list'][$i]['hasList']);$j++){
-				$pid = array('id' => $result['info']['list'][$i]['hasList'][$j]['pid']);
-				$result['info']['list'][$i]['hasList'][$j]['product'] = apiCall(HomePublicApi::Product_Query, array($pid))['info'][0];
-			}
-		}
-		$tp=$result1['info']['list'];
-		$this -> assign('username', $user['info']['username']);
-		$result2=apiCall(HomePublicApi::Task_Query,array($mapp));
-		$this->assign('task',$result2['info']);
-		$this->assign('pross',$result['info']['list']);
-		$this->assign('show',$result['info']['show']);
-		$index=A('Index');
-		$index->getcount();
-		$index->posts();
-		$this -> display();
-	}
-
-/*
-	 * 取消放弃
-	 * */
-	public function hd_quxiao(){
-		$headtitle = "宝贝街-取消放弃";
-		$this -> assign('cs_sf', 'sed');
-		$this -> assign('head_title', $headtitle);
-		$user = session('user');
-		$map=array('uid'=>$user['info']['id'],'do_status'=>0);
-		$page = array('curpage' => I('get.p', 0), 'size' => 5);
-		$result=apiCall(HomePublicApi::Task_His_QueryAll,array($map,$page));
-		for ($i = 0; $i < count($result['info']['list']); $i++) {
-			$id = $result['info']['list'][$i]['task_id'];
-			$map4 = array('task_id' => $id);
-			$result['info']['list'][$i]['hasList']= apiCall(HomePublicApi::TaskHasProduct_Query, array($map4))['info'];
-			for($j=0;$j<count($result['info']['list'][$i]['hasList']);$j++){
-				$pid = array('id' => $result['info']['list'][$i]['hasList'][$j]['pid']);
-				$result['info']['list'][$i]['hasList'][$j]['product'] = apiCall(HomePublicApi::Product_Query, array($pid))['info'][0];
-			}
-		}
-		$tp=$result1['info']['list'];
-		$this -> assign('username', $user['info']['username']);
-		$result2=apiCall(HomePublicApi::Task_Query,array($mapp));
-		$this->assign('task',$result2['info']);
-		$this->assign('pross',$result['info']['list']);
-		$this->assign('show',$result['info']['show']);
-		$index=A('Index');
-		$index->posts();
-		$index->getcount();
-		$this -> display();
-	}
 	/*
 	 * 取消任务
+	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 * */
 	public function qxtask(){
-		$id=I('id',0);
-		$map=array('do_status'=>0);
-		$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$map));
-		$tpid=I('tpid',0);
-		if($tpid!=0){
-			$results=M('taskPlan')->where('id='.$tpid)->setInc('yuecount',1);
+
+        $id = I('get.id',0);
+        $task_id = I('get.task_id',0);
+		$map=array('do_status'=>TaskHisModel::DO_STATUS_CANCEL);
+		$result=apiCall(TaskHisApi::SAVE_BY_ID,array($id,$map));
+		$plan_id = $this->_param('tpid','','缺少任务计划ID');
+
+		if($plan_id != 0){
+            $map = array('id'=>$plan_id);
+            $result = apiCall(TaskPlanApi::SET_INC,array($map,"yuecount",1));
 		}else{
-			$this->error('系统未知错误',U('Home/Usersm/sm_bbhd'));
+			$this->error('系统未知错误',U('Home/SMActivity/task_manager',array('do_status'=>'doing')));
 		}
+
+        $notes = "用户在 ".date("Y-m-d H:i:s",time())." 取消了任务";
+        task_log($id , $plan_id,$this->uid,$task_id,TaskLogModel::TYPE_CANCEL_TASK,$notes);
+
 		if($result['status']){
-			$this->success('任务操作成功',U('Home/Usersm/sm_bbhd'));
+			$this->success('任务操作成功',U('Home/SMActivity/task_manager',array('do_status'=>'doing')));
 		}else{
-			$this->error('系统未知错误',U('Home/Usersm/sm_bbhd'));
+			$this->error('系统未知错误',U('Home/SMActivity/task_manager',array('do_status'=>'doing')));
 		}
 	}
-	/*
-	 * 确认任务
-	 * */
-	public function qrtask(){
-		$id=I('id',0);
-		$task_map=array('id'=>$id);
-		$map=array('do_status'=>3);
-		$task=apiCall(HomePublicApi::Task_His_Query,array($task_map));
-		$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$map));
-		$ids=$task['info'][0]['task_id'];
-		$map2=array('task_status'=>4);
-		$result2=apiCall(HomePublicApi::Task_SaveByID,array($ids,$map2));
-		if($result['status'] &&$result2['status'] ){
-			$this->success('任务操作成功',U('Home/Usersm/sm_bbhd'));
-		}else{
-			$this->error('系统未知错误',U('Home/Usersm/sm_bbhd'));
-		}
-	}
+
+
 	/**
 	 * 领取任务
+     * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 * */
 	public function gettask(){
-		$user=session('user');
-		$time=time();
-		$tsk=array('uid'=>$user['info']['id'],'do_status'=>1);
-		$tsk_his=apiCall(HomePublicApi::Task_His_Query,array($tsk));
-		$uid=array('uid'=>$user['info']['id']);
-		$usersm=apiCall(HomePublicApi::Bbjmember_Query, array($uid));
-		if($usersm['info'][0]['auth_status']!=0){
-			if($tsk_his['info']==NULL){
-				$map=array('uid'=>$user['info']['id'],'do_status'=>array('neq',2));
-//				
-				$task_id=apiCall(HomePublicApi::Task_His_Query, array($map));
-//				
-				$mapa=array('yuecount'=>array('neq',0),'start_time'=>array('lt',time()),'end_time'=>array('gt',time()));
-				$result=apiCall(HomePublicApi::TaskPlan_Query,array($mapa));
-//				dump($result);
-//				dump($mapa);
-				if($result['info']==NULL){
-					$this->error('暂无可接任务，请稍候再试',U('Home/Index/sm_manager'));
-				}else{
-					$tid=array('id'=>$result['info'][0]['task_id']);
-					$resultq=apiCall(HomePublicApi::Task_Query,array($tid));
-					$entity=array(
-						'get_task_time'=>time(),
-						'do_status'=>1,
-						'order_status'=>1,
-						'create_time'=>time(),
-						'tb_orderid'=>'',
-						'tb_address'=>'',
-						'tb_price'=>0,
-						'task_id'=>$result['info'][0]['task_id'],
-						'uid'=>$user['info']['id'],
-						'tpid'=>$result['info'][0]['id'],
-					);
-	//				dump($entity);
-					$id=$result['info'][0]['task_id'];
-					$et=array('task_status'=>4);
-	//				$this->assign('dts',$result['info'][0]['list']);
-					$tesk=apiCall(HomePublicApi::Task_SaveByID,array($id,$et));
-					$result3=apiCall(HomePublicApi::Task_His_Add,array($entity));
-					if($result3['status']){
-	//					dump($result['info'][0]['id']);
-//						$return1=M('bbjmemberSeller')->where('uid='.$user['info']['id'])->setDec('coins',$zongjia);
-						$result=M('taskPlan')->where('id='.$result['info'][0]['id'])->setDec('yuecount',1);
-						if($result==1){
-							
-							$this->success('成功接收任务，正在跳转任务界面',U('Home/Usersm/sm_bbhd',array('tpid'=>$result['info'][0]['id'])));
-						}else{
-							$this->error('领取任务失败');
-						}
-						
-					}
-				}
-			}else{
-				$this->error('领取任务失败，请先完成未完成的任务',U('Home/Usersm/sm_bbhd'));
-			}	
-		}else{
-			$this->error('用户信息认证完成才可以接任务哦');
-		}
-		
+
+		$now_time = time();
+        $this->reloadUserInfo();
+
+        $map = array('uid'=>$this->uid);
+        $map['do_status'] = array('notin',array( TaskHisModel::DO_STATUS_REJECT , TaskHisModel::DO_STATUS_DONE,TaskHisModel::DO_STATUS_CANCEL ));
+
+		$result = apiCall(TaskHisApi::GET_INFO,array($map));
+
+        if($this->userinfo['auth_status'] == 0){
+            $this->error("用户信息认证完成才可以接任务哦");
+        }
+
+		if(is_array($result['info'])) {
+            $this->error("请先完成或取消之前接的任务！");
+        }
+
+
+        $map = array('yuecount'=>array('gt',0),'start_time'=>array('lt',time()),'end_time'=>array('gt',time()));
+
+        $result = apiCall(TaskPlanApi::COUNT,array($map));
+        $total = 0;
+        if($result['status']){
+            $total = $result['info'];
+        }else{
+            $this->error($result['info']);
+        }
+
+        $rand_id = rand(0,$total-1);
+        $map['id'] = array('egt',$rand_id);
+        $result = apiCall(VCanDoTaskApi::GET_INFO,array($map,'id desc'));
+
+        if( !is_array($result['info']) ){
+            $this->error('暂无可接任务，请稍候再试',U('Home/Index/sm_manager'));
+        }else{
+            $task_plan = $result['info'];
+
+            //新增到接收任务表
+            $entity = array(
+                'tpid'=>$task_plan['id'],
+                'uid'=>$this->uid,
+                'order_status'=>2,
+                'create_time'=>$now_time,
+                'get_task_time'=>$now_time,
+                'do_status'=>TaskHisModel::DO_STATUS_NOT_START,
+                'task_id'=>$task_plan['task_id'],
+                'notes'=>'',
+                'tb_orderid'=>'',
+                'tb_address'=>'',
+                'tb_price'=>0,
+                'tb_pay_type'=>TaskHisModel::PAY_TYPE_LEGAL,
+                'tb_account'=>$this->userinfo['taobao_account'],
+            );
+
+            $result = apiCall(TaskHisApi::ADD,array($entity));
+
+
+            if($result['status']){
+                $notes = "用户 (".$this->userinfo['username'].") 领取了任务";
+                task_log($result['info'] , $task_plan['id'],$this->uid,$task_plan['task_id'],TaskLogModel::TYPE_GET_TASK,$notes);
+
+                $map = array('id'=>$task_plan['id']);
+                $result = apiCall(TaskPlanApi::SET_DEC,array($map,'yuecount',1));
+
+                if($result['status']){
+
+                    $this->success('成功接收任务，正在跳转任务界面',U('Home/SMActivity/task_manager',array('do_status'=>'doing')));
+                }else{
+                    $this->error('领取任务失败');
+                }
+
+            }
+        }
 		
 	}
 	/*
 	 * 查找任务
+	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 * */
 	public function chazhao(){
 		$user=session('user');
-		$map=array('uid'=>$user['info']['id'],'tb_orderid'=>array('like','%'.I('txt','').'%'));
+		$map=array('uid'=>$this->uid,'tb_orderid'=>array('like','%'.I('txt','').'%'));
 		$page = array('curpage' => I('get.p', 0), 'size' => 8);
 		$result=apiCall(HomePublicApi::Task_His_QueryAll,array($map,$page));
 		for ($i = 0; $i < count($result['info']['list']); $i++) {
@@ -448,55 +404,41 @@ class SMActivityController extends HomeController {
 		$this->assign('task',$result2['info']);
 		$this->assign('pross',$result['info']['list']);
 		$this->assign('show',$result['info']['show']);
-		$this -> assign('username', $user['info']['username']);
-		$this -> assign('cs_sf', 'sed');
-		$this -> assign('head_title', $headtitle);	
-		$index=A('Index');
-		$index->getcount();
-		$index->posts();
-		$this->display('Usersm/sm_bbhd');
-	}
-	
-	
-	public function rws(){
-		$headtitle = "宝贝街-任务书";
+
+
 		$this -> assign('head_title', $headtitle);
-		$user = session('user');
-		$uid=array('uid'=>$user['info']['id']);
-		$address=apiCall(HomePublicApi::Address_Query, array($uid));
+
+		$this->display('SMActivity/task_manager',array('do_status'=>'doing'));
+	}
+
+    /**
+     * @author 老胖子-何必都 <hebiduhebi@126.com>
+     */
+	public function rws(){
+
+		$this -> assign('head_title', "宝贝街-任务书");
+
+        $id = I('get.id',0);
+		$map = array('uid'=>$this->uid);
+		$address=apiCall(AddressApi::GET_INFO, array($map));
 		$this->assign('address',$address['info']);
-		$result_user=apiCall(HomePublicApi::Bbjmember_Query, array($uid));
-		$this->assign('user',$result_user['info'][0]);
-		$this -> assign('username', $user['info']['username']);
-		$id=I('id',0);
-		$tk=array('id'=>$id);
-		$map=array('task_id'=>$id);
-		$task=apiCall(HomePublicApi::Task_Query, array($tk));
-		$this->assign('task',$task['info'][0]);
-		$result=apiCall(HomePublicApi::TaskHasProduct_Query, array($map));
-		$this->assign('jianshu',$result['info'][0]['num']);
-		
-		$taskhisid=I('taskhisid');
-		for ($i=0; $i <count($result['info']) ; $i++) { 
-			$mapp=array('id'=>$result['info'][$i]['pid']);
-			$mapa=array('pid'=>$result['info'][$i]['pid']);
-			$return[]=apiCall(HomePublicApi::Product_Query, array($mapp));
-			$returns=apiCall(HomePublicApi::ProductSearchWay_Query, array($mapa));
-		}
-		$tsmap=array('id'=>$taskhisid);
-		$taskhis=apiCall(HomePublicApi::Task_His_Query, array($tsmap));
-//		dump($return);
-		$this->assign('pd',$return);
-		$this->assign('pds',$return[0]['info'][0]);
-		$this->assign('searchm ',$returns['info'][0]);
-		$map=array('uid'=>$user['info']['id'],'exchange_status'=>1,'orderid'=>0);
-		$re=apiCall(HomePublicApi::ExchangeProduct_Query,array($map));
-		$this->assign('exchange',$re['info'][0]);
-		$maps=array('uid'=>$user['info']['id']);
-		$results=apiCall(AdminPublicApi::Wxproduct_QueryNoPaging,array($maps));
-		$this->assign('product',$results['info']);
-		$this->assign('hsid',$taskhisid);
-		$this->assign('do_status',$taskhis['info'][0]['do_status']);
+
+		$task=apiCall(VTaskHisInfoApi::GET_INFO, array(array('id'=>$id)));
+		$this->assign('task',$task['info']);
+
+        $seller_uid = $task['info']['seller_uid'];
+        $result = apiCall(VBbjmemberSellerInfoApi::GET_INFO,array(array('uid'=>$seller_uid)));
+
+        if($result['status']){
+            $this->assign("seller",$result['info']);
+        }
+
+        $result = apiCall(VTaskProductSearchWayApi::GET_INFO,array(array('pid'=>$task['info']['task_id'])));
+
+        if($result['status']){
+            $this->assign("task_info",$result['info']);
+        }
+
 		$this->display();
 	}
 	/*
@@ -532,7 +474,7 @@ class SMActivityController extends HomeController {
 				);
 				$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$entity));
 				if($result['status']){
-					$this->success('提交成功！！，请关注任务动态',U('Home/Usersm/sm_bbhd'));
+					$this->success('提交成功！！，请关注任务动态',U('Home/SMActivity/task_manager',array('do_status'=>'doing')));
 				}else{
 					$this->error($result['info']);
 				}
@@ -553,7 +495,7 @@ class SMActivityController extends HomeController {
 				$exchanges=apiCall(HomePublicApi::ExchangeProduct_SaveByID,array($exid,$ord));
 //				
 				if($exchanges['status'] ){
-					$this->success('提交成功！！，已提交后台审核',U('Home/Usersm/sm_bbhd'));
+					$this->success('提交成功！！，已提交后台审核',U('Home/SMActivity/task_manager',array('do_status'=>'doing')));
 				}
 			}
 			
@@ -561,183 +503,52 @@ class SMActivityController extends HomeController {
 		
 		
 	}
-	
-	/*
-	 * 系统确认超时
-	 * */
-	public function timeout(){
-		$id=I('id',0);
-		$status=array('do_status'=>0);
-		$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$status));
-		$tpid=I('tpid',0);
-		if($tpid!=0){
-			$results=M('taskPlan')->where('id='.$tpid)->setInc('yuecount',1);
-			$Usersm=A("Usersm");  
-   			$Usersm->sm_bbhd();  
-		}else{
-		}
-		
-	}
-	
-	 /**
-     * 查询订单
+
+
+    /**
+     * 获取试民正在进行的任务数
+     * @author 老胖子-何必都 <hebiduhebi@126.com>
      */
-    function  searchExpress(){
+    private function get_doing_task_cnt(){
 
-         $url =C('JUHE_API.EXPRESS_SENDURL');#请求的数据接口URL
-        $com=I("com",0);
-        $no=I("no",0);
-        $params='com='.$com.'&no='.$no.'&dtype=json&key='.C('JUHE_API.EXPRESS_APPKEY');
-
-        $content = $this->juhecurl($url,$params,0);
-        if($content){
-            $result = json_decode($content,true);
-            $result_code = $result['resultcode'];
-            if($result_code == 200){
-                $this->ajaxReturn($result['result']);
-            }else{
-                $this->ajaxReturn("订单查询失败,错误ID号：".$result_code);
-            }
+        $map = array('uid'=>$this->uid);
+        $map['do_status'] = array('not in',array(TaskHisModel::DO_STATUS_CANCEL,TaskHisModel::DO_STATUS_DONE));
+        $result = apiCall(TaskHisApi::COUNT,array($map));
+        if($result['status']){
+            $this->assign('doing_task',$result['info']);
         }else{
-            $this->ajaxReturn("订单查询失败");
+            $this->assign('doing_task',0);
         }
     }
-	
-	
-	/**
-     * 查询订单
+
+
+    /**
+     * 未读消息
+     * @author 老胖子-何必都 <hebiduhebi@126.com>
      */
-    function  searchExpressHtml(){
+    private function not_read_msg_cnt(){
 
-        /*$url=C('JUHE_API.EXPRESS_SENDURL'); #请求的数据接口URL
-        //dump($url);
-        $com=I("com",0);
-        $no=I("no",0);
-        $params='com='.$com.'&no='.$no.'&dtype=json&key='.C('JUHE_API.EXPRESS_APPKEY');
-        $content = $this->juhecurl($url,$params,0);
-        if($content){
-            $result = json_decode($content,true);
-            //rsort($result['result']['list']);
-            $this->assign('result',$result);
-        }else{
+        $result = apiCall(VMsgInfoApi::COUNT,array(array('to_id'=>$this->uid,'msg_status'=>MsgboxModel::NOT_READ)));
+        $not_read_msg_cnt =  $result['info'];
+        if(empty($not_read_msg_cnt)){
+            $not_read_msg_cnt = 0;
+        }
 
-        }*/
+        $this->assign('not_read_msg_cnt',$not_read_msg_cnt);
 
 
-        /******** 测试数据*************/
-       $result['error_code']=0;
-        $list[]= array(
-                "datetime"=>"2013-06-25  10:44:05",
-                "remark"=>"已收件",
-                "zone"=>"台州市"
-        );
-        $list[]= array(
-                "datetime"=> "2013-06-25  11:05:21",
-                "remark"=>"快件在 台州  ,准备送往下一站 台州集散中心  ",
-                "zone"=> "台州市"
-
-        );
-        $list[]= array(
-            "datetime"=>"2013-06-25  20:36:02",
-            "remark"=>"快件在 台州集散中心  ,准备送往下一站 台州集散中心 ",
-            "zone"=>"台州市"
-        );
-        $list[]= array(
-            "datetime"=>"2013-06-25  21:17:36",
-            "remark"=>"快件在 台州集散中心 ,准备送往下一站 杭州集散中心",
-            "zone"=>"台州市"
-        );
-        $list[]= array(
-            "datetime"=>"2013-06-26  12:20:00",
-            "remark"=>"快件在 杭州集散中心  ,准备送往下一站 西安集散中心 ",
-            "zone"=>"杭州市"
-        );
-        $list[]= array(
-            "datetime"=>"2013-06-27  05:48:42",
-            "remark"=>"快件在 西安集散中心 ,准备送往下一站 西安  ",
-            "zone"=>"西安市/咸阳市"
-        );
-
-        $list[]= array(
-            "datetime"=>"2013-06-27  08:03:03",
-            "remark"=>"正在派件.. ",
-            "zone"=>"西安市/咸阳市"
-        );
-
-        $list[]= array(
-            "datetime"=>"2013-06-27  08:51:33",
-            "remark"=>"派件已签收",
-            "zone"=>"西安市/咸阳市"
-        );
-
-        $list[]= array(
-            "datetime"=>"2013-06-27 08:51",
-            "remark"=>"派件已签收",
-            "zone"=>"西安市/咸阳市"
-        );
-
-        $list[]= array(
-            "datetime"=>"2013-06-27  08:51:33",
-            "remark"=>"签收人是：已签收",
-            "zone"=>"西安市/咸阳市"
-        );
-
-
-        rsort($list); //数组倒序
-        $result['result']=array(
-           "company"=>"顺丰",
-           "com"=>"sf",
-           "no"=>"575677355677",
-           "status"=>1,
-            "list"=>$list
-        );
-        $this->assign("result",$result);
-        /******** 测试数据*************/
-        $this ->display();
     }
-	
-	
-	
 
-/*
-      ***请求接口，返回JSON数据
-      ***@url:接口地址
-      ***@params:传递的参数
-      ***@ispost:是否以POST提交，默认GET
-  */
-    function juhecurl($url,$params=false,$ispost=0){
-        $httpInfo = array();
-        $ch = curl_init();
+    /**
+     * 获取最新公告信息
+     * @author 老胖子-何必都 <hebiduhebi@126.com>
+     */
+    private function getLastestNotice(){
+        $map = array();
+        $order = " post_modified desc ";
 
-        curl_setopt( $ch, CURLOPT_HTTP_VERSION , CURL_HTTP_VERSION_1_0 );
-        curl_setopt( $ch, CURLOPT_USERAGENT , 'Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22' );
-        curl_setopt( $ch, CURLOPT_CONNECTTIMEOUT , 30 );
-        curl_setopt( $ch, CURLOPT_TIMEOUT , 30);
-        curl_setopt( $ch, CURLOPT_RETURNTRANSFER , true );
-        if( $ispost )
-        {
-            curl_setopt( $ch , CURLOPT_POST , true );
-            curl_setopt( $ch , CURLOPT_POSTFIELDS , $params );
-            curl_setopt( $ch , CURLOPT_URL , $url );
-        }
-        else
-        {
-            if($params){
-                curl_setopt( $ch , CURLOPT_URL , $url.'?'.$params );
-            }else{
-                curl_setopt( $ch , CURLOPT_URL , $url);
-            }
-        }
-        $response = curl_exec( $ch );
-        if ($response === FALSE) {
-            #echo "cURL Error: " . curl_error($ch);
-            return false;
-        }
-        $httpCode = curl_getinfo( $ch , CURLINFO_HTTP_CODE );
-        $httpInfo = array_merge( $httpInfo , curl_getinfo( $ch ) );
-        curl_close( $ch );
-        return $response;
+        $result = apiCall(VPostInfoApi::GET_INFO,array($map, $order));
+        $this->assign('zxgg',$result['info']);
     }
-	
 
 }

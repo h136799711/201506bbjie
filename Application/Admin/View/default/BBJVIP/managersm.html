@@ -37,7 +37,7 @@
 								用户ID
 							</th>
 							<th>
-								用户昵称
+								用户登录帐号
 							</th>
 							<th>
 								邮箱
@@ -58,24 +58,24 @@
 						</tr>
 					</thead>
 					<tbody>
-						<empty name="user">
+						<empty name="list">
 							<tr>
 								<td colspan="7" class="text-center">{:L('NO_DATA')}</td>
 							</tr>
 							<else/>
-							<volist name="user" id="vo">
-								<volist name='jilu' id='v'>
-									<if condition="$v['uid'] eq $vo['id']">
+							<volist name="list" id="vo">
+
 									<tr>
 										<td>
 											<input type="checkbox" value="{$vo.id}" name="ids[]" class="selectitem" /></td>
 										<td>
-											{$v.uid}
+											{$vo.uid}
 										</td>
 										
 										<td>
-											{$vo.username}
-											
+                                            <a href="{:U('Admin/BBJVIP/view_user',array('id'=>$vo['uid']))}">
+                                                {$vo.username}
+                                            </a>
 										</td>
 										<td>
 											{$vo.email}
@@ -84,24 +84,20 @@
 											{$vo.mobile}
 										</td>
 										<td>
-											{$v.taobao_account}
+											{$vo.taobao_account}
 										</td>
 										<td>
-											{$v.create_time|date='Y-m-d h:i:s',###}
+											{$vo.create_time|date='Y-m-d h:i:s',###}
 										</td>
 										<td>
-											<if condition="$v['auth_status'] eq 1">审核通过</if>
-											<if condition="$v['auth_status'] eq 0">待审核</if>
-											<if condition="$v['auth_status'] eq 3">审核失败</if>
+											<if condition="$vo['auth_status'] eq 1">审核通过</if>
+											<if condition="$vo['auth_status'] eq 0">待审核</if>
+											<if condition="$vo['auth_status'] eq 3">审核失败</if>
 										</td>
 										<td>
-										<a href="{:U('Admin/BBJVIP/view',array('id'=>$vo['id']))}" target="_blank" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>查看</a>
-										<!--<a href="{:U('Admin/BBJVIP/edit',array('id'=>$vo['id']))}" class="btn btn-sm btn-default"><i class="fa fa-edit"></i>编辑</a>-->
-										<a href="{:U('Admin/BBJVIP/delete_sm',array('id'=>$vo['id']))}" class="ajax-get confirm btn btn-sm btn-danger"><i class="fa fa-trash"></i>删除</a>
-									</td>
+
+										</td>
 									</tr>
-									</if>
-								</volist>
 							</volist>
 						</empty>
 					</tbody>

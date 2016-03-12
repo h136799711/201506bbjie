@@ -10,6 +10,7 @@ use Home\Api\BbjmemberSellerApi;
 use Home\Api\FinAccountBalanceHisApi;
 use Home\Api\FinBankaccountApi;
 use Home\Model\BbjmemberSellerModel;
+use Home\Model\FinBankaccountModel;
 use Think\Controller;
 use Home\Api\HomePublicApi;
 /*
@@ -25,20 +26,20 @@ class SJMoneyController extends HomeController {
 
 	/*
 	 * 资金提现
+	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 * */
 	public function deposit() {
-		$money = I('money', '0.000');
-//		$skzh = I('skzh', '');
-//		$jy_num = I('jy_num', '');
-//		$jypz = I('jypz', '');
+		$money = I('money', '0.00');
 
 		$entity = array('uid' => $this->uid,
-            'income' => '000',
-            'defray' => $money . '.000',
+            'income' => '0',
+            'defray' => $money . '.00',
             'create_time' => time(),
             'notes' => '用于提现',
             'dtree_type' => 3,
-            'status' => 2, );
+            'status' =>2
+            );
+
 		$result = apiCall(FinAccountBalanceHisApi::ADD, array($entity));
 
         $entity = array(

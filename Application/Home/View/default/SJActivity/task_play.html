@@ -50,7 +50,6 @@
 
 							<div class="option">
 								<a class="btn btn-renwu" modal-title="发放任务" data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 750, height:500}" href="javascriot:void(0)">发放任务</a> </div>
-
 						</div>
 
 						<div class="renwuku jquery-once-1-processed">
@@ -93,10 +92,14 @@
 											</td>
 											<td>
 												<div class="renwu-caozuo small">
+                                                    <if condition="$vo['yuecount'] eq $vo['task_cnt']">
+                                                    <a target="_blank" class="am-text-danger ajax-get" href="{:U('Home/TaskPlan/delete',array('id'=>$vo['id']))}">删除</a>
+
+                                                    </if>
+                                                    <br>
                                                     <a target="_blank" href="{:U('Home/SJActivity/alluser',array('id'=>$vo['task_id']))}">查看试民</a>
 													<br>
                                                     <a class="j_update_task" data-task-count="{$vo.task_cnt}" data-task-id="{$vo.id}" href="javascript:void(0)">修改任务信息</a>
-
 
 												</div>&nbsp;
                                             </td>
@@ -151,10 +154,7 @@
                             <label class="am-u-lg-2 am-u-md-2 am-form-label">进店方式</label>
                             <div class="am-u-lg-10 am-u-md-10 am-text-left">
                                 <select name="sele_type" class="am-form-field">
-                                    <option value="0">不限</option>
-                                    <option value="1">搜索模式（试民通过搜索进入店铺）</option>
-                                    <option value="2">老客户模式（试民通过收藏夹或购物车进入店铺）</option>
-                                    <option value="3">手机搜索（试民通过手机搜索商品进入店铺）</option>
+                                    <option value="0">关键词搜索模式（试民通过关键词搜索进入店铺）</option>
                                 </select>
 
                             </div>

@@ -21,7 +21,7 @@
 					<div class="jquery-once-1-processed">
 
 						<div style="position: relative">
-							<div class="pull-right btn-group"><a data-toggle="modal2" modal-title="创建淘宝活动" style="background-color: #1D99D5; color: #FFFFFF;" class="am-btn am-round" href="{:U('Home/SJActivity/activity_1')}">创建试福任务</a>
+							<div class="pull-right btn-group"><a data-toggle="modal2" modal-title="创建淘宝活动" style="background-color: #1D99D5; color: #FFFFFF;" class="am-btn am-round" href="{:U('Home/SJActivity/activity_1')}">创建换宝任务</a>
 							</div>
 
                             <ul class="shifu_nav clearfix" style="position: relative;left: 0;width: 600px;">
@@ -87,47 +87,58 @@
                                             <td CLASS="am-text-left">
                                                 {:count($vo['_products'])}
                                             </td>
-                                            <td><span class="price" title="">{$vo.task_brokerage}</span>
+                                            <td><span class="price" class="am-btn am-btn-primary">￥{$vo.task_gold}</span>
                                             </td>
-                                            <td><span class="muted">{$vo.task_gold}</span>
-                                            </td>
-
-                                            <td><span title="">{$vo.create_time|date='Y-m-d H:i',###}</span>
+                                            <td><span class="muted">
+                                                    <empty name="vo['frozen_money']" >
+                                                        -
+                                                        <else/>
+                                                        ￥{$vo.frozen_money}</span>
+                                                </empty>
                                             </td>
 
                                             <td>
-                                                <a href="{:U('Home/SJActivity/delete_task',array('id'=>$vo['id']))}" class="ajax-get confirm am-btn-sm am-btn-danger am-btn">删除任务</a>
+                                                <span title="">{$vo.create_time|date='Y-m-d H:i',###}</span>
+                                            </td>
 
-                                                <a  class="am-btn-sm am-btn-primary am-btn" target="_blank" href="{:U('Home/SJActivity/rws',array('id'=>$vo['id']))}">预览任务书</a>
-
-                                                <a  class="am-btn-sm am-btn-primary am-btn ajax-get" data-role="ajax" href="{:U('Home/SJActivity/start',array('id'=>$vo['id']))}">开启任务</a>
-
+                                            <td>
+                                                <eq name="user['task_gettype']" value="1">
+                                                    <a href="{:U('Home/SJActivity/task_play',array('id'=>$vo['id']))}" class=" am-round am-btn-sm am-btn-primary am-btn">发放任务</a>
+                                                    <else/>
+                                                    <a href="{:U('Home/SJActivity/sh_user',array('id'=>$vo['id']))}" class=" am-round am-btn-sm am-btn-primary am-btn">审批用户</a>
+                                                </eq>
                                             </td>
                                         </tr>
-                                                    <volist name="vo['_products']" id="p">
-                                                        <tr>
-                                                            <div class="am-cf">
-
-                                                        <td colspan="1">
-                                                            {$key+1}
-                                                        </td>
-                                                        <td colspan="1">
-                                                        <div class="am-fl am-margin-right-sm">
-                                                            <img src="{$p.main_img}" alt="任务商品图片" class="am-img-responsive am-round" style="width: 40px;height:40px;"/>
-                                                        </div>
-                                                        </td>
-                                                        <td colspan="4">
-                                                            {$p.pname}
-                                                        </td>
-                                                        <td colspan="1">
-                                                            {$p.price}元
-                                                        </td>
-                                                        <td>
-                                                            <a  class="am-btn-sm am-btn-link am-btn" target="_blank" href="{:U('Home/SJActivity/rws',array('pid'=>$p['pid'],'id'=>$vo['id']))}">预览任务书</a>
-                                                        </td>
-                                                            </div>
-                                                        </tr>
-                                                    </volist>
+                                        <tr>
+                                            <td colspan="1">
+                                                {$key+1}
+                                            </td>
+                                            <td colspan="2">
+                                                <volist name="vo['_products']" id="p">
+                                                    <div class="am-fl am-margin-right-sm">
+                                                        <img src="{$p.main_img}" alt="任务商品图片" class="am-img-responsive am-radius" style="width: 40px;height:40px;"/>
+                                                    </div>
+                                                </volist>
+                                            </td>
+                                            <td>
+                                                <a  class="am-btn-sm am-btn-link am-btn" target="_blank" href="{:U('Home/SJActivity/rws',array('pid'=>$p['pid'],'id'=>$vo['id']))}">预览任务书</a>
+                                            </td>
+                                            <td colspan="1">
+                                                <span class="">总份数: {$vo._all_task}</span>
+                                                <BR/>
+                                                <span class="">任务中: {$vo._doing_task}</span>
+                                                <BR/>
+                                                <span class="">已完成: {$vo._done_task}</span>
+                                            </td>
+                                            <td>
+                                            </td>
+                                            <td>
+                                            </td>
+                                            <td>
+                                                <a  class="am-btn-sm am-btn-link am-btn ajax-get"  href="{:U('Home/SJActivity/zanting',array('id'=>$vo['id']))}">暂停任务</a>
+                                                <BR/><a  class="am-btn-sm am-btn-link am-btn"  href="{:U('Home/SJActivity/alluser',array('id'=>$vo['id']))}">任务用户</a>
+                                            </td>
+                                        </tr>
                                         <tr class="margin">
                                             <td colspan="8">
 

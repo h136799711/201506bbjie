@@ -5,9 +5,7 @@
 
 <div class="siderbar">
 
-	<if condition="$auth_status eq 0">
-		
-		<else/>
+	<if condition="$auth_status eq 1">
 		<dl class="open">
 			<dt class="s_zhanghao">
                 <span>活动准备</span>
@@ -27,7 +25,7 @@
                 <a class="" href="{:U('Home/SJActivity/sj_tbhd')}">淘宝活动</a>
 			</dd>
 			<dd>
-                <a class="" href="{:U('Home/SJActivity/activity_1')}">发布试福任务</a>
+                <a class="" href="{:U('Home/SJActivity/activity_1')}">发布换宝任务</a>
 			</dd>
 		</dl>
 	</if>

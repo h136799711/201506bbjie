@@ -90,23 +90,34 @@
 											{$vo.uid}
 										</td>
 										<td>
-											{$vo.linkman}/{$vo.linkman_tel}
+                                            <a href="{:U('Admin/BBJVIP/view_user',array('id'=>$vo['uid']))}">
+                                            {$vo.linkman}/{$vo.linkman_tel}
+                                            </a>
 										</td>
 										<td>
                                             {$vo.store_name}/{$vo.store_url}
 										</td>
-										<td>
+
+                                        <td>
 											{$vo.aliwawa}
 										</td>
+
 										<td>
 											<if condition="$vo['auth_status'] eq 1">已通过</if>
 											<if condition="$vo['auth_status'] eq 0">待审核</if>
-											<if condition="$vo['auth_status'] eq 2">被驳回</if>
+                                            <if condition="$vo['auth_status'] eq 2">被驳回</if>
+                                            <if condition="$vo['auth_status'] eq 3">重新认证中</if>
 										</td>
-										<td>
-											<a href="{:U('Admin/BBJVIP/checksuccesssj',array('id'=>$vo['uid']))}"  class="btn btn-sm btn-primary ajax-get"><i class="fa fa-eye"></i>通过</a>
-											<a href="{:U('Admin/BBJVIP/checksb',array('id'=>$vo['uid']))}" class="ajax-get confirm btn btn-sm btn-danger"><i class="fa fa-reply"></i>驳回</a>
 
+										<td>
+
+                                            <if condition="$vo['auth_status'] neq 1">
+											    <a href="{:U('Admin/BBJVIP/check_user',array('type'=>'1','id'=>$vo['uid']))}"  class="ajax-get btn btn-sm btn-primary ajax-get"><i class="fa fa-eye"></i>通过</a>
+                                            </if>
+
+                                            <if condition="$vo['auth_status'] neq 2">
+                                            <a href="{:U('Admin/BBJVIP/checksb',array('id'=>$vo['uid']))}" class="ajax-get confirm btn btn-sm btn-danger"><i class="fa fa-reply"></i>驳回</a>
+                                            </if>
 										</td>
 									</tr>
 									</if>
