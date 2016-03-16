@@ -10,6 +10,7 @@ use \Common\Api\Api;
 use \Common\Model\PostModel;
 
 class PostApi extends Api{
+
 	protected function _init(){
 		$this->model = new PostModel();
 	}

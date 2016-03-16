@@ -12,6 +12,7 @@ namespace Home\Controller;
 use Home\Api\BbjmemberSellerApi;
 use Home\Api\TaskLogApi;
 use Home\Api\VTaskHisInfoApi;
+use Home\Api\VTaskProductInfoApi;
 use Uclient\Api\UserApi;
 
 class TaskLogController extends HomeController {
@@ -30,8 +31,12 @@ class TaskLogController extends HomeController {
             $result = apiCall(VTaskHisInfoApi::GET_INFO,array(array('id'=>$task_his_id)));
             $this->assign("task_his",$result['info']);
             $uid = $result['info']['seller_uid'];
+            $task_id = $result['info']['task_id'];
             $result = apiCall(UserApi::GET_INFO,array($uid));
             $this->assign("seller_user",$result['info']);
+
+            $result = apiCall(VTaskProductInfoApi::GET_INFO,array(array('task_id'=>$task_id)));
+            $this->assign("product",$result['info']);
         }
         $this->display();
     }

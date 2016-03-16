@@ -25,6 +25,10 @@ function mask_string($str){
 
     return $new_str;
 }
+function msubstr($str){
+    $new_str = mb_substr($str,0,3);
+    return $new_str;
+}
 
 /**
  * 任务操作日志

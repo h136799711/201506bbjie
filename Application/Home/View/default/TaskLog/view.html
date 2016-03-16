@@ -2,38 +2,37 @@
     <div class="syj-form form-horizontal" style="padding-top:10px;">
         <div class="am-g">
             <div class="am-u-sm-5">
-                <div class="am-form-group am-cf">
-                    <label class="am-text-left  am-fl am-margin-right-sm">活动商家 </label>
+                <div class="am-form-group am-cf am-margin-bottom-xs">
+                    <div class="am-text-left  am-fl am-margin-right-sm">活动商家 </div>
                     <div class=" am-fl ">{$seller_user.username}</div>
                 </div>
-                <div class="am-form-group  am-cf">
-                    <label class=" am-fl am-margin-right-sm">任务步骤 </label>
+                <div class="am-form-group  am-cf am-margin-bottom-xs">
+                    <div class=" am-fl am-margin-right-sm">任务步骤 </div>
                     <div class=" am-fl">{$task_his.do_status_name}</div>
                 </div>
 
-                <div class="am-form-group am-cf">
-                    <label class="am-text-left am-fl am-margin-right-sm">任务价值 </label>
-                    <div class="text controls am-fl">
+                <div class="am-form-group am-cf am-margin-bottom-xs">
+                    <div class="am-text-left am-fl am-margin-right-sm">任务价值 </div>
+                    <div class="am-fl">
                         <span class="price">{$task_his.coin}</span>福币
                     </div>
                 </div>
-                <div class="am-form-group am-cf">
-                    <label class="am-fl am-margin-right-sm">分配任务</label>
-                    <div class="am-fl">
-                        <a target="_blank" href="/person/shifuRenwu/start?id=2576159">
-                            蒙古包蚊帐PC人气1.5m</a>
-                        <i class="syj-ico renwu-sjss" title="手机搜索任务"></i>
+                <div class="am-form-group am-cf am-margin-bottom-xs">
+                    <div class="am-fl am-margin-right-sm">分配任务</div>
+                    <div class="am-fl am-text-left" style="width: 160px;">
+                        {$product.pname}
+                        <!--<i class="syj-ico renwu-sjss" title="手机搜索任务"></i>-->
                     </div>
                 </div>
 
-                <div class="am-form-group am-cf">
-                    <label class="am-fl am-margin-right-sm">任务金额</label>
+                <div class="am-form-group am-cf am-margin-bottom-xs">
+                    <div class="am-fl am-margin-right-sm">任务金额</div>
                     <div class="am-fl">
                         <span class="am-text-danger">{$task_his.task_gold}</span>元
                     </div>
                 </div>
-                <div class="am-form-group am-cf">
-                    <label class="am-fl am-margin-right-sm">通过时间</label>
+                <div class="am-form-group am-cf am-margin-bottom-xs">
+                    <div class="am-fl am-margin-right-sm">通过时间</div>
                     <div class="am-fl">{$task_his.create_time|date='Y-m-d H:i:s',###}
                     </div>
                 </div>
@@ -56,17 +55,16 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
                         <volist name="log_list" id="vo">
+                            <tr style="font-size: 10px;">
                         <td>
                             <span title="{$vo.log_time|date='Y-m-d H:i:s',###}">{$vo.log_time|date='Y-m-d H:i:s',###}</span>
                         </td>
-                        <td>
+                        <td class="am-text-left">
                             <span title="{$vo.notes}">{$vo.notes}</span>
                         </td>
-
+                            </tr>
                         </volist>
-                    </tr>
                     </tbody>
                 </table>
             </div>

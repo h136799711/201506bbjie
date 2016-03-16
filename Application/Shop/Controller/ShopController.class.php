@@ -29,8 +29,18 @@ class ShopController extends  Controller {
 				define("APP_VERSION", C('APP_VERSION'));
 			}
 		}
+
 		C('SHOW_PAGE_TRACE', false);//设置不显示trace
+
+        $session = $_SESSION['Home'];
+        if(!empty($session)){
+            $_SESSION['Shop'] = $session;
+        }
+
+        $this->userinfo = session('user');
+
 		$this->assign("userinfo",$this->userinfo);
+        $this->assign("username",$this->userinfo['username']);
 	}
 
 	/**

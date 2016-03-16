@@ -13,6 +13,42 @@
 		{:W('Menus/left')}
 		<div class="admin-main-content">
 			{:W('Menus/breadcrumb')}
+
+            <div class="filter-controls">
+                <form class="j_search_form form form-inline" action="__SELF__">
+                    <div class="form-group">
+                        <label class="pull-left">兑换状态</label>
+                        <div class="margin-left-sm pull-left">
+                            <div class="radio-inline">
+                                <label>
+                                    <input <eq name="status" value="0">checked</eq> type="radio" name="status"  value="0" >
+                                    待审核
+                                </label>
+                            </div>
+                            <div class="radio-inline">
+                                <label>
+                                    <input <eq name="status" value="1">checked</eq> type="radio" name="status" value="1">
+                                    审核通过
+                                </label>
+                            </div>
+                            <div class="radio-inline">
+                                <label>
+                                    <input <eq name="status" value="2">checked</eq> type="radio" value="2" name="status" />
+                                    已驳回
+                                </label>
+                            </div>
+                            <div class="radio-inline">
+                                <label>
+                                    <input <eq name="status" value="3">checked</eq> type="radio" value="3" name="status" />
+                                    已发货
+                                </label>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+
 				<table class="table table-striped table table-hover  table-condensed"  >
 					<thead>
 						<tr>
@@ -32,10 +68,7 @@
 								商品规格
 							</th>
 							<th>
-								商品状态
-							</th>
-							<th>
-								兑换时间
+								申请时间
 							</th>
 							<th>
 								操作
@@ -43,12 +76,12 @@
 						</tr>
 					</thead>
 					<tbody>
-						<empty name="exchange">
+    						<empty name="list">
 							<tr>
-								<td colspan="7" class="text-center">{:L('NO_DATA')}</td>
+								<td colspan="7" class="text-center">没有相关数据</td>
 							</tr>
 							<else/>
-							<volist name="exchange" id="vo">
+							<volist name="list" id="vo">
 								<tr>
 									<td>
 										<input type="checkbox" value="{$vo.id}" name="ids[]" class="selectitem" />
@@ -57,32 +90,32 @@
 										{$vo.id}
 									</td>
 									<td>
-										<volist name="product" id="v">
-											<if condition="$vo['p_id'] eq $v['id']">
-												<img src="{$v['main_img']}" height="50px" width="60px">{$v['name']}
-											</if>
-										</volist>
+                                        <img src="{$vo['main_img']}" height="50px" width="60px">{$vo['name']}
+
 									</td>
 									<td>
-										<volist name="users" id="v">
-											<if condition="$v['uid'] eq $vo['uid']">
-												{$v['nickname']}
-											</if>
-										</volist>
-										
+                                        <a href="{:U('Admin/BBJVIP/view_user',array('id'=>$vo['uid']))}">{$vo['username']}</a>
 									</td>
 									<td>
 										<empty name="$vo.sku_notes">无<else/>
 											{$vo.sku_notes}
 										</empty>
 									</td>
+                                    <td>
+                                        {$vo.create_time|date='Y-m-d H:i:s',###}
+                                    </td>
 									<td>
-										{$vo.create_time}
-									</td>
-									<td>
-										<a href="{:U('Admin/Task/check',array('id'=>$vo['id']))}" target="_blank" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>审核通过</a>
-										<a href="" class="ajax-get confirm btn btn-sm btn-danger"><i class="fa fa-trash"></i>审核失败</a>
-									</td>
+                                        <neq name="vo['exchange_status']" value="3">
+
+										<a href="{:U('Admin/Task/pass',array('id'=>$vo['id']))}" class="ajax-get btn btn-sm btn-primary"><i class="fa fa-eye"></i>通过</a>
+										<eq name="vo['exchange_status']" value="2">
+                                           驳回原因: {$vo.reject_reason}
+                                            <else/>
+                                        <a href="javascript:void(0);" data-id="{$vo['id']}" class="j_reject btn btn-sm btn-danger"><i class="fa fa-reply"></i>驳回</a>
+
+                                        </eq>
+                                        </neq>
+                                    </td>
 								</tr>
 
 							</volist>
@@ -92,26 +125,57 @@
 				<div>{$show}</div>
 			</div>
 
-			<script type="text/javascript">
-				$(function() {
-						$('#startdatetime').datetimepicker({
-							lang: 'ch',
-							format:'Y-m-d',
-							timepicker:false,
-						});
-						$('#enddatetime').datetimepicker({
-							lang: 'ch',
-							format:'Y-m-d',
-							timepicker:false,
-						});
-				});
-			</script>
+        <!-- 驳回原因填写 -->
+        <div class="modal fade j_reject_modal">
+            <div class="modal-dialog" style="    Z-INDEX: 11111111;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">驳回兑换申请编号#<span class="j_id">-</span></h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="j_reason_form">
+                            <input type="hidden" name="id" class="j_input_id"  />
+                            <div class="form-group">
+                                <label>原因</label>
+                                <textarea placeholder="填写驳回的原因" class="form-control" name="reason" class="j_reason"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <a href="{:U('Admin/Task/reject')}" target-form="j_reason_form" class="ajax-post btn btn-primary">确定</a>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+        <!-- 驳回原因填写 END-->
+
 		</div>
+
 		<!-- END admin-main-content -->
 	</div>
 		<!-- END admin-main-->
 </block>
 
 <block name="area_footer">
+    <script type="text/javascript">
+        $(function() {
+            $(".j_search_form input").change(function(){
+                $(".j_search_form").submit();
+            });
+
+            $(".j_reject").each(function(index,item){
+                $(item).click(function(ev){
+                    var id = $(ev.target).data("id");
+                    $(".j_reject_modal .j_id").text(id);
+                    $(".j_reject_modal .j_input_id").val(id);
+                    $('.j_reject_modal').modal();
+
+
+                });
+            });
+        });
+    </script>
 
 </block>

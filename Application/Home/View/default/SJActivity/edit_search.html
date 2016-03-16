@@ -40,12 +40,24 @@
 						if(result.status==0){
 							alert(result.info);
 						}else{
+                            console.log(result.info);
 							var results=result.info.items;
-							$('#div_searchCondition').find('.font_openUrl').html(result.info.url);
+                            var price = result.info.price;
+                            var pager = result.info.pager;
+
+                            console.log(price);
+
+                            $('#div_searchCondition').find('.font_openUrl').html(result.info.url);
 							$('#div_searchCondition').find('.font_key').html(result.info.key);
 							$('#div_searchCondition').find('.font_tab').html(result.info.tab);
-							$('#div_searchCondition').find('.font_order').html(result.info.order);
-							
+                            $('#div_searchCondition').find('.font_order').html(result.info.order);
+
+                            $('#div_searchCondition').find('.price_min').html(price[0]);
+                            $('#div_searchCondition').find('.price_max').html(price[1]);
+
+                            $("input[name='price_min']").val(price[0]);
+                            $("input[name='price_max']").val(price[1]);
+
 							$("input[name='search_url']").val($('#url').val());
 							$("input[name='search_q']").val(result.info.key);
 							$("input[name='search_xz']").val(result.info.tab);
@@ -56,16 +68,18 @@
 							var result1="未能在结果页面找到对应搜索，提交后需等待客服审核";
 							$('#iscz').val('2');
 							var style1="am-alert-warning";
-							
+							var curpage = pager.currentPage;
 							for(var i=0;i<results.length;i++){
 								if(title1.indexOf(result.info.items[i].title.trim())!=-1||results[i].nick.trim()=='{$aliwawa}'){
 									$('#iscz').val('1');
-									result1="成功在搜索页找到对应商品,保存搜索后可直接开始使用";
+
+									result1= "成功在第"+curpage+"页找到对应商品,保存搜索后可直接开始使用";
 									style1="am-alert-success";
 									break;	
 								}
 
 							}
+
 							$("#div_search_result").empty();
 							$("#div_search_result").append('<div class="am-alert '+style1+'" data-am-alert><button type="button" class="am-close">&times;</button><p>'+result1+'</p></div>');
 							
@@ -242,7 +256,9 @@
 								<input type="hidden" value="{$search['search_url']}" name="search_url" />
 								<input type="hidden" value="{$search['search_q']}" name="search_q" />
 								<input type="hidden" value="{$search['search_condition']}" name="search_xz" />
-								<input type="hidden" value="{$search['search_order']}" name="search_order" />
+                                <input type="hidden" value="{$search['search_order']}" name="search_order" />
+                                <input type="hidden" value="{$search['price_min']}" name="price_min" />
+                                <input type="hidden" value="{$search['price_max']}" name="price_max" />
 								<div id="div_searchCondition" style="">
 									<div class="form-horizontal">
 										<div class="control-group">
@@ -252,14 +268,18 @@
 											<br>
 											<div class="controls">
 												<div style="padding: 10px;background: #eee;color:#222;margin-bottom: 20px;">
-													<p>打开<font class="font_openUrl">www.taobao.com</font>
+													<p>打开: <a href="{$url}" target="_blank" >{$url}</a>
 													</p>
 													<p>搜索关键词: <font class="font_key">{$search['search_q']}</font>
 													</p>
 													<p>选择 <font class="font_tab">{$search['search_condition']}</font>
 													</p>
-													<p>排序: <font class="font_order">{$search['search_order']}</font>
-													</p>
+                                                    <p>排序: <font class="font_order">{$search['search_order']}</font>
+                                                    </p>
+                                                    <if condition="$search['price_max'] gt 0">
+                                                    <p>价格区间: {$search['price_min']}－ {$search['price_max']}</font>
+                                                    </p>
+                                                    </if>
 													<p>一般在前五页即可找到对应商品</p>
 												</div>
 											</div>

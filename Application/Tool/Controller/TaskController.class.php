@@ -9,6 +9,7 @@
 namespace Tool\Controller;
 use Home\Api\TaskHisApi;
 use Home\Api\TaskLogApi;
+use Home\Api\TaskPlanApi;
 use Home\Model\TaskHisModel;
 use Home\Model\TaskLogModel;
 use Think\Controller;
@@ -39,8 +40,9 @@ class TaskController extends Controller{
 	public function index(){
 		header('Content-type',"text/html");
 		$url = C('SITE_URL').'/index.php/Tool/Task/aysnc';
-		fsockopenRequest($url);
-        echo "if(typeof(aysncTask) == 'undefined'){console.log('accept request');}else{";
+        $post_data = array('from'=>'index');
+		$result = fsockopenRequest($url,$post_data);
+        echo "var url = \"".$url."\";var result = ".$result.";if(typeof(aysncTask) == 'undefined'){console.log('accept request!'+result);console.log(url);}else{";
 		echo "aysncTask('Accept Request!')}";
 	}
 	
@@ -51,7 +53,7 @@ class TaskController extends Controller{
 		
 		ignore_user_abort(true); // 后台运行
 		set_time_limit(0); // 取消脚本运行时间的超时上限
-		
+        LogRecord("执行任务",__FILE__.__LINE__);
 //		$this->toRecieved();
 //		$this->toCompleted();
 //		$this->toCancel();
@@ -87,6 +89,9 @@ class TaskController extends Controller{
                 );
                 $result = apiCall(TaskLogApi::ADD,array($entity));
                 $result = apiCall(TaskHisApi::SAVE_BY_ID,array($vo['id'],array('do_status'=>TaskHisModel::DO_STATUS_CANCEL)));
+
+                $map = array('id'=>$vo['tpid']);
+                $result = apiCall(TaskPlanApi::SET_INC,array($map,"yuecount",1));
             }
 
             addWeixinLog("更新订单为取消影响记录数：".$result['info']);

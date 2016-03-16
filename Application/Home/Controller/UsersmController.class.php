@@ -17,12 +17,13 @@ use Home\Api\AddressApi;
 use Home\Api\BbjmemberApi;
 use Home\Api\FinAccountBalanceHisApi;
 use Home\Api\FinBankaccountApi;
+use Home\Api\FinFucoinHisApi;
+use Home\Api\ProductExchangeApi;
 use Home\Api\TaskHisApi;
-use Home\Api\VBbjmemberSellerInfoApi;
 use Home\Api\VMsgInfoApi;
-use Home\Api\VTaskHisInfoApi;
-use Home\Api\VTaskProductInfoApi;
+use Home\Api\VProductExchangeInfoApi;
 use Home\Model\FinAccountBalanceHisModel;
+use Home\Model\ProductExchangeModel;
 use Home\Model\TaskHisModel;
 use Think\Controller;
 use Home\Api\HomePublicApi;
@@ -195,12 +196,57 @@ class UsersmController extends HomeController {
 	public function sm_dhsp() {
 
 		$this -> assign('head_title', "宝贝街-兑换商品");
+        //1.待审核
+        $map = array(
+            'exchange_status'=>ProductExchangeModel::WAIT_CHECK,
+            'uid'=>$this->userinfo['id'],
+        );
+        $result = apiCall(ProductExchangeApi::COUNT,array($map));
+        $this->assign("wait_check",$result['info']);
 
-		$map=array('uid'=>$user['info']['id']);
-		$re=apiCall(HomePublicApi::ExchangeProduct_Query,array($map));
-		$result=apiCall(AdminPublicApi::Wxproduct_QueryNoPaging,array($map));
-		$this->assign('product',$result['info']);
-		$this->assign('exchange',$re['info']);
+        //2.审核通过
+        $map = array(
+            'exchange_status'=>ProductExchangeModel::CHECK_SUCCESS,
+            'uid'=>$this->userinfo['id'],
+        );
+        $result = apiCall(ProductExchangeApi::COUNT,array($map));
+        $this->assign("check_success",$result['info']);
+        //3.已驳回
+        $map = array(
+            'exchange_status'=>ProductExchangeModel::CHECK_FAIL,
+            'uid'=>$this->userinfo['id'],
+        );
+        $result = apiCall(ProductExchangeApi::COUNT,array($map));
+        $this->assign("check_fail",$result['info']);
+        //4. 已发货
+        $map = array(
+            'exchange_status'=>ProductExchangeModel::DELIVERY_GOODS,
+            'uid'=>$this->userinfo['id'],
+        );
+        $result = apiCall(ProductExchangeApi::COUNT,array($map));
+        $this->assign("delivery_goods",$result['info']);
+
+
+
+        $status = $this->_param('status',ProductExchangeModel::WAIT_CHECK);
+        $params = array(
+            'exchange_status'=>$status,
+        );
+        $map = array(
+            'exchange_status'=>$status,
+            'uid'=>$this->userinfo['id'],
+        );
+
+        $page = array('curpage'=>I('get.p',0),'size'=>10);
+        $order = "create_time desc";
+
+        $result = apiCall(VProductExchangeInfoApi::QUERY,array($map,$page,$order,$params));
+
+        $this->assign('list',$result['info']['list']);
+        $this->assign('show',$result['info']['show']);
+
+
+        $this->assign('status',$status);
 
 		$this -> display();
 	}
@@ -417,17 +463,26 @@ class UsersmController extends HomeController {
             $this->error($result['info']);
         }
     }
-	/*
-	 * 计时器改变任务状态
-	 * */
-	public function tasktimeover(){
-		$id=I('id');
-		$entity=array('do_status'=>0);
-		$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$entity));
-		if($result['status']){
-			$this->success('时间超时，由系统取消',U('Home/Usersm/sm_bbhd'));
-		}
-	}
+
+
+    /**
+     * 查看日志
+     */
+    public function view_fucoin(){
+
+        $result = apiCall(FinFucoinHisApi::QUERY,array(array('uid'=>$this->userinfo['id'])));
+
+        if($result['status']){
+            $this->assign("list",$result['info']['list']);
+            $this->assign("show",$result['info']['show']);
+        }
+
+        $this->display();
+    }
+
+
+
+
 
     /**
      * 获取试民正在进行的任务数
@@ -474,5 +529,6 @@ class UsersmController extends HomeController {
         $result = apiCall(VPostInfoApi::GET_INFO,array($map, $order));
         $this->assign('zxgg',$result['info']);
     }
+
 
 }

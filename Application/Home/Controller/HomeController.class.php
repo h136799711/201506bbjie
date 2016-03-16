@@ -8,6 +8,7 @@
 
 namespace Home\Controller;
 use Common\Api\AccountApi;
+use Home\ConstVar\UserTypeConstVar;
 use Think\Controller;
 
 class HomeController extends  Controller {
@@ -30,6 +31,11 @@ class HomeController extends  Controller {
 				define("APP_VERSION", C('APP_VERSION'));
 			}
 		}
+
+        $session = $_SESSION['Shop'];
+        if(!empty($session)){
+            $_SESSION['Home'] = $session;
+        }
 
         $this->userinfo = session('user');
         $this->uid = $this->userinfo['id'];

@@ -210,7 +210,7 @@ abstract class Api {
 
 	/**
 	 * 数字类型字段有效
-	 * @param $map 条件
+	 * @param $map array 条件
 	 * @param $field 更改字段
 	 * @param $cnt 减少的值
 	 * @return 返回影响记录数 或 错误信息

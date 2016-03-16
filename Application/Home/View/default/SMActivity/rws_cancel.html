@@ -57,6 +57,7 @@
                 电话：{$seller.task_linkman_tel}
             </p>
         </div>
+
 		<div class="renwu3-processed">
 
 			<div class="head_wrap clearfix">
@@ -103,6 +104,7 @@
 
 				</div>
 			</div>
+
 			<div style="height: 40px;"></div>
 
 			<div class="renwu_widget">
@@ -206,7 +208,8 @@
 
 
 			<a name="a-xiadan" id="a-xiadan"></a>
-			<div class="renwu_widget">
+
+            <div class="renwu_widget">
 				<div class="h"></div>
 				<div class="renwu_widget_box clearfix">
 					<h2>
@@ -282,7 +285,6 @@
 						</div>
 				</div>
 
-				<div class="f"></div>
 			</div>
 
 		</div>
@@ -293,129 +295,84 @@
 			<div class="h"></div>
 			<div class="renwu_widget_box clearfix">
 				<h2>
-
-                  <span class="t">提交订单</span>
-
-                  <div class="sub_t">所提交的“订单号”“金额”“地址”必须与淘宝订单一致</div>
-
+                  <span class="t">订单信息</span>
+                  <div class="sub_t"></div>
                 </h2>
+                <div>
+                    <div class="content" style="">
+                        <div class="syj-form form-horizontal" style="padding-top:10px;WIDTH: 70%;MARGIN: 0 AUTO;">
+                            <div class="am-g">
+                                <div class="am-u-sm-5">
+                                    <div class="am-form-group am-cf am-margin-bottom-xs">
+                                        <div class="am-text-left  am-fl am-margin-right-sm">活动商家 </div>
+                                        <div class=" am-fl ">{$seller.username}</div>
+                                    </div>
+                                    <div class="am-form-group  am-cf am-margin-bottom-xs">
+                                        <div class=" am-fl am-margin-right-sm">任务步骤 </div>
+                                        <div class=" am-fl">{$task.do_status_name}</div>
+                                    </div>
 
-					<div class="body">
-						<style>
-							.control-group .specs_selct label {
-								width: auto;
-								padding-top: 5px;
-							}
-						</style>
-						<div>
-							<div class="renwu-tijiao " >
-								<table>
-									<tbody>
-										<tr>
-											<td>
-												<div class="tijiao-form">
+                                    <div class="am-form-group am-cf am-margin-bottom-xs">
+                                        <div class="am-text-left am-fl am-margin-right-sm">任务价值 </div>
+                                        <div class="am-fl">
+                                            <span class="price">{$task.coin}</span>福币
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group am-cf am-margin-bottom-xs">
+                                        <div class="am-fl am-margin-right-sm">分配任务</div>
+                                        <div class="am-fl am-text-left" style="width: 160px;">
+                                            {$task.task_name}
+                                        </div>
+                                    </div>
 
-														<form  class="j_rws_form form-horizontal ng-invalid ng-invalid-required ng-dirty" id="" action="{:U('Home/SMActivity/submit_order')}" method="post" novalidate="novalidate">
-													
-														<fieldset>
-															<div class="control-group">
-																<label class="control-label" for="order_taobao">任务淘宝号：</label>
-																<div class="controls">
-																	<input required="required" maxlength="25" readonly="readonly" type="text" value="{$user.taobao_account}" name="order_taobao" id="order_taobao">
+                                    <div class="am-form-group am-cf am-margin-bottom-xs">
+                                        <div class="am-fl am-margin-right-sm">任务金额</div>
+                                        <div class="am-fl">
+                                            <span class="am-text-danger">{$task.task_gold}</span>元
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group am-cf am-margin-bottom-xs">
+                                        <div class="am-fl am-margin-right-sm">通过时间</div>
+                                        <div class="am-fl">{$task.create_time|date='Y-m-d H:i:s',###}
+                                        </div>
+                                    </div>
 
-																</div>
-															</div>
+                                </div>
 
-															<div class="control-group">
-																<label class="control-label" for="order_num">淘宝订单号：</label>
-																<div class="controls">
-																	<input required="required" maxlength="" type="text" value="" name="order_num" id="order_num">
-                                                                    <span class="help-inline"><span class="muted">不允许自行更换下单淘宝号</span></span>
-																</div>
-															</div>
+                                <div class="am-u-sm-7">
+                                    <table class="am-table am-table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th width="140">操作时间</th>
+                                            <th>内容</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <volist name="log_list" id="vo">
+                                            <tr style="font-size: 10px;">
+                                                <td>
+                                                    <span title="{$vo.log_time|date='Y-m-d H:i:s',###}">{$vo.log_time|date='Y-m-d H:i:s',###}</span>
+                                                </td>
+                                                <td class="am-text-left">
+                                                    <span title="{$vo.notes}">{$vo.notes}</span>
+                                                </td>
+                                            </tr>
+                                        </volist>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div></div>
+                    </div>
 
-															<div class="control-group">
-																<label class="control-label" for="zhifu_price">订单支付金额：</label>
-																<div class="controls">
-																	<div class="input-append">
-																		<input class="span2" type="text" value="" name="zhifu_price" id="zhifu_price"><span style="height: 30px;" class="add-on">元</span>
-                                                                    </div>
-																</div>
-															</div>
-															<!--<div>-->
-                                                                <!--<label class="control-label" >信用卡或花呗：</label>-->
-                                                                <!--<div class="controls">-->
-                                                                    <!--<div class="input-append">-->
-                                                                        <!--<input class="span2" type="text" value="" name="zhifu_price" id="zhifu_price"><span style="height: 30px;" class="add-on">元</span>-->
-                                                                    <!--</div>-->
-                                                                <!--</div>-->
-                                                            <!--</div>-->
-															<div class="control-group" >
-																<label class="control-label">预期返款：</label>
-                                                                <div class="j_mayreturn_price am-hide controls">
-                                                                    <div class="input-append">
-                                                                        <input class="span2" disabled="disabled" type="text" value="" >
-                                                                        <span style="height: 30px;" class="add-on">元</span>
-                                                                    </div>
-                                                                </div>
 
-                                                                <div class="controls text" >
-                                                                    <small class="muted">请填写订单支付金额,此处依据支付金额计算</small>
-                                                                </div>
-															</div>
+                </div>
+            </div>
+	    </div>
 
-															<div class="control-group">
-																<label class="control-label" for="submit_beizhu">相关备注：</label>
-																<div class="controls">
-																	<textarea placeholder="如果有需要给商家留言的话，可以在这里备注" style="width:300px;height:50px;"  name="notes" id="submit_beizhu"></textarea>
-																</div>
-															</div>
-															<div class="form-actions">
-																<a target-form="j_rws_form" href="{:U('Home/SMActivity/submit_order')}" style="background-color: orangered;color: #FFFFFF;" class="ajax-post am-btn am-btn-danger am-radius am-btn-sm btn" type="submit" name="yt1">确认无误并提交</a>
-																<button onclick="window.close();return false;" class="btn" name="yt2" type="button">取消</button>
-															</div>
-														</fieldset>
-													</form>
-												</div>
-											</td>
-											<td width="300" style="text-align:center;border-left: 1px solid #EFD3D3;">
-												<div>
-                                                    <empty name="exchange">
-                                                        <div class="">
-                                                            <img src="__IMG__/hbd/empty_box.png" alt="empty" />
-                                                        </div>
-                                                        <div class="">
-                                                            商家、平台发出的空包，请照常签收
-                                                        </div>
-
-                                                        <else/>
-
-                                                        <div class="">
-                                                            <img style="width: 240px;height:240px;" src="{$exchange.main_img}" alt="main_img" />
-                                                        </div>
-                                                        <div class="">
-                                                            请注意检查货物，{$exchange.sku_notes}
-                                                        </div>
-                                                    </empty>
-												</div>
-											</td>
-										</tr>
-
-									</tbody>
-								</table>
-
-							</div>
-						</div>
-					</div>
-
-				</div>
-
-				<div class="f"></div>
-			</div>
-	</div>
-    <div class="renwu_footer">
-        <div class="f1"></div>
-        <div class="text-center small">如有疑问请加入官方群<span class="price">（{:C('BBJ_QQ_GROUP')}）</span>或咨询热线：<span class="price">{:C('BBJ_PHONE')}</span></div>
+        <div class="renwu_footer">
+            <div class="f1"></div>
+            <div class="text-center small">如有疑问请加入官方群<span class="price">（{:C('BBJ_QQ_GROUP')}）</span>或咨询热线：<span class="price">{:C('BBJ_PHONE')}</span></div>
+        </div>
     </div>
 </block>
 

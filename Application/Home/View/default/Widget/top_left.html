@@ -1,29 +1,28 @@
-<style type="text/css">
-	
-	.div_top1{ font-family: "微软雅黑" ;}
-</style>
+
 <div class="div_top1">
 
-			<div class="div_gonggao"><i class="am-icon-bullhorn"></i>&nbsp;<a href="{:U('Home/Index/gfggxx',array('id'=>$zxgg['id']))}" style="color: white;">{$zxgg.post_title}</a></div>
-			<div class="div_zhongxin"><font color="#FD5E85">{$user.username}</font>，欢迎来到宝贝街！[<a href="{:U('Home/Index/exits')}">退出</a>]&nbsp;&nbsp;|&nbsp;&nbsp;<a href="{:U('Home/Index/sm_manager')}">试民中心</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a target="_blank" href="{:U('Shop/Index/index')}">回首页</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-				
-			</div>
-		</div>
+	<div class="div_gonggao">
+        <i class="am-icon-bullhorn"></i>&nbsp;<a href="{:U('Home/Index/gfggxx',array('id'=>$zxgg['id']))}" style="color: white;">{$zxgg.post_title}</a></div>
+    <div class="div_zhongxin">
+        <font color="#FD5E85">{$user.username}</font>，欢迎来到宝贝街！[<a href="{:U('Home/Index/exits')}">退出</a>]&nbsp;&nbsp;|&nbsp;&nbsp;<a href="{:U('Home/Index/sm_manager')}">试民中心</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a target="_blank" href="{:U('Shop/Index/index')}">回首页</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+
+    </div>
+</div>
 		<div class="div_top2">
 			<div style="float: left; ">
 				<img src="__IMG__/baobei_logo.jpg" />
 			</div>
-			<div class="t1" style="float: left; padding: 10px; background-color: #FFFFFF;  margin-left:50px; margin-top: 35px;font-size: 14px;font-family: " 微软雅黑 "; opacity: 0.2;">
+			<div class="t1" style="float: left; padding: 10px; background-color: #FFFFFF;  margin-left:50px; margin-top: 35px;font-size: 14px;">
 				<a style="" href="{:U('Home/Index/sm_manager')}">试民中心</a>
 			</div>
-			<div  class="t2" style="float: left;padding: 10px;color: #FFFFFF;margin-left: 10px;margin-top: 35px;font-size: 14px;font-family: " 微软雅黑 ";opacity: 0.2">
+			<div  class="t2" style="float: left;padding: 10px;color: #FFFFFF;margin-left: 10px;margin-top: 35px;font-size: 14px;">
 				<a style="color: #FFFFFF;" href="{:U('Home/Usersm/sm_yhdf')}">因伙得福</a>
 			</div>
-			<div  class="t3" style="float: left;padding: 10px;color: #FFFFFF;margin-left: 10px;margin-top: 35px;font-size: 14px;font-family: " 微软雅黑 ";opacity: 0.2">
+			<div  class="t3" style="float: left;padding: 10px;color: #FFFFFF;margin-left: 10px;margin-top: 35px;font-size: 14px;">
 				<a style="color: #FFFFFF;" href="{:U('Home/Usersm/sm_sfkt')}">已邀请的小伙伴</a>
 			</div>
 		</div>
-		
+
 		<div class="div_left">
 			<div class="div_znxx">
 				<div><a  href="{:U('Home/Usersm/sm_znxx')}" style=""><span class="demo-icon-actions"><i class="am-icon-envelope am-margin-xs" ></i>站内信息<font color="red" size="-2">({$not_read_msg_cnt})</font></a>

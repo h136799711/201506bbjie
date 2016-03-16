@@ -1,10 +1,7 @@
-<extend name="template/base_index" >
+<extend name="default/template/base_index"  />
 
 <block name="area_header">
-    <link rel="stylesheet" href="__CSS__/manager.css" />
-    <style type="text/css">
-        #b,#d,#c{color: orangered;}
-    </style>
+    <link rel="stylesheet" type="text/css" href="__CSS__/manager.css"/>
 </block>
 
 <block name="area_body">
@@ -22,20 +19,20 @@
                     <tr>
                         <td colspan="6" style=" height: 120px; ">
                             <!--<form class="am-form-inline" action="{:U('Home/SMActivity/chazhao')}" method="post" style="float: left;">-->
-                                <!--<div class="am-form-group">-->
-                                    <!--<input name="txt" class="am-form-field am-form-field-sm am-radius" placeholder="请输入订单编号" />-->
-                                <!--</div>-->
-                                <!--<button type="submit" class="am-btn am-btn-sm am-btn-primary am-radius" >搜索</button>-->
+                            <!--<div class="am-form-group">-->
+                            <!--<input name="txt" class="am-form-field am-form-field-sm am-radius" placeholder="请输入订单编号" />-->
+                            <!--</div>-->
+                            <!--<button type="submit" class="am-btn am-btn-sm am-btn-primary am-radius" >搜索</button>-->
                             <!--</form>-->
 
-								<span class="am-text-sm" style="margin-left: 20px;">
-									<a href="{:U('Home/SMActivity/task_manager',array('do_status'=>'doing'))}" <eq name="status" value="doing">style="color: red;"<else/>style="color: #999;"</eq> >进行中任务</a>
-                                    <a <eq name="status" value="reject">style="color: red;" <else/> style="color: #999;" </eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'reject'))}" >被驳回<font color="red">{$bh}</font></a>
-                                    <a <eq name="status" value="submit">style="color: red;" <else/> style="color: #999;" </eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'submit'))}" >等待审核<font color="red">{$sh}</font></a>
-                                    <a <eq name="status" value="pass">style="color: red;" <else/> style="color: #999;" </eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'pass'))}" >待确认收货<font color="red">{$qrsh}</font></a>
-                                    <a <eq name="status" value="wait_return">style="color: red;" <else/> style="color: #999;" </eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'wait_return'))}" >等待返款<font color="red">{$fk}</font></a>
-                                    <a <eq name="status" value="cancel">style="color: red;" <else/> style="color: #999;" </eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'cancel'))}" >取消/放弃</a><font color="red">{$qx}</font></a>
-								</span>
+                <span class="am-text-sm" style="">
+                  <a href="{:U('Home/SMActivity/task_manager',array('do_status'=>'doing'))}" <eq name="status" value="doing">style="color: red;"<else/>style="color: #999;"</eq> >进行中任务</a>
+                    <a <eq name="status" value="reject">style="color: red;" <else/> style="color: #999;" </eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'reject'))}" >被驳回<font color="red">{$bh}</font></a>
+                    <a <eq name="status" value="submit">style="color: red;" <else/> style="color: #999;" </eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'submit'))}" >等待审核<font color="red">{$sh}</font></a>
+                    <a <eq name="status" value="pass">style="color: red;" <else/> style="color: #999;" </eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'pass'))}" >待确认收货<font color="red">{$qrsh}</font></a>
+                    <a <eq name="status" value="wait_return">style="color: red;" <else/> style="color: #999;" </eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'wait_return'))}" >等待返款<font color="red">{$fk}</font></a>
+                    <a <eq name="status" value="cancel">style="color: red;" <else/> style="color: #999;" </eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'cancel'))}" >取消/放弃</a><font color="red">{$qx}</font></a>
+                </span>
 
                         </td>
                     </tr>
@@ -65,17 +62,16 @@
                         <tr style="border: 1px solid #ccc; height:100px; background:white;">
                             <td>
                                 <volist name="vo._products" id="p" >
-                                   <img src="{$p.main_img}" style="float: left; height: 50px; width: 70px; margin-left: 10px;" />
+                                    <img src="{$p.main_img}" style="float: left; height: 50px; width: 70px; margin-left: 10px;" />
                                 </volist>
                                 <div style="margin-left:90px;">
                                     <span class="am-text-danger"> + {$vo['coin']} </span> 福币<br />
-
                                 </div>
                             </td>
                             <!--<td>-->
-                                <!--小额任务:-->
-                                <!--<span class="am-text-danger">+{$vo['coin']}</span>-->
-                                <!--福币-->
+                            <!--小额任务:-->
+                            <!--<span class="am-text-danger">+{$vo['coin']}</span>-->
+                            <!--福币-->
                             <!--</td>-->
                             <td>
                                 <empty name="$vo['tb_orderid']">
@@ -119,7 +115,10 @@
 
                             </td>
                             <td>
-                                <a  target="_blank" href="{:U('Home/SMActivity/rws',array('id'=>$vo['id']))}" class="btn-fix-am am-btn am-btn-sm am-btn-primary btn-fix-am">开始任务</a>
+                                <if condition="$vo['do_status'] eq $status_not_start">
+                                    <a  target="_blank" href="{:U('Home/SMActivity/rws',array('id'=>$vo['id']))}" class="btn-fix-am am-btn am-btn-sm am-btn-primary btn-fix-am">开始任务</a>
+                                </if>
+
                                 <a href="javascript:void(0);" data-href="{:U('Home/TaskLog/view',array('task_his_id'=>$vo['id']))}" class="j_view_log btn-fix-am am-margin-left-sm am-btn am-btn-sm am-btn-default btn-fix-am">淘宝日志</a>
                             </td>
                         </tr>
@@ -138,6 +137,7 @@
                     </ul>
                 </div>
             </div>
+
         </div>
     </div>
 
@@ -150,11 +150,10 @@
             </div>
         </div>
     </div>
-
-
 </block>
 
 <block name="area_footer">
+
     <script type="text/javascript" src="__CDN__/sco1.0.2-8/js/sco.countdown.js"></script>
     <script type="text/javascript">
         $(function(){
@@ -194,7 +193,4 @@
 
         });
     </script>
-
-
-
 </block>

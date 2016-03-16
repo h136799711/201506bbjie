@@ -7,6 +7,4 @@ return array(
     'view_filter'=>array(
         'Behavior\ShowRuntimeBehavior',
     ),
-	
-
 );

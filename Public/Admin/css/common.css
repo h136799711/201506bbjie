@@ -159,6 +159,16 @@ body{
 .padding-lg{
 	padding:15px;
 }
+.margin-left-sm{
+    margin-left:5px;
+}
+.margin-right-sm{
+    margin-right:5px;
+}
+.margin-sm{
+    margin:5px;
+}
+
 .input-large{
 	width: 100%;
 }

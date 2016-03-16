@@ -10,18 +10,22 @@ use Admin\Model\MsgboxModel;
 use Cms\Api\VPostInfoApi;
 use Home\Api\AddressApi;
 use Home\Api\BbjmemberApi;
-use Home\Api\TaskApi;
+use Home\Api\ProductExchangeApi;
 use Home\Api\TaskHasProductApi;
 use Home\Api\TaskHisApi;
+use Home\Api\TaskLogApi;
 use Home\Api\TaskPlanApi;
 use Home\Api\VBbjmemberSellerInfoApi;
 use Home\Api\VCanDoTaskApi;
 use Home\Api\VMsgInfoApi;
+use Home\Api\VProductExchangeInfoApi;
 use Home\Api\VTaskHisInfoApi;
 use Home\Api\VTaskProductInfoApi;
 use Home\Api\VTaskProductSearchWayApi;
+use Home\Model\ProductExchangeModel;
 use Home\Model\TaskHisModel;
 use Home\Model\TaskLogModel;
+use Home\Model\TaskModel;
 use Think\Controller;
 use Home\Api\HomePublicApi;
 use Admin\Api\AdminPublicApi;
@@ -83,7 +87,7 @@ class SMActivityController extends HomeController {
 					'create_time'=>time(),
 					'send_time'=>0,
 					'from_id'=>0,
-					'summary'=>'系统提示，您的订单...',
+					'summary'=>"您的订单".$results['info'][0]['tb_orderid']."已确认收货请尽快返款",
 					'status'=>1,
 				);
 				
@@ -173,39 +177,6 @@ class SMActivityController extends HomeController {
 		}
 	}
 
-	/*
-	 * 驳回后修改订单信息
-	 * */
-	public function editorder(){
-		$id=I('hsid','');
-		$user=session('user');
-		$spid=I('pid',0);
-		$addid=array('id'=>I('address',0));
-		$result_address=apiCall(HomePublicApi::Address_Query, array($addid));
-		if($result_address['info']==null){
-			$this->error('无法获取地址信息，请重试或确认你的地址信息');
-		}else{
-			$address=$result_address['info'][0];
-			
-				$entity=array(
-					'tb_orderid'=>I('order_num',0),
-					'tb_address'=>$address['contact_name'].$address['mobile'].$address['province'].$address['city'].$address['detail'].$address['area'].$address['detail'],
-					'tb_price'=>I('zhifu_price','0.00'),
-					'notes'=>'无',
-					'do_status'=>3,
-					'order_status'=>2,
-				);
-				$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$entity));
-	//			dump($result);
-				if($result['status']){
-					$this->success('提交成功！！，请关注任务动态',U('Home/Usersm/sm_bbhd'));
-				}else{
-					$this->error($result['info']);
-				}
-			
-			
-		}
-	}
 
 	/*
 	 * 任务管理
@@ -266,9 +237,7 @@ class SMActivityController extends HomeController {
         $this->assign('his_list',$his_list);
         $this->assign('show',$result['info']['show']);
 
-        $this -> display();
-
-
+        $this -> boye_display();
 	}
 
 	/*
@@ -381,35 +350,7 @@ class SMActivityController extends HomeController {
         }
 		
 	}
-	/*
-	 * 查找任务
-	 * @author 老胖子-何必都 <hebiduhebi@126.com>
-	 * */
-	public function chazhao(){
-		$user=session('user');
-		$map=array('uid'=>$this->uid,'tb_orderid'=>array('like','%'.I('txt','').'%'));
-		$page = array('curpage' => I('get.p', 0), 'size' => 8);
-		$result=apiCall(HomePublicApi::Task_His_QueryAll,array($map,$page));
-		for ($i = 0; $i < count($result['info']['list']); $i++) {
-			$id = $result['info']['list'][$i]['task_id'];
-			$map4 = array('task_id' => $id);
-			$result['info']['list'][$i]['hasList']= apiCall(HomePublicApi::TaskHasProduct_Query, array($map4))['info'];
-			for($j=0;$j<count($result['info']['list'][$i]['hasList']);$j++){
-				$pid = array('id' => $result['info']['list'][$i]['hasList'][$j]['pid']);
-				$result['info']['list'][$i]['hasList'][$j]['product'] = apiCall(HomePublicApi::Product_Query, array($pid))['info'][0];
-			}
-		}
-		//dump($result);
-		$result2=apiCall(HomePublicApi::Task_Query,array($mapp));
-		$this->assign('task',$result2['info']);
-		$this->assign('pross',$result['info']['list']);
-		$this->assign('show',$result['info']['show']);
 
-
-		$this -> assign('head_title', $headtitle);
-
-		$this->display('SMActivity/task_manager',array('do_status'=>'doing'));
-	}
 
     /**
      * @author 老胖子-何必都 <hebiduhebi@126.com>
@@ -419,11 +360,9 @@ class SMActivityController extends HomeController {
 		$this -> assign('head_title', "宝贝街-任务书");
 
         $id = I('get.id',0);
-		$map = array('uid'=>$this->uid);
-		$address=apiCall(AddressApi::GET_INFO, array($map));
-		$this->assign('address',$address['info']);
 
 		$task=apiCall(VTaskHisInfoApi::GET_INFO, array(array('id'=>$id)));
+        $do_status = $task['info']['do_status'];
 		$this->assign('task',$task['info']);
 
         $seller_uid = $task['info']['seller_uid'];
@@ -433,76 +372,83 @@ class SMActivityController extends HomeController {
             $this->assign("seller",$result['info']);
         }
 
-        $result = apiCall(VTaskProductSearchWayApi::GET_INFO,array(array('pid'=>$task['info']['task_id'])));
+        $result = apiCall(VTaskProductInfoApi::QUERY_NO_PAGING,array(array('task_id'=>$task['info']['task_id'])));
 
         if($result['status']){
-            $this->assign("task_info",$result['info']);
+            $product = $result['info'];
+            $this->assign("products",$result['info']);
         }
 
-		$this->display();
+        $result = apiCall(VTaskProductSearchWayApi::GET_INFO,array(array('pid'=>$product[0]['pid'])));
+
+        if($result['status']){
+
+            $search = $result['info'];
+
+            if(strpos($search['link'],'taobao.com') >= 0){
+                $search['url'] = "www.taobao.com";
+            }elseif(strpos($search['link'],'tmall.com') >= 0){
+                $search['url'] = "www.tmall.com";
+            }else{
+                $search['url'] = "未知";
+            }
+
+            $this->assign("search",$search);
+        }
+        //对不同的任务状态 显示不同的页面
+        if($do_status == TaskHisModel::DO_STATUS_NOT_START){
+            $this->getGoodsForDelivery($task);
+            $this->display('rws');
+        }elseif($do_status == TaskHisModel::DO_STATUS_SUBMIT_ORDER){
+            $this->getLogList($id);
+            $this->display('rws_wait_check');
+        }elseif($do_status == TaskHisModel::DO_STATUS_CANCEL){
+            $this->getLogList($id);
+            $this->display('rws_cancel');
+        }
+
+
+
 	}
-	/*
-	 * 确定兑换
-	 * */
-	public function duihuanok(){
-		$id=I('id',0);
-		$map=array('exchange_status'=>1);
-		$result=apiCall(HomePublicApi::ExchangeProduct_SaveByID,array($id,$map));
-		if($result['status']){
-			$this->success('兑换已确认，请等待分配任务。。',U('Home/Usersm/sm_dhsp'));
-		}
-	}
-	/*
-	 * 保存任务订单号
-	 * */
-	public function savedd(){
-		$id=I('hsid','');
-		$user=session('user');
-		$spid=I('pid',0);
-		$orderid=I('order_num',0);
-		$addid=array('id'=>I('address',0));
-		$result_address=apiCall(HomePublicApi::Address_Query, array($addid));
-		if($result_address['info']==null){
-			$this->error('无法获取地址信息，请重试或确认你的地址信息');
-		}else{
-			$address=$result_address['info'][0];
-			if($spid==0){
-				$entity=array(
-					'tb_orderid'=>$orderid,
-					'tb_address'=>$address['contact_name'].",".$address['mobile'].",".$address['province'].",".$address['city'].",".$address['detail'].",".$address['area'].",".$address['detail'],
-					'tb_price'=>I('zhifu_price','0.00'),
-				);
-				$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$entity));
-				if($result['status']){
-					$this->success('提交成功！！，请关注任务动态',U('Home/SMActivity/task_manager',array('do_status'=>'doing')));
-				}else{
-					$this->error($result['info']);
-				}
-			}else{
-				$entity=array(
-					'tb_orderid'=>I('order_num',0),
-					'tb_address'=>$address['contact_name'].$address['mobile'].$address['province'].$address['city'].$address['detail'].$address['area'].$address['detail'],
-					'tb_price'=>I('zhifu_price','0.00'),
-				);
-				$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$entity));
-				$usersmap=array('id'=>$id);
-				$users=apiCall(HomePublicApi::Task_His_Query,array($usersmap));
-				$uid=$users['info'][0]['uid'];
-				$map=array('uid'=>$uid);
-				$exchange=apiCall(HomePublicApi::ExchangeProduct_Query,array($map));
-				$ord=array('orderid'=>I('order_num',0));
-				$exid=$exchange['info'][0]['id'];
-				$exchanges=apiCall(HomePublicApi::ExchangeProduct_SaveByID,array($exid,$ord));
-//				
-				if($exchanges['status'] ){
-					$this->success('提交成功！！，已提交后台审核',U('Home/SMActivity/task_manager',array('do_status'=>'doing')));
-				}
-			}
-			
-		}
-		
-		
-	}
+
+    /**
+     * 获取发货的物品信息
+     */
+    private function getGoodsForDelivery($task){
+        $mode = intval($task['info']['delivery_mode']);
+        if($mode == TaskModel::DELIVERY_MODE_PLATFORM) {
+            //平台发货
+            $map = array(
+                'uid'=>$this->userinfo['id'],
+                'exchange_statue'=>ProductExchangeModel::CHECK_SUCCESS,
+            );
+            $result  = apiCall(VProductExchangeInfoApi::GET_INFO,array($map,'update_time desc'));
+
+            $this->assign("exchange",$result['info']);
+
+
+        }elseif($mode == TaskModel::DELIVERY_MODE_SELLER){
+            //商家发货
+            dump("123456");
+
+        }
+
+    }
+
+    /**
+     * 获取任务日志
+     * @param $his_id
+     */
+    private function getLogList($his_id){
+
+        $result = apiCall(TaskLogApi::QUERY_NO_PAGING,array(array('task_his_id'=>$his_id)));
+
+        if($result['status']){
+            $this->assign('log_list',$result['info']);
+        }
+
+    }
+
 
 
     /**

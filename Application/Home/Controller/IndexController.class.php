@@ -455,6 +455,7 @@ class IndexController extends HomeController {
             $this->assign('doing_task',0);
         }
 
+        $this->rand_tip();
 		$this->display();
 	}
 
@@ -549,5 +550,14 @@ class IndexController extends HomeController {
 
 
     }
+
+    private function rand_tip(){
+        $tip = 104;
+        $map = array('parentid'=>$tip);
+        $order = "rand()";
+        $result = apiCall(DatatreeApi::GET_INFO,array($map,$order));
+        $this->assign('tip',$result['info']);
+    }
+
 }
 

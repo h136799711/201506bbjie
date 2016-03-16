@@ -261,7 +261,6 @@ class UserApi extends Api
     public
     function login($username, $password, $type = 1)
     {
-        //dump($this->model);
         $result = $this->model->login($username, $password, $type);
         if ($result > 0) {
             return array('status' => true, 'info' => $result);

@@ -885,7 +885,14 @@ class SJActivityController extends SjController {
 		$map = array('uid' => $this->uid ) ;
 
 		$product = apiCall(VTaskProductSearchWayApi::GET_INFO, array($map));
-
+        $link = $product['info']['link'];
+        if(strpos($link,'taobao.com') >= 0){
+            $this->assign("url","www.taobao.com");
+        }elseif(strpos($link,'tmall.com') >= 0){
+            $this->assign("url","www.tmall.com");
+        }else{
+            $this->assign("url","未知");
+        }
 		$this->assign('search',$product['info']);
 		$this -> display();
 	}

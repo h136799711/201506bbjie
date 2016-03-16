@@ -1,276 +1,243 @@
 <extend name="template/base_index" />
 
 <block name="area_header">
-	<link rel="stylesheet" href="__CSS__/manager.css" />
-	<link type="text/css" rel="stylesheet" src="__UPLOAD__/jquery-uploadify/3.2.1/uploadify.css" />
-	<script type="text/javascript" src="__UPLOAD__/jquery-uploadify/3.2.1/jquery.uploadify.min.js"></script>
+    <link rel="stylesheet" href="__CSS__/manager.css" />
+
+
+    <style type="text/css">
+        .tip{
+            border:1px solid #DEDEDE;
+            width:95%;
+            padding-right: 10px;
+        }
+        .tip div{
+            font-size: 1.6rem;
+        }
+    </style>
 </block>
 
 <block name="area_body">
 
-	<div class="div_all">
-		<include file="Widget/top_left" />
-		<div class="div_right">
+    <div class="div_all">
+        <include file="Widget/top_left" />
+        <div class="div_right">
 
-			<div class="div_minContent" style="padding: 20px;">
+            <div class="div_minContent" style="padding: 20px;">
 
-				<div class="am-panel am-panel-default" style="width: 60%; float: left; border-radius:5px;">
-					<div class="am-panel-hd">账户管理>账户概览</div>
-					<div class="am-panel-bd" style="height:350px;">
-						<div style="margin-left: 30px; margin-top: 50px; width: 100px; float: left;">
-							<a class="index_touxiang" href="javascript:void(0)">
 
-								<if condition="$user['head'] eq '' ">
-								    <img height="80px" width="80px" src="__IMG__/default_user_portrait.gif" alt="">
-								<else/>
-									<img height="100px" width="100%" src="{$user['head']}" alt="" class="am-img-responsive am-circle">
-								</if>
+                <div class="tip  am-radius am-alert am-alert-warning  am-fl">
+                    <div class="am-fl">小提示：</div>
+                    <div class="am-fl">{$tip.notes}</div>
+                </div>
+                <div class="am-panel am-panel-default" style="width: 60%; float: left; border-radius:5px;">
+                    <div class="am-panel-hd">账户管理>账户概览</div>
+                    <div class="am-panel-bd" style="height:350px;">
+                        <div style="margin-left: 30px; margin-top: 50px; width: 100px; float: left;">
+                            <a class="index_touxiang" href="javascript:void(0)">
+
+                                <if condition="$user['head'] eq '' ">
+                                    <img height="80px" width="80px" src="__IMG__/default_user_portrait.gif" alt="">
+                                    <else/>
+                                    <img height="100px" width="100%" src="{$user['head']}" alt="" class="am-img-responsive am-circle">
+                                </if>
 
                                 <a href="{:U('Home/Usersm/avatar')}" class="am-margin-top-sm am-btn am-btn-xs am-btn-primary am-round" >点此更换头像</a>
 
-							</a>
-							<span class="am-badge am-badge-success am-round" style="margin-top: 5px; margin-left: 10px;">等级：{$level}级</span>
-						</div>
-						<div style=" float: left; font-size: 12px; margin-left: 20px; margin-top: 26px;  width: 70%;">
-							<table style="width: 100%;">
-								<tr>
-									<td width="20%" style="text-align: right;">{$username}</td>
-									<td></td>
-								</tr>
-								<tr>
-									<td style="text-align: right;">江湖等级:</td>
-									<td style="padding:0;" valign="top">
-										<div class="am-progress am-progress-striped am-progress-sm am-active am-round" style="margin-top:25px;">
-											<div class="am-progress-bar am-progress-bar-secondary" style="width: {$exp}%; line-height:15px;"> {$exp}%</div>
-										</div>
-									</td>
-								</tr>
-								<!--<tr>-->
-									<!--<td style="text-align: right;">我的勋章:</td>-->
-									<!--<td style="padding:0;">-->
-										<!--<img src="__IMG__/25.png" width="20" />-->
-									<!--</td>-->
-								<!--</tr>-->
-								<tr>
-									<td style="text-align: right;">联系电话:</td>
-									<td>{$user.mobile} </td>
-								</tr>
-								<tr>
-									<td style="text-align: right;">我的福币:</td>
-									<td><font color="#ec1c50">{$user['fucoin']}</font> 枚 
-									</td>
-								</tr>
-								<tr>
-									<td style="text-align: right;">宝贝钱庄:</td>
-									<td><font color="#ec1c50">￥{$user['coins']} </font><a href="{:U('Home/Usersm/sm_bbqz')}">查看详情</a>
-									</td>
-								</tr>
-								<tr>
-									<td style="text-align: right;">任务状态:</td>
-									<td>
-										<if condition="$user['task_status'] eq 1">
+                            </a>
+                            <span class="am-badge am-badge-success am-round" style="margin-top: 5px; margin-left: 10px;">等级：{$level}级</span>
+                        </div>
+                        <div style=" float: left; font-size: 12px; margin-left: 20px; margin-top: 26px;  width: 70%;">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td width="20%" style="text-align: right;">{$username}</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right;">江湖等级:</td>
+                                    <td style="padding:0;" valign="top">
+                                        <div class="am-progress am-progress-striped am-progress-sm am-active am-round" style="margin-top:25px;">
+                                            <div class="am-progress-bar am-progress-bar-secondary" style="width: {$exp}%; line-height:15px;"> {$exp}%</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!--<tr>-->
+                                <!--<td style="text-align: right;">我的勋章:</td>-->
+                                <!--<td style="padding:0;">-->
+                                <!--<img src="__IMG__/25.png" width="20" />-->
+                                <!--</td>-->
+                                <!--</tr>-->
+                                <tr>
+                                    <td style="text-align: right;">联系电话:</td>
+                                    <td>{$user.mobile} </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right;">我的福币:</td>
+                                    <td><font color="#ec1c50">{$user['fucoin']}</font> 枚
+                                        <a href="{:U('Home/Usersm/view_fucoin')}">查看详情</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right;">宝贝钱庄:</td>
+                                    <td><font color="#ec1c50">￥{$user['coins']} </font><a href="{:U('Home/Usersm/sm_bbqz')}">查看详情</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right;">任务状态:</td>
+                                    <td>
+                                        <if condition="$user['task_status'] eq 1">
 
-											<a href="{:U('Home/SMActivity/changestatus',array('type'=>'on'))}"  class="ajax-get am-btn am-btn-xs am-btn-primary am-active am-round">{$user['daily_task_money']}元</button>
-											<else/>
+                                            <a href="{:U('Home/SMActivity/changestatus',array('type'=>'on'))}"  class="ajax-get am-btn am-btn-xs am-btn-primary am-active am-round">{$user['daily_task_money']}元</button>
+                                                <else/>
                                                 <a href="{:U('Home/SMActivity/changestatus',array('type'=>'off'))}" class="ajax-get  am-btn-xs am-btn am-btn-default am-active am-round">任务未开启</button>
-										</if>
-										
-									</td>
-								</tr>
-							</table>
+                                        </if>
 
-						</div>
-					</div>
-				</div>
+                                    </td>
+                                </tr>
+                            </table>
 
-				<div class="am-panel am-panel-default" style="width: 35%; float: left; margin-left: 10px;border-radius:5px;">
-					<div class="am-panel-hd am-cf">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="am-panel am-panel-default" style="width: 35%; float: left; margin-left: 10px;border-radius:5px;">
+                    <div class="am-panel-hd am-cf">
                         最新公告
 
                         <div class="am-text-xs am-fr" >
                             <a href="{:U('Home/Index/gfgg')}" TARGET="_blank" > 更多>> </a>
                         </div>
                     </div>
-					<div class="am-panel-bd" style="height: 350px; font-size:12px;">
-						<ul style="line-height: 30px;padding-left: 0px;">
-							<volist name="sm_post_list" id="vo2">
-								<li class="am-cf">
+                    <div class="am-panel-bd" style="height: 350px; font-size:12px;">
+                        <ul style="line-height: 30px;padding-left: 0px;">
+                            <volist name="sm_post_list" id="vo2">
+                                <li class="am-cf">
                                     <a href="{:U('Home/Index/gfggxx',array('id'=>$vo2['id']))}" target="_blank">
                                         <div class="am-fl" >{$vo2.post_title}</div>
                                         <div class="am-fr" >{$vo2.post_date|date='Y-m-d',###}</div>
                                     </a>
                                 </li>
-							</volist>
-						</ul>
-					</div>
-				</div>
-				<div style="width: 60%;float: left; ">
-					<div class="am-panel am-panel-default" style="clear: left;border-radius:5px;">
-						<div class="am-panel-hd">领取任务</div>
-						<div class="am-panel-bd" style="">
-							<table border="0" style="font-size: 12px;">
-								<tr>
-									<td width="300">淘宝账号: {$user.taobao_account} <a href="javascript:void(0)" data-am-modal="{target: '#my-alert'}">设置</a> </td>
-									<!--<td>手机任务: 关闭 <a href="">设置</a> </td>-->
-									<td rowspan="2" style="">
+                            </volist>
+                        </ul>
+                    </div>
+                </div>
+
+
+
+                <div style="width: 60%;float: left; ">
+                    <div class="am-panel am-panel-default" style="clear: left;border-radius:5px;">
+                        <div class="am-panel-hd">领取任务</div>
+                        <div class="am-panel-bd" style="">
+                            <table border="0" style="font-size: 12px;">
+                                <tr>
+                                    <td width="300">淘宝账号: {$user.taobao_account} <a href="javascript:void(0)" data-am-modal="{target: '#my-alert'}">设置</a> </td>
+                                    <!--<td>手机任务: 关闭 <a href="">设置</a> </td>-->
+                                    <td rowspan="2" style="">
                                         <a href="{:U('Home/SMActivity/gettask')}" class="btn-fix-am am-btn am-btn-sm am-btn-primary ajax-get am-round" >点我领取任务</a>
 
 
                                     </td>
-								</tr>
-							</table>
-						</div>
-					</div>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
 
-					<!--<div class="am-panel am-panel-default" style="border-radius:5px;">-->
-						<!--<div class="am-panel-hd">活动情况</div>-->
-						<!--<div class="am-panel-bd" style="">-->
-							<!--<table style="font-size: 12px; width: 100%;">-->
-								<!--<tr>-->
-									<!--<td>宝贝活动></td>-->
-									<!--<td>待收货确认：<font color="blue"></font>-->
-									<!--</td>-->
-									<!--<td>订单被驳回： <font color="red"></font>-->
-									<!--</td>-->
-									<!--<td>取消放弃：<font color="red"></font>-->
-									<!--</td>-->
-									<!--<td> <a href="{:U('Home/Usersm/sm_bbhd')}">查看详细>></a>-->
-									<!--</td>-->
-								<!--</tr>-->
-							<!--</table>-->
-						<!--</div>-->
-					<!--</div>-->
+                    <!--<div class="am-panel am-panel-default" style="border-radius:5px;">-->
+                    <!--<div class="am-panel-hd">活动情况</div>-->
+                    <!--<div class="am-panel-bd" style="">-->
+                    <!--<table style="font-size: 12px; width: 100%;">-->
+                    <!--<tr>-->
+                    <!--<td>宝贝活动></td>-->
+                    <!--<td>待收货确认：<font color="blue"></font>-->
+                    <!--</td>-->
+                    <!--<td>订单被驳回： <font color="red"></font>-->
+                    <!--</td>-->
+                    <!--<td>取消放弃：<font color="red"></font>-->
+                    <!--</td>-->
+                    <!--<td> <a href="{:U('Home/Usersm/sm_bbhd')}">查看详细>></a>-->
+                    <!--</td>-->
+                    <!--</tr>-->
+                    <!--</table>-->
+                    <!--</div>-->
+                    <!--</div>-->
 
-					<div class="am-panel am-panel-default am-hide" style="border-radius:5px;">
-						<div class="am-panel-hd">因伙得福</div>
-						<div class="am-panel-bd" style=" height:150px;font-size: 14px;">
-							<div style="float: left; border-right: 1px solid #CCCCCC; padding: 20px;">
-								<ul>
-									<li>币奖励累计： <font color="red">0</font>
-									</li>
-									<li>有效好友： <font color="red">0</font>人</li>
-								</ul>
-							</div>
-							<div style="font-size: 12px; margin-left: 210px; margin-top: 20px;">
-								目前所有服务于淘宝商家推广类网站中的佼佼者， 让商家借助宝贝街兴旺的人气安全、高效、轻松的实现店铺商品的推广和销量的提升！同时，宝贝街也是一个分类齐全、商品丰富的综合性网站， 通过提供海量的免费商品源源不断地吸引越来越多的网购消费者 <a href="">[查看详情]</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div style="width: 35%; float: left; margin-left: 10px;">
-					<div class="am-panel am-panel-default" style="border-radius:5px;">
-						<div class="am-panel-hd">宝民专员</div>
-						<div class="am-panel-bd" style="">
-							<div>
-								<img src="__IMG__/zhaocaimao.jpg" style="border-radius: 50%; float: left;" width="80" align="middle" />
-								<ul style=" margin-left: 85px;font-size: 12px; margin-top: -10px;">
-									<li>宝贝街-老王</li>
-									<li>
-										<i class="am-icon-phone" style="font-size: 14px; color: lightgreen;"></i> &nbsp;{:C('BBJ_PHONE')}</li>
-									<li>
-										<i class="am-icon-qq"></i>&nbsp; <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin={:C('BBJ_QQ')}&site=qq&menu=yes">点击这里给我发消息</a> </li>
-									<li>
+                    <div class="am-panel am-panel-default am-hide" style="border-radius:5px;">
+                        <div class="am-panel-hd">因伙得福</div>
+                        <div class="am-panel-bd" style=" height:150px;font-size: 14px;">
+                            <div style="float: left; border-right: 1px solid #CCCCCC; padding: 20px;">
+                                <ul>
+                                    <li>币奖励累计： <font color="red">0</font>
+                                    </li>
+                                    <li>有效好友： <font color="red">0</font>人</li>
+                                </ul>
+                            </div>
+                            <div style="font-size: 12px; margin-left: 210px; margin-top: 20px;">
+                                目前所有服务于淘宝商家推广类网站中的佼佼者， 让商家借助宝贝街兴旺的人气安全、高效、轻松的实现店铺商品的推广和销量的提升！同时，宝贝街也是一个分类齐全、商品丰富的综合性网站， 通过提供海量的免费商品源源不断地吸引越来越多的网购消费者 <a href="">[查看详情]</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="width: 35%; float: left; margin-left: 10px;">
+                    <div class="am-panel am-panel-default" style="border-radius:5px;">
+                        <div class="am-panel-hd">宝民专员</div>
+                        <div class="am-panel-bd" style="">
+                            <div>
+                                <img src="__IMG__/zhaocaimao.jpg" style="border-radius: 50%; float: left;" width="80" align="middle" />
+                                <ul style=" margin-left: 85px;font-size: 12px; margin-top: -10px;">
+                                    <li>宝贝街-老王</li>
+                                    <li>
+                                        <i class="am-icon-phone" style="font-size: 14px; color: lightgreen;"></i> &nbsp;{:C('BBJ_PHONE')}</li>
+                                    <li>
+                                        <i class="am-icon-qq"></i>&nbsp; <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin={:C('BBJ_QQ')}&site=qq&menu=yes">点击这里给我发消息</a> </li>
+                                    <li>
                                         <i class="am-icon-users"></i>官方群: {:C('BBJ_QQ_GROUP')}
                                     </li>
-								</ul>
-							</div>
-							<div style="text-align: center;font-size: 12px;">
-								（周一至周六）
-								<br> 周日全天休息，请在工作时间联系我们
-							</div>
-						</div>
-					</div>
-
-
-					<div class="am-modal am-modal-no-btn" tabindex="-1" id="doc-modal-2">
-								<div class="am-modal-dialog" style="border-radius:12px ;">
-									<div class="am-modal-hd" style="text-align: left; border-bottom: 1px solid #ccc; font-weight: bold;">
-										<a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>头像上传
-									</div>
-									<div class="am-modal-bd" style="text-align: center;">
-										<div style=" background: lightgoldenrodyellow; margin-top: 5px; color: red;">用户头像上传</div>
-										<form action="{:U('Home/Usersm/uploadheadimg')}" method="post">
-											<div class="controls">
-												<input type="file" id="upload_picture">
-												<input type="hidden" name="picurl" id="cover_id" value="" />
-												<div class="upload-img-box">
-												</div>
-												<button class="btn-success" type="submit">确认上传</button>
-											</div>
-										</form>
-										<script type="text/javascript">
-											 //上传图片
-											/* 初始化上传插件  */
-											$("#upload_picture").uploadify({
-												"height": 30,
-												"swf": "__UPLOAD__/jquery-uploadify/3.2.1/uploadify.swf",
-												"fileObjName": "download",
-												"buttonText": "上传头像",
-												"uploader": "{:U('Home/Index/uploadPicture',array('session_id'=>session_id()))}",
-												"width": 120,
-												'removeTimeout': 1,
-												'fileTypeExts': '*.jpg; *.png; *.gif;',
-												"onUploadSuccess": uploadPicture
-											});
-
-											function uploadPicture(file, data) {
-												var data = $.parseJSON(data);
-												var src = '';
-												if (data.status) {
-													$("#cover_id").val("{:C('SITE_URL')}" + data.path);
-													src = data.url || '__ROOT__' + data.path;
-													$("#cover_id").parent().find('.upload-img-box').html(
-														'<div class="upload-pre-item"><img width=' + 100 + ' height=' + 100 + ' src="' + src + '"/></div>'
-													);
-													//console.info('http://localhost/github/201506bbjie'+data.path);
-													//alert($("#cover_id").val());
-												} else {
-													//alert(data.status);
-													$.scojs_message(data.info, $.scojs_message.TYPE_OK);
-												}
-											}
-										</script>
-
-									</div>
-								</div>
-							</div>
+                                </ul>
+                            </div>
+                            <div style="text-align: center;font-size: 12px;">
+                                （周一至周六）
+                                <br> 周日全天休息，请在工作时间联系我们
+                            </div>
+                        </div>
+                    </div>
 
 
 
-				</div>
 
-			</div>
-		</div>
-	</div>
-	<div class="am-modal am-modal-alert" tabindex="-1" id="my-alert">
-		<form action="{:U('Home/Usersm/settaobao')}" class="tb_form" method="post">
-		<div class="am-modal-dialog">
-			<div class="am-modal-hd" style="color: orangered;">设置淘宝账号</div>
-			<div class="am-modal-bd">
-				淘宝账号：<input id="tbid" type="text" name="taobao" value="{$user.taobao_account}">
-			</div>
-			<div class="am-modal-footer am-margin-top-sm">
-                 <a href="{:U('Home/Usersm/settaobao')}" target-form="tb_form" class="btn-fix-am  ajax-get am-btn am-btn-sm am-btn-primary">
-				    确定绑定
-                 </a>
-			</div>
-		</div>
-		</form>
-	</div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="am-modal am-modal-alert" tabindex="-1" id="my-alert">
+        <form action="{:U('Home/Usersm/settaobao')}" class="tb_form" method="post">
+            <div class="am-modal-dialog">
+                <div class="am-modal-hd" style="color: orangered;">设置淘宝账号</div>
+                <div class="am-modal-bd">
+                    淘宝账号：<input id="tbid" type="text" name="taobao" value="{$user.taobao_account}">
+                </div>
+                <div class="am-modal-footer am-margin-top-sm">
+                    <a href="{:U('Home/Usersm/settaobao')}" target-form="tb_form" class="btn-fix-am  ajax-get am-btn am-btn-sm am-btn-primary">
+                        确定绑定
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
 </block>
 
 <block name="area_footer">
-	<script type="text/javascript">
-		$(function(){
-			$('.t2').css('background-color','');
-			$('.t2 a').css('color','#FFFFFF');
-			$('.t1').css('background-color','#FFFFFF');
-			$('.t1 a').css('color','#000000');
-			$('.t3').css('background-color','');
-			$('.t3 a').css('color','#FFFFFF');
+    <script type="text/javascript">
+        $(function(){
+            $('.t2').css('background-color','');
+            $('.t2 a').css('color','#FFFFFF');
+            $('.t1').css('background-color','#FFFFFF');
+            $('.t1 a').css('color','#000000');
+            $('.t3').css('background-color','');
+            $('.t3 a').css('color','#FFFFFF');
 
-
-
-		})
-	</script>
+        })
+    </script>
 </block>

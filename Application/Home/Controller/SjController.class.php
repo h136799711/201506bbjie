@@ -12,6 +12,7 @@ namespace Home\Controller;
 use Admin\Api\MsgboxApi;
 use Admin\Model\MsgboxModel;
 use Home\Api\LevelAuthApi;
+use Home\ConstVar\UserTypeConstVar;
 
 class SjController extends HomeController {
 
@@ -20,6 +21,14 @@ class SjController extends HomeController {
     protected function _initialize(){
         parent::_initialize();
         $this->checkLogin();
+
+        if($this->userinfo['user_type'] != UserTypeConstVar::BBJ_SHOP_GROUP){
+            session('[destroy]'); // 删除session
+            F('wdcount2',NULL);
+
+            $this->error("无权访问!",U('Index/login'));
+        }
+
         $this->checklevel();
         $this->not_read_msg_count();
         $this->getLevelAuth();

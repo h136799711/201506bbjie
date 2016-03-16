@@ -314,15 +314,17 @@
 										<tr>
 											<td>
 												<div class="tijiao-form">
-
-														<form  class="j_rws_form form-horizontal ng-invalid ng-invalid-required ng-dirty" id="" action="{:U('Home/SMActivity/submit_order')}" method="post" novalidate="novalidate">
+													<if condition="$do_status eq 8">
+														<form  class="shifu form-horizontal ng-invalid ng-invalid-required ng-dirty" id="" action="{:U('Home/SMActivity/editorder')}" method="post" novalidate="novalidate">
+														<else/>
+														<form  class="shifu form-horizontal ng-invalid ng-invalid-required ng-dirty" id="" action="{:U('Home/SMActivity/savedd')}" method="post" novalidate="novalidate">
+													</if>
 													
 														<fieldset>
 															<div class="control-group">
 																<label class="control-label" for="order_taobao">任务淘宝号：</label>
 																<div class="controls">
-																	<input required="required" maxlength="25" readonly="readonly" type="text" value="{$user.taobao_account}" name="order_taobao" id="order_taobao">
-
+																	<input required="required" maxlength="25" readonly="readonly" type="text" value="{$user.taobao_account}" name="order_taobao" id="order_taobao"><span class="help-inline"><span class="muted">不允许自行更换下单淘宝号</span></span>
 																</div>
 															</div>
 
@@ -330,7 +332,6 @@
 																<label class="control-label" for="order_num">淘宝订单号：</label>
 																<div class="controls">
 																	<input required="required" maxlength="" type="text" value="" name="order_num" id="order_num">
-                                                                    <span class="help-inline"><span class="muted">不允许自行更换下单淘宝号</span></span>
 																</div>
 															</div>
 
@@ -342,14 +343,7 @@
                                                                     </div>
 																</div>
 															</div>
-															<!--<div>-->
-                                                                <!--<label class="control-label" >信用卡或花呗：</label>-->
-                                                                <!--<div class="controls">-->
-                                                                    <!--<div class="input-append">-->
-                                                                        <!--<input class="span2" type="text" value="" name="zhifu_price" id="zhifu_price"><span style="height: 30px;" class="add-on">元</span>-->
-                                                                    <!--</div>-->
-                                                                <!--</div>-->
-                                                            <!--</div>-->
+															
 															<div class="control-group" >
 																<label class="control-label">预期返款：</label>
                                                                 <div class="j_mayreturn_price am-hide controls">
@@ -371,32 +365,28 @@
 																</div>
 															</div>
 															<div class="form-actions">
-																<a target-form="j_rws_form" href="{:U('Home/SMActivity/submit_order')}" style="background-color: orangered;color: #FFFFFF;" class="ajax-post am-btn am-btn-danger am-radius am-btn-sm btn" type="submit" name="yt1">确认无误并提交</a>
+																<button style="background-color: orangered;color: #FFFFFF;" class="btn " type="submit" name="yt1">确认无误并提交</button>
 																<button onclick="window.close();return false;" class="btn" name="yt2" type="button">取消</button>
 															</div>
 														</fieldset>
 													</form>
 												</div>
 											</td>
-											<td width="300" style="text-align:center;border-left: 1px solid #EFD3D3;">
+											<td width="300" style="text-align:center;">
 												<div>
-                                                    <empty name="exchange">
-                                                        <div class="">
-                                                            <img src="__IMG__/hbd/empty_box.png" alt="empty" />
-                                                        </div>
-                                                        <div class="">
-                                                            商家、平台发出的空包，请照常签收
-                                                        </div>
 
-                                                        <else/>
+													<div class="sp sp_shifu hide" id="shifu_goods">
+														<div class="old">
+															<a href="" target="_blank" class="img">
+																<i></i>
+                                                            </a>
 
-                                                        <div class="">
-                                                            <img style="width: 240px;height:240px;" src="{$exchange.main_img}" alt="main_img" />
-                                                        </div>
-                                                        <div class="">
-                                                            请注意检查货物，{$exchange.sku_notes}
-                                                        </div>
-                                                    </empty>
+															<p>
+																<a target="_blank" href=""></a>
+															</p>
+														</div>
+													</div>
+
 												</div>
 											</td>
 										</tr>

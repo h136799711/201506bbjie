@@ -1,0 +1,80 @@
+<extend name="template/base_index" />
+
+<block name="area_header">
+ <link rel="stylesheet" href="__CSS__/manager.css" />
+    <style type="text/css">
+
+    </style>
+</block>
+
+<block name="area_body">
+
+	<div class="div_all">
+		<include file="Widget/top_left" />
+		<div class="div_right am-padding-sm">
+			<div class="title am-h2"><h2>全部记录</h2></div>
+            <hr/>
+            <div class="div_minContent" >
+
+                <table class="am-table am-table-hover am-table-trips">
+                    <thead>
+                    <tr>
+                        <th>
+                            时间
+                        </th>
+                        <th>
+                            福币数
+                        </th>
+                        <th>
+                            剩余福币
+                        </th>
+                        <th>
+                            备注
+                        </th>
+                    </tr></thead>
+                    <tbody>
+                    <empty name="list">
+                            <tr>
+                                <td colspan="4">没有数据</td>
+                            </tr>
+                        <else/>
+                        <volist name="list" id="vo">
+                            <tr>
+                                <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+                                <td>
+                                    <if condition="$vo['defray'] gt 0">
+                                        - {$vo.defray}
+                                    </if>
+                                    <if condition="$vo['income'] gt 0">
+                                        + {$vo.income}
+                                    </if>
+                                </td>
+                                <td>
+                                    {$vo.left_fucoin}
+                                </td>
+                                <td>
+                                    {$vo.notes}
+                                    <eq name="$vo['exchange_status']" value="2">
+                                        {$vo.reject_reason}
+                                    </eq>
+                                </td>
+                            </tr>
+                        </volist>
+                    </empty>
+                    </tbody>
+                </table>
+
+
+			</div>
+		</div>
+	</div>
+
+</block>
+
+<block name="area_footer">
+	<script type="text/javascript">
+		$(function(){
+
+		})
+	</script>
+</block>

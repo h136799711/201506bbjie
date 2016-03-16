@@ -22,6 +22,8 @@ use Home\Api\HomePublicApi;
 class UsersjController extends SjController {
 
 
+
+
 	/*
 	 * 商家中心
 	 * 
