@@ -232,6 +232,7 @@ class SMActivityController extends HomeController {
             $his_list[$i]['_products']= $result['info'];
         }
 
+        $this->assign('status_reject_order',TaskHisModel::DO_STATUS_REJECT);
         $this->assign('status_not_start',TaskHisModel::DO_STATUS_NOT_START);
         $this->assign('status',$do_status);
         $this->assign('his_list',$his_list);
@@ -408,6 +409,9 @@ class SMActivityController extends HomeController {
         }elseif($do_status == TaskHisModel::DO_STATUS_CANCEL){
             $this->getLogList($id);
             $this->display('rws_cancel');
+        }elseif($do_status == TaskHisModel::DO_STATUS_REJECT){
+            $this->getGoodsForDelivery($task);
+            $this->display('rws_reject');
         }
 
 

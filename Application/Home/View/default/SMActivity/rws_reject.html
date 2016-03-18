@@ -40,6 +40,16 @@
         .tishi{
             cursor: pointer;
         }
+        .submit_order_info{
+
+            border: 1px solid #A4ABAF;
+            border-radius: 5px;
+            width: 80%;
+            margin: 0 auto;
+            background: #EADBDB;
+            color: #840C0C;
+            MARGIN-BOTTOM: 30PX;
+        }
     </style>
 </block>
 
@@ -300,6 +310,11 @@
 
                 </h2>
 
+                <div class="submit_order_info am-padding-sm">
+                    <p>您提交的订单信息被商家驳回！！</p>
+                    <p>驳回原因: {$task.notes} </p>
+                </div>
+
 					<div class="body">
 						<style>
 							.control-group .specs_selct label {
@@ -321,7 +336,7 @@
 															<div class="control-group">
 																<label class="control-label" for="order_taobao">任务淘宝号：</label>
 																<div class="controls">
-																	<input required="required" maxlength="25" readonly="readonly" type="text" value="{$user.taobao_account}" name="order_taobao" id="order_taobao">
+																	<input required="required" maxlength="25" readonly="readonly" type="text" value="{$task.tb_account}" name="order_taobao" id="order_taobao">
 
 																</div>
 															</div>
@@ -329,7 +344,7 @@
 															<div class="control-group">
 																<label class="control-label" for="order_num">淘宝订单号：</label>
 																<div class="controls">
-																	<input required="required" maxlength="" type="text" value="" name="order_num" id="order_num">
+																	<input required="required" maxlength="" type="text" value="{$task.tb_orderid}" name="order_num" id="order_num">
                                                                     <span class="help-inline"><span class="muted">不允许自行更换下单淘宝号</span></span>
 																</div>
 															</div>
@@ -338,7 +353,7 @@
 																<label class="control-label" for="zhifu_price">订单支付金额：</label>
 																<div class="controls">
 																	<div class="input-append">
-																		<input class="span2" type="text" value="" name="zhifu_price" id="zhifu_price"><span style="height: 30px;" class="add-on">元</span>
+																		<input class="span2" type="text" value="{$task.tb_price}" name="zhifu_price" id="zhifu_price"><span style="height: 30px;" class="add-on">元</span>
                                                                     </div>
 																</div>
 															</div>
@@ -346,21 +361,25 @@
                                                                 <label class="control-label" >信用卡或花呗：</label>
                                                                 <div class="controls">
                                                                     <label class="am-radio-inline">
-                                                                        <input type="radio" name="pay_type" value="101" >其它
+                                                                        <input class="j_pay_type" type="radio" name="pay_type"  <eq name="task['tb_pay_type']" value="101">checked</eq>   value="101" >其它
                                                                     </label>
                                                                     <label class="am-radio-inline">
-                                                                        <input type="radio" name="pay_type"  value="102"> 信用卡
+                                                                        <input class="j_pay_type"  type="radio" name="pay_type" <eq name="task['tb_pay_type']" value="102">checked</eq> value="102"> 信用卡
                                                                     </label>
                                                                     <label class="am-radio-inline">
-                                                                        <input type="radio" name="pay_type" value="103"> 花呗
+                                                                        <input class="j_pay_type"  type="radio" name="pay_type" <eq name="task['tb_pay_type']" value="103">checked</eq> value="103"> 花呗
                                                                     </label>
+
+                                                                </div>
+                                                                <div class="controls text" >
+                                                                    <small class="muted">信用卡、花呗支付需要扣除 1% 手续费</small>
                                                                 </div>
                                                             </div>
 															<div class="control-group" >
 																<label class="control-label">预期返款：</label>
-                                                                <div class="j_mayreturn_price am-hide controls">
+                                                                <div class="j_mayreturn_price controls">
                                                                     <div class="input-append">
-                                                                        <input class="span2" disabled="disabled" type="text" value="" >
+                                                                        <input class="span2" disabled="disabled" value="{$task.tb_price}" type="text" value="" >
                                                                         <span style="height: 30px;" class="add-on">元</span>
                                                                     </div>
                                                                 </div>
@@ -373,7 +392,7 @@
 															<div class="control-group">
 																<label class="control-label" for="submit_beizhu">相关备注：</label>
 																<div class="controls">
-																	<textarea placeholder="如果有需要给商家留言的话，可以在这里备注" style="width:300px;height:50px;"  name="notes" id="submit_beizhu"></textarea>
+																	<textarea placeholder="如果有需要给商家留言的话，可以在这里备注" style="width:300px;height:50px;"  name="notes" id="submit_beizhu">{$task.notes}</textarea>
 																</div>
 															</div>
 															<div class="form-actions">
@@ -438,7 +457,6 @@
              alert("支付金额填写错误!");
              return;
          }
-
          var pay_type = $("input[name='pay_type']:checked").val();
 
          if(pay_type != 101){
@@ -449,8 +467,7 @@
          $(".j_mayreturn_price input").val(price);
      }
 
-
-     $(function(){
+ 	$(function(){
  		var a=$('#pid').val();
  		$('#spid').val(a);
  		$(".radio").click(function(){
@@ -479,9 +496,9 @@
 
         $("#zhifu_price").blur(function(){
             getMayreturnPrice();
-        });
+        })
  		 
- 	})
+ 	});
  </script>
 </block>
 
