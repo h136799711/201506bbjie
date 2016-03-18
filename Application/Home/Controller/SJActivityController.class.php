@@ -21,6 +21,7 @@ use Home\Api\VTaskProductSearchWayApi;
 use Home\Model\BbjmemberSellerModel;
 use Home\Model\FinAccountBalanceHisModel;
 use Home\Model\TaskHisModel;
+use Home\Model\TaskLogModel;
 use Think\Controller;
 use Home\Api\HomePublicApi;
 use Admin\Api\AdminPublicApi;
@@ -172,9 +173,15 @@ class SJActivityController extends SjController {
         $this -> assign('list', $result['info']['list']);
         $this -> assign('show', $result['info']['show']);
 
+
+        $this -> assign('reject_order', TaskHisModel::DO_STATUS_REJECT);
+        $this -> assign('submit_order', TaskHisModel::DO_STATUS_SUBMIT_ORDER);
+
         $this->display();
 
 	}
+
+
 	/**
 	 * 任务计划
      * @author 老胖子-何必都 <hebiduhebi@126.com>
@@ -226,26 +233,9 @@ class SJActivityController extends SjController {
          $this->display();
 
 	 }
-	/*
-	 * 平台发货
-	 * */
-	public function sj_pingtai(){
-		
-		$user = session('user');
-		$map1 = array('uid' => $user['info']['id'], 'delivery_mode' => 1);
-		$result = apiCall(HomePublicApi::Task_Query, array($map1));
-		$taskhis = apiCall(HomePublicApi::Task_His_Query, array($whe));
-		$this -> assign('tshis', $taskhis['info']);
-		$headtitle = "宝贝街-活动";
-		$this -> assign('head_title', $headtitle);
-		$this -> assign('task', $result['info']);
-		$this -> assign('username', $user['info']['username']);
-		$exchange=apiCall(AdminPublicApi::OrderExpress_Query, array($whe));
-		$this->assign('express',$exchange['info']);
 
-//		dump($exchange);
-		$this -> display();
-	}
+
+
 	 /*
 	  * 发放任务
 	  * @author 老胖子-何必都 <hebiduhebi@126.com>
@@ -326,25 +316,7 @@ class SJActivityController extends SjController {
 		
 		
 	}
-	/*
-	 * 
-	 * */
 
-	/*
-	 * 任务计划统计
-	 * */
-	public function zdysele(){
-		$user=session('user');
-		$map=array('uid'=>$user['info']['id']);
-		$result=apiCall(HomePublicApi::Bbjmember_Seller_Query, array($map));
-		$vip=$result['info'][0]['vip_level'];
-		if($vip==2){
-			$this->display();
-		}else{
-			$this->error('只有超级VIP才可以创建自定义搜索哦');
-		}
-		
-	}
 	/*
 	 * 改变任务状态
 	 * @author 老胖子-何必都 <hebiduhebi@126.com>
@@ -370,122 +342,75 @@ class SJActivityController extends SjController {
 
 	}
 
-	/*
-	 * 试民自主选择
-	 * */
-	public function zzxz() {
-		$taskid = I('taskid', 0);
-		$entity = array('start_time' => time(), 'enter_way' => '', 'task_cnt' => 1, 'create_time' => time(), 'search_way_id' => '', 'task_id' => $taskid, 'uid' => '', );
-		$result = apiCall(HomePublicApi::TaskPlan_Add, array($entity));
-		if ($result['status']) {
-			$this -> success('创建任务计划成功', U('Home/SJActivity/sj_tbhd'));
-		}
-	}
+    /**
+     * 驳回了该订单
+     * @author 老胖子-何必都 <hebiduhebi@126.com>
+     */
+    public function reject_order(){
 
-	/*
-	 * 淘宝活动
-	 * */
-	public function sj_waiting() {
-		$user = session('user');
-		$map1 = array('uid' => $user['info']['id'], 'task_status' => 4);
-		$result = apiCall(HomePublicApi::Task_Query, array($map1));
-		$whe = array('do_status' => 3);
-		$taskhis = apiCall(HomePublicApi::Task_His_Query, array($whe));
-		$this -> assign('tshis', $taskhis['info']);
-		$sm=apiCall(HomePublicApi::Bbjmember_Query, array());
-		$sms=apiCall(HomePublicApi::Member_Query, array());
-		$headtitle = "宝贝街-活动";
-		$this->assign('sm',$sm['info']);
-		$this->assign('sms',$sms['info']);
-		$this -> assign('head_title', $headtitle);
-		$this -> assign('task', $result['info']);
-		$this -> assign('username', $user['info']['username']);
+        $reason = I('post.reason','');
+        $id = $this->_param('id','');
 
-//		dump($taskhis);
-		$this -> display();
-	}
-	/*
-	 * 确认还款
-	 * */
-	public function sj_qrhk(){
-		$user = session('user');
-		$map1 = array('uid' => $user['info']['id'], 'task_status' => 4);
-		$result = apiCall(HomePublicApi::Task_Query, array($map1));
-		$whe = array('do_status' => 4);
-		$taskhis = apiCall(HomePublicApi::Task_His_Query, array($whe));
-		$this -> assign('tshis', $taskhis['info']);
+        $result = apiCall(TaskHisApi::GET_INFO,array(array('id'=>$id)));
+        if($result['status'] && is_array($result['info'])){
+            $his = $result['info'];
+        }
 
-		$this -> assign('head_title', "宝贝街-活动");
-		$this -> assign('task', $result['info']);
+        $entity = array(
+            'notes'=>$reason,
+            'do_status'=>TaskHisModel::DO_STATUS_REJECT
+        );
 
-		$this -> display();
-	}
+        if($his['do_status'] == TaskHisModel::DO_STATUS_REJECT){
+            $this->error("驳回失败(CODE＝－1)");
+        }
+
+        $result=apiCall(TaskHisApi::SAVE_BY_ID,array($id,$entity));
+
+        if($result['status']){
+
+            $notes = "商家驳回了您的订单，原因:".$reason;
+            task_log($id,$his['tpid'],$his['uid'],$his['task_id'],TaskLogModel::TYPE_REJECT_ORDER,$notes);
+
+            $this->success('操作成功',U('Home/SJActivity/alluser',array('id'=>$his['task_id'])));
+        }else{
+            $this->error('系统未知错误',U('Home/SJActivity/alluser',array('id'=>$his['task_id'])));
+        }
+    }
+
+
 	/*
 	 * 订单确认
+	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 * */
-	public function qrdd(){
-		$id=I('id','');
-		$entity=array('order_status'=>2,'do_status'=>6);
-		$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$entity));
-//		dump($id);dump($entity);
+	public function confirm_order(){
+        $id = $this->_param('id','');
+
+        $result = apiCall(TaskHisApi::GET_INFO,array(array('id'=>$id)));
+        if($result['status'] && is_array($result['info'])){
+            $his = $result['info'];
+        }
+
+		$entity = array('do_status'=>TaskHisModel::DO_STATUS_PASS);
+        if($his['do_status'] == TaskHisModel::DO_STATUS_PASS){
+            $this->error("确认失败(CODE＝－1)");
+        }
+
+		$result=apiCall(TaskHisApi::SAVE_BY_ID,array($id,$entity));
+
 		if($result['status']){
+
+            $notes = "商家已确认了您的订单";
+            task_log($id,$his['tpid'],$his['uid'],$his['task_id'],TaskLogModel::TYPE_CONFIRM_ORDER,$notes);
+
 			$this->success('任务操作成功',U('Home/SJActivity/sj_tbhd'));
 		}else{
 			$this->error('系统未知错误',U('Home/SJActivity/sj_tbhd'));
 		}
 	}
-	/*
-	 * 确认还款
-	 * */
-	public function qrhk(){
-		$id=I('id',0);
-		$umap=array('id'=>$id);
-		$tid=I('tid',0);
-		$smap=array('id'=>$tid);
-		$entity=array('do_status'=>2);
-		$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$entity));
-		if($result['status']){
-			$us=apiCall(HomePublicApi::Task_His_Query,array($umap));
-			$uid=$us['info'][0]['uid'];
-			$map=array('uid' => $uid);
-			$result=apiCall(HomePublicApi::Bbjmember_Query,array($map));
-			$yqrid=$result['info'][0]['referrer_id'];
-			$sel=apiCall(HomePublicApi::Task_Query,array($smap));
-			$money=$sel['info'][0]['task_gold'];
-			$fhmoney=$us['info'][0]['tb_price'];
-			$sid=$sel['info'][0]['uid'];
-			$fucoin=$sel['info'][0]['coin'];
-			$orderid=$us['info'][0]['tb_orderid'];
-			$return=M('bbjmember')->where('uid='.$uid)->setInc('coins',$fhmoney);
-			$return=M('bbjmember')->where('uid='.$yqrid)->setInc('fucoin',1);
-			$return=M('bbjmember')->where('uid='.$uid)->setInc('fucoin',$fucoin);
-			$return1=M('bbjmemberSeller')->where('uid='.$sid)->setDec('frozen_money',$money);
-			if($return!=0 &&$return1 !=0){
-				$entity1 = array('uid' => $uid, 'defray' => '0.00', 'income' => $fhmoney, 'create_time' => time(), 'notes' => '商家退回任务金额', 'dtree_type' => 2, 'status' => 1, );
-				$result1 = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entity1));
-				$entity2 = array('uid' => $uid, 'defray' => '0.00' ,'income' => $fucoin, 'create_time' => time(), 'notes' => "订单：".$orderid."任务完成奖励福币", 'dtree_type' => 2, 'status' => 1, );
-				$result2 = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entity2));
-				$entity3 = array('uid' => $sid, 'defray' => $money, 'income' => '0.000', 'create_time' => time(), 'notes' => '任务结算返还试民', 'dtree_type' => 6, 'status' => 1, );
-				$result3 = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entity3));
-				$this->success('任务操作成功',U('Home/SJActivity/sj_tbhd'));
-			}
-		}else{
-			$this->error('系统未知错误',U('Home/SJActivity/sj_tbhd'));
-		}
-	}
-	/*
-	 * 驳回
-	 * */
-	public function rt(){
-		$id=I('id','');
-		$entity=array('do_status'=>8);
-		$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$entity));
-		if($result['status']){
-			$this->success('任务操作成功',U('Home/SJActivity/sj_tbhd'));
-		}else{
-			$this->error('系统未知错误',U('Home/SJActivity/sj_tbhd'));
-		}
-	}
+
+
+
 	/*
 	 * 任务书
 	 * @author 老胖子-何必都 <hebiduhebi@126.com>

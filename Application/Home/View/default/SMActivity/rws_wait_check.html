@@ -40,6 +40,15 @@
         .tishi{
             cursor: pointer;
         }
+        .submit_order_info{
+            border: 1px solid #A4ABAF;
+            border-radius: 5px;
+            width: 80%;
+            margin: 0 auto;
+            background: #EADBDB;
+            color: #840C0C;
+            MARGIN-BOTTOM: 30PX;
+        }
     </style>
 </block>
 
@@ -300,103 +309,86 @@
 
                 </h2>
 
-					<div class="body">
-						<style>
-							.control-group .specs_selct label {
-								width: auto;
-								padding-top: 5px;
-							}
-						</style>
-						<div>
-							<div class="renwu-tijiao " >
-								<table>
-									<tbody>
-										<tr>
-											<td>
-												<div class="tijiao-form">
-													<if condition="$do_status eq 8">
-														<form  class="shifu form-horizontal ng-invalid ng-invalid-required ng-dirty" id="" action="{:U('Home/SMActivity/editorder')}" method="post" novalidate="novalidate">
-														<else/>
-														<form  class="shifu form-horizontal ng-invalid ng-invalid-required ng-dirty" id="" action="{:U('Home/SMActivity/savedd')}" method="post" novalidate="novalidate">
-													</if>
-													
-														<fieldset>
-															<div class="control-group">
-																<label class="control-label" for="order_taobao">任务淘宝号：</label>
-																<div class="controls">
-																	<input required="required" maxlength="25" readonly="readonly" type="text" value="{$user.taobao_account}" name="order_taobao" id="order_taobao"><span class="help-inline"><span class="muted">不允许自行更换下单淘宝号</span></span>
-																</div>
-															</div>
+                <div class="submit_order_info am-padding-sm">
+                    <p>您已经提交订单了！！</p>
+                    <p>订单号: {$task.tb_orderid} 返款金额:{$task.tb_price}</p>
+                </div>
 
-															<div class="control-group">
-																<label class="control-label" for="order_num">淘宝订单号：</label>
-																<div class="controls">
-																	<input required="required" maxlength="" type="text" value="" name="order_num" id="order_num">
-																</div>
-															</div>
+                <div class="body">
 
-															<div class="control-group">
-																<label class="control-label" for="zhifu_price">订单支付金额：</label>
-																<div class="controls">
-																	<div class="input-append">
-																		<input class="span2" type="text" value="" name="zhifu_price" id="zhifu_price"><span style="height: 30px;" class="add-on">元</span>
-                                                                    </div>
-																</div>
-															</div>
-															
-															<div class="control-group" >
-																<label class="control-label">预期返款：</label>
-                                                                <div class="j_mayreturn_price am-hide controls">
-                                                                    <div class="input-append">
-                                                                        <input class="span2" disabled="disabled" type="text" value="" >
-                                                                        <span style="height: 30px;" class="add-on">元</span>
-                                                                    </div>
-                                                                </div>
+                    <div class="content" style="">
+                        <div class="syj-form form-horizontal" style="width: 80%; margin: 0 auto;padding-top:10px;">
+                            <div class="am-g">
+                                <div class="am-u-sm-5">
+                                    <div class="am-form-group am-cf am-margin-bottom-xs">
+                                        <div class="am-text-left  am-fl am-margin-right-sm">活动商家 </div>
+                                        <div class=" am-fl ">{$seller.username}</div>
+                                    </div>
+                                    <div class="am-form-group  am-cf am-margin-bottom-xs">
+                                        <div class=" am-fl am-margin-right-sm">任务步骤 </div>
+                                        <div class=" am-fl">{$task.do_status_name}</div>
+                                    </div>
 
-                                                                <div class="controls text" >
-                                                                    <small class="muted">请填写订单支付金额,此处依据支付金额计算</small>
-                                                                </div>
-															</div>
+                                    <div class="am-form-group am-cf am-margin-bottom-xs">
+                                        <div class="am-text-left am-fl am-margin-right-sm">任务价值 </div>
+                                        <div class="am-fl">
+                                            <span class="price">{$task.coin}</span>福币
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group am-cf am-margin-bottom-xs">
+                                        <div class="am-fl am-margin-right-sm">分配任务</div>
+                                        <div class="am-fl am-text-left" style="width: 160px;">
+                                            {$task.task_name}
+                                        </div>
+                                    </div>
 
-															<div class="control-group">
-																<label class="control-label" for="submit_beizhu">相关备注：</label>
-																<div class="controls">
-																	<textarea placeholder="如果有需要给商家留言的话，可以在这里备注" style="width:300px;height:50px;"  name="notes" id="submit_beizhu"></textarea>
-																</div>
-															</div>
-															<div class="form-actions">
-																<button style="background-color: orangered;color: #FFFFFF;" class="btn " type="submit" name="yt1">确认无误并提交</button>
-																<button onclick="window.close();return false;" class="btn" name="yt2" type="button">取消</button>
-															</div>
-														</fieldset>
-													</form>
-												</div>
-											</td>
-											<td width="300" style="text-align:center;">
-												<div>
+                                    <div class="am-form-group am-cf am-margin-bottom-xs">
+                                        <div class="am-fl am-margin-right-sm">任务金额</div>
+                                        <div class="am-fl">
+                                            <span class="am-text-danger">{$task.task_gold}</span>元
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group am-cf am-margin-bottom-xs">
+                                        <div class="am-fl am-margin-right-sm">通过时间</div>
+                                        <div class="am-fl">{$task.create_time|date='Y-m-d H:i:s',###}
+                                        </div>
+                                    </div>
+                                    <!--<div class="am-form-group">-->
+                                    <!--<label class="control-label">违规标注</label>-->
+                                    <!--<div class="controls text">&nbsp; <span class="muted">-</span></div>-->
+                                    <!--</div>-->
+                                    <!--<div class="control-group">-->
+                                    <!--<label class="control-label">我的诉苦</label>-->
+                                    <!--<div class="controls text">&nbsp; <span class="muted">-</span></div>-->
+                                    <!--</div>-->
+                                </div>
 
-													<div class="sp sp_shifu hide" id="shifu_goods">
-														<div class="old">
-															<a href="" target="_blank" class="img">
-																<i></i>
-                                                            </a>
+                                <div class="am-u-sm-7">
+                                    <table class="am-table am-table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th width="140">操作时间</th>
+                                            <th>内容</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <volist name="log_list" id="vo">
+                                            <tr style="font-size: 10px;">
+                                                <td>
+                                                    <span title="{$vo.log_time|date='Y-m-d H:i:s',###}">{$vo.log_time|date='Y-m-d H:i:s',###}</span>
+                                                </td>
+                                                <td class="am-text-left">
+                                                    <span title="{$vo.notes}">{$vo.notes}</span>
+                                                </td>
+                                            </tr>
+                                        </volist>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div></div>
+                    </div>
 
-															<p>
-																<a target="_blank" href=""></a>
-															</p>
-														</div>
-													</div>
-
-												</div>
-											</td>
-										</tr>
-
-									</tbody>
-								</table>
-
-							</div>
-						</div>
-					</div>
+                </div>
 
 				</div>
 

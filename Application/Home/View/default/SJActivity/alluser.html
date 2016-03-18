@@ -14,6 +14,9 @@
         .search_form{
             width: 320px;
         }
+        .j_content textarea{
+            font-size: 12px;
+        }
 	</style>
 </block>
 
@@ -63,7 +66,14 @@
 
 						</div>
 
-                        <div>
+                        <div class="filter-controls">
+                            <div class="am-tabs"  id="doc-tab-demo-1">
+                                <ul class="am-tabs-nav am-nav am-nav-tabs">
+                                    <!--<li><a href="{:U('Home/SJActivity/alluser',array('status'=>'submit'))}">待审核订单</a></li>-->
+                                    <li class="am-active"><a href="{:U('Home/SJActivity/alluser',array('status'=>'doing'))}">任务中</a></li>
+                                    <!--<li><a href="{:U('Home/SJActivity/alluser',array('status'=>'cancel'))}">取消、放弃</a></li>-->
+                                </ul>
+                            </div>
 
                         </div>
 
@@ -142,6 +152,10 @@
                                             </td>
                                             <td >
                                                 {$vo.do_status_name}
+
+                                                <eq name="vo['do_status']" value="$reject_order">
+                                                <p class="am-text-danger">原因: {$vo.notes}</p>
+                                                </eq>
                                             </td>
                                             <td >
                                                 {$vo.create_time|date='Y-m-d H:i',###}
@@ -150,7 +164,18 @@
                                                 {$vo.update_time|date='Y-m-d H:i',###}
                                             </td>
                                             <td width="160" >
-                                                <a href="javascript:void(0);" data-href="{:U('Home/TaskLog/view',array('task_his_id'=>$vo['id']))}" class="j_view_log btn-fix-am am-margin-left-sm am-btn am-btn-sm am-btn-default btn-fix-am">淘宝日志</a>
+
+                                                <eq name="vo['do_status']" value="$submit_order">
+                                                <a href="{:U('Home/SJActivity/confirm_order',array('id'=>$vo['id']))}" class="am-margin-bottom-sm btn-fix-am am-btn am-btn-sm am-btn-primary">确认订单</a><br/>
+                                                </eq>
+
+                                                <eq name="vo['do_status']" value="$submit_order">
+                                                    <a href="javascript:void(0)" data-id="{$vo.id}" class="j_reject_btn am-margin-bottom-sm btn-fix-am am-btn am-btn-sm am-btn-danger">驳回订单</a>
+                                                    <br/>
+                                                </eq>
+
+                                                <a href="javascript:void(0);" data-href="{:U('Home/TaskLog/view',array('task_his_id'=>$vo['id']))}" class="am-margin-bottom-sm j_view_log btn-fix-am am-btn am-btn-sm am-btn-default btn-fix-am">淘宝日志</a>
+
                                             </td>
 											
 										</tr>
@@ -183,12 +208,50 @@
         </div>
     </div>
 
+    <div class="am-modal am-modal-alert" tabindex="-1" id="j_reject_modal">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd am-text-left">#驳回订单编号#<span class="j_reject_id_text"></span>
+                <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+            </div>
+            <div class="am-modal-bd">
+                <form class="j_reject_form" >
+                    <input type="hidden" class="j_reject_id" name="id"/>
+                    <div class="am-form-group">
+                        <label CLASS="am-text-left">驳回原因</label>
+                        <div class="j_content">
+                            <textarea name="reason" rows="5" class="am-form-field "></textarea>
+                        </div>
+                    </div>
+
+                    <div>
+
+                        <a href="javascript: void(0)" class=" am-btn am-btn-sm am-btn-default" data-am-modal-close>取消</a>
+
+                        <a target-form="j_reject_form" href="{:U('Home/SJActivity/reject_order')}" class="ajax-post am-btn am-btn-sm am-btn-primary">确定</a>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
 </block>
 
 <block name="area_footer">
 	<script type="text/javascript">
         $(function(){
+            $(".j_reject_btn").each(function(index,item){
+                $(item).click(function(ev){
+                    var id = $(ev.target).data("id");
 
+                    $("#j_reject_modal .j_reject_id_text").text(id);
+                    $("#j_reject_modal .j_reject_id").val(id);
+                    $("#j_reject_modal").modal();
+
+                });
+            })
             $('.j_view_log').each(function(index,item) {
                 $(item).click(function(ev){
                     $("#j_task_log_modal").find(".j_loading").show();

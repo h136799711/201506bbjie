@@ -7,6 +7,7 @@
 // |-----------------------------------------------------------------------------------
 
 namespace Tool\Controller;
+use Home\Api\BbjmemberApi;
 use Home\Api\TaskHisApi;
 use Home\Api\TaskLogApi;
 use Home\Api\TaskPlanApi;
@@ -88,10 +89,14 @@ class TaskController extends Controller{
                     'log_time'=>$now_time,
                 );
                 $result = apiCall(TaskLogApi::ADD,array($entity));
+                //任务更改为取消状态
                 $result = apiCall(TaskHisApi::SAVE_BY_ID,array($vo['id'],array('do_status'=>TaskHisModel::DO_STATUS_CANCEL)));
 
                 $map = array('id'=>$vo['tpid']);
+                //任务计划剩余数量+1
                 $result = apiCall(TaskPlanApi::SET_INC,array($map,"yuecount",1));
+                //任务取消数量+1
+                $result = apiCall(BbjmemberApi::SET_INC,array($map,'cancel_task_cnt',1));
             }
 
             addWeixinLog("更新订单为取消影响记录数：".$result['info']);

@@ -48,6 +48,18 @@ class TaskHisModel extends \Think\Model{
      * 放弃 | 取消
      */
     const DO_STATUS_CANCEL = 96;
+
+    /**
+     * 已发货
+     */
+    const DO_STATUS_DELIVERY_GOODS = 98;
+
+    /**
+     * 已收货
+     */
+    const DO_STATUS_RECEIVED_GOODS = 99;
+
+
     //合法支付
     const PAY_TYPE_LEGAL = 101;
     //信用卡

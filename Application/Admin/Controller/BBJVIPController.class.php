@@ -14,9 +14,11 @@ use Home\Api\HomePublicApi;
 use Home\Api\ProductSearchWayApi;
 use Home\Api\VBbjmemberInfoApi;
 use Home\Api\VBbjmemberSellerInfoApi;
+use Home\Api\VTaskHisInfoApi;
 use Home\Api\VTaskProductSearchWayApi;
 use Home\ConstVar\UserTypeConstVar;
 use Home\Model\BbjmemberSellerModel;
+use Home\Model\TaskHisModel;
 
 class BBJVIPController extends AdminController{
     /**
@@ -448,26 +450,32 @@ class BBJVIPController extends AdminController{
 
 	/*
 	 * 任务领取管理
+	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 * */
 	public function taskgetview(){
-		$map=array('task_id'=>I('id',0));
+
+
+        $status = $this->_param('status',TaskHisModel::DO_STATUS_NOT_START);
+
+		$map=array(
+            'task_id'=>I('id',0),
+            'do_status'=>$status,
+        );
+
 		$page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));
-//		$order = " create_time desc ";
-		$result = apiCall(HomePublicApi::Task_His_QueryAll, array($map, $page, $order));
-		$result1 = apiCall(HomePublicApi::Task_Query, array());
-//		dump($result);dump($result1);
+		$order = " create_time desc ";
+		$result = apiCall(VTaskHisInfoApi::QUERY, array($map, $page, $order));
+
 		$this->assign('list',$result['info']['list']);
-		$this->assign('task',$result1['info']);
 		$this->assign('show',$result['info']['show']);
 		$this->display();
 	}
-	/*
-	 * 删除任务
-	 * */
-	public function delete(){
-		$id=I('id',0);
-		$map=array('order_status'=>0);
-		$result = apiCall(HomePublicApi::Task_SaveByID, array($id,$map));
-		dump($result);
-	}
+
+    /**
+     * 平台发货
+     */
+    public function platform_delivery(){
+
+    }
+
 }

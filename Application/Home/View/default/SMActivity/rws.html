@@ -316,7 +316,7 @@
 												<div class="tijiao-form">
 
 														<form  class="j_rws_form form-horizontal ng-invalid ng-invalid-required ng-dirty" id="" action="{:U('Home/SMActivity/submit_order')}" method="post" novalidate="novalidate">
-													
+													        <input type="hidden" name="id" value="{:I('get.id',0)}"/>
 														<fieldset>
 															<div class="control-group">
 																<label class="control-label" for="order_taobao">任务淘宝号：</label>
@@ -342,14 +342,20 @@
                                                                     </div>
 																</div>
 															</div>
-															<!--<div>-->
-                                                                <!--<label class="control-label" >信用卡或花呗：</label>-->
-                                                                <!--<div class="controls">-->
-                                                                    <!--<div class="input-append">-->
-                                                                        <!--<input class="span2" type="text" value="" name="zhifu_price" id="zhifu_price"><span style="height: 30px;" class="add-on">元</span>-->
-                                                                    <!--</div>-->
-                                                                <!--</div>-->
-                                                            <!--</div>-->
+															<div class="control-group" >
+                                                                <label class="control-label" >信用卡或花呗：</label>
+                                                                <div class="controls">
+                                                                    <label class="am-radio-inline">
+                                                                        <input type="radio"  value="0" CHECKED name="pay_type">其它
+                                                                    </label>
+                                                                    <label class="am-radio-inline">
+                                                                        <input type="radio" name="pay_type" value="1"> 信用卡
+                                                                    </label>
+                                                                    <label class="am-radio-inline">
+                                                                        <input type="radio" name="pay_type" value="2"> 花呗
+                                                                    </label>
+                                                                </div>
+                                                            </div>
 															<div class="control-group" >
 																<label class="control-label">预期返款：</label>
                                                                 <div class="j_mayreturn_price am-hide controls">

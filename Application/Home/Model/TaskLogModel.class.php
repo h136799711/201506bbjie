@@ -28,4 +28,13 @@ class TaskLogModel extends \Think\Model{
      */
     const TYPE_SUBMIT_TB_ORDER = "77";
 
+    /**
+     * 商家确认订单
+     */
+    const TYPE_CONFIRM_ORDER = "114";
+    /**
+     * 商家驳回订单
+     */
+    const TYPE_REJECT_ORDER = "115";
+
 }

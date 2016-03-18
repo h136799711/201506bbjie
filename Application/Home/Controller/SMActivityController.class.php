@@ -263,6 +263,9 @@ class SMActivityController extends HomeController {
         task_log($id , $plan_id,$this->uid,$task_id,TaskLogModel::TYPE_CANCEL_TASK,$notes);
 
 		if($result['status']){
+            $map['uid'] = $this->uid;
+            $result = apiCall(BbjmemberApi::SET_INC,array($map,'cancel_task_cnt',1));
+
 			$this->success('任务操作成功',U('Home/SMActivity/task_manager',array('do_status'=>'doing')));
 		}else{
 			$this->error('系统未知错误',U('Home/SMActivity/task_manager',array('do_status'=>'doing')));
@@ -411,6 +414,51 @@ class SMActivityController extends HomeController {
 
 	}
 
+
+    /**
+     * 提交订单信息
+     */
+    public function submit_order(){
+        $id = I('post.id',0);
+        $order_num = I('post.order_num','');
+        $zhifu_price = I('post.zhifu_price',0,'floatval');
+        $notes = I('post.notes','');
+        $pay_type = I('post.pay_type','');
+
+        if($zhifu_price <= 0){
+            $this->error("支付金额是不是填错了？");
+        }
+        $his = array();
+        $result = apiCall(TaskHisApi::GET_INFO,array(array('id'=>$id)));
+        if($result['status'] && is_array($result['info'])){
+            $his = $result['info'];
+        }
+
+        $entity = array(
+            'tb_orderid'=>$order_num,
+            'tb_address'=>'',
+            'to_seller_notes'=>$notes,
+            'tb_price'=>$zhifu_price,
+            'tb_pay_type'=>$pay_type,
+            'do_status'=>TaskHisModel::DO_STATUS_SUBMIT_ORDER,
+        );
+
+        $result = apiCall(TaskHisApi::SAVE_BY_ID,array($id,$entity));
+
+        if($result['status']){
+            $notes = "用户(".$this->userinfo['username'].") 提交了订单";
+            task_log($id,$his['tpid'],$this->uid,$his['task_id'],TaskLogModel::TYPE_SUBMIT_TB_ORDER,$notes);
+
+            $this->success("操作成功!");
+        }
+
+        $this->error("操作失败!");
+
+
+    }
+
+
+
     /**
      * 获取发货的物品信息
      */
@@ -420,7 +468,7 @@ class SMActivityController extends HomeController {
             //平台发货
             $map = array(
                 'uid'=>$this->userinfo['id'],
-                'exchange_statue'=>ProductExchangeModel::CHECK_SUCCESS,
+                'exchange_status'=>ProductExchangeModel::CHECK_SUCCESS,
             );
             $result  = apiCall(VProductExchangeInfoApi::GET_INFO,array($map,'update_time desc'));
 
@@ -429,7 +477,7 @@ class SMActivityController extends HomeController {
 
         }elseif($mode == TaskModel::DELIVERY_MODE_SELLER){
             //商家发货
-            dump("123456");
+//            dump("123456");
 
         }
 

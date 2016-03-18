@@ -12,6 +12,11 @@ use \Home\Model\BbjmemberModel;
 class BbjmemberApi extends Api{
 
     /**
+     * 增加
+     */
+    const SET_INC = "Home/Bbjmember/setInc";
+
+    /**
      * 新增
      */
     const ADD = "Home/Bbjmember/add";
