@@ -232,6 +232,9 @@ class SMActivityController extends HomeController {
             $his_list[$i]['_products']= $result['info'];
         }
 
+        $this->assign('status_received_goods',TaskHisModel::DO_STATUS_RECEIVED_GOODS);
+        $this->assign('status_wait_return',TaskHisModel::DO_STATUS_WAIT_RETURN);
+        $this->assign('status_pass_order',TaskHisModel::DO_STATUS_PASS);
         $this->assign('status_reject_order',TaskHisModel::DO_STATUS_REJECT);
         $this->assign('status_not_start',TaskHisModel::DO_STATUS_NOT_START);
         $this->assign('status',$do_status);
@@ -240,6 +243,7 @@ class SMActivityController extends HomeController {
 
         $this -> boye_display();
 	}
+
 
 	/*
 	 * 取消任务
@@ -462,6 +466,38 @@ class SMActivityController extends HomeController {
     }
 
 
+    /**
+     * 确认收货
+     * @author 老胖子-何必都 <hebiduhebi@126.com>
+     */
+    public function receive_goods(){
+
+        $id = I('get.id',0);
+        if(empty($id)){
+            $this->error("缺少id");
+        }
+
+        $result = apiCall(TaskHisApi::GET_INFO,array(array('id'=>$id)));
+
+        if($result['status'] && is_array($result['info'])){
+            $his = $result['info'];
+        }
+
+        $entity = array('do_status'=>TaskHisModel::DO_STATUS_RECEIVED_GOODS);
+
+        $result = apiCall(TaskHisApi::SAVE_BY_ID,array($id,$entity));
+
+        if($result['status']){
+
+            $notes = "用户(".$this->userinfo['username'].") 提交了订单";
+            task_log($id,$his['tpid'],$this->uid,$his['task_id'],TaskLogModel::TYPE_SUBMIT_TB_ORDER,$notes);
+
+            $this->success("操作成功!");
+        }
+
+        $this->error("操作失败!");
+
+    }
 
     /**
      * 获取发货的物品信息

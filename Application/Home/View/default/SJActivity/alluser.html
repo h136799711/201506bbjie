@@ -166,7 +166,7 @@
                                             <td width="160" >
 
                                                 <eq name="vo['do_status']" value="$submit_order">
-                                                <a href="{:U('Home/SJActivity/confirm_order',array('id'=>$vo['id']))}" class="am-margin-bottom-sm btn-fix-am am-btn am-btn-sm am-btn-primary">确认订单</a><br/>
+                                                <a href="{:U('Home/SJActivity/confirm_order',array('id'=>$vo['id']))}" class="ajax-get am-margin-bottom-sm btn-fix-am am-btn am-btn-sm am-btn-primary">确认订单</a><br/>
                                                 </eq>
 
                                                 <eq name="vo['do_status']" value="$submit_order">
@@ -174,7 +174,14 @@
                                                     <br/>
                                                 </eq>
 
+                                                <eq name="vo['do_status']" value="$received_goods">
+                                                    <a href="{:U('Home/SJActivity/return_money',array('id'=>$vo['id']))}" class="ajax-get am-margin-bottom-sm btn-fix-am am-btn am-btn-sm am-btn-danger">确认还款</a>
+                                                    <br/>
+                                                </eq>
+
+
                                                 <a href="javascript:void(0);" data-href="{:U('Home/TaskLog/view',array('task_his_id'=>$vo['id']))}" class="am-margin-bottom-sm j_view_log btn-fix-am am-btn am-btn-sm am-btn-default btn-fix-am">淘宝日志</a>
+
 
                                             </td>
 											

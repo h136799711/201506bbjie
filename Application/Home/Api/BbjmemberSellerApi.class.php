@@ -8,9 +8,16 @@
 namespace Home\Api;
 use \Common\Api\Api;
 use \Home\Model\BbjmemberSellerModel;
+use Home\Model\FinAccountBalanceHisModel;
+use Home\Model\FinFucoinHisModel;
 
 class BbjmemberSellerApi extends Api{
 
+
+    /**
+     * 扣除冻结资金
+     */
+    const MINUS_FROZEN_MONEY = "Home/BbjmemberSeller/minusFrozenMoney";
 
     const SET_INC = "Home/BbjmemberSeller/setInc";
     const SET_DESC = "Home/BbjmemberSeller/setDec";
@@ -48,6 +55,30 @@ class BbjmemberSellerApi extends Api{
 
     public function saveByID($uid,$entity){
         return $this -> save(array('uid' => $uid), $entity);
+    }
+
+    public function minusFrozenMoney($uid,$price,$notes){
+
+        $result = $this->setInc(array('uid'=>$uid),"coins",$price);
+
+        if($result['status']){
+            $entity = array(
+                'uid'=>$uid,
+                'defray'=>$price,
+                'income'=>0,
+                'create_time'=>time(),
+                'notes'=>$notes,
+                'dtree_type'=>FinAccountBalanceHisModel::TYPE_TASK_OVER_MINUS_MONEY,
+                'imgurl'=>'',
+                'status'=>1,
+            );
+            $api = new FinAccountBalanceHisApi();
+            $result = $api->add($entity);
+            return $result;
+        }
+
+        return $result;
+
     }
 
 }

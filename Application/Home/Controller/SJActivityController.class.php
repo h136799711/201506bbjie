@@ -7,6 +7,7 @@
 // |-----------------------------------------------------------------------------------
 namespace Home\Controller;
 use Common\Model\ProductSearchWayModel;
+use Home\Api\BbjmemberApi;
 use Home\Api\BbjmemberSellerApi;
 use Home\Api\FinAccountBalanceHisApi;
 use Home\Api\ProductSearchWayApi;
@@ -25,6 +26,8 @@ use Home\Model\TaskLogModel;
 use Think\Controller;
 use Home\Api\HomePublicApi;
 use Admin\Api\AdminPublicApi;
+use Think\Log;
+
 /*
  * 资金提现
  */
@@ -174,6 +177,7 @@ class SJActivityController extends SjController {
         $this -> assign('show', $result['info']['show']);
 
 
+        $this -> assign('received_goods', TaskHisModel::DO_STATUS_RECEIVED_GOODS);
         $this -> assign('reject_order', TaskHisModel::DO_STATUS_REJECT);
         $this -> assign('submit_order', TaskHisModel::DO_STATUS_SUBMIT_ORDER);
 
@@ -367,6 +371,8 @@ class SJActivityController extends SjController {
 
         $result=apiCall(TaskHisApi::SAVE_BY_ID,array($id,$entity));
 
+
+
         if($result['status']){
 
             $notes = "商家驳回了您的订单，原因:".$reason;
@@ -409,7 +415,93 @@ class SJActivityController extends SjController {
 		}
 	}
 
+    /**
+     * 确认还款
+     * @author 老胖子-何必都 <hebiduhebi@126.com>
+     */
+    public function return_money(){
+        $id = $this->_param('id','');
 
+        $result = apiCall(TaskHisApi::GET_INFO,array(array('id'=>$id)));
+        if($result['status'] && is_array($result['info'])){
+            $his = $result['info'];
+        }
+
+        $entity = array('do_status'=>TaskHisModel::DO_STATUS_RETURNED_MONEY);
+        if($his['do_status'] == TaskHisModel::DO_STATUS_RETURNED_MONEY){
+            $this->error("还款失败(CODE＝－1)");
+        }
+        $result = array('status'=>true);
+//        $result=apiCall(TaskHisApi::SAVE_BY_ID,array($id,$entity));
+
+        if($result['status']){
+
+            $notes = "商家已确认还款，请查看资金明细!";
+            task_log($id,$his['tpid'],$his['uid'],$his['task_id'],TaskLogModel::TYPE_TASK_OVER,$notes);
+
+            $this->task_over($his);
+
+            $this->success('任务操作成功',U('Home/SJActivity/sj_tbhd'));
+        }else{
+            $this->error('系统未知错误',U('Home/SJActivity/sj_tbhd'));
+        }
+    }
+
+    /**
+     * 任务结束归还
+     * 1. 增加用户虚拟币
+     * 2. 增加用户余额
+     * 3. 扣除商家冻结资金
+     */
+    private function task_over($his){
+
+        $tb_price = $his['tb_price'];
+
+        $map = array('uid'=>$his['uid']);
+
+        $result = apiCall(BbjmemberApi::GET_INFO,array($map));
+        if($result['status']){
+            $bbj_member = $result['info'];
+        }
+
+        ifFailedLogRecord($result,__FILE__.__LINE__);
+
+
+        $result = apiCall(TaskApi::GET_INFO,array(array('id'=>$his['task_id'])));
+        ifFailedLogRecord($result,__FILE__.__LINE__);
+
+        $task = false;
+        if($result['status']){
+            $task = $result['info'];
+        }
+
+        if(empty($task)){
+            LogRecord("完成任务归还时，获取任务信息失败!",__FILE__.__LINE__);
+            return;
+        }
+        $uid = $his['uid'];
+        $notes = "商家确认还款，退还资金!";
+        //1. 增加用户余额
+        $result = apiCall(BbjmemberApi::ADD_MONEY,array($uid,$tb_price,$notes));
+
+        if(!$result['status']){
+            $this->error("操作失败!");
+        }
+
+        //2. 增加用户虚拟币
+        $left_coin = $bbj_member['fucoin']+$task['coin'];
+        $notes = "您完成了任务#".$his['id']."#,获得了 ".$task['coin'].VIRTUAL_CURRENCY;
+        $result = apiCall(BbjmemberApi::ADD_FU_COINS,array($uid,$task['coin'],$notes,$left_coin));
+
+        LogRecord(json_encode($result),__FILE__.__LINE__);
+
+        //3. 扣除商家冻结资金
+        $notes = "用户完成了任务#".$his['id']."#,还款给用户#".$uid."#,".$tb_price;
+        $result = apiCall(BbjmemberSellerApi::MINUS_FROZEN_MONEY,array($task['uid'],$tb_price,$notes));
+        LogRecord(json_encode($result),__FILE__.__LINE__);
+
+
+    }
 
 	/*
 	 * 任务书

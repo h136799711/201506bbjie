@@ -7816,3 +7816,70 @@ a.text-normal:focus {
 .check {
 	background-color: #0088CC;
 }
+
+.pagination {
+    margin: 30px 0 30px;
+    padding: 0;
+
+    list-style: none;
+    line-height: 25px;
+    word-spacing: -1px;
+}
+.pagination li{
+    float: left;
+}
+/* 分页相关样式 */
+.pagination div, .pagination a {
+    display: inline-block;
+
+    height: 25px;
+    margin-right: 3px;
+    padding: 0 9px;
+
+    background: #fafafa;
+
+    border-radius: 2px;
+    border: 1px solid #e2e2e2;
+
+    text-shadow: 0 1px 0 white;
+    font-family: 'OpenSansSemiboldRegular';
+
+    text-align: center;
+    font-size: 12px;
+    color: #424346;
+
+    -webkit-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+
+.pagination a:hover {
+    background: #04BFEA;
+    border: 1px solid #2899B3;
+
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+
+    text-shadow: 0 -1px 0 #17d4ff;
+    color: #fff;
+}
+
+.pagination a.active {
+    background: #f5f5f5;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.07);
+    border-color: #d9d9d9;
+
+}
+.pagination li.active a{
+    color: #fff;
+    background-color: #0e90d2;
+    border-color: #0e90d2;
+    cursor: default;
+}
+
+.pagination a.active:hover {
+    text-shadow: 0 1px 0 white;
+    color: #424346;
+}
+
+.pagination a.active, .pagination div {
+    cursor: default;
+}

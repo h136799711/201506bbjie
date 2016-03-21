@@ -8,9 +8,19 @@
 namespace Home\Api;
 use \Common\Api\Api;
 use \Home\Model\BbjmemberModel;
+use Home\Model\FinAccountBalanceHisModel;
+use Home\Model\FinFucoinHisModel;
 
 class BbjmemberApi extends Api{
 
+    /**
+     * 增加虚拟币
+     */
+    const ADD_FU_COINS = "Home/Bbjmember/addFucoins";
+    /**
+     * 增加金额
+     */
+    const ADD_MONEY = "Home/Bbjmember/addMoney";
     /**
      * 增加
      */
@@ -49,6 +59,54 @@ class BbjmemberApi extends Api{
 
     public function saveByID($uid,$entity){
         return $this->save(array('uid'=>$uid),$entity);
+    }
+
+    public function addFucoins($uid,$fucoin,$notes,$left_fucoin=0){
+
+        $result = $this->setInc(array('uid'=>$uid),"fucoin",$fucoin);
+
+        if($result['status']){
+            $entity = array(
+                'uid'=>$uid,
+                'defray'=>0,
+                'income'=>$fucoin,
+                'create_time'=>time(),
+                'notes'=>$notes,
+                'dtree_type'=>FinFucoinHisModel::PLUS_COMPLETE_TASK,
+                'status'=>1,
+                'left_fucoin'=>$left_fucoin,
+            );
+            $api = new FinFucoinHisApi();
+            $result = $api->add($entity);
+            return $result;
+        }
+
+        return $result;
+
+    }
+
+    public function addMoney($uid,$price,$notes){
+
+        $result = $this->setInc(array('uid'=>$uid),"coins",$price);
+
+        if($result['status']){
+            $entity = array(
+                'uid'=>$uid,
+                'defray'=>0,
+                'income'=>$price,
+                'create_time'=>time(),
+                'notes'=>$notes,
+                'dtree_type'=>FinAccountBalanceHisModel::TYPE_TASK_OVER_RETURN_TO_USER,
+                'imgurl'=>'',
+                'status'=>1,
+            );
+            $api = new FinAccountBalanceHisApi();
+            $result = $api->add($entity);
+            return $result;
+        }
+
+        return $result;
+
     }
 
 }

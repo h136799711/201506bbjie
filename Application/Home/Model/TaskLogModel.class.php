@@ -14,6 +14,11 @@ namespace Home\Model;
 class TaskLogModel extends \Think\Model{
 
     /**
+     * 任务结算、还款
+     */
+    const TYPE_TASK_OVER = "117";
+
+    /**
      * 领取任务
      */
     const TYPE_GET_TASK = "75";

@@ -58,3 +58,10 @@ color:#333333;
 #j_task_log_modal,#j_task_log_modal .am-modal-dialog{
     background: #FFFFFF;
 }
+
+.syj-form table{
+    height: 388px;
+    overflow: scroll;
+    display: block;
+    width: 360px;
+}

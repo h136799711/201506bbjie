@@ -15,6 +15,16 @@ namespace Home\Model;
 class FinAccountBalanceHisModel extends \Think\Model{
 
     /**
+     * 单个任务完成时，扣除商家的冻结资金
+     */
+    const TYPE_TASK_OVER_MINUS_MONEY = 119;
+
+    /**
+     * 退还金额给用户
+     */
+    const TYPE_TASK_OVER_RETURN_TO_USER = 118;
+
+    /**
      * 提现
      */
     const TYPE_WITHDRAW = 87;
