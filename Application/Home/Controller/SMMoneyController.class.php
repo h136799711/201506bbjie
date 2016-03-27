@@ -8,6 +8,7 @@
 namespace Home\Controller;
 use Home\Api\BbjmemberApi;
 use Home\Api\FinAccountBalanceHisApi;
+use Home\Model\FinAccountBalanceHisModel;
 use Think\Controller;
 use Think\Storage;
 use Home\Api\HomePublicApi;
@@ -29,7 +30,7 @@ class SMMoneyController extends HomeController {
 			'income'=>'0.00',
 			'create_time'=>time(),
 			'notes'=>'用于提现',
-			'dtree_type'=>3,
+			'dtree_type'=>FinAccountBalanceHisModel::TYPE_WITHDRAW,
 			'status'=>2,
          );
 

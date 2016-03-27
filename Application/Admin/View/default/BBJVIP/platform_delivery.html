@@ -1,0 +1,315 @@
+<extend name="default/template/base_index" />
+
+<block name="area_header">
+    <link rel="stylesheet" href="__CSS__/common.css?v=__APP_VERSION__">
+    <style type="text/css">
+        #begin_time,#end_time,#count{ height: 30px;}
+        #yw1 li{list-style-type: none;}
+        .input-fix-am{
+
+            width: 200px;
+            font-size: 12px;
+        }
+        .search_form{
+            width: 320px;
+        }
+        .j_content textarea{
+            font-size: 12px;
+        }
+        .task_status_list li{
+            float:left;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .task_status_list li.active{
+
+            color: #d1343e;
+            height: 33px;
+            border-bottom: 3px solid #0088cc;
+            margin-bottom: -1px;
+        }
+        .j_sh_id_text{
+
+            font-size: 1.8rem;
+            font-weight: 500;
+        }
+
+        .j_content .am-g{
+
+        }
+        .j_content .am-u-sm-5{
+            float:left;
+            width:50%;
+        }
+        .j_content .am-u-sm-7{
+            float:left;
+            width:50%;
+        }
+    </style>
+</block>
+
+<block name="area_body">
+
+    {:W('Menus/topbar')}
+    <div class="admin-main container-fluid">
+        {:W('Menus/left')}
+        <div class="admin-main-content">
+            {:W('Menus/breadcrumb')}
+
+                <div class="content">
+
+                    <div class="">
+                        <div class="grid-view" >
+                            <table class="items table table-hover table-bordered ">
+                                <thead>
+                                <tr>
+                                    <th width="80">编号</th>
+                                    <th width="120" >任务试民</th>
+                                    <th width="160" >订单信息</th>
+                                    <th width="160" >物流信息</th>
+                                    <th width="160" >发货模式</th>
+                                    <th width="160" >任务步骤</th>
+                                    <th width="160" >通过时间</th>
+                                    <th width="160" >操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <empty name="list">
+                                    <tr>
+                                        <td class="text-center"  colspan="10">没有相关信息</td>
+                                    </tr>
+                                </empty>
+                                <volist name='list' id='vo'>
+                                    <tr class="odd">
+                                        <td>
+                                            {$vo.id}
+                                        </td>
+
+                                        <td>
+                                            <div class="clearfix">
+                                                <div class="pull-left">
+                                                    <empty name="vo['head']">
+                                                        <img class="" style="width: 48px;height:48px;" src="__IMG__/default_user_portrait.gif" alt="">
+
+                                                        <else/>
+                                                        <img style="width: 48px;height:48px;" src="{$vo['head']}" >
+                                                    </empty>
+                                                </div>
+                                                <div class="pull-left">{$vo.nickname}</div>
+                                            </div>
+
+                                        </td>
+
+                                        <td>
+                                            <div>{$vo.tb_account}</div>
+                                            <div class="">
+                                                <small>
+                                                    <if condition="empty($vo['tb_orderid'])">
+                                                        订单:-
+                                                        <else/>
+                                                        订单:{$vo.tb_orderid}
+                                                    </if>
+                                                </small>
+                                            </div>
+                                            <div >
+                                                <small >返款:
+                                                    <if condition="$vo['tb_price'] gt 0">
+                                                        <span class="text-danger">￥{$vo.tb_price}</span>
+                                                        <else/>
+                                                        -
+                                                    </if>
+                                                </small>
+                                            </div>
+
+                                        </td>
+                                        <td>
+                                            <if condition="empty($vo['express_no'])">
+                                                <eq name="vo['delivery_mode']" value="2">
+                                                    <span class="text-warning">等待商家发货</span>
+                                                    <else/>
+                                                    <a data-id="{$vo.id}" href="javascript:void(0);"
+                                                       class="margin-bottom-sm j_delivery fix-am btn btn-sm btn-primary btn-fix-am">
+                                                        填写发货信息
+                                                    </a>
+                                                </eq>
+                                                <else/>
+                                                <div class="text-warning text-sm">{$vo.express_name}</div>
+                                                <div class="text-warning text-sm">{$vo.express_no}</div>
+                                            </if>
+
+                                        </td>
+
+                                        <td width="160" >
+                                            {:getDeliveryMode($vo['delivery_mode'])}
+                                        </td>
+                                        <td >
+                                            {$vo.do_status_name}
+                                        </td>
+                                        <td >
+                                            {$vo.create_time|date='Y-m-d H:i',###}
+                                        </td>
+                                        <td width="160" >
+                                            <a href="javascript:void(0);" data-href="{:U('Home/TaskLog/view',array('task_his_id'=>$vo['id']))}" class="margin-bottom-sm j_view_log btn-fix-am btn btn-sm btn-default btn-fix-am">淘宝日志</a>
+                                        </td>
+
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                            <div class="row-fluid">
+                                <div class="span6 offset3"></div>
+                                <div class="span3">
+                                    <div class="summary">{$show}</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="j_task_log_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" style="z-index:11111111" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">#日志查看# </h4>
+                </div>
+                <div class="modal-body">
+                    <i class="icon-spinner icon-spin j_loading">载入中...</i>
+                    <div class="j_content clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="modal modal-alert" tabindex="-1" id="j_delivery_modal">
+        <div class="modal-dialog"  style="z-index:11111111">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">#发货信息# </h4>
+                </div>
+            <div class="modal-body">
+                <form class="j_delivery_form form form-horizontal" >
+                    <input type="hidden" class="j_delivery_id" name="id"/>
+                    <input type="hidden" class="j_delivery_express_name" name="express_name"/>
+
+                    <div class="form-group">
+                        <label CLASS="text-left">物流公司</label>
+                        <div class="j_content">
+                            <select name="express_code" class="form-control j_express">
+                                <volist name="express_list" id="vo">
+                                    <option value="{$vo.hidden_value}">{$vo.name}</option>
+                                </volist>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label CLASS="text-left">快递单号</label>
+                        <div class="j_content">
+                            <input type="text" placeholder="填写快递单号" class="form-control" name="express_no" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label CLASS="text-left">实际邮费(元)</label>
+                        <div class="j_content">
+                            <input type="text" placeholder="填写邮费" class="form-control" name="express_price" />
+                        </div>
+                    </div>
+
+                    <div>
+
+                        <a href="javascript: void(0)" class=" btn btn-sm btn-default" data-modal-close>取消</a>
+
+                        <a target-form="j_delivery_form" href="{:U('Admin/BBJVIP/delivery_order')}" class="ajax-post btn btn-sm btn-primary">确定</a>
+                    </div>
+
+                </form>
+</div>
+            </div>
+        </div>
+    </div>
+
+
+</block>
+
+<block name="area_footer">
+    <script type="text/javascript">
+        $(function(){
+
+            //发货信息
+            $(".j_delivery").each(function(index,item){
+                $(item).click(function(ev){
+                    var id = $(ev.target).data("id");
+                    $("#j_delivery_modal .j_delivery_id").val(id);
+                    $("#j_delivery_modal").modal();
+                });
+            });
+
+            $("#j_delivery_modal .j_express").change(function(){
+                var name = $("#j_delivery_modal .j_express").find("option:selected").text();
+                console.log(name);
+                $("#j_delivery_modal .j_delivery_express_name").val(name);
+            });
+
+            $("#j_delivery_modal .j_express").change();
+
+            //审核订单
+            $(".j_sh_order").each(function(index,item) {
+                $(item).click(function(ev){
+                    $("#j_sh_modal").find(".j_loading").show();
+                    $('#j_sh_modal').modal({width:720,height:480});
+                    var url = $(ev.target).data("href");
+                    var id = $(ev.target).data("id");
+                    $("#j_sh_modal .j_sh_id_text").text(id);
+                    $.get(url, function(result){
+
+                        $("#j_sh_modal").find(".j_loading").hide();
+                        $("#j_sh_modal").find(".j_content").html(result);
+
+                    }, 'html');
+
+                });
+
+            });
+
+
+            $(".j_reject_btn").each(function(index,item){
+                $(item).click(function(ev){
+                    var id = $(ev.target).data("id");
+
+                    $("#j_reject_modal .j_reject_id_text").text(id);
+                    $("#j_reject_modal .j_reject_id").val(id);
+                    $("#j_reject_modal").modal();
+
+                });
+            })
+            $('.j_view_log').each(function(index,item) {
+                $(item).click(function(ev){
+                    $("#j_task_log_modal").find(".j_loading").show();
+                    $('#j_task_log_modal').modal({width:720,height:480});
+                    var url = $(ev.target).data("href");
+                    $.get(url, function(result){
+//                        console.log(result);
+                        $("#j_task_log_modal").find(".j_loading").hide();
+                        $("#j_task_log_modal").find(".j_content").html(result);
+
+                    }, 'html');
+
+                });
+
+            });
+        });//end $ function
+    </script>
+</block>
+

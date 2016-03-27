@@ -5157,7 +5157,7 @@ h5 {
 }
 h6 {
 	font-size: 0.91429em;
-	line-height: 1.875em
+	line-height: 1.875em;
 }
 abbr[title] {
 	border-bottom: 1px dotted
@@ -5174,7 +5174,7 @@ hr {
 	-moz-box-sizing: content-box;
 	box-sizing: content-box;
 	height: 0;
-	border: 1px solid #666;
+	border: 1px solid #E6DEDE;
 	padding-bottom: -1px;
 	margin: 1.71429em 0
 }

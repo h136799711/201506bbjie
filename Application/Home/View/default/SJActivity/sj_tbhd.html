@@ -7,6 +7,11 @@
         .table-seller tbody.item tr.margin td{
             background: #F3F9FB;
         }
+        .task_status_list li{
+            float:left;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
     </style>
 </block>
 
@@ -22,22 +27,70 @@
 					<div class="jquery-once-1-processed">
 
 						<div style="position: relative">
-							<div class="pull-right btn-group"><a data-toggle="modal2" modal-title="创建淘宝活动" style="background-color: #1D99D5; color: #FFFFFF;" class="am-btn am-round" href="{:U('Home/SJActivity/activity_1')}">创建换宝任务</a>
+							<div class="btn-group am-cf">
+                                <a data-toggle="modal2" modal-title="创建淘宝活动" style="background-color: #1D99D5; color: #FFFFFF;" class="am-btn am-round" href="{:U('Home/SJActivity/activity_1')}">创建换宝任务</a>
 							</div>
-                            <ul class="shifu_nav clearfix" style="position: relative;left: 0;width: 600px;">
-                                <li><a class="am-active am-btn am-btn-default am-btn-sm" href="{:U('Home/SJActivity/sj_tbhd')}">开启中</a></li>
-                                <li><a href="{:U('Home/SJActivity/sj_tbzt')}">已暂停</a></li>
-                                <li><a href="{:U('Home/SJActivity/sj_waiting')}">审核订单</a><font color="red">{$ddsh} </font> </li>
-                                <li><a href="{:U('Home/SJActivity/sj_qrhk')}">确认还款</a><font color="red">{$qrhk}</font> </li>
-                                <li><a href="{:U('Home/SJActivity/sj_pingtai')}">平台发货</a> </li>
-                            </ul>
-
-							<div class="clear"></div>
-							<ul id="ul_rw" class="nav nav-tabs nav-store" role="menu">
-								<li class="active" role="menuitem"><a tabindex="-1" href="{:U('Home/SJActivity/sj_tbhd')}">已开启任务</a>
-								</li>
-
-							</ul>
+                            <hr/>
+                            <div class="filter-controls am-fl">
+                                <form method="post" class="j_task_form" action="{:U('Home/SJActivity/sj_tbhd')}">
+                                    <select name="task_status" class="j_task_status">
+                                        <option <eq name="task_status" value="open">selected</eq> value="open">已开启任务</option>
+                                        <option <eq name="task_status" value="pause">selected</eq>  value="pause">已暂停任务</option>
+                                        <option <eq name="task_status" value="over">selected</eq>  value="over">已结算任务</option>
+                                    </select>
+                                </form>
+                            </div>
+                            <div class=" am-fl">
+                                <ul class="task_status_list" style="position: relative;">
+                                    <li><a class="active" href="{:U('Home/TaskHis/all')}">任务试民</a></li>
+                                    <li><a href="{:U('Home/TaskHis/all',array('status'=>'wait_check'))}">
+                                        审核订单
+                                        <if condition="$count['submit'] gt 0">
+                                            <span class="am-text-danger">{$count['submit']}</span>
+                                        </if>
+                                    </a></li>
+                                    <li>
+                                        <a href="{:U('Home/TaskHis/all',array('status'=>'wait_return_money'))}">
+                                            确认还款
+                                            <if condition="$count['wait_ret_money'] gt 0">
+                                                <span class="am-text-danger">{$count['wait_ret_money']}</span>
+                                            </if>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{:U('Home/TaskHis/all',array('status'=>'delivery_platform'))}">
+                                            平台发货
+                                            <if condition="$count['platform'] gt 0">
+                                                <span class="am-text-danger">{$count['platform']}</span>
+                                            </if>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{:U('Home/TaskHis/all',array('status'=>'user_receive'))}">
+                                            试民收货
+                                            <if condition="$count['wait_receive'] gt 0">
+                                                <span class="am-text-danger">{$count['wait_receive']}</span>
+                                            </if>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{:U('Home/TaskHis/all',array('status'=>'not_start'))}">
+                                            未开始
+                                            <if condition="$count['not_start'] gt 0">
+                                                <span class="am-text-danger">{$count['not_start']}</span>
+                                            </if>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{:U('Home/TaskHis/all',array('status'=>'reject'))}">
+                                            已驳回
+                                            <if condition="$count['wait_ret_money'] gt 0">
+                                                <span class="am-text-danger">{$count['reject']}</span>
+                                            </if>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
 
 						</div>
 						<div>
@@ -65,6 +118,12 @@
 
 									<tbody class="item odd">
 										<tr class="padding-tr"></tr>
+                                        <empty name="task">
+                                            <tr>
+                                                <td  colspan="8" class="am-text-center">没有相关信息</td>
+                                            </tr>
+                                        </empty>
+
 										<volist name='task' id='vo' key='s'>
 											<tr class="list-tr">
 												<td>{$vo.id}</td>
@@ -156,6 +215,10 @@
 <block name="area_footer">
 	<script type="text/javascript">
 		$(function(){
+            $(".j_task_status").change(function(){
+                $(".j_task_form").submit();
+            });
+
 			$("button[name='task_play']").click(function(){
 				
 				alert($(this).index($("button[name='task_play']")));

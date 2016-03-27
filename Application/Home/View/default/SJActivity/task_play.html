@@ -1,7 +1,7 @@
 <extend name="template/base_index" />
 
 <block name="area_header">
-	<link rel="stylesheet" href="__CSS__/shangjia2.css">
+    <link rel="stylesheet" href="__CSS__/common.css">
 	<style type="text/css">
 		#begin_time,#end_time,#count{ height: 30px;}
 		#yw1 li{list-style-type: none;}
@@ -49,12 +49,12 @@
 							</div>
 
 							<div class="option">
-								<a class="btn btn-renwu" modal-title="发放任务" data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 750, height:500}" href="javascriot:void(0)">发放任务</a> </div>
+								<a class="am-btn am-btn-warning am-btn-lg" modal-title="发放任务" data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 750, height:500}" href="javascriot:void(0)">发放任务</a> </div>
 						</div>
 
 						<div class="renwuku jquery-once-1-processed">
 							<div id="yw1" class="grid-view">
-								<table class="items table table-hover">
+								<table class="items am-table am-table-hover">
 									<thead>
 										<tr>
 											<th width="120" class="text-center" id="yw1_c2">模式限定</th>
@@ -65,7 +65,7 @@
 											<th width="80" id="yw1_c6">操作</th>
 										</tr>
 									</thead>
-									<tbod y>
+									<tbody>
 										<volist name='plan_list' id='vo'>
 										<tr class="odd">
                                             <td>
@@ -93,13 +93,11 @@
 											<td>
 												<div class="renwu-caozuo small">
                                                     <if condition="$vo['yuecount'] eq $vo['task_cnt']">
-                                                    <a target="_blank" class="am-text-danger ajax-get" href="{:U('Home/TaskPlan/delete',array('id'=>$vo['id']))}">删除</a>
+                                                    <a target="_blank" class="am-btn am-btn-sm  am-btn-danger ajax-get  btn-fix-am am-margin-bottom-sm" href="{:U('Home/TaskPlan/delete',array('id'=>$vo['id']))}">删除</a>
 
                                                     </if>
-                                                    <br>
-                                                    <a target="_blank" href="{:U('Home/SJActivity/alluser',array('id'=>$vo['task_id']))}">查看试民</a>
-													<br>
-                                                    <a class="j_update_task" data-task-count="{$vo.task_cnt}" data-task-id="{$vo.id}" href="javascript:void(0)">修改任务信息</a>
+                                                    <a target="_blank" CLASS="am-btn am-btn-sm am-btn-primary btn-fix-am am-margin-bottom-sm" href="{:U('Home/SJActivity/alluser',array('id'=>$vo['task_id']))}">查看试民</a>
+                                                    <a class="j_update_task am-btn am-btn-sm am-btn-primary btn-fix-am" data-task-count="{$vo.task_cnt}" data-task-id="{$vo.id}" href="javascript:void(0)">修改任务信息</a>
 
 												</div>&nbsp;
                                             </td>
@@ -151,22 +149,19 @@
                         </div>
 
                         <div class="am-form-group am-g">
+                            <label class="am-u-lg-2 am-u-md-2 am-form-label">生效时间</label>
+                            <div class="am-u-lg-10 am-u-md-10 am-text-left">
+                                <input type="text" class="datepicker am-fl am-form-field" style="width:160px;"  data-am-datepicker  readonly  name="stime" value="{:date('Y-m-d',time())}">
+                                <div class="am-fl">&nbsp;&nbsp;-&nbsp;&nbsp;</div>
+                                <input type="text" class="datepicker am-fl am-form-field"  style="width:160px;"  data-am-datepicker name="etime" readonly value="{:date('Y-m-d',time()+24*3600*7)}" />
+                            </div>
+                        </div>
+                        <div class="am-form-group am-g">
                             <label class="am-u-lg-2 am-u-md-2 am-form-label">进店方式</label>
                             <div class="am-u-lg-10 am-u-md-10 am-text-left">
                                 <select name="sele_type" class="am-form-field">
                                     <option value="0">关键词搜索模式（试民通过关键词搜索进入店铺）</option>
                                 </select>
-
-                            </div>
-                        </div>
-
-                        <div class="am-form-group am-datepicker-date">
-                            <label class="am-u-lg-2 am-u-md-2 am-form-label">生效时间</label>
-                            <div class="am-u-lg-10 am-u-md-10 am-text-left am-cf">
-
-                                <input type="text" class="am-fl" style="width:160px;" data-am-datepicker readonly  name="stime" value="{:date('Y-m-d',time())}">
-                                <div class="am-fl">&nbsp;&nbsp;-&nbsp;&nbsp;</div>
-                               <input type="text" class="am-fl"  style="width:160px;" name="etime" data-am-datepicker readonly value="{:date('Y-m-d',time()+24*3600*7)}" />
 
                             </div>
                         </div>
@@ -177,12 +172,13 @@
                                 您的账户余额：<font color="orangered">{$user.coins}</font>
                             </div>
                         </div>
+
                         <div class="am-form-group am-g">
 
                             <label class="am-u-lg-2 am-u-md-2 am-form-label">&nbsp;</label>
 
                             <div class="am-u-lg-10 am-u-md-10">
-                                <a href="{:U('Home/SJActivity/create_tp')}" target-form="createfm" class="ajax-post am-btn am-btn-sm am-btn-primary">
+                                <a href="{:U('Home/SJActivity/create_tp')}" target-form="createfm" class="ajax-post am-btn am-btn-sm am-btn-primary btn-fix-am">
                                     保存
                                 </a>
                             </div>
@@ -209,20 +205,18 @@
 
                         <input type="hidden" name="task_id" class="j_task_id" />
 
-                        <div class="am-form-group am-cf">
-                            <label class="am-u-lg-3 am-u-md-3 am-form-label">任务份数</label>
-                            <div class="am-u-lg-9 am-u-md-9 am-text-left am-cf">
-                                <input type="text"  name="rwcount" class="j_rwcount" value="" />
-                            </div>
-                        </div>
-
                         <div class="am-form-group am-cf am-datepicker-date">
                             <label class="am-u-lg-3 am-u-md-3 am-form-label">生效时间</label>
                             <div class="am-u-lg-9 am-u-md-9 am-text-left am-cf">
                                 <input type="text" class="am-fl" style="width:160px;" data-am-datepicker readonly  name="stime" value="{:date('Y-m-d',time())}">
                                 <div class="am-fl">&nbsp;&nbsp;-&nbsp;&nbsp;</div>
                                 <input type="text" class="am-fl"  style="width:160px;" name="etime" data-am-datepicker readonly value="{:date('Y-m-d',time()+24*3600*7)}" />
-
+                            </div>
+                        </div>
+                        <div class="am-form-group am-cf">
+                            <label class="am-u-lg-3 am-u-md-3 am-form-label">任务份数</label>
+                            <div class="am-u-lg-9 am-u-md-9 am-text-left am-cf">
+                                <input type="text"  name="rwcount" class="j_rwcount" value="" />
                             </div>
                         </div>
                         <div class="am-form-group  am-cf">
@@ -246,6 +240,8 @@
 
 
 		$(function(){
+
+
 
             $(".j_update_task").click(function(ev){
                 var task_id = $(ev.target).data('task-id');

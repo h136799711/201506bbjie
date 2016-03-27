@@ -22,4 +22,20 @@ class TaskModel extends \Think\Model{
      */
     const DELIVERY_MODE_SELLER = 2;
 
+
+    /**
+     * 启用
+     */
+    const STATUS_TYPE_OPEN = "1";
+
+    /**
+     * 暂停
+     */
+    const STATUS_TYPE_PAUSE = "2";
+
+    /**
+     * 结算
+     */
+    const STATUS_TYPE_OVER = "3";
+
 }

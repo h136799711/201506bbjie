@@ -1,6 +1,6 @@
 * {
 font-family:'微软雅黑',Arial, Helvetica, sans-serif;
-font-size:14px;
+font-size:0.8rem;
 padding:0px;
 margin:0px;
 }
@@ -59,9 +59,351 @@ color:#333333;
     background: #FFFFFF;
 }
 
+.syj-form .order_info{
+    background: #feebe7;
+}
 .syj-form table{
     height: 388px;
     overflow: scroll;
     display: block;
     width: 360px;
+}
+
+.breadcrumbs {
+    border-bottom: 1px solid #d9d9d9;
+    height: 50px;
+    line-height: 50px;
+    color: #888;
+}
+
+
+.seller_header_wrap {
+    position: fixed;
+    z-index: 3;
+    top: 0;
+    width: 100%;
+}
+.seller_header {
+    height: 88px;
+    min-width: 600px
+}
+.seller_header .logo {
+    width: 199px;
+    height: 86px;
+    float: left
+}
+
+
+.seller_header .gzt {
+    margin-bottom: 2px
+}
+.seller_header .gzt .btn {
+    padding-top: 5px;
+    border-bottom: none;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-color: #fff
+}
+
+
+.seller_header .gzt .dropdown-menu {
+    border-color: #fff;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    padding: 15px 10px
+}
+.seller_header .gzt .taofu,
+.seller_header .gzt .shifu {
+    text-align: center;
+    width: 120px
+}
+
+.seller_main {
+    width: 100%;
+    position: relative;
+    margin-top: 88px;
+}
+/*修复 日期位置的问题*/
+.am-datepicker{
+    margin-top: -88px;
+}
+#foot {
+    background-position: 0 -2px
+}
+
+
+
+
+.siderbar {
+    position: fixed;
+    background: #eef9fc;
+    padding: 10px 0;
+    width: 199px;
+    z-index: 2;
+    border-right: 1px solid #deeefa;
+    height: 100%
+}
+.siderbar dl {
+    margin-top: 5px
+}
+.siderbar dt,
+.siderbar dd {
+    line-height: 25px;
+    padding-top: 2px;
+    padding-bottom: 1px;
+    font-weight: 400;
+    font-size: 14px
+}
+.siderbar dt a,
+.siderbar dd a {
+    display: block;
+    padding-left: 60px;
+    color: #222
+}
+.siderbar dt a:hover,
+.siderbar dd a:hover {
+    background-color: #008fd6;
+    color: #fff
+}
+
+
+.siderbar dt a.active,
+.siderbar dd a.active {
+    background-color: #08c;
+    color: #fff
+}
+.siderbar dd {
+    line-height: 22px
+}
+.siderbar dd a {
+    font-size: 12px
+}
+.siderbar dt span {
+    display: block;
+    padding-left: 60px;
+    color: #08c
+}
+.siderbar dd a {
+    padding-left: 65px
+}
+
+
+
+
+
+
+.seller_content_wrap {
+    float: right;
+    margin-left: -220px;
+    width: 100%
+}
+.seller_content {
+    background: #F3F9FB;
+    margin: 0 15px 0px 199px;
+    min-height: 600px;
+    padding-top: 20px;
+    padding-left: 20px
+}
+.seller_content .content {
+    padding: 10px;
+    max-width: 1200px
+}
+.seller_content h1 {
+    border-bottom: 1px dashed #ccc;
+    margin-bottom: 10px;
+    color: #226dbc;
+    font-size: 16px;
+    line-height: 40px;
+    padding-bottom: 5px;
+    font-weight: 400
+}
+.seller_content h1 .h1_nav {
+    margin-left: 20px;
+    color: #818181
+}
+.seller_content h1 .h1_nav a {
+    color: #888
+}
+.seller_content h1 .h1_nav a.active {
+    color: #555
+}
+
+.topmenu {
+    position: absolute;
+    right: 0;
+    margin-right: 35px;
+    height: 30px;
+    line-height: 15px;
+    margin-top:35px;
+}
+.topmenu ul {
+    margin-left: 20px;
+    list-style: none;
+}
+.topmenu li {
+    color: #fff;
+    float: left;
+    padding-left: 13px;
+    padding-right: 10px;
+    border-right: 1px solid #fff
+}
+.topmenu li:last-child {
+    border-right: none
+}
+.topmenu li a {
+    color: #fff
+}
+.topmenu .text-link {
+    color: #fffc00
+}
+
+
+.renwu-head {
+    background: #68c9e9;
+    height: 125px;
+    border: 1px solid #def3fd;
+    padding: 20px;
+    margin-bottom: 20px
+}
+.renwu-head ul.product-image {
+    float: left
+}
+.renwu-head ul.product-image li {
+    float: left;
+    margin-right: 10px
+}
+.renwu-head div.task-tongji {
+    margin-left: 16px;
+    float: left
+}
+.renwu-head div.task-tongji .tongji {
+    color: #010101;
+    font-family: "宋体";
+    font-size: 12px;
+    height: 30px
+}
+.renwu-head div.task-tongji .tongji span {
+    margin-right: 20px;
+    float: left
+}
+.renwu-head div.task-tongji .form {
+    width: 298px;
+    border: 1px solid #c9c9c9;
+    height: 33px;
+    margin-top: 10px
+}
+.renwu-head div.task-tongji .form .span3 {
+    width: 218px;
+    margin-left: 0
+}
+.renwu-head div.task-tongji .form .span2 {
+    width: 80px;
+    margin-left: 0
+}
+.renwu-head div.task-tongji .form input,
+.renwu-head div.task-tongji .form button {
+    border-radius: 0;
+    border: none;
+    height: 25px
+}
+.renwu-head div.task-tongji .form button {
+    width: 80px;
+    height: 33px;
+    background: #d9d9d9
+}
+.renwu-head div.option {
+    float: right;
+    height: 43px;
+    margin-right: 10px;
+    margin-top: 15px;
+    width: 123px
+}
+.renwu-head div.option .btn-renwu {
+    background: none repeat scroll 0 0 #ffa800;
+    border: medium none;
+    box-shadow: none;
+    color: #fff;
+    font-size: 18px;
+    height: 43px;
+    line-height: 43px;
+    padding: 0;
+    text-align: center;
+    text-shadow: none;
+    width: 123px
+}
+.renwuku .table thead tr th {
+    background: #def3fd;
+    color: #222
+}
+.renwuku .edit1 {
+    background-position: -82px 0;
+    width: 12px;
+    height: 22px
+}
+
+.pagination {
+    margin: 30px 0 30px;
+    padding: 0;
+
+    list-style: none;
+    line-height: 25px;
+    word-spacing: -1px;
+}
+.pagination li{
+    float: left;
+}
+/* 分页相关样式 */
+.pagination div, .pagination a {
+    display: inline-block;
+
+    height: 25px;
+    margin-right: 3px;
+    padding: 0 9px;
+
+    background: #fafafa;
+
+    border-radius: 2px;
+    border: 1px solid #e2e2e2;
+
+    text-shadow: 0 1px 0 white;
+    font-family: 'OpenSansSemiboldRegular';
+
+    text-align: center;
+    font-size: 12px;
+    color: #424346;
+
+    -webkit-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+
+.pagination a:hover {
+    background: #04BFEA;
+    border: 1px solid #2899B3;
+
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+
+    text-shadow: 0 -1px 0 #17d4ff;
+    color: #fff;
+}
+
+.pagination a.active {
+    background: #f5f5f5;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.07);
+    border-color: #d9d9d9;
+
+}
+.pagination li.active a{
+    color: #fff;
+    background-color: #0e90d2;
+    border-color: #0e90d2;
+    cursor: default;
+}
+
+.pagination a.active:hover {
+    text-shadow: 0 1px 0 white;
+    color: #424346;
+}
+
+.pagination a.active, .pagination div {
+    cursor: default;
 }

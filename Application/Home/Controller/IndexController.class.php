@@ -367,6 +367,9 @@ class IndexController extends HomeController {
                 session("user",$userinfo);
 
                 if($userinfo['user_type'] == UserTypeConstVar::BBJ_MEMBER_GROUP){
+                    action_log('bbj_user_login','bbjmember',$uid,$uid,$uid);
+                    //增加10 经验
+//                    $result = apiCall(BbjmemberApi::SET_INC,array(array('uid'=>$userinfo['uid']),'exp',10));
                     $this->success('登录成功!',U('Home/Index/sm_manager'));
                 }elseif($userinfo['user_type'] == UserTypeConstVar::BBJ_SHOP_GROUP){
                     $this->success('登录成功!',U('Home/Usersj/index'));
@@ -447,7 +450,7 @@ class IndexController extends HomeController {
         $this->getNoticeForSm();
         $this->not_read_msg_cnt();
         $map = array('uid'=>$this->uid);
-        $map['do_status'] = array('not in',array(TaskHisModel::DO_STATUS_CANCEL,TaskHisModel::DO_STATUS_DONE));
+        $map['do_status'] = array('not in',array(TaskHisModel::DO_STATUS_RETURNED_MONEY, TaskHisModel::DO_STATUS_CANCEL,TaskHisModel::DO_STATUS_DONE));
         $result = apiCall(TaskHisApi::COUNT,array($map));
         if($result['status']){
             $this->assign('doing_task',$result['info']);

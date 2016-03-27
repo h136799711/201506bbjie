@@ -22,6 +22,7 @@ use Home\Api\ProductExchangeApi;
 use Home\Api\TaskHisApi;
 use Home\Api\VMsgInfoApi;
 use Home\Api\VProductExchangeInfoApi;
+use Home\Logic\TaskHelperLogic;
 use Home\Model\FinAccountBalanceHisModel;
 use Home\Model\ProductExchangeModel;
 use Home\Model\TaskHisModel;
@@ -180,6 +181,7 @@ class UsersmController extends HomeController {
 		$this->assign('auser',$users['info']);
 		$this -> display();
 	}
+
 	/*
 	 * 收藏活动
 	 * */
@@ -448,6 +450,7 @@ class UsersmController extends HomeController {
 		}
 
 	}
+
 	/*
 	 * 试民收货地址删除
 	 * @author 老胖子-何必都 <hebiduhebi@126.com>
@@ -466,7 +469,8 @@ class UsersmController extends HomeController {
 
 
     /**
-     * 查看日志
+     * 查看虚拟币日志
+     * @author 老胖子-何必都 <hebiduhebi@126.com>
      */
     public function view_fucoin(){
 
@@ -489,15 +493,9 @@ class UsersmController extends HomeController {
      * @author 老胖子-何必都 <hebiduhebi@126.com>
      */
     private function get_doing_task_cnt(){
-
-        $map = array('uid'=>$this->uid);
-        $map['do_status'] = array('not in',array(TaskHisModel::DO_STATUS_CANCEL,TaskHisModel::DO_STATUS_DONE));
-        $result = apiCall(TaskHisApi::COUNT,array($map));
-        if($result['status']){
-            $this->assign('doing_task',$result['info']);
-        }else{
-            $this->assign('doing_task',0);
-        }
+        $logic = (new TaskHelperLogic());
+        $cnt = $logic->get_doing_task_cnt($this->uid);
+        $this->assign('doing_task',$cnt);
     }
 
 
@@ -506,16 +504,9 @@ class UsersmController extends HomeController {
      * @author 老胖子-何必都 <hebiduhebi@126.com>
      */
     private function not_read_msg_cnt(){
-
-        $result = apiCall(VMsgInfoApi::COUNT,array(array('to_id'=>$this->uid,'msg_status'=>MsgboxModel::NOT_READ)));
-        $not_read_msg_cnt =  $result['info'];
-        if(empty($not_read_msg_cnt)){
-            $not_read_msg_cnt = 0;
-        }
-
-        $this->assign('not_read_msg_cnt',$not_read_msg_cnt);
-
-
+        $logic = (new TaskHelperLogic());
+        $cnt = $logic->not_read_msg_cnt($this->uid);
+        $this->assign("not_read_msg_cnt",$cnt);
     }
 
     /**
@@ -523,9 +514,9 @@ class UsersmController extends HomeController {
      * @author 老胖子-何必都 <hebiduhebi@126.com>
      */
     private function getLastestNotice(){
+
         $map = array();
         $order = " post_modified desc ";
-
         $result = apiCall(VPostInfoApi::GET_INFO,array($map, $order));
         $this->assign('zxgg',$result['info']);
     }

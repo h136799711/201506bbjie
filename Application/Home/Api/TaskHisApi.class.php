@@ -11,6 +11,10 @@ use \Home\Model\TaskHisModel;
 
 class TaskHisApi extends Api{
 
+    /**
+     * 需要确认还款
+     */
+    const GET_NEED_RETURN_MONEY = "Home/TaskHis/getNeedReturnMoney";
 
     /**
      * 统计
@@ -69,6 +73,24 @@ class TaskHisApi extends Api{
         return $this->apiReturnSuc($result);
 
     }
+
+    /**
+     * 获取需要系统自动确认还款的任务
+     * @param $interval
+     * @param $limit
+     * @return array
+     */
+    private function getNeedReturnMoney($interval,$limit){
+        $map = array();
+        $map['do_status'] = TaskHisModel::DO_STATUS_RECEIVED_GOODS;
+        $map['get_task_time'] = array('lt',time()-$interval);
+        $result = $this -> model -> where($map)->limit(0,$limit)->select();
+        if($result === false){
+            return $this->apiReturnErr($this->model->getDbError());
+        }
+        return $this->apiReturnSuc($result);
+    }
+
 
 }
 

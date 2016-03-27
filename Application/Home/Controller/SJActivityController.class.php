@@ -19,10 +19,12 @@ use Home\Api\TaskProductApi;
 use Home\Api\VTaskHisInfoApi;
 use Home\Api\VTaskProductInfoApi;
 use Home\Api\VTaskProductSearchWayApi;
+use Home\Logic\TaskHelperLogic;
 use Home\Model\BbjmemberSellerModel;
 use Home\Model\FinAccountBalanceHisModel;
 use Home\Model\TaskHisModel;
 use Home\Model\TaskLogModel;
+use Home\Model\TaskModel;
 use Think\Controller;
 use Home\Api\HomePublicApi;
 use Admin\Api\AdminPublicApi;
@@ -46,17 +48,38 @@ class SJActivityController extends SjController {
 	public function sj_tbhd() {
 
         $this -> assign('head_title', "宝贝街-活动");
+        $task_status = I('post.task_status','open');
+        $this->assign("task_status",$task_status);
+        switch($task_status){
+            case "open":
+                $task_status = TaskModel::STATUS_TYPE_OPEN;
+                break;
+            case "pause":
+                $task_status = TaskModel::STATUS_TYPE_PAUSE;
+                break;
+            case "over":
+                $task_status = TaskModel::STATUS_TYPE_OVER;
+                break;
+            default:
+                $task_status = TaskModel::STATUS_TYPE_OPEN;
+                break;
+        }
+
 		$user = $this->userinfo;
         $uid = $user['uid'];
 
 		$page = array('curpage' => I('get.p', 0), 'size' => 5);
-		$map  = array('uid' => $uid, 'task_status' => array('in',array(1,4)));
+		$map  = array(
+            'uid' => $uid,
+            'task_status' => $task_status
+        );
 		$order = "create_time desc";
 
         $result = apiCall(TaskApi::QUERY,array($map,$page,$order));
 
         $task = $result['info']['list'];
         $show = $result['info']['show'];
+
         $api = new VTaskProductInfoApi();
         $task_his_api = new TaskHisApi();
         foreach($task as &$vo){
@@ -78,7 +101,7 @@ class SJActivityController extends SjController {
                 $vo['_all_task'] += $result['info'];
             }
 
-            $result = $task_his_api->count(array('do_status'=>TaskHisModel::DO_STATUS_DONE,'task_id'=>$vo['id']));
+            $result = $task_his_api->count(array('do_status'=>TaskHisModel::DO_STATUS_RETURNED_MONEY,'task_id'=>$vo['id']));
             if($result['status']){
                 $vo['_done_task'] = $result['info'];
             }
@@ -87,9 +110,12 @@ class SJActivityController extends SjController {
 
         }
 
-
 		$this->assign('task',$task);
 		$this->assign('show',$show);
+
+        $helper = new TaskHelperLogic();
+        $result = $helper->countStatusCnt($this->uid);
+        $this->assign('count',$result);
 
 		$this -> display();
 	}
@@ -155,7 +181,8 @@ class SJActivityController extends SjController {
         $result = apiCall(TaskApi::GET_INFO,array(array('id'=>$task_id)));
 
         if($result['status']){
-            $this->assign("task",$result['info']);
+            $task = $result['info'];
+            $this->assign("task",$task);
         }
 
         $map = array('task_id' => $task_id);
@@ -165,12 +192,15 @@ class SJActivityController extends SjController {
         $products = $result['info'];
 
         $this -> assign('products', $products);
-        $map = array('do_status'=>array('not in',array(TaskHisModel::DO_STATUS_DONE,TaskHisModel::DO_STATUS_CANCEL)));
+        $map = array(
+//            'seller_uid'=>$task['uid'],
+            'task_id'=>$task_id,
+            'do_status'=>array('not in',array(TaskHisModel::DO_STATUS_DONE,TaskHisModel::DO_STATUS_CANCEL))
+        );
         if(!empty($code)){
             $map['_string'] = '(id = '.$code.' or tb_orderid = '.$code.' or tb_account = '.$code.' )';
             $this->assign("code",$code);
         }
-
         $result  = apiCall(VTaskHisInfoApi::QUERY,array($map));
 
         $this -> assign('list', $result['info']['list']);
@@ -347,6 +377,43 @@ class SJActivityController extends SjController {
 	}
 
     /**
+     * 发货信息
+     * @author 老胖子-何必都 <hebiduhebi@126.com>
+     */
+    public function delivery_order(){
+        $id = $this->_param('id','');
+        $express_name = $this->_param('express_name','');
+        $express_code = $this->_param('express_code','');
+        $express_no = $this->_param('express_no','');
+
+        $result = apiCall(TaskHisApi::GET_INFO,array(array('id'=>$id)));
+        if($result['status'] && is_array($result['info'])){
+            $his = $result['info'];
+        }
+
+
+        $entity = array(
+            'express_name'=>$express_name,
+            'express_code'=>$express_code,
+            'express_no'=>$express_no,
+            'do_status'=>TaskHisModel::DO_STATUS_DELIVERY_GOODS,
+        );
+
+        $result = apiCall(TaskHisApi::SAVE_BY_ID,array($id,$entity));
+
+        if($result['status']){
+
+            $notes = "商家已发出快递，".$express_name." , ".$express_no;
+            task_log($id,$his['tpid'],$his['uid'],$his['task_id'],TaskLogModel::TYPE_SELLER_DELIVERY,$notes);
+            $this->success("操作成功!");
+        }else{
+            $this->error("操作失败!");
+        }
+
+
+    }
+
+    /**
      * 驳回了该订单
      * @author 老胖子-何必都 <hebiduhebi@126.com>
      */
@@ -432,7 +499,7 @@ class SJActivityController extends SjController {
             $this->error("还款失败(CODE＝－1)");
         }
         $result = array('status'=>true);
-//        $result=apiCall(TaskHisApi::SAVE_BY_ID,array($id,$entity));
+        $result=apiCall(TaskHisApi::SAVE_BY_ID,array($id,$entity));
 
         if($result['status']){
 
@@ -466,7 +533,6 @@ class SJActivityController extends SjController {
 
         ifFailedLogRecord($result,__FILE__.__LINE__);
 
-
         $result = apiCall(TaskApi::GET_INFO,array(array('id'=>$his['task_id'])));
         ifFailedLogRecord($result,__FILE__.__LINE__);
 
@@ -479,6 +545,7 @@ class SJActivityController extends SjController {
             LogRecord("完成任务归还时，获取任务信息失败!",__FILE__.__LINE__);
             return;
         }
+
         $uid = $his['uid'];
         $notes = "商家确认还款，退还资金!";
         //1. 增加用户余额
@@ -500,6 +567,19 @@ class SJActivityController extends SjController {
         $result = apiCall(BbjmemberSellerApi::MINUS_FROZEN_MONEY,array($task['uid'],$tb_price,$notes));
         LogRecord(json_encode($result),__FILE__.__LINE__);
 
+
+        //4. 增加用户经验值
+        $exp = $task['task_gold']*0.1;
+//        +100经验，最低+20经验。
+        if($exp < 20){
+            $exp = 20;
+        }
+        if($exp > 100){
+            $exp = 100;
+        }
+        $result = apiCall(BbjmemberApi::SET_INC,array(array('uid'=>$uid),'exp',$exp ));
+
+        LogRecord(json_encode($result),__FILE__.__LINE__);
 
     }
 
@@ -874,6 +954,8 @@ class SJActivityController extends SjController {
             $map['status'] = 1;
         }else if($type == 'stop'){
             $map['status'] = 0;
+        }else if($type == 'all'){
+            $map['status'] = array('neq','0');
         }
 
 		$page = array('curpage' => I('get.p', 0), 'size' => 10);

@@ -41,5 +41,13 @@ class TaskLogModel extends \Think\Model{
      * 商家驳回订单
      */
     const TYPE_REJECT_ORDER = "115";
+    /**
+     * 商家发货
+     */
+    const TYPE_SELLER_DELIVERY = "125";
+    /**
+     * 平台发货
+     */
+    const TYPE_PLATFORM_DELIVERY = "126";
 
 }

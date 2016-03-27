@@ -115,7 +115,7 @@
                                         <else/>
                                         <eq name="vo['do_status']" value="$status_received_goods">
                                             待确认还款
-                                            <span >倒计时 24小时</span>
+                                            <span class="js_countdownwn am-text-danger"  data-until="{$vo['update_time'] + 24*3600}"></span>
                                          <else/>
                                             {$vo.do_status_name}
                                         </eq>
@@ -124,12 +124,19 @@
 
                                 <eq name="vo['do_status']" value="$status_reject_order">
                                     <BR/>
-                                   <span class="am-text-danger">原因: {$vo.notes}</span>
+                                   <span class="am-text-danger">原因:
+                                                    <empty name="vo['notes']">
+                                                        -
+                                                        <else/>
+                                                        {$vo.notes}
+                                                    </empty>
+
+                                   </span>
                                 </eq>
 
                             </td>
                             <td>
-                                <eq name="vo['do_status']" value="$status_pass_order">
+                                <eq name="vo['do_status']" value="$status_delivery_order">
                                     <a href="{:U('Home/SMActivity/receive_goods',array('id'=>$vo['id']))}" data-confirm-text="请在淘宝签收之后，再进行此操作！否则将记录违规操作" class="confirm ajax-get am-btn am-btn-danger am-btn-sm btn-fix-am"> 确认收货</a>
                                 </eq>
                                 <if condition="$vo['do_status'] eq $status_not_start">

@@ -87,6 +87,8 @@ class IndexController extends ShopController{
         $this->assign('head_title',"宝贝街-首页");
         $this->assign('indexTitle',0);
 
+
+
         $this->display();
 
 	}

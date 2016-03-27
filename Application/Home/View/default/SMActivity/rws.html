@@ -334,6 +334,18 @@
 																</div>
 															</div>
 
+                                                            <div class="control-group">
+                                                                <label class="control-label" for="order_num">淘宝下单地址：</label>
+                                                                <div class="controls">
+                                                                    <select name="tb_address" style="width: 305px;">
+                                                                        <volist name="address_list" id="vo">
+                                                                            <option value="{$vo.contact_name},{$vo.mobile},{$vo.province},{$vo.city},{$vo.area},{$vo.detail},{$vo.post_code}">{$vo.province}{$vo.city}{$vo.area}{$vo.detail}</option>
+                                                                        </volist>
+                                                                    </select>
+                                                                    <span class="help-inline"><span class="muted">如果没有，请 <a  class="am-text-primary" href="{:U('Home/Usersm/address')}" target="_blank">新增收货地址>></a></span></span>
+                                                                </div>
+                                                            </div>
+
 															<div class="control-group">
 																<label class="control-label" for="zhifu_price">订单支付金额：</label>
 																<div class="controls">
@@ -346,7 +358,7 @@
                                                                 <label class="control-label" >信用卡或花呗：</label>
                                                                 <div class="controls">
                                                                     <label class="am-radio-inline">
-                                                                        <input type="radio" name="pay_type" value="101" >其它
+                                                                        <input type="radio" checked name="pay_type" value="101" >其它
                                                                     </label>
                                                                     <label class="am-radio-inline">
                                                                         <input type="radio" name="pay_type"  value="102"> 信用卡
@@ -431,6 +443,11 @@
 
      function getMayreturnPrice(){
          var str_price = $("#zhifu_price").val();
+         if(str_price.length == 0){
+             $(".j_mayreturn_price").addClass("am-hide");
+             $(".j_mayreturn_price input").val(0);
+             return ;
+         }
          var price = parseFloat(str_price);
 
          if(isNaN(price)){

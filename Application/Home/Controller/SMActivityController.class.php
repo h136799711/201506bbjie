@@ -11,6 +11,7 @@ use Cms\Api\VPostInfoApi;
 use Home\Api\AddressApi;
 use Home\Api\BbjmemberApi;
 use Home\Api\ProductExchangeApi;
+use Home\Api\TaskApi;
 use Home\Api\TaskHasProductApi;
 use Home\Api\TaskHisApi;
 use Home\Api\TaskLogApi;
@@ -190,7 +191,7 @@ class SMActivityController extends HomeController {
         $map    = array('uid'=>$this->uid);
         switch($do_status){
             case "doing":
-                $map['do_status'] = array('not in',array(TaskHisModel::DO_STATUS_CANCEL,TaskHisModel::DO_STATUS_DONE));
+                $map['do_status'] = array('not in',array(TaskHisModel::DO_STATUS_CANCEL,TaskHisModel::DO_STATUS_RETURNED_MONEY));
                 break;
             case 'cancel':
                 $map['do_status'] = TaskHisModel::DO_STATUS_CANCEL;
@@ -202,7 +203,7 @@ class SMActivityController extends HomeController {
                 $map['do_status'] = TaskHisModel::DO_STATUS_SUBMIT_ORDER;
                 break;
             case 'pass':
-                $map['do_status'] = TaskHisModel::DO_STATUS_SUBMIT_ORDER;
+                $map['do_status'] = TaskHisModel::DO_STATUS_PASS;
                 break;
             case 'wait_return':
                 $map['do_status'] = TaskHisModel::DO_STATUS_WAIT_RETURN;
@@ -214,7 +215,7 @@ class SMActivityController extends HomeController {
         }
 
         $page   = array('curpage' => I('get.p', 0), 'size' => 5);
-        $result = apiCall(VTaskHisInfoApi::QUERY,array($map,$page));
+        $result = apiCall(VTaskHisInfoApi::QUERY,array($map,$page,'get_task_time desc'));
 
         $his_list = $result['info']['list'];
         for ($i = 0; $i < count($his_list); $i++) {
@@ -232,6 +233,7 @@ class SMActivityController extends HomeController {
             $his_list[$i]['_products']= $result['info'];
         }
 
+        $this->assign('status_delivery_order',TaskHisModel::DO_STATUS_DELIVERY_GOODS);
         $this->assign('status_received_goods',TaskHisModel::DO_STATUS_RECEIVED_GOODS);
         $this->assign('status_wait_return',TaskHisModel::DO_STATUS_WAIT_RETURN);
         $this->assign('status_pass_order',TaskHisModel::DO_STATUS_PASS);
@@ -288,7 +290,7 @@ class SMActivityController extends HomeController {
         $this->reloadUserInfo();
 
         $map = array('uid'=>$this->uid);
-        $map['do_status'] = array('notin',array( TaskHisModel::DO_STATUS_REJECT , TaskHisModel::DO_STATUS_DONE,TaskHisModel::DO_STATUS_CANCEL ));
+        $map['do_status'] = array('notin',array(TaskHisModel::DO_STATUS_RETURNED_MONEY , TaskHisModel::DO_STATUS_DONE,TaskHisModel::DO_STATUS_CANCEL ));
 
 		$result = apiCall(TaskHisApi::GET_INFO,array($map));
 
@@ -319,6 +321,12 @@ class SMActivityController extends HomeController {
             $this->error('暂无可接任务，请稍候再试',U('Home/Index/sm_manager'));
         }else{
             $task_plan = $result['info'];
+            $result = apiCall(TaskApi::GET_INFO,array(array('id'=>$task_plan['task_id'])));
+            if(!$result['status'] || is_null(($result['info']))){
+                $this->error("发生错误，请联系管理员!");
+            }
+
+            $task_brokerage  = $result['info']['task_brokerage'];
 
             //新增到接收任务表
             $entity = array(
@@ -329,11 +337,13 @@ class SMActivityController extends HomeController {
                 'get_task_time'=>$now_time,
                 'do_status'=>TaskHisModel::DO_STATUS_NOT_START,
                 'task_id'=>$task_plan['task_id'],
+                'task_brokerage'=>$task_brokerage,
                 'notes'=>'',
                 'tb_orderid'=>'',
                 'tb_address'=>'',
                 'tb_price'=>0,
                 'tb_pay_type'=>TaskHisModel::PAY_TYPE_LEGAL,
+
                 'tb_account'=>$this->userinfo['taobao_account'],
             );
 
@@ -405,6 +415,7 @@ class SMActivityController extends HomeController {
         }
         //对不同的任务状态 显示不同的页面
         if($do_status == TaskHisModel::DO_STATUS_NOT_START){
+            $this->getAddressList();
             $this->getGoodsForDelivery($task);
             $this->display('rws');
         }elseif($do_status == TaskHisModel::DO_STATUS_SUBMIT_ORDER){
@@ -414,6 +425,7 @@ class SMActivityController extends HomeController {
             $this->getLogList($id);
             $this->display('rws_cancel');
         }elseif($do_status == TaskHisModel::DO_STATUS_REJECT){
+            $this->getAddressList();
             $this->getGoodsForDelivery($task);
             $this->display('rws_reject');
         }
@@ -422,6 +434,12 @@ class SMActivityController extends HomeController {
 
 	}
 
+    private function getAddressList(){
+        $result = apiCall(AddressApi::QUERY,array(array('uid'=>$this->uid),array('curpage'=>1,'size'=>10)));
+        if($result['status']){
+            $this->assign("address_list",$result['info']['list']);
+        }
+    }
 
     /**
      * 提交订单信息
@@ -432,6 +450,7 @@ class SMActivityController extends HomeController {
         $zhifu_price = I('post.zhifu_price',0,'floatval');
         $notes = I('post.notes','');
         $pay_type = I('post.pay_type','');
+        $tb_address = $this->_param('tb_address','');
 
         if($zhifu_price <= 0){
             $this->error("支付金额是不是填错了？");
@@ -444,10 +463,10 @@ class SMActivityController extends HomeController {
 
         $entity = array(
             'tb_orderid'=>$order_num,
-            'tb_address'=>'',
             'to_seller_notes'=>$notes,
             'tb_price'=>$zhifu_price,
             'tb_pay_type'=>$pay_type,
+            'tb_address'=>$tb_address,
             'do_status'=>TaskHisModel::DO_STATUS_SUBMIT_ORDER,
         );
 
@@ -489,7 +508,7 @@ class SMActivityController extends HomeController {
 
         if($result['status']){
 
-            $notes = "用户(".$this->userinfo['username'].") 提交了订单";
+            $notes = "用户(".$this->userinfo['username'].") 已经确认收货";
             task_log($id,$his['tpid'],$this->uid,$his['task_id'],TaskLogModel::TYPE_SUBMIT_TB_ORDER,$notes);
 
             $this->success("操作成功!");
@@ -546,7 +565,7 @@ class SMActivityController extends HomeController {
     private function get_doing_task_cnt(){
 
         $map = array('uid'=>$this->uid);
-        $map['do_status'] = array('not in',array(TaskHisModel::DO_STATUS_CANCEL,TaskHisModel::DO_STATUS_DONE));
+        $map['do_status'] = array('not in',array(TaskHisModel::DO_STATUS_CANCEL,TaskHisModel::DO_STATUS_DONE,TaskHisModel::DO_STATUS_RETURNED_MONEY));
         $result = apiCall(TaskHisApi::COUNT,array($map));
         if($result['status']){
             $this->assign('doing_task',$result['info']);

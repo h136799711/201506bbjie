@@ -91,21 +91,21 @@
 
 								<td colspan="2">
 									<div style="padding: 25px;">
-                                        <a target-form="sm_form" href="{:U('Home/Usersm/address')}" class="ajax-post am-btn am-btn-sm am-btn-primary">保存</a>
+                                        <a target-form="sm_form" href="{:U('Home/Usersm/address')}" class="ajax-post am-btn am-btn-sm am-btn-primary btn-fix-am">保存</a>
                                     </div>
 								</td>
 							</tr>
 						</table>
 					</form>
 				</div>
-				<table style="width: 1020px; margin-top: 9px; color: #848383;">
-					<tr style="border: 1px solid #ccc; background: white; height: 37px;">
-						<td style="padding-left: 20px;">收货人</td>
-						<td>所在地</td>
-						<td>详细地址</td>
-						<td>邮编</td>
-						<td>电话/手机</td>
-						<td>操作</td>
+				<table class="am-table am-table-bordered" style="width: 1020px; margin-top: 9px; color: #848383;" >
+					<tr >
+						<th>收货人</th>
+						<th>所在地</th>
+						<th>详细地址</th>
+						<th>邮编</th>
+						<th>电话/手机</th>
+						<th>操作</th>
 					</tr>
 					<volist name="list" id="vo">
 						<tr style="border: 1px solid #ccc; height: 37px; font-size: 12px;">
@@ -115,8 +115,8 @@
 							<td>{$vo.post_code}</td>
 							<td>{$vo.mobile}{$vo.telephone}</td>
 							<td>
-								<a class="am-btn am-btn-danger am-btn-xs" href="{:U('Home/Usersm/edit',array('id'=>$vo['id']))}">编辑</a>
-								<a class="am-btn am-btn-danger am-btn-xs ajax-get confirm" href="{:U('Home/Usersm/del',array('id'=>$vo['id']))}">删除</a>
+								<a class="am-btn am-btn-warning am-btn-xs btn-fix-am" href="{:U('Home/Usersm/edit',array('id'=>$vo['id']))}">编辑</a>
+								<a class="am-btn am-btn-danger am-btn-xs ajax-get confirm btn-fix-am" href="{:U('Home/Usersm/del',array('id'=>$vo['id']))}">删除</a>
 							</td>
 						</tr>
 					</volist>

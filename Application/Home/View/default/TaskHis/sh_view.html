@@ -1,6 +1,6 @@
 <div class="content" style="">
     <div class="syj-form form-horizontal" style="padding-top:10px;">
-        <div class="am-g clearfix">
+        <div class="am-g">
             <div class="am-u-sm-5">
                 <div class="am-form-group am-cf am-margin-bottom-xs">
                     <div class="am-text-left  am-fl am-margin-right-sm">活动商家 </div>
@@ -47,7 +47,7 @@
             </div>
 
             <div class="am-u-sm-7">
-                <table class="am-table am-table-striped table table-striped">
+                <table class="am-table am-table-striped" style="height: 200PX;">
                     <thead>
                     <tr>
                         <th width="140">操作时间</th>
@@ -68,6 +68,31 @@
                     </tbody>
                 </table>
             </div>
-        </div></div>
+            <form class="j_sh_order_form">
+                <div class="am-u-g">
+                <div class="order_info am-u-sm-5 am-text-left am-padding-sm">
+                    <div>淘宝订单号: {$task_his['tb_orderid']}</div>
+                    <div>收货信息: {$task_his['tb_address']}</div>
+                    <notempty name="task_his['tb_notes']">
+                    <div>备注:{$task_his['tb_notes']}
+                    </div>
+                    </notempty>
+                </div>
+                <div class=" am-u-sm-7 ">
+                    <label>驳回原因:</label>
+                    <div>
+                        <textarea PLACEHOLDER="可选填" class="am-form-field" name="reason" rows="4"></textarea>
+                    </div>
+                </div>
+                </div>
+            </form>
+
+            <div class="btns am-u-sm-12  am-padding-sm">
+                <a target-form="j_sh_order_form"  href="{:U('Home/SJActivity/confirm_order',array('id'=>$task_his['id']))}" class="ajax-post am-btn am-btn-primary btn-fix-am">审核通过</a>
+                <a  target-form="j_sh_order_form" href="{:U('Home/SJActivity/reject_order',array('id'=>$task_his['id']))}" class="ajax-post am-btn am-btn-danger
+                 btn-fix-am">驳回</a>
+            </div>
+        </div>
+    </div>
 </div>
 {__NORUNTIME__}

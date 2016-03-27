@@ -6,19 +6,24 @@
 // | Copyright (c) 2013-2016, http://www.itboye.com. All Rights Reserved.
 // |-----------------------------------------------------------------------------------
 namespace Admin\Controller;
+use Admin\Api\DatatreeApi;
 use Common\Api\AccountApi;
 use Home\Api\BbjmemberApi;
 use Home\Api\BbjmemberSellerApi;
 use Home\Api\FinAccountBalanceHisApi;
 use Home\Api\HomePublicApi;
 use Home\Api\ProductSearchWayApi;
+use Home\Api\TaskHisApi;
 use Home\Api\VBbjmemberInfoApi;
 use Home\Api\VBbjmemberSellerInfoApi;
 use Home\Api\VTaskHisInfoApi;
 use Home\Api\VTaskProductSearchWayApi;
 use Home\ConstVar\UserTypeConstVar;
+use Home\Logic\TaskHelperLogic;
 use Home\Model\BbjmemberSellerModel;
 use Home\Model\TaskHisModel;
+use Home\Model\TaskLogModel;
+use Home\Model\TaskModel;
 
 class BBJVIPController extends AdminController{
     /**
@@ -475,6 +480,88 @@ class BBJVIPController extends AdminController{
      * 平台发货
      */
     public function platform_delivery(){
+
+        $type = $this->_param('status','delivery_platform');
+
+        if(empty($type)){
+            $this->assign('status','all');
+        }
+
+        $param = array(
+            'status'=>$type,
+        );
+
+        if(!empty($type)){
+            switch($type){
+                case "delivery_platform":
+                    $map['do_status'] = TaskHisModel::DO_STATUS_PASS;
+                    break;
+                default:
+                    break;
+            }
+        }
+        //平台发货的已提交订单的任务
+        $map['delivery_mode'] = TaskModel::DELIVERY_MODE_PLATFORM;
+        $page = array('curpage'=>I('get.p',1),'size'=>10);
+        $order = "get_task_time desc";
+        $result = apiCall(VTaskHisInfoApi::QUERY,array($map,$page,$order,$param));
+
+        if($result['status']){
+            $this->assign("list",$result['info']['list']);
+            $this->assign("show",$result['info']['show']);
+        }
+
+//        $helper = new TaskHelperLogic();
+//        $result = $helper->countStatusCnt($this->uid);
+//        $this->assign('count',$result);
+
+        $this -> assign('received_goods', TaskHisModel::DO_STATUS_RECEIVED_GOODS);
+        $this -> assign('reject_order', TaskHisModel::DO_STATUS_REJECT);
+        $this -> assign('submit_order', TaskHisModel::DO_STATUS_SUBMIT_ORDER);
+
+        $result = apiCall(DatatreeApi::QUERY_NO_PAGING,array(array('parentid'=>'120')));
+
+        if($result['status']){
+            $this->assign("express_list",$result['info']);
+        }
+        $this->display();
+    }
+
+    /**
+     * 平台发货
+     * @author 老胖子-何必都 <hebiduhebi@126.com>
+     */
+    public function delivery_order(){
+
+        $id = $this->_param('id','');
+        $express_name = $this->_param('express_name','');
+        $express_code = $this->_param('express_code','');
+        $express_no = $this->_param('express_no','');
+
+        $result = apiCall(TaskHisApi::GET_INFO,array(array('id'=>$id)));
+        if($result['status'] && is_array($result['info'])){
+            $his = $result['info'];
+        }
+
+
+        $entity = array(
+            'express_name'=>$express_name,
+            'express_code'=>$express_code,
+            'express_no'=>$express_no,
+            'do_status'=>TaskHisModel::DO_STATUS_DELIVERY_GOODS,
+        );
+
+        $result = apiCall(TaskHisApi::SAVE_BY_ID,array($id,$entity));
+
+        if($result['status']){
+
+            $notes = "系统已发出快递，".$express_name." , ".$express_no;
+            task_log($id,$his['tpid'],$his['uid'],$his['task_id'],TaskLogModel::TYPE_PLATFORM_DELIVERY,$notes);
+            $this->success("操作成功!");
+        }else{
+            $this->error("操作失败!");
+        }
+
 
     }
 

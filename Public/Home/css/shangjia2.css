@@ -1,15 +1,4 @@
 @charset "UTF-8";
-.syj-ico,
-.syj-btn,
-.my-icon {
-	background: url('../images/icons/no-repeat-s1323703f06.png') no-repeat 0 0;
-	display: inline-block;
-	*display: inline;
-	*zoom: 1
-}
-.my-icon {
-	background: url('../images/icons/my-icons-s36b8b3c214.png') no-repeat 0 0
-}
 .am-btn{ font-size: 12px;}
 .syj-ico.fav {
 	height: 13px;
@@ -131,146 +120,7 @@ ng\:form {
 .ng-hide-remove {
 	display: block !important
 }
-html,
-body,
-div,
-span,
-applet,
-object,
-iframe,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-blockquote,
-pre,
-a,
-abbr,
-acronym,
-address,
-big,
-cite,
-code,
-del,
-dfn,
-em,
-img,
-ins,
-kbd,
-q,
-s,
-samp,
-small,
-strike,
-strong,
-sub,
-sup,
-tt,
-var,
-b,
-u,
-i,
-center,
-dl,
-dt,
-dd,
-ol,
-ul,
-li,
-fieldset,
-form,
-label,
-legend,
-table,
-caption,
-tbody,
-tfoot,
-thead,
-tr,
-th,
-td,
-article,
-aside,
-canvas,
-details,
-embed,
-figure,
-figcaption,
-footer,
-header,
-hgroup,
-menu,
-nav,
-output,
-ruby,
-section,
-summary,
-time,
-mark,
-audio,
-video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font: inherit;
-	font-size: 100%;
-	vertical-align: baseline
-}
-html {
-	line-height: 1
-}
-ol,
-ul {
-	list-style: none
-}
-table {
-	border-collapse: collapse;
-	border-spacing: 0
-}
-caption,
-th,
-td {
-	text-align: left;
-	font-weight: normal;
-	vertical-align: middle
-}
-q,
-blockquote {
-	quotes: none
-}
-q:before,
-q:after,
-blockquote:before,
-blockquote:after {
-	content: "";
-	content: none
-}
-a img {
-	border: none
-}
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-menu,
-nav,
-section,
-summary {
-	display: block
-}
-.s_icon {
-	background: url('../images/icons/seller-s453e20d699.png') no-repeat 0 0;
-	display: inline-block;
-	*display: inline;
-	*zoom: 1
-}
+
 /*!
  * Bootstrap v2.3.2
  *
@@ -6534,53 +6384,50 @@ ul.radio-list li.help span {
 .bg-renwu label.title {
 	float: left;
 	height: 30px;
-	line-height: 30px
+	line-height: 30px;
 }
 .bg-renwu .cont {
-	float: left
+	float: left;
 }
 .bg-renwu .cont input[type="radio"] {
-	margin-top: 0
+	margin-top: 0;
 }
 .seller_header_wrap {
-	background: url('../images/seller/v2/header_bg.png?1429666254') repeat-x;
 	position: fixed;
 	z-index: 3;
 	top: 0;
-	width: 100%
+	width: 100%;
 }
 .seller_header {
 	height: 88px;
-	background: url('../images/seller/v2/header_main_bg.jpg?1422605256') no-repeat;
-	min-width: 600px
+	min-width: 600px;
 }
 .seller_header .logo {
-	background: url('../images/seller/v2/logo.png?1422605256') no-repeat center center;
 	width: 199px;
 	height: 86px;
-	float: left
+	float: left;
 }
 .seller_header .gzt {
 	margin-top: 55px;
-	margin-bottom: 2px
+	margin-bottom: 2px;
 }
 .seller_header .gzt .btn {
 	padding-top: 5px;
 	border-bottom: none;
 	border-bottom-right-radius: 0;
 	border-bottom-left-radius: 0;
-	border-color: #fff
+	border-color: #fff;
 }
 .seller_header .gzt .dropdown-menu {
 	border-color: #fff;
 	border-top-left-radius: 0;
 	border-top-right-radius: 0;
-	padding: 15px 10px
+	padding: 15px 10px;
 }
 .seller_header .gzt .taofu,
 .seller_header .gzt .shifu {
 	text-align: center;
-	width: 120px
+	width: 120px;
 }
 .topmenu {
 	position: absolute;
@@ -6588,10 +6435,10 @@ ul.radio-list li.help span {
 	margin-right: 35px;
 	height: 30px;
 	line-height: 15px;
-	font-size: 12px
+	font-size: 12px;
 }
 .topmenu ul {
-	margin-top: 20px
+	margin-top: 20px;
 }
 .topmenu li {
 	color: #fff;
@@ -6601,17 +6448,17 @@ ul.radio-list li.help span {
 	border-right: 1px solid #fff
 }
 .topmenu li:last-child {
-	border-right: none
+	border-right: none;
 }
 .topmenu li a {
-	color: #fff
+	color: #fff;
 }
 .topmenu .text-link {
-	color: #fffc00
+	color: #fffc00;
 }
 .wuliu {
 	height: 15px;
-	line-height: 15px
+	line-height: 15px;
 }
 .wuliu .fuzhi {
 	cursor: pointer;
@@ -6619,14 +6466,9 @@ ul.radio-list li.help span {
 	float: left;
 	height: 15px;
 	margin-top: 3px;
-	width: 20px
+	width: 20px;
 }
-.wuliu .yes_fuzhi {
-	background: url('../images/seller/yes_fuzhi.png?1402739235') repeat
-}
-.wuliu .no_fuzhi {
-	background: url('../images/seller/no_fuzhi.png?1402718357') repeat
-}
+
 .main_fabu {
 	width: 850px;
 	margin: 0 auto
@@ -7903,7 +7745,7 @@ ul.radio-list li.help span {
 	font-size: 25px;
 	color: #f20c64
 }
-/*! X-editable - v1.5.1 
+/*! X-editable - v1.5.1
 * In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery
 * http://github.com/vitalets/x-editable
 * Copyright (c) 2013 Vitaliy Potapov; Licensed MIT */

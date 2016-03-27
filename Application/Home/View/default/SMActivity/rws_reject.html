@@ -349,6 +349,18 @@
 																</div>
 															</div>
 
+                                                            <div class="control-group">
+                                                            <label class="control-label" for="order_num">淘宝下单地址：</label>
+                                                            <div class="controls">
+                                                                <select name="tb_address" style="width: 305px;">
+                                                                    <volist name="address_list" id="vo">
+                                                                        <option value="{$vo.contact_name},{$vo.mobile},{$vo.province},{$vo.city},{$vo.area},{$vo.detail},{$vo.post_code}">{$vo.province}{$vo.city}{$vo.area}{$vo.detail}</option>
+                                                                    </volist>
+                                                                </select>
+                                                                <span class="help-inline"><span class="muted">如果没有，请 <a  class="am-text-primary" href="{:U('Home/Usersm/address')}" target="_blank">新增收货地址>></a></span></span>
+                                                            </div>
+                                                        </div>
+
 															<div class="control-group">
 																<label class="control-label" for="zhifu_price">订单支付金额：</label>
 																<div class="controls">
