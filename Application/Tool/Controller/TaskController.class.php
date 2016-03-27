@@ -199,8 +199,9 @@ class TaskController extends Controller{
                     'notes'=>$notes,
                     'log_time'=>$now_time,
                 );
+
                 $result = apiCall(TaskLogApi::ADD,array($entity));
-                //任务更改为取消状态
+                //任务更改为取消状态123456
                 $result = apiCall(TaskHisApi::SAVE_BY_ID,array($vo['id'],array('do_status'=>TaskHisModel::DO_STATUS_CANCEL)));
 
                 $map = array('id'=>$vo['tpid']);
