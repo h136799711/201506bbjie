@@ -17,6 +17,10 @@ class TaskHisApi extends Api{
     const GET_NEED_RETURN_MONEY = "Home/TaskHis/getNeedReturnMoney";
 
     /**
+     * 求和
+     */
+    const SUM = "Home/TaskHis/sum";
+    /**
      * 统计
      */
     const COUNT = "Home/TaskHis/count";

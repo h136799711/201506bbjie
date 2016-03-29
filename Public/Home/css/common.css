@@ -76,64 +76,6 @@ color:#333333;
     color: #888;
 }
 
-
-.seller_header_wrap {
-    position: fixed;
-    z-index: 3;
-    top: 0;
-    width: 100%;
-}
-.seller_header {
-    height: 88px;
-    min-width: 600px
-}
-.seller_header .logo {
-    width: 199px;
-    height: 86px;
-    float: left
-}
-
-
-.seller_header .gzt {
-    margin-bottom: 2px
-}
-.seller_header .gzt .btn {
-    padding-top: 5px;
-    border-bottom: none;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-    border-color: #fff
-}
-
-
-.seller_header .gzt .dropdown-menu {
-    border-color: #fff;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    padding: 15px 10px
-}
-.seller_header .gzt .taofu,
-.seller_header .gzt .shifu {
-    text-align: center;
-    width: 120px
-}
-
-.seller_main {
-    width: 100%;
-    position: relative;
-    margin-top: 88px;
-}
-/*修复 日期位置的问题*/
-.am-datepicker{
-    margin-top: -88px;
-}
-#foot {
-    background-position: 0 -2px
-}
-
-
-
-
 .siderbar {
     position: fixed;
     background: #eef9fc;
@@ -166,7 +108,60 @@ color:#333333;
     color: #fff
 }
 
+.seller_header_wrap {
+    position: fixed;
+    z-index: 3;
+    top: 0;
+    width: 100%;
+}
+.seller_header {
+    height: 88px;
+    min-width: 600px
+}
+.seller_header .logo {
+    width: 199px;
+    height: 86px;
+    float: left
+}
 
+
+.seller_header .gzt {
+    margin-bottom: 2px
+}
+.seller_header .gzt .btn {
+    padding-top: 5px;
+    border-bottom: none;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-color: #fff
+}
+
+.seller_header .gzt .dropdown-menu {
+     border-color: #fff;
+     border-top-left-radius: 0;
+     border-top-right-radius: 0;
+     padding: 15px 10px
+}
+/*START*/
+.seller_header .gzt .taofu,
+.seller_header .gzt .shifu {
+    text-align: center;
+    width: 120px
+}
+
+.seller_main {
+    width: 100%;
+    position: relative;
+    margin-top: 88px;
+}
+/*修复 日期位置的问题*/
+.am-datepicker{
+    margin-top: -88px;
+}
+#foot {
+    background-position: 0 -2px
+}
+/*END*/
 .siderbar dt a.active,
 .siderbar dd a.active {
     background-color: #08c;
@@ -247,6 +242,9 @@ color:#333333;
     padding-right: 10px;
     border-right: 1px solid #fff
 }
+
+
+
 .topmenu li:last-child {
     border-right: none
 }

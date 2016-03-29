@@ -58,6 +58,27 @@
             {:W('Menus/breadcrumb')}
 
                 <div class="content">
+                    <div class="btn-controls">
+                        <form class="j_search_form form form-horizontal well">
+                            <div class="form-group">
+                                <label class="col-md-2 col-sm-3  control-label">状态</label>
+                                <div class="col-md-10  col-sm-9 ">
+                                    <div class="radio radio-inline">
+                                        <label>
+                                            <input class="j_status" <eq name="status" value="delivery_platform">checked</eq> type="radio" name="status" value="delivery_platform" >
+                                            待发货
+                                        </label>
+                                    </div>
+                                    <div class="radio radio-inline">
+                                        <label>
+                                            <input class="j_status" <eq name="status" value="delivery">checked</eq>  type="radio" name="status" value="delivery" >
+                                            已发货
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
 
                     <div class="">
                         <div class="grid-view" >
@@ -136,6 +157,11 @@
                                                 <else/>
                                                 <div class="text-warning text-sm">{$vo.express_name}</div>
                                                 <div class="text-warning text-sm">{$vo.express_no}</div>
+                                                <div class="text-warning text-sm">¥{$vo.express_price}</div>
+                                                <a data-express-price="{$vo.express_price}" data-express-no="{$vo.express_no}" data-express-code="{$vo.express_code}" data-id="{$vo.id}" href="javascript:void(0);"
+                                                   class="margin-bottom-sm j_delivery fix-am btn btn-sm btn-primary btn-fix-am">
+                                                    修改发货信息
+                                                </a>
                                             </if>
 
                                         </td>
@@ -228,9 +254,6 @@
                     </div>
 
                     <div>
-
-                        <a href="javascript: void(0)" class=" btn btn-sm btn-default" data-modal-close>取消</a>
-
                         <a target-form="j_delivery_form" href="{:U('Admin/BBJVIP/delivery_order')}" class="ajax-post btn btn-sm btn-primary">确定</a>
                     </div>
 
@@ -246,12 +269,22 @@
 <block name="area_footer">
     <script type="text/javascript">
         $(function(){
-
+            $(".j_status").change(function(){
+                $(".j_search_form").submit();
+            });
             //发货信息
             $(".j_delivery").each(function(index,item){
                 $(item).click(function(ev){
                     var id = $(ev.target).data("id");
+                    var express_no = $(ev.target).data("express-no");
+                    var express_code = $(ev.target).data("express-code");
+                    var express_price = $(ev.target).data("express-price");
+
+                    $("#j_delivery_modal .j_express").val(express_code);
+
                     $("#j_delivery_modal .j_delivery_id").val(id);
+                    $("#j_delivery_modal input[name='express_price']").val(express_price);
+                    $("#j_delivery_modal input[name='express_no']").val(express_no);
                     $("#j_delivery_modal").modal();
                 });
             });
@@ -264,36 +297,7 @@
 
             $("#j_delivery_modal .j_express").change();
 
-            //审核订单
-            $(".j_sh_order").each(function(index,item) {
-                $(item).click(function(ev){
-                    $("#j_sh_modal").find(".j_loading").show();
-                    $('#j_sh_modal').modal({width:720,height:480});
-                    var url = $(ev.target).data("href");
-                    var id = $(ev.target).data("id");
-                    $("#j_sh_modal .j_sh_id_text").text(id);
-                    $.get(url, function(result){
 
-                        $("#j_sh_modal").find(".j_loading").hide();
-                        $("#j_sh_modal").find(".j_content").html(result);
-
-                    }, 'html');
-
-                });
-
-            });
-
-
-            $(".j_reject_btn").each(function(index,item){
-                $(item).click(function(ev){
-                    var id = $(ev.target).data("id");
-
-                    $("#j_reject_modal .j_reject_id_text").text(id);
-                    $("#j_reject_modal .j_reject_id").val(id);
-                    $("#j_reject_modal").modal();
-
-                });
-            })
             $('.j_view_log').each(function(index,item) {
                 $(item).click(function(ev){
                     $("#j_task_log_modal").find(".j_loading").show();

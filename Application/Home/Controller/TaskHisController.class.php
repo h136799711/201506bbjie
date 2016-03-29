@@ -10,7 +10,9 @@ namespace Home\Controller;
 
 
 use Admin\Api\DatatreeApi;
+use Home\Api\TaskHisApi;
 use Home\Api\TaskLogApi;
+use Home\Api\VDoTaskUserApi;
 use Home\Api\VTaskHisInfoApi;
 use Home\Api\VTaskProductInfoApi;
 use Home\Logic\TaskHelperLogic;
@@ -29,6 +31,8 @@ class TaskHisController extends SjController {
      * @author 老胖子-何必都 <hebiduhebi@126.com>
      */
     public function all(){
+
+        $view_uid = $this->_param('view_uid','');
         $type = $this->_param('status','');
 
         $this->assign('status',$type);
@@ -39,10 +43,15 @@ class TaskHisController extends SjController {
         $map = array(
             'seller_uid'=>$this->uid,
         );
-
         $param = array(
             'status'=>$type,
         );
+        if(!empty($view_uid)){
+            $map['uid'] = $view_uid;
+            $param['view_uid'] = $view_uid;
+            $this->assign('view_uid',$view_uid);
+        }
+
 
     //     等待审核   wait_check
     //     确认还款   wait_return_money
@@ -111,7 +120,6 @@ class TaskHisController extends SjController {
 
         if($task_his_id > 0 ){
 
-
             $result = apiCall(TaskLogApi::QUERY_NO_PAGING,array(array('task_his_id'=>$task_his_id)));
             $this->assign("log_list",$result['info']);
             $result = apiCall(VTaskHisInfoApi::GET_INFO,array(array('id'=>$task_his_id)));
@@ -127,4 +135,65 @@ class TaskHisController extends SjController {
 
         $this->display();
     }
+
+    /**
+     * 历史订单
+     */
+    public function history(){
+
+        $map = array(
+            'seller_uid'=>$this->uid,
+            'task_id'=>$task_id,
+            'do_status'=>TaskHisModel::DO_STATUS_RETURNED_MONEY
+        );
+
+        $page = array('curpage'=>I('get.p',0),'size'=>10);
+        $order = " update_time desc ";
+        $result = apiCall(VTaskHisInfoApi::QUERY,array($map,$page,$order));
+
+        if($result['status']){
+            $this->assign("list",$result['info']['list']);
+            $this->assign("show",$result['info']['show']);
+        }
+
+
+        $this->display();
+    }
+
+    /**
+     * 所有接受任务的用户信息
+     */
+    public function ajax_all_users(){
+        $q = $this->_param('q','');
+        $map = array(
+            'seller_uid'=>$this->uid,
+        );
+        if(!empty($q)){
+            $map['uid'] = $q;
+            $map['username'] = array('like','%'.$q.'%');
+            $map['_logic'] = 'OR';
+        }
+
+        $page = array('curpage'=>0,'size'=>15);
+        $order = "uid desc";
+
+
+        $result = apiCall(VDoTaskUserApi::QUERY,array($map,$page,$order));
+        if($result['status']){
+            $list = $result['info']['list'];
+            $ret_list = array();
+            foreach($list as $vo){
+                array_push($ret_list,array(
+                    'id'=>$vo['uid'],
+                    'nickname'=>$vo['username'],
+                    'head'=>$vo['head'],
+                ));
+            }
+            $this->success($ret_list);
+        }else{
+            $this->error($result);
+        }
+
+    }
+
 }

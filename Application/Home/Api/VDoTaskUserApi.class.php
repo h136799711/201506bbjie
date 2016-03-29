@@ -8,43 +8,44 @@
 namespace Home\Api;
 
 use \Common\Api\Api;
+use Home\Model\VDoTaskUserModel;
 use Home\Model\VTaskHisInfoModel;
 
-class VTaskHisInfoApi extends Api{
+class VDoTaskUserApi extends Api{
 
     /**
      * 统计
      */
-    const SUM = "Home/VTaskHisInfo/sum";
+    const SUM = "Home/VDoTaskUser/sum";
     /**
      * 新增
      */
-    const ADD = "Home/VTaskHisInfo/add";
+    const ADD = "Home/VDoTaskUser/add";
     /**
      * 删除
      */
-    const DELETE = "Home/VTaskHisInfo/delete";
+    const DELETE = "Home/VDoTaskUser/delete";
     /**
      * 不分页查询
      */
-    const QUERY_NO_PAGING = "Home/VTaskHisInfo/queryNoPaging";
+    const QUERY_NO_PAGING = "Home/VDoTaskUser/queryNoPaging";
     /**
      * 分页查询
      */
-    const QUERY = "Home/VTaskHisInfo/query";
+    const QUERY = "Home/VDoTaskUser/query";
 
     /**
      * 获取用户信息
      */
-    const GET_INFO = "Home/VTaskHisInfo/getInfo";
+    const GET_INFO = "Home/VDoTaskUser/getInfo";
 
     /**
      * 更新
      */
-    const SAVE_BY_ID = "Home/VTaskHisInfo/saveByID";
+    const SAVE_BY_ID = "Home/VDoTaskUser/saveByID";
 
 	protected function _init(){
-		$this->model = new VTaskHisInfoModel();
+		$this->model = new VDoTaskUserModel();
 	}
 
 }

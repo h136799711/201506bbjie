@@ -14,6 +14,7 @@ namespace Home\Model;
  */
 class FinAccountBalanceHisModel extends \Think\Model{
 
+
     /**
      * 单个任务完成时，扣除商家的冻结资金
      */
@@ -50,9 +51,9 @@ class FinAccountBalanceHisModel extends \Think\Model{
      */
     const TYPE_FREEZE_WHEN_PASS_ONE = "85";
     /**
-     * 任务结算时返还多余资金
+     * 商家-任务结算时返还多余资金
      */
-    const TYPE_UNFREEZE_WHEN_TASK_OVER = "85";
+    const TYPE_UNFREEZE_WHEN_TASK_OVER = "86";
 
 
 }

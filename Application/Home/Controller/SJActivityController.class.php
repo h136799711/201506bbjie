@@ -385,6 +385,7 @@ class SJActivityController extends SjController {
         $express_name = $this->_param('express_name','');
         $express_code = $this->_param('express_code','');
         $express_no = $this->_param('express_no','');
+        $express_price = $this->_param('express_price','');
 
         $result = apiCall(TaskHisApi::GET_INFO,array(array('id'=>$id)));
         if($result['status'] && is_array($result['info'])){
@@ -396,6 +397,7 @@ class SJActivityController extends SjController {
             'express_name'=>$express_name,
             'express_code'=>$express_code,
             'express_no'=>$express_no,
+            'express_price'=>$express_price,
             'do_status'=>TaskHisModel::DO_STATUS_DELIVERY_GOODS,
         );
 
@@ -518,7 +520,6 @@ class SJActivityController extends SjController {
      * 任务结束归还
      * 1. 增加用户虚拟币
      * 2. 增加用户余额
-     * 3. 扣除商家冻结资金
      */
     private function task_over($his){
 
@@ -1325,6 +1326,149 @@ class SJActivityController extends SjController {
                 $this->success('操作成功!');
             }
         }
+    }
+
+    /**
+     * 结算
+     * @author 老胖子-何必都 <hebiduhebi@126.com>
+     */
+    public function task_clear(){
+
+
+        $task_id = $this->_param('id',0);
+
+        $result = apiCall(TaskApi::GET_INFO,array(array('id'=>$task_id)));
+        if($result['status']){
+            $this->assign("task_info",$result['info']);
+        }
+        if(is_null($result['info'])){
+            $this->error("任务信息获取失败!");
+        }
+
+        $map = array(
+            'seller_uid'=>$this->uid,
+            'task_id'=>$task_id,
+            'do_status'=>TaskHisModel::DO_STATUS_RETURNED_MONEY
+        );
+
+        $page = array('curpage'=>I('get.p',0),'size'=>10);
+        $order = " update_time desc ";
+        $result = apiCall(VTaskHisInfoApi::QUERY,array($map,$page,$order));
+
+        if($result['status']){
+            $this->assign("list",$result['info']['list']);
+            $this->assign("show",$result['info']['show']);
+        }
+
+
+        $this->assign("all_tb_price",0);
+        $this->assign("all_task_brokerage",0);
+        $this->assign("all_tb_express",0);
+
+        $result = apiCall(TaskHisApi::SUM,array($map,'task_brokerage'));
+
+        if($result['status']){
+            $this->assign("all_task_brokerage",$result['info']);
+        }
+
+        $result = apiCall(VTaskHisInfoApi::SUM,array($map,'tb_price'));
+
+        if($result['status']){
+            $this->assign("all_tb_price",$result['info']);
+        }
+
+        $result = apiCall(TaskHisApi::SUM,array($map,'express_price'));
+
+        if($result['status']){
+            $this->assign("all_tb_express",$result['info']);
+        }
+
+        $map = array(
+            'seller_uid'=>$this->uid,
+            'task_id'=>$task_id,
+        );
+        $map['do_status'] = array('neq',array(TaskHisModel::DO_STATUS_DONE,TaskHisModel::DO_STATUS_RETURNED_MONEY,TaskHisModel::DO_STATUS_CANCEL));
+        $result = apiCall(TaskHisApi::GET_INFO,array($map));
+        $this->assign("can_clear",1);
+        if($result['status'] && is_array($result['info'])){
+            $this->assign("can_clear",0);
+        }
+        $this->display();
+    }
+
+
+    /**
+     * 任务结算，对任务进行结算
+     * @author 老胖子-何必都 <hebiduhebi@126.com>
+     */
+    public function all_task_over(){
+        //TODO: 对所有任务进行结算
+        //1. 对剩余的冻结资金 进行解冻,返还
+
+        $task_id = $this->_param('id',0);
+        $result = apiCall(TaskApi::GET_INFO,array(array('id'=>$task_id)));
+        if($result['status']){
+            $task_info = $result['info'];
+        }
+
+        if(is_null($result['info'])){
+            $this->error("任务信息获取失败!");
+        }
+        //不等于取消、完成、已还款的任务时
+        $map = array(
+            'seller_uid'=>$this->uid,
+            'task_id'=>$task_id,
+        );
+        $map['do_status'] = array('neq',array(TaskHisModel::DO_STATUS_DONE,TaskHisModel::DO_STATUS_RETURNED_MONEY,TaskHisModel::DO_STATUS_CANCEL));
+        $result = apiCall(TaskHisApi::GET_INFO,array($map));
+        if($result['status'] && is_array($result['info'])){
+            $this->error("当前仍有任务正在进行中...");
+        }
+
+        $map = array(
+            'seller_uid'=>$this->uid,
+            'task_id'=>$task_id,
+            'do_status'=>TaskHisModel::DO_STATUS_RETURNED_MONEY
+        );
+
+        $result = apiCall(TaskHisApi::SUM,array($map,'task_brokerage'));
+        $all_task_brokerage = 0;
+        $all_tb_price = 0;
+        $all_tb_express = 0;
+
+        if($result['status']){
+            $all_task_brokerage = $result['info'];
+        }
+
+        $result = apiCall(VTaskHisInfoApi::SUM,array($map,'tb_price'));
+
+        if($result['status']){
+            $all_tb_price = $result['info'];
+        }
+
+        $result = apiCall(TaskHisApi::SUM,array($map,'express_price'));
+
+        if($result['status']){
+            $all_tb_express = $result['info'];
+        }
+
+        $all_use_price = $all_task_brokerage + $all_tb_express + $all_tb_price;
+
+        $left_price = $task_info['frozen_money'] - $all_use_price;
+        if($left_price < 0){
+            $this->error("该任务资金出现异常，请联系管理员!");
+        }
+        $uid = $task_info['uid'];
+        $notes = "任务#".$task_id."#已结算";
+        $result = apiCall(BbjmemberSellerApi::ADD_COINS_FROM_FROZEN_MONEY,array($uid,$left_price,$notes));
+
+        if($result['status']){
+            $result  = apiCall(TaskApi::SAVE_BY_ID,array($task_id,array('task_status'=>TaskModel::STATUS_TYPE_OVER)));
+            $this->success("结算成功!",U('Home/SJActivity/sj_tbhd'));
+        }else{
+            $this->error("操作失败！");
+        }
+
     }
 
 

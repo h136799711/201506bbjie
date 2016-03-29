@@ -1,0 +1,208 @@
+<extend name="template/base_index" />
+
+<block name="area_header">
+    <!--<link rel="stylesheet" href="__CSS__/shangjia2.css">-->
+    <link rel="stylesheet" href="__CSS__/common.css?v=__APP_VERSION__">
+    <style type="text/css">
+        #begin_time,#end_time,#count{ height: 30px;}
+        #yw1 li{list-style-type: none;}
+        .input-fix-am{
+
+            width: 200px;
+            font-size: 12px;
+        }
+        .search_form{
+            width: 320px;
+        }
+        .j_content textarea{
+            font-size: 12px;
+        }
+        .task_status_list li{
+            float:left;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .task_status_list li.active{
+
+            color: #d1343e;
+            height: 33px;
+            border-bottom: 3px solid #0088cc;
+            margin-bottom: -1px;
+        }
+        .j_sh_id_text{
+
+            font-size: 1.8rem;
+            font-weight: 500;
+        }
+    </style>
+</block>
+
+<block name="area_body">
+
+    <include file='Widget/sjtop' />
+    <div class="seller_main clearfix" >
+        <div class="seller_content_wrap">
+
+            <div class="seller_content" style="padding-top: 10px;">
+
+                <div class="task-head">
+                    <div class="breadcrumbs">
+                        <a href="{:U('Home/SJActivity/sj_tbhd')}">淘宝活动</a>&gt;<span>任务计划管理：{$task['task_name']}</span>
+                    </div>
+
+                </div>
+
+                <div class="content">
+
+                    <div class="renwuku ">
+                        <div id="yw1" class="grid-view" >
+                            <table class="items am-table am-table-hover">
+                                <thead>
+                                <tr>
+                                    <th width="80">编号</th>
+                                    <th width="120" >任务用户</th>
+                                    <th width="160" >用户订单</th>
+                                    <th width="160" >佣金</th>
+                                    <th width="160" >物流信息</th>
+                                    <th width="160" >通过时间</th>
+                                    <th width="160" >最后时间</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <empty name="list">
+                                    <tr>
+                                        <td class="am-text-center"  colspan="10">没有相关信息</td>
+                                    </tr>
+                                </empty>
+                                <volist name='list' id='vo'>
+                                    <tr class="odd">
+                                        <td>
+                                            {$vo.id}
+                                        </td>
+
+                                        <td>
+                                            <div class="am-cf">
+                                                <div class="am-fl">
+                                                    <empty name="vo['head']">
+                                                        <img class="" style="width: 48px;height:48px;" src="__IMG__/default_user_portrait.gif" alt="">
+                                                        <else/>
+                                                        <img style="width: 48px;height:48px;" src="{$vo['head']}" >
+                                                    </empty>
+                                                </div>
+                                                <div class="am-fl">{$vo.nickname}</div>
+                                            </div>
+
+                                        </td>
+
+                                        <td>
+                                            <div>{$vo.tb_account}</div>
+                                            <div class="">
+                                                <small>
+                                                    <if condition="empty($vo['tb_orderid'])">
+                                                        订单:-
+                                                        <else/>
+                                                        订单:<span class="am-text-sm">{$vo.tb_orderid}</span>
+                                                    </if>
+                                                </small>
+                                            </div>
+
+                                            <div >
+                                                <small >订单金额:
+                                                    <if condition="$vo['tb_price'] gt 0">
+                                                        <span class="am-text-danger">￥{$vo.tb_price}</span>
+                                                        <else/>
+                                                        -
+                                                    </if>
+                                                </small>
+                                            </div>
+
+                                        </td>
+                                        <td width="160" >
+                                           <span class="am-text-danger"> ¥ {$vo.task_brokerage} </span>
+                                        </td>
+                                        <td>
+                                            <if condition="empty($vo['express_no'])">
+                                                <eq name="vo['delivery_mode']" value="1">
+                                                    <span class="am-text-warning">等待平台发货</span>
+                                                    <else/>
+                                                    <a data-id="{$vo.id}" href="javascript:void(0);"
+                                                       class="am-margin-bottom-sm j_delivery btn-fix-am am-btn am-btn-sm am-btn-primary btn-fix-am">
+                                                        填写发货信息
+                                                    </a>
+                                                </eq>
+                                                <else/>
+                                                <div class="am-text-warning am-text-sm">{$vo.express_name}</div>
+                                                <div class="am-text-warning am-text-sm">{$vo.express_no}</div>
+                                                <div class="am-text-danger am-text-sm">¥ {$vo.express_price}</div>
+                                            </if>
+
+                                        </td>
+                                        <td >
+                                            {$vo.get_task_time|date='Y-m-d H:i',###}
+                                        </td>
+                                        <td >
+                                            {$vo.update_time|date='Y-m-d H:i',###}
+                                        </td>
+
+                                    </tr>
+                                </volist>
+                                </tbody>
+                            </table>
+                            <div class="am-padding-sm am-margin-bottom-lg">
+                                {$show}
+                            </div>
+
+                        </div>
+
+                        <div class="am-text-center  am-u-g">
+
+                           <div class="am-u-sm-4 am-u-md-4  am-text-center am-fl am-padding-sm">共返还任务金额:
+                                <span class="am-text-danger">¥ {$all_tb_price}</span>
+                           </div>
+                            <div class="am-u-sm-4 am-u-md-4 am-fl am-text-center am-padding-sm">共消耗任务佣金:
+                                <span class="am-text-danger">¥ {$all_task_brokerage}</span>
+                            </div>
+                            <div class="am-u-sm-4 am-u-md-4 am-fl am-text-center am-padding-sm">共消耗邮费:
+                                <span class="am-text-danger">¥ {$all_tb_express}</span>
+                            </div>
+
+                        </div>
+                        <div class="am-text-center am-u-g">
+
+                            <div class="am-u-sm-6 am-u-md-6 am-text-center am-padding-sm am-text-xl">冻结资金:
+                                <span class="am-text-danger am-text-xl">¥ {$task_info.frozen_money}</span>
+                            </div>
+
+                            <div class="am-u-sm-6 am-u-md-6 am-text-center am-padding-sm am-text-xl">共计使用:
+                                <span class="am-text-danger am-text-xl">¥ {:number_format($all_tb_price+$all_tb_price+$all_tb_express,2,".","")}
+
+                                </span>
+                                <eq name="can_clear"  value="1">
+                                    <span class="am-text-danger">当前仍有任务正在进行中，无法结算</span>
+                                    <else/>
+                                    <a class="am-btn am-btn-sm am-btn-primary btn-fix-am ajax-get" href="{:U('Home/SJActivity/all_task_over',array('id'=>I('get.id','0')))}">
+                                        结算
+                                    </a>
+                                </eq>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <include file='Widget/sjleft' />
+    </div>
+
+</block>
+
+<block name="area_footer">
+    <script type="text/javascript">
+        $(function(){
+
+        });//end $ function
+    </script>
+</block>
+

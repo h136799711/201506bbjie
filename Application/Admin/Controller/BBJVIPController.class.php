@@ -483,6 +483,7 @@ class BBJVIPController extends AdminController{
 
         $type = $this->_param('status','delivery_platform');
 
+        $this->assign('status',$type);
         if(empty($type)){
             $this->assign('status','all');
         }
@@ -495,6 +496,9 @@ class BBJVIPController extends AdminController{
             switch($type){
                 case "delivery_platform":
                     $map['do_status'] = TaskHisModel::DO_STATUS_PASS;
+                    break;
+                case "delivery":
+                    $map['do_status'] = TaskHisModel::DO_STATUS_DELIVERY_GOODS;
                     break;
                 default:
                     break;
@@ -532,11 +536,11 @@ class BBJVIPController extends AdminController{
      * @author 老胖子-何必都 <hebiduhebi@126.com>
      */
     public function delivery_order(){
-
         $id = $this->_param('id','');
         $express_name = $this->_param('express_name','');
         $express_code = $this->_param('express_code','');
         $express_no = $this->_param('express_no','');
+        $express_price = $this->_param('express_price','');
 
         $result = apiCall(TaskHisApi::GET_INFO,array(array('id'=>$id)));
         if($result['status'] && is_array($result['info'])){
@@ -548,6 +552,7 @@ class BBJVIPController extends AdminController{
             'express_name'=>$express_name,
             'express_code'=>$express_code,
             'express_no'=>$express_no,
+            'express_price'=>$express_price,
             'do_status'=>TaskHisModel::DO_STATUS_DELIVERY_GOODS,
         );
 

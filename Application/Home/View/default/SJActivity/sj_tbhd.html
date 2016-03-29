@@ -1,8 +1,8 @@
 <extend name="template/base_index" />
 
 <block name="area_header">
-	<link rel="stylesheet" href="__CSS__/shangjia.css">
-
+	<!--<link rel="stylesheet" href="__CSS__/shangjia.css">-->
+    <link rel="stylesheet" href="__CSS__/common.css">
     <style type="text/css">
         .table-seller tbody.item tr.margin td{
             background: #F3F9FB;
@@ -27,21 +27,28 @@
 					<div class="jquery-once-1-processed">
 
 						<div style="position: relative">
+
 							<div class="btn-group am-cf">
-                                <a data-toggle="modal2" modal-title="创建淘宝活动" style="background-color: #1D99D5; color: #FFFFFF;" class="am-btn am-round" href="{:U('Home/SJActivity/activity_1')}">创建换宝任务</a>
+                                <a data-toggle="modal2" class="am-btn am-btn-sm am-btn-primary btn-fix-am" href="{:U('Home/SJActivity/activity_1')}">创建淘宝任务</a>
 							</div>
+
                             <hr/>
-                            <div class="filter-controls am-fl">
+
+                            <div class="filter-controls am-fl am-padding-sm">
                                 <form method="post" class="j_task_form" action="{:U('Home/SJActivity/sj_tbhd')}">
-                                    <select name="task_status" class="j_task_status">
+                                    <div class="am-form-group">
+                                    <select name="task_status" class="j_task_status ">
                                         <option <eq name="task_status" value="open">selected</eq> value="open">已开启任务</option>
                                         <option <eq name="task_status" value="pause">selected</eq>  value="pause">已暂停任务</option>
                                         <option <eq name="task_status" value="over">selected</eq>  value="over">已结算任务</option>
                                     </select>
+
+                                    </div>
                                 </form>
                             </div>
-                            <div class=" am-fl">
-                                <ul class="task_status_list" style="position: relative;">
+
+                            <div class=" am-fl am-padding-sm">
+                                <ul class="task_status_list" style="list-style-type: none;position: relative;">
                                     <li><a class="active" href="{:U('Home/TaskHis/all')}">任务试民</a></li>
                                     <li><a href="{:U('Home/TaskHis/all',array('status'=>'wait_check'))}">
                                         审核订单
@@ -89,28 +96,38 @@
                                             </if>
                                         </a>
                                     </li>
+                                    <li>
+                                        &nbsp;
+                                    </li>
+                                    <li>
+                                        <a href="{:U('Home/TaskHis/history')}">
+                                        历史订单
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
 
 						</div>
 						<div>
 							<div class="grid-view">
-								<table class="items table table-seller">
+								<table class="am-table am-table-bordered am-table-hover am-table-striped items table table-seller">
 									<thead>
 										
 										<tr>
-											<th width="60" ><a class="sort-link" >ID<span class="caret"></span></a>
+											<th width="60" >
+                                                ID
 											</th>
 											<th width="120" >任务名称</th>
 											<th width="80" >发货模式</th>
 											<th width="160" >
-                                                <a class="sort-link" >链接数<span class="caret"></span>
-                                                </a>
+                                                链接数
 											</th>
-											<th width="80" ><a class="sort-link">单份任务金<span class="caret"></span></a>
+											<th width="80" >
+                                                单份任务金
 											</th>
 											<th width="80">冻结金额</th>
-											<th width="100"><a class="sort-link desc" >创建时间</a>
+											<th width="100">
+                                                创建时间
 											</th>
 											<th width="180">操作</th>
 										</tr>
@@ -152,15 +169,27 @@
 
 												<td>
                                                     <eq name="user['task_gettype']" value="1">
-                                                        <a href="{:U('Home/SJActivity/task_play',array('id'=>$vo['id']))}" class=" am-round am-btn-sm am-btn-primary am-btn">发放任务</a>
+
+                                                        <div class="am-btn-group">
+                                                            <a href="{:U('Home/SJActivity/task_play',array('id'=>$vo['id']))}" class="am-btn-sm am-btn-primary am-btn btn-fix-am">发放任务</a>
+                                                            <div class="am-dropdown" data-am-dropdown>
+                                                                <button class="am-btn am-btn-secondary am-dropdown-toggle  btn-fix-am" data-am-dropdown-toggle> <span class="am-icon-caret-down"></span></button>
+                                                                <ul class="am-dropdown-content">
+                                                                    <li class="am-dropdown-header">
+                                                                        <a CLASS="am-btn-sm " href="{:U('Home/SJActivity/task_clear',array('id'=>$vo['id']))}">结算</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+
                                                         <else/>
-                                                        <a href="{:U('Home/SJActivity/sh_user',array('id'=>$vo['id']))}" class=" am-round am-btn-sm am-btn-primary am-btn">审批用户</a>
+                                                        <a href="{:U('Home/SJActivity/sh_user',array('id'=>$vo['id']))}" class="am-btn-sm am-btn-primary am-btn  btn-fix-am">审批用户</a>
                                                     </eq>
                                                 </td>
 											</tr>
                                             <tr>
                                                 <td colspan="1">
-                                                    {$key+1}
+
                                                 </td>
                                                 <td colspan="2">
                                                     <volist name="vo['_products']" id="p">
