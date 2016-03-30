@@ -42,6 +42,13 @@ class IndexController extends HomeController {
 	  * 试民注册界面
 	  * */
 	public function register_sm(){
+        $reffer_id = I('get.reffer',0);
+        if($reffer_id > 0){
+            $result = apiCall(UserApi::GET_INFO,array($reffer_id));
+            if($result['status']){
+                $this->assign("reffer",$result['info']);
+            }
+        }
 		$headtitle="宝贝街-试民注册";
 		$this->assign('head_title',$headtitle);
 		$this->display();
@@ -50,6 +57,13 @@ class IndexController extends HomeController {
 	  * 商家注册界面
 	  * */
 	public function register_sj(){
+        $reffer_id = I('get.reffer',0);
+        if($reffer_id > 0){
+            $result = apiCall(UserApi::GET_INFO,array($reffer_id));
+            if($result['status']){
+                $this->assign("reffer",$result['info']);
+            }
+        }
 		$headtitle="宝贝街-商家注册";
 		$this->assign('head_title',$headtitle);
 		$this->display();
@@ -247,7 +261,9 @@ class IndexController extends HomeController {
             'nickname'=>$username,
         );
 
+
         $result = apiCall(AccountApi::Register, array($entity));
+
         if($result['status']){
             $this->success("注册成功",U("Home/Index/login"));
         }else{

@@ -13,13 +13,16 @@ use Admin\Api\MsgboxApi;
 use Admin\Model\DatatreeModel;
 use Admin\Model\MsgboxModel;
 use Cms\Api\VPostInfoApi;
+use Common\Api\AccountApi;
 use Home\Api\AddressApi;
 use Home\Api\BbjmemberApi;
+use Home\Api\BbjmemberSellerApi;
 use Home\Api\FinAccountBalanceHisApi;
 use Home\Api\FinBankaccountApi;
 use Home\Api\FinFucoinHisApi;
 use Home\Api\ProductExchangeApi;
 use Home\Api\TaskHisApi;
+use Home\Api\VBbjmemberInfoApi;
 use Home\Api\VMsgInfoApi;
 use Home\Api\VProductExchangeInfoApi;
 use Home\Logic\TaskHelperLogic;
@@ -167,33 +170,29 @@ class UsersmController extends HomeController {
 	}
 	/*
 	 * 已邀请的小伙伴
+	 *  @author 老胖子-何必都 <hebiduhebi@126.com>
 	 * */
 	public function sm_sfkt() {
 
 		$this -> assign('head_title', "宝贝街-已邀请的伙伴");
+		$map = array('referrer_id'=>$this->uid);
 
-		$map=array('referrer_id'=>$this->uid);
-		$result=apiCall(HomePublicApi::Bbjmember_Query,array($map));
-		$results=apiCall(HomePublicApi::Bbjmember_Seller_Query,array($map));
-		$users=apiCall(HomePublicApi::UcenterUser_Query,array());
-		$this->assign('suser',$result['info']);
-		$this->assign('sjuser',$results['info']);
-		$this->assign('auser',$users['info']);
+		$result = apiCall(VBbjmemberInfoApi::QUERY , array($map));
+        $this->assign('sm_list',$result['info']['list']);
+        $this->assign('sm_show',$result['info']['show']);
+
+        $result = apiCall(BbjmemberSellerApi::QUERY , array($map));
+
+
+        $this->assign('sj_list',$result['info']['list']);
+        $this->assign('sj_show',$result['info']['show']);
+
 		$this -> display();
 	}
 
-	/*
-	 * 收藏活动
-	 * */
-	public function sm_schd() {
-
-		$this -> assign('head_title', "宝贝街-收藏活动");
-
-		$this -> display();
-		
-	}
 	/*
 	 * 兑换商品
+	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 * */
 	public function sm_dhsp() {
 

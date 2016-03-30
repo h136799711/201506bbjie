@@ -39,27 +39,35 @@
 											<td>注册时间</td>
 											<td>是否认证</td>
 											<td>是否激活</td>
-											<td>用户状态</td>
 										</tr>
 									</thead>
 									<tbody style="background: #fff;">
-										<volist name='suser' id='vo'>
+                                        <empty name="sm_list">
+                                            <tr>
+                                                <td colspan="5">
+                                                    还没有邀请？
+                                                </td>
+                                            </tr>
+                                            <else/>
+										<volist name='sm_list' id='vo'>
+
 											<tr>
-												<td><volist name='auser' id='v'>
-													<if condition="$vo['uid'] eq $v['id']">
-														{$v['username']}
-													</if>
-												</volist></td>
+												<td>
+                                                    {$vo['username']}
+                                                </td>
 												<td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
 												<td><if condition="$vo['auth_status'] eq 0">待认证<else/>已认证</if></td>
 												<td>已激活</td>
-												<td>正常</td>
 											</tr>
 										</volist>
-										
+
+                                        </empty>
 										
 									</tbody>
 								</table>
+                                <div>
+                                    {$sm_show}
+                                </div>
 
 							</div>
 							<div data-tab-panel-1 class="am-tab-panel ">
@@ -73,7 +81,14 @@
 										</tr>
 									</thead>
 									<tbody style="background: #fff;">
-										<volist name='sjuser' id='vo'>
+                                    <empty name="sj_list">
+                                        <tr>
+                                            <td colspan="5">
+                                                还没有邀请？
+                                            </td>
+                                        </tr>
+                                        <else/>
+										<volist name='sj_list' id='vo'>
 											<tr>
 												<td><volist name='auser' id='v'>
 													<if condition="$vo['uid'] eq $v['id']">
@@ -85,8 +100,13 @@
 												<td>正常</td>
 											</tr>
 										</volist>
+                                    </empty>
 									</tbody>
 								</table>
+
+                                <div>
+                                    {$sj_show}
+                                </div>
 							</div>
 
 						</div>

@@ -212,6 +212,8 @@ class AccountApi {
                 'update_time'=>time(),
                 'coins'=>0,
                 'fucoin'=>0,
+                'contact_tel'=>'',
+                'cancel_task_cnt'=>0,
             );
             $result = apiCall(BbjmemberApi::ADD,array($member));
             if(!$result['status']){
