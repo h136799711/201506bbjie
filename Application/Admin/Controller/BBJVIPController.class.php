@@ -13,14 +13,17 @@ use Home\Api\BbjmemberSellerApi;
 use Home\Api\FinAccountBalanceHisApi;
 use Home\Api\HomePublicApi;
 use Home\Api\ProductSearchWayApi;
+use Home\Api\TaskApi;
 use Home\Api\TaskHisApi;
 use Home\Api\VBbjmemberInfoApi;
 use Home\Api\VBbjmemberSellerInfoApi;
+use Home\Api\VFinAccountBalanceHisApi;
 use Home\Api\VTaskHisInfoApi;
 use Home\Api\VTaskProductSearchWayApi;
 use Home\ConstVar\UserTypeConstVar;
 use Home\Logic\TaskHelperLogic;
 use Home\Model\BbjmemberSellerModel;
+use Home\Model\FinAccountBalanceHisModel;
 use Home\Model\TaskHisModel;
 use Home\Model\TaskLogModel;
 use Home\Model\TaskModel;
@@ -51,10 +54,20 @@ class BBJVIPController extends AdminController{
 
         $order = "create_time desc";
 
-        $result = apiCall(FinAccountBalanceHisApi::QUERY,array($map,$page,$order,$param));
+        $result = apiCall(VFinAccountBalanceHisApi::QUERY,array($map,$page,$order,$param));
         $this->assign('status',$status);
-		$this->assign('list',$result['info']['list']);
+        $list = $result['info']['list'];
+
+        foreach($list as &$vo){
+
+            if($vo['dtree_type'] == FinAccountBalanceHisModel::TYPE_WITHDRAW){
+                $vo['_withdraw'] = json_decode($vo['extra'],JSON_OBJECT_AS_ARRAY);
+            }
+        }
+
+		$this->assign('list',$list);
 		$this->assign('show',$result['info']['show']);
+        $this->assign("withdraw",FinAccountBalanceHisModel::TYPE_WITHDRAW);
 		$this->display();
 	}	
 	/*
@@ -90,11 +103,14 @@ class BBJVIPController extends AdminController{
         $income = $result['info']['income'];
 
         $result = apiCall(AccountApi::GET_INFO,array($uid));
-
+        $left_entity = array(
+            'left_money'=>0,
+            'frozen_money'=>0,
+        );
         $userinfo = $result['info'];
         if($userinfo['user_type'] == UserTypeConstVar::BBJ_MEMBER_GROUP){
             //试民
-            if($dtree_type == 3){//提现
+            if($dtree_type == FinAccountBalanceHisModel::TYPE_WITHDRAW){//提现
                 $left_frozen_money = $userinfo['frozen_money'] - $defray;
                 if($left_frozen_money < 0){
                     $this->error("该账户出现异常!");
@@ -102,18 +118,23 @@ class BBJVIPController extends AdminController{
                 $entity = array(
                     'frozen_money'=>$left_frozen_money,
                 );
+                $left_entity['left_money'] = $userinfo['coins'];
+                $left_entity['frozen_money'] = $left_frozen_money;
                 $result = apiCall(BbjmemberApi::SAVE_BY_ID,array($uid,$entity));
             }
 
         }else if($userinfo['user_type'] == UserTypeConstVar::BBJ_SHOP_GROUP){
             //商家
-            if($dtree_type == 1){//充值
+            if($dtree_type == FinAccountBalanceHisModel::TYPE_RECHARGE){//充值
                 $entity = array(
                     'coins'=>$income+$userinfo['coins'],
                 );
+
+                $left_entity['left_money'] = $entity['coins'];
+                $left_entity['frozen_money'] = $userinfo['frozen_money'];
                 $result = apiCall(BbjmemberSellerApi::SAVE_BY_ID,array($uid,$entity));
 
-            }elseif($dtree_type == 3){
+            }elseif($dtree_type == FinAccountBalanceHisModel::TYPE_WITHDRAW){
                 //提现
                 $entity = array(
                     'frozen_money'=> $userinfo['frozen_money'] - $defray,
@@ -121,6 +142,9 @@ class BBJVIPController extends AdminController{
                 if($entity['frozen_money'] < 0){
                     $this->error("该账户出现异常!");
                 }
+
+                $left_entity['left_money'] = $userinfo['coins'];
+                $left_entity['frozen_money'] = $entity['frozen_money'];
 
                 $result = apiCall(BbjmemberSellerApi::SAVE_BY_ID,array($uid,$entity));
 
@@ -131,7 +155,10 @@ class BBJVIPController extends AdminController{
         }
 
         if($result['status']){
-            $result = apiCall(FinAccountBalanceHisApi::SAVE_BY_ID,array($id,array('status'=>1)));
+            //设置 账户余额、记录改成通过状态
+            $left_entity['status'] = FinAccountBalanceHisModel::STATUS_PASSED;
+
+            $result = apiCall(FinAccountBalanceHisApi::SAVE_BY_ID,array($id,$left_entity));
             if($result['status']){
                 $this->success("充值成功!",U('Admin/BBJVIP/index'));
             }
@@ -152,29 +179,42 @@ class BBJVIPController extends AdminController{
         $dtree_type = $result['info']['dtree_type'];
         $defray = $result['info']['defray'];
         $income = $result['info']['income'];
+        if($result['info']['status'] != FinAccountBalanceHisModel::STATUS_WAIT_CHECK){
+            $this->error("该记录状态非法!");
+        }
 
         $result = apiCall(AccountApi::GET_INFO,array($uid));
 
         $userinfo = $result['info'];
         if($userinfo['user_type'] == UserTypeConstVar::BBJ_MEMBER_GROUP){
             //试民
-            if($dtree_type == 3){//提现
+            if($dtree_type == FinAccountBalanceHisModel::TYPE_WITHDRAW){//提现
 
                 $entity = array(
                     'coins'=>$userinfo['coins']+$defray,
                     'frozen_money'=>$userinfo['frozen_money']-$defray,
                 );
+
+                if($entity['frozen_money'] < 0){
+                    $this->error("该账户出现异常!");
+                }
+
                 $result = apiCall(BbjmemberApi::SAVE_BY_ID,array($uid,$entity));
+
             }
 
         }else if($userinfo['user_type'] == UserTypeConstVar::BBJ_SHOP_GROUP){
             //商家
-            if($dtree_type == 3){
+            if($dtree_type == FinAccountBalanceHisModel::TYPE_WITHDRAW){
                 //提现
                 $entity = array(
                     'coins'=>$userinfo['coins']+$defray,
                     'frozen_money'=>$userinfo['frozen_money']-$defray,
                 );
+
+                if($entity['frozen_money'] < 0){
+                    $this->error("该账户出现异常!");
+                }
 
                 $result = apiCall(BbjmemberSellerApi::SAVE_BY_ID,array($uid,$entity));
 
@@ -185,7 +225,9 @@ class BBJVIPController extends AdminController{
         }
 
         if($result['status']){
-            $result = apiCall(FinAccountBalanceHisApi::SAVE_BY_ID,array($id,array('status'=> 4)));
+
+            $entity['status'] = 4;
+            $result = apiCall(FinAccountBalanceHisApi::SAVE_BY_ID,array($id,$entity));
             if($result['status']){
                 $this->success("操作成功!",U('Admin/BBJVIP/index'));
             }
@@ -374,11 +416,6 @@ class BBJVIPController extends AdminController{
         }
 	}
 
-	public function checksuccesssj(){
-
-		$id=I('id');
-		$entity=array('auth_status'=>1);
-	}
 	public function checksb(){
 
 		$id=I('get.id',0);
@@ -405,6 +442,21 @@ class BBJVIPController extends AdminController{
         $this->assign("user_info",$result['info']);
         $this->display();
 	}
+
+    public function view_user_wallet(){
+        $uid = I('get.id',0);
+        $map = array(
+            'uid'=>$uid,
+        );
+        $page = array('curpage'=>I('get.p',0),'size'=>10);
+        $order = 'create_time desc';
+        $result = apiCall(VFinAccountBalanceHisApi::QUERY,array($map,$page,$order));
+
+        $this->assign("withdraw",FinAccountBalanceHisModel::TYPE_WITHDRAW);
+        $this->assign("list",$result['info']['list']);
+        $this->assign("show",$result['info']['show']);
+        $this->display();
+    }
 
 	/*
 	 * 所有任务
@@ -460,17 +512,28 @@ class BBJVIPController extends AdminController{
 	public function taskgetview(){
 
 
-        $status = $this->_param('status',TaskHisModel::DO_STATUS_NOT_START);
+        $status = $this->_param('status','');
 
 		$map=array(
-            'task_id'=>I('id',0),
-            'do_status'=>$status,
+            'task_id'=>I('get.id',0),
         );
+
+        if(!empty($status)){
+            $map['do_status'] = $status;
+        }
 
 		$page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));
 		$order = " create_time desc ";
 		$result = apiCall(VTaskHisInfoApi::QUERY, array($map, $page, $order));
 
+        $this->assign('status',$status);
+        $this->assign('status_return_money',TaskHisModel::DO_STATUS_RETURNED_MONEY);
+        $this->assign('status_submit',TaskHisModel::DO_STATUS_SUBMIT_ORDER);
+        $this->assign('status_wait_return_money',TaskHisModel::DO_STATUS_RECEIVED_GOODS);
+        $this->assign('status_cancel',TaskHisModel::DO_STATUS_CANCEL);
+        $this->assign('status_not_start',TaskHisModel::DO_STATUS_NOT_START);
+        $this->assign('status_delivery_goods',TaskHisModel::DO_STATUS_DELIVERY_GOODS);
+        $this->assign('status_wait_delivery',TaskHisModel::DO_STATUS_PASS);
 		$this->assign('list',$result['info']['list']);
 		$this->assign('show',$result['info']['show']);
 		$this->display();
@@ -567,7 +630,25 @@ class BBJVIPController extends AdminController{
             $this->error("操作失败!");
         }
 
-
     }
+
+    /**
+     * 已经将提现金额转入用户账户转账
+     * @author 老胖子-何必都 <hebiduhebi@126.com>
+     */
+    public function task_view(){
+
+        $map = array(
+            'id'=>I('get.id',0),
+        );
+        $result = apiCall(TaskApi::GET_INFO,array($map));
+
+        if($result['status']){
+            $this->assign("info",$result['info']);
+        }
+
+        $this->display();
+    }
+
 
 }

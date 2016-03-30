@@ -16,6 +16,11 @@ class DatatreeModel extends Model{
      */
     const BANK_LIST = "51";
 
+    /**
+     * 收款账户
+     */
+    const RECEIPTS_ACCOUNT = "129";
+
 	
 	protected $tablePrefix = 'common_';
 	 

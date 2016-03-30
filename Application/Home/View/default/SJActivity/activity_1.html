@@ -175,9 +175,10 @@
             pid = pid + repo.id+",";
             $("#pid").val(pid);
             num = num || "";
+            var model = repo.model_num_cfg || "买家自由选择";
             $(".img"+num).html("<input type='hidden' name='img[]' value='"+repo.main_img +"'>"+"<img src='" + repo.main_img + "' alt='图片' style='height:80px;width:80px;folat:left;'  />");
             $(".title"+num).html("<input type='hidden' name='title[]' value='"+repo.title +"'>"+"<span name='title'>" +repo.title+ "</span>");
-            $(".guige"+num).html("<input type='text' style='width:150px' name='guige[]' value='"+repo.model_num_cfg+"'>");
+            $(".guige"+num).html("<input type='text' style='width:150px' name='guige[]' value='"+model+"'>");
             $(".num"+num).html("<input type='hidden' name='url[]' value='"+repo.link +"'>"+"<input type='text' style='width:50px' name='num[]' value='1'>");
             $(".xxx"+num).html("<button class='am-btn am-btn-primary am-btn-xs' style='font-size:10px; '>×</button>");
             $('.price'+num).html("<input type='text' class='am-form-field' style='width:150px' name='price[]' value='"+repo.price+"'> <input class='s_pid' type='hidden'  name='pid[]' value='"+repo.id+"'>");
@@ -258,7 +259,6 @@
                 templateSelection: function (repo) {
 
                     if(hasExits(repo.id)){
-                        console.log(repo.id);
                         return;
                     }
 
@@ -275,6 +275,7 @@
                             appendProduct("",repo);
                         } else if ($(".title").text() != '' && $(".title1").text() == '') {
                             if(links < 2){
+
                                 return;
                             }
                             appendProduct("1",repo);
@@ -290,7 +291,7 @@
                         $(".show").html("<br><font color='red'>该商品的铺主为：" + repo.wangwang + "</font><br><font color='red'>您的阿里旺旺为：" + aliwawa + "</font><br><font color='red'>请录入您自己的商品</font>");
                     }
 
-                 return repo.title || repo.text;
+                    return repo.title || repo.text;
                 },
                 templateResult: function (repo) {
                     //console.info(repo);

@@ -8,6 +8,7 @@
 namespace Home\Controller;
 use Home\Api\BbjmemberApi;
 use Home\Api\FinAccountBalanceHisApi;
+use Home\Api\FinBankaccountApi;
 use Home\Model\FinAccountBalanceHisModel;
 use Think\Controller;
 use Think\Storage;
@@ -34,13 +35,26 @@ class SMMoneyController extends HomeController {
 			'status'=>2,
          );
 
+
          if($money <= 0){
              $this->error("提现金额不能必须大于0");
          }
+
+
          $left_coins = $this->userinfo['coins'] - $money;
          if($left_coins < 0){
              $this->error("提现金额不能大于账户余额");
          }
+
+         $result = apiCall(FinBankaccountApi::GET_INFO,array(array('uid'=>$this->uid)));
+
+         if(!$result['status'] || empty($result['info'])){
+             $this->error("请先绑定银行账户!");
+         }
+
+         $extra = json_encode($result['info']);
+         $entity['extra'] = $extra;
+
 
 		 $result = apiCall(FinAccountBalanceHisApi::ADD,array($entity));
 		 if($result['status']){

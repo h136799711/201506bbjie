@@ -313,8 +313,25 @@ class UsersmController extends HomeController {
 
 		$password = $this->userinfo['password'];
 		$pp = think_ucenter_md5($pwd, UC_AUTH_KEY);
-		if ($password == $pp) {
-			$entity = array('uid' => $this->uid, 'bank_name' => I('bank', ''), 'bank_account' => I('bank_num', ''), 'create_time' => time(), 'status' => 0, 'notes' => '', 'cardholder' => I('name', ''), 'province' => I('sheng', ''), 'city' => I('shi', ''), );
+
+
+        if ($password == $pp) {
+            $poundage = I('post.poundage',0);
+
+            $bank_type = I('post.bank_type',0);
+
+			$entity = array('uid' => $this->uid,
+                'dtree_type'=>$bank_type,
+                'bank_name' => I('bank', ''),
+                'bank_account' => I('bank_num', ''),
+                'create_time' => time(), 'status' => 0,
+                'notes' => '',
+                'cardholder' => I('name', ''),
+                'province' => I('sheng', ''),
+                'city' => I('shi', ''),
+                'poundage'=>$poundage,
+
+                );
 			$map = array('uid' => $this->uid, );
 			$result = apiCall(FinBankaccountApi::GET_INFO, array($map));
 			if ($result['info'] == null) {

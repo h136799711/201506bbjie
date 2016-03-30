@@ -16,6 +16,11 @@ class FinAccountBalanceHisModel extends \Think\Model{
 
 
     /**
+     * 购买会员
+     */
+    const TYPE_BUY_MEMBER = 128;
+
+    /**
      * 单个任务完成时，扣除商家的冻结资金
      */
     const TYPE_TASK_OVER_MINUS_MONEY = 119;
@@ -55,5 +60,14 @@ class FinAccountBalanceHisModel extends \Think\Model{
      */
     const TYPE_UNFREEZE_WHEN_TASK_OVER = "86";
 
+    /**
+     * 等待审核
+     */
+    const STATUS_WAIT_CHECK = "2";
+
+    /**
+     * 审核成功
+     */
+    const STATUS_PASSED = "1";
 
 }

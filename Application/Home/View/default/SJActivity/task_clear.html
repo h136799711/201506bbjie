@@ -110,7 +110,16 @@
                                             <div >
                                                 <small >订单金额:
                                                     <if condition="$vo['tb_price'] gt 0">
-                                                        <span class="am-text-danger">￥{$vo.tb_price}</span>
+                                                        <span class="am-text-danger">￥{$vo.tb_price} ({$vo.tb_pay_type_name})</span>
+                                                        <else/>
+                                                        -
+                                                    </if>
+                                                </small>
+                                            </div>
+                                                <div class="">
+                                                <small >返还金额:
+                                                    <if condition="$vo['return_money'] gt 0">
+                                                        <span class="am-text-danger">￥{$vo.return_money}</span>
                                                         <else/>
                                                         -
                                                     </if>
@@ -175,17 +184,27 @@
                             </div>
 
                             <div class="am-u-sm-6 am-u-md-6 am-text-center am-padding-sm am-text-xl">共计使用:
-                                <span class="am-text-danger am-text-xl">¥ {:number_format($all_tb_price+$all_tb_price+$all_tb_express,2,".","")}
+                                <span class="am-text-danger am-text-xl">¥ {:number_format($all_tb_price+$all_task_brokerage+$all_tb_express,2,".","")}
 
                                 </span>
-                                <eq name="can_clear"  value="1">
+                                <eq name="task_info['task_status']" value="3">
+                                    <span class="am-text-danger">当前任务已经结算过</span>
+                                </eq>
+                                <eq name="task_info['task_status']" value="1">
+                                <eq name="can_clear"  value="0">
                                     <span class="am-text-danger">当前仍有任务正在进行中，无法结算</span>
                                     <else/>
-                                    <a class="am-btn am-btn-sm am-btn-primary btn-fix-am ajax-get" href="{:U('Home/SJActivity/all_task_over',array('id'=>I('get.id','0')))}">
+                                    <a data-confirm-text="确定进行结算？！" class="confirm am-btn am-btn-sm am-btn-primary btn-fix-am ajax-get" href="{:U('Home/SJActivity/all_task_over',array('id'=>I('get.id','0')))}">
                                         结算
                                     </a>
                                 </eq>
+                                </eq>
                             </div>
+                        </div>
+                        <div class="  am-u-g am-text-center am-text-warning am-alert  am-alert-warning">
+                            结算之后，将返还多余的金额 ，预计返还 ¥ <span class="am-text-lg">
+                            {:($task_info['frozen_money'] - number_format($all_tb_price+$all_task_brokerage+$all_tb_express,2,".",""))}
+                            </span>
                         </div>
 
                     </div>

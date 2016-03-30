@@ -81,19 +81,26 @@
 							<volist name="list" id="vo">
 								<tr>
 									<td>
-										{$vo.uid}
+										<a href="{:U('Admin/BBJVIP/view_user',array('id'=>$vo['uid']))}">{$vo.username}</a>
 									</td>
 									<td>
-                                        {:getFinaceType($vo['dtree_type'])}
+                                        {$vo['dtree_type_name']}
 									</td>
                                     <td>
-                                        <empty name="$vo['imgurl']">
-                                            没有凭证
+                                        <eq name="vo['dtree_type']" value="$withdraw">
+                                            <div class="am-text-warning">账户类别: {$vo['_withdraw']['bank_name']}</div>
+                                            <div class="am-text-warning">账户: {$vo['_withdraw']['bank_account']}</div>
+                                            <div class="am-text-warning">姓名: {$vo['_withdraw']['cardholder']}</div>
+                                            <div class="am-text-warning"> 开户信息: {$vo['_withdraw']['province']}{$vo['_withdraw']['city']}</div>
+                                        </eq>
+
+                                        <if condition="empty(trim($vo['imgurl']))">
+                                            -
                                             <else/>
                                             <a href="{$vo.imgurl}" target="_blank" >
                                                 <img src="{$vo.imgurl}" alt="凭证" style="width: 120px;height:60px;" />
                                             </a>
-                                        </empty>
+                                        </if>
                                     </td>
                                     <td>
                                         <if condition="$vo['income'] gt 0">
@@ -101,6 +108,10 @@
                                         </if>
                                         <if condition="$vo['defray'] gt 0">
                                             -{$vo.defray}，
+
+                                            <eq name="vo['dtree_type']" value="$withdraw">
+                                                <div class="am-text-warning">手续费: {:($vo['defray']*$vo['_withdraw']['poundage'])}</div>
+                                            </eq>
                                         </if>
                                     </td>
 									<td>
@@ -114,7 +125,12 @@
 										<a href="{:U('Admin/BBJVIP/check',array('id'=>$vo['id']))}" class="ajax-get btn btn-sm btn-primary"><i class="fa fa-eye"></i>通过</a>
 										<a href="{:U('Admin/BBJVIP/moneychecksb',array('id'=>$vo['id']))}" class="ajax-get confirm btn btn-sm btn-danger"><i class="fa fa-trash"></i>驳回</a>
                                         <else/>
-                                            已处理
+
+                                            <eq name="dtree_type" value="3">
+                                                <a href="{:U('Admin/BBJVIP/giro',array('id'=>$vo['id']))}" class="ajax-get btn btn-sm btn-primary">>已打款</a>
+                                                <else/>
+                                                已处理
+                                            </eq>
                                         </eq>
                                     </td>
 								</tr>

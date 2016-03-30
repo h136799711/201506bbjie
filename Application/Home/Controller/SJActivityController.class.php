@@ -22,6 +22,7 @@ use Home\Api\VTaskProductSearchWayApi;
 use Home\Logic\TaskHelperLogic;
 use Home\Model\BbjmemberSellerModel;
 use Home\Model\FinAccountBalanceHisModel;
+use Home\Model\FinFucoinHisModel;
 use Home\Model\TaskHisModel;
 use Home\Model\TaskLogModel;
 use Home\Model\TaskModel;
@@ -329,7 +330,10 @@ class SJActivityController extends SjController {
             'create_time' => time(),
             'notes' => '商家创建了任务计划',
             'dtree_type' => FinAccountBalanceHisModel::TYPE_FREEZE_CREATE_TASK_PLAN,
+            'left_money'=>$this->userinfo['coins'] - $defray,
+            'frozen_money'=>$this->userinfo['frozen_money'] + $defray,
             'status' => 1,
+            'extra'=>'',
             );
 
 
@@ -524,7 +528,14 @@ class SJActivityController extends SjController {
     private function task_over($his){
 
         $tb_price = $his['tb_price'];
-
+        if($his['tb_pay_type'] != TaskHisModel::PAY_TYPE_LEGAL){
+            //扣除手续费
+            $tb_price = number_format($tb_price * 0.99,2,".","");
+        }
+        $result = apiCall(TaskHisApi::SAVE_BY_ID,array($his['id'],array('return_money'=>$tb_price)));
+        if(!$result['status']){
+            $this->error($result['info']);
+        }
         $map = array('uid'=>$his['uid']);
 
         $result = apiCall(BbjmemberApi::GET_INFO,array($map));
@@ -559,14 +570,14 @@ class SJActivityController extends SjController {
         //2. 增加用户虚拟币
         $left_coin = $bbj_member['fucoin']+$task['coin'];
         $notes = "您完成了任务#".$his['id']."#,获得了 ".$task['coin'].VIRTUAL_CURRENCY;
-        $result = apiCall(BbjmemberApi::ADD_FU_COINS,array($uid,$task['coin'],$notes,$left_coin));
+        $result = apiCall(BbjmemberApi::ADD_FU_COINS,array($uid,$task['coin'],$notes,$left_coin,FinFucoinHisModel::PLUS_COMPLETE_TASK));
 
         LogRecord(json_encode($result),__FILE__.__LINE__);
 
         //3. 扣除商家冻结资金
-        $notes = "用户完成了任务#".$his['id']."#,还款给用户#".$uid."#,".$tb_price;
-        $result = apiCall(BbjmemberSellerApi::MINUS_FROZEN_MONEY,array($task['uid'],$tb_price,$notes));
-        LogRecord(json_encode($result),__FILE__.__LINE__);
+//        $notes = "用户完成了任务#".$his['id']."#,还款给用户#".$uid."#,".$tb_price;
+//        $result = apiCall(BbjmemberSellerApi::MINUS_FROZEN_MONEY,array($task['uid'],$tb_price,$notes));
+//        LogRecord(json_encode($result),__FILE__.__LINE__);
 
 
         //4. 增加用户经验值
@@ -581,6 +592,25 @@ class SJActivityController extends SjController {
         $result = apiCall(BbjmemberApi::SET_INC,array(array('uid'=>$uid),'exp',$exp ));
 
         LogRecord(json_encode($result),__FILE__.__LINE__);
+
+        //返还给推荐人 1个福币
+
+        $result = apiCall(BbjmemberApi::GET_INFO,array(array('uid'=>$uid)));
+        if($result['status'] && is_array($result['info'])){
+            $reffer_uid = $result['info']['referrer_id'];
+            $reffer_uid = $result['info']['referrer_id'];
+            $result = apiCall(BbjmemberApi::GET_INFO,array(array('uid'=>$reffer_uid)));
+
+            if($reffer_uid > 0 && is_array($result['info'])){
+                $reffer_coin = 1;
+                $left_coin = $result['info']['fucoin'];
+                $notes = "您推荐的用户#".$uid."#完成了任务#".$his['id']."#,您因此获得了 ".$reffer_coin.VIRTUAL_CURRENCY;
+                $result = apiCall(BbjmemberApi::ADD_FU_COINS,array($uid,$reffer_coin,$notes,$left_coin));
+                if($result['status']){
+                    $this->error($result['info']);
+                }
+            }
+        }
 
     }
 
@@ -1201,109 +1231,122 @@ class SJActivityController extends SjController {
 		}
 		
 	}
-	/*upcount修改任务份数
-	 * */
-	public function upcount(){
-		$user=session('user');
-	 	$id=I('sid',0);
-		$mapp=array('id'=>$id);
-		$money=I('dfmoney','');
-		$result = apiCall(HomePublicApi::TaskPlan_Query, array($mapp));
-		$fenshu=$result['info'][0]['task_cnt'];
-		$yue=$result['info'][0]['yuecount'];
-		$map=array('task_cnt'=>I('rwcount',1)+$fenshu,'yuecount'=>I('rwcount',1)+$yue);
-		$zongjia=I('rwcount',1)*$money;
-		if($zongjia<=0){
-			$this->error('请填写正确的份数!');
-		}else{
-			$results = apiCall(HomePublicApi::TaskPlan_SaveByID, array($id,$map));
-			$entitya = array('uid' => $user['info']['id'], 'defray' => $zongjia , 'income' => '0.000', 'create_time' => time(), 'notes' => '增加份数冻结任务佣金', 'dtree_type' => 5, 'status' => 3, );
-			$resulta = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entitya));
-			if ($resulta['status']) {
-				$return1=M('bbjmemberSeller')->where('uid='.$user['info']['id'])->setDec('coins',$zongjia);
-				$return2=M('bbjmemberSeller')->where('uid='.$user['info']['id'])->setInc('frozen_money',$zongjia);
-				if($return1 && $return2){
-					$this->success('发放成功！');
-				}
-			}
-		}
-	 }
+//	/*upcount修改任务份数
+//	 * */
+//	public function upcount(){
+//		$user=session('user');
+//	 	$id=I('sid',0);
+//		$mapp=array('id'=>$id);
+//		$money=I('dfmoney','');
+//		$result = apiCall(HomePublicApi::TaskPlan_Query, array($mapp));
+//		$fenshu=$result['info'][0]['task_cnt'];
+//		$yue=$result['info'][0]['yuecount'];
+//		$map=array('task_cnt'=>I('rwcount',1)+$fenshu,'yuecount'=>I('rwcount',1)+$yue);
+//		$zongjia=I('rwcount',1)*$money;
+//		if($zongjia<=0){
+//			$this->error('请填写正确的份数!');
+//		}else{
+//			$results = apiCall(HomePublicApi::TaskPlan_SaveByID, array($id,$map));
+//			$entitya = array('uid' => $user['info']['id'], 'defray' => $zongjia , 'income' => '0.000', 'create_time' => time(), 'notes' => '增加份数冻结任务佣金', 'dtree_type' => 5, 'status' => 3, );
+//			$resulta = apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entitya));
+//			if ($resulta['status']) {
+//				$return1=M('bbjmemberSeller')->where('uid='.$user['info']['id'])->setDec('coins',$zongjia);
+//				$return2=M('bbjmemberSeller')->where('uid='.$user['info']['id'])->setInc('frozen_money',$zongjia);
+//				if($return1 && $return2){
+//					$this->success('发放成功！');
+//				}
+//			}
+//		}
+//	 }
 /**/
-	public function phonesele(){
-		$headtitle = "宝贝街-创建搜索";
-		$this -> assign('head_title', $headtitle);
-		$user = session('user');
-		$map = array('parentid' => 36, );
-		$result = apiCall(AdminPublicApi::Datatree_QueryNoPaging, array($map));
-		$mapa = array('uid' => $user['info']['id']);
-		$sj = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($mapa));
-		$this -> assign('aliwawa', $sj['info'][0]['aliwawa']);
-		$this -> assign('username', $user['info']['username']);
-		$this -> display();
-	}
+//	public function phonesele(){
+//		$headtitle = "宝贝街-创建搜索";
+//		$this -> assign('head_title', $headtitle);
+//		$user = session('user');
+//		$map = array('parentid' => 36, );
+//		$result = apiCall(AdminPublicApi::Datatree_QueryNoPaging, array($map));
+//		$mapa = array('uid' => $user['info']['id']);
+//		$sj = apiCall(HomePublicApi::Bbjmember_Seller_Query, array($mapa));
+//		$this -> assign('aliwawa', $sj['info'][0]['aliwawa']);
+//		$this -> assign('username', $user['info']['username']);
+//		$this -> display();
+//	}
 	/*
 	 * 修改任务时间
 	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 * */
-	public function uptime()
-    {
-        $id = I('post.task_id', 0);
-
-        $rwcount = I('post.rwcount', 0);
-        $stime = I('post.stime', 0);
-        $etime = I('post.etime', 0);
-        $stime = strtotime($stime);
-        $etime = strtotime($etime);
-        if ($stime > $etime) {
-            $tmp = $stime;
-            $stime = $etime;
-            $etime = $tmp;
-        }
-
-        $rwcount = intval($rwcount);
-        $entity = array(
-            'start_time' => $stime,
-            'end_time' => $etime
-        );
-        if ($rwcount > 0) {
-            $result = apiCall(TaskPlanApi::GET_INFO, array(array('id'=>$id)));
-
-            if($result['status']){
-
-                $elapse = $rwcount - intval($result['info']['task_cnt']);
-                $yuecount = $result['info']['yuecount'] + $elapse;
-
-                if($yuecount < 0){
-                    $this->error("剩余份数不能小于0!");
-                }else{
-                    $entity['yuecount'] = $yuecount;
-                }
-
-            }
-
-
-            $entity['task_cnt'] = $rwcount;
-        }
-
-        $result = apiCall(TaskPlanApi::SAVE_BY_ID, array($id, $entity));
-        if ($result['status']) {
-            $this->success('操作成功');
-        }else{
-            $this->error($result['info']);
-        }
-    }
-	public function zdysave() {
-		$user=session('user');
-		$entity = array('uid'=>$user['info']['id'] ,'dtree_type' => 1, 'status' => 1, 'create_time' => time(), 'update_time' => time(), 'pid' => I('pid', ''), 'search_url' => '', 'search_q' => I('text', ''), 'search_order' => I('search_order', ''), 'search_condition' => I('weizhi', ''), );
-//		dump($entity);
-		$result = apiCall(HomePublicApi::ProductSearchWay_Add, array($entity));
-		if ($result['status']) {
-			$this -> success('添加搜索成功', U('Home/SJActivity/createsearch'));
-		}else{
-			$this->error('创建自定义搜索失败!');
-		}
-		
-	}
+//	public function uptime()
+//    {
+//        $id = I('post.task_id', 0);
+//
+//        $rwcount = I('post.rwcount', 0);
+//        $stime = I('post.stime', 0);
+//        $etime = I('post.etime', 0);
+//        $stime = strtotime($stime);
+//        $etime = strtotime($etime);
+//        if ($stime > $etime) {
+//            $tmp = $stime;
+//            $stime = $etime;
+//            $etime = $tmp;
+//        }
+//
+//        $rwcount = intval($rwcount);
+//        $entity = array(
+//            'start_time' => $stime,
+//            'end_time' => $etime
+//        );
+//        if ($rwcount > 0) {
+//            $result = apiCall(TaskPlanApi::GET_INFO, array(array('id'=>$id)));
+//
+//            if($result['status']){
+//
+//                $elapse = $rwcount - intval($result['info']['task_cnt']);
+//                if($elapse < 0){
+//                    $this->error("修改的任务分数必须大于之前的");
+//                }
+//                //需要增加冻结资金
+//                $elapse_gold = $elapse * $result['info']['task_gold'];
+//                dump($result);
+//                exit;
+//                $entity = array(
+//                    'uid' => $this->uid,
+//                    'defray' => $elapse_gold ,
+//                    'income' => '0.000',
+//                    'create_time' => time(),
+//                    'notes' => '商家增加了任务份数',
+//                    'dtree_type' => FinAccountBalanceHisModel::TYPE_FREEZE_CREATE_TASK_PLAN,
+//                    'left_money'=>$this->userinfo['coins'] - $elapse_gold,
+//                    'frozen_money'=>$this->userinfo['frozen_money'] + $elapse_gold,
+//                    'status' => 1,
+//                    'extra'=>'',
+//                    );
+//
+//                $result = apiCall(FinAccountBalanceHisApi::ADD, array($entity));
+//            }
+//
+//
+//            $entity['task_cnt'] = $rwcount;
+//        }
+//
+//        $result = apiCall(TaskPlanApi::SAVE_BY_ID, array($id, $entity));
+//        if ($result['status']) {
+//            $this->success('操作成功');
+//        }else{
+//            $this->error($result['info']);
+//        }
+//    }
+//	public function zdysave() {
+//		$user=session('user');
+//		$entity = array('uid'=>$user['info']['id'] ,'dtree_type' => 1, 'status' => 1, 'create_time' => time(), 'update_time' => time(), 'pid' => I('pid', ''), 'search_url' => '', 'search_q' => I('text', ''), 'search_order' => I('search_order', ''), 'search_condition' => I('weizhi', ''), );
+////		dump($entity);
+//		$result = apiCall(HomePublicApi::ProductSearchWay_Add, array($entity));
+//		if ($result['status']) {
+//			$this -> success('添加搜索成功', U('Home/SJActivity/createsearch'));
+//		}else{
+//			$this->error('创建自定义搜索失败!');
+//		}
+//
+//	}
 
     /**
      * 删除任务
@@ -1371,7 +1414,7 @@ class SJActivityController extends SjController {
             $this->assign("all_task_brokerage",$result['info']);
         }
 
-        $result = apiCall(VTaskHisInfoApi::SUM,array($map,'tb_price'));
+        $result = apiCall(VTaskHisInfoApi::SUM,array($map,'return_money'));
 
         if($result['status']){
             $this->assign("all_tb_price",$result['info']);
@@ -1387,7 +1430,8 @@ class SJActivityController extends SjController {
             'seller_uid'=>$this->uid,
             'task_id'=>$task_id,
         );
-        $map['do_status'] = array('neq',array(TaskHisModel::DO_STATUS_DONE,TaskHisModel::DO_STATUS_RETURNED_MONEY,TaskHisModel::DO_STATUS_CANCEL));
+        $map['do_status'] = array('not in',array(TaskHisModel::DO_STATUS_DONE,TaskHisModel::DO_STATUS_RETURNED_MONEY,TaskHisModel::DO_STATUS_CANCEL));
+
         $result = apiCall(TaskHisApi::GET_INFO,array($map));
         $this->assign("can_clear",1);
         if($result['status'] && is_array($result['info'])){
@@ -1402,9 +1446,9 @@ class SJActivityController extends SjController {
      * @author 老胖子-何必都 <hebiduhebi@126.com>
      */
     public function all_task_over(){
-        //TODO: 对所有任务进行结算
-        //1. 对剩余的冻结资金 进行解冻,返还
 
+        //1. 对剩余的冻结资金 进行解冻,返还
+        $this->reloadUserInfo();
         $task_id = $this->_param('id',0);
         $result = apiCall(TaskApi::GET_INFO,array(array('id'=>$task_id)));
         if($result['status']){
@@ -1419,7 +1463,7 @@ class SJActivityController extends SjController {
             'seller_uid'=>$this->uid,
             'task_id'=>$task_id,
         );
-        $map['do_status'] = array('neq',array(TaskHisModel::DO_STATUS_DONE,TaskHisModel::DO_STATUS_RETURNED_MONEY,TaskHisModel::DO_STATUS_CANCEL));
+        $map['do_status'] = array('not in',array(TaskHisModel::DO_STATUS_DONE,TaskHisModel::DO_STATUS_RETURNED_MONEY,TaskHisModel::DO_STATUS_CANCEL));
         $result = apiCall(TaskHisApi::GET_INFO,array($map));
         if($result['status'] && is_array($result['info'])){
             $this->error("当前仍有任务正在进行中...");
@@ -1440,7 +1484,7 @@ class SJActivityController extends SjController {
             $all_task_brokerage = $result['info'];
         }
 
-        $result = apiCall(VTaskHisInfoApi::SUM,array($map,'tb_price'));
+        $result = apiCall(VTaskHisInfoApi::SUM,array($map,'return_money'));
 
         if($result['status']){
             $all_tb_price = $result['info'];
@@ -1453,17 +1497,33 @@ class SJActivityController extends SjController {
         }
 
         $all_use_price = $all_task_brokerage + $all_tb_express + $all_tb_price;
-
         $left_price = $task_info['frozen_money'] - $all_use_price;
+
         if($left_price < 0){
             $this->error("该任务资金出现异常，请联系管理员!");
         }
-        $uid = $task_info['uid'];
-        $notes = "任务#".$task_id."#已结算";
-        $result = apiCall(BbjmemberSellerApi::ADD_COINS_FROM_FROZEN_MONEY,array($uid,$left_price,$notes));
+        //记录帐号资金变动日志
+        $notes = "任务#".$task_id."#已结算,花费了".$all_use_price."元";
+        $entity = array(
+            'uid'=>$this->uid,
+            'defray'=>$all_use_price,
+            'income'=>$left_price,
+            'create_time'=>time(),
+            'notes'=>$notes,
+            'dtree_type'=>FinAccountBalanceHisModel::TYPE_TASK_OVER_MINUS_MONEY,
+            'imgurl'=>'',
+            'status'=>1,
+            'left_money'=>$this->userinfo['coins'] + $left_price,
+            'frozen_money'=>$this->userinfo['frozen_money'] - $task_info['frozen_money'],
+            'extra'=>'',
+        );
+        $result = apiCall(FinAccountBalanceHisApi::ADD,array($entity));
+
+
+        $result = apiCall(BbjmemberSellerApi::SAVE_BY_ID,array($this->uid,array('frozen_money'=>$entity['frozen_money'],'coins'=>$entity['left_money'])));
 
         if($result['status']){
-            $result  = apiCall(TaskApi::SAVE_BY_ID,array($task_id,array('task_status'=>TaskModel::STATUS_TYPE_OVER)));
+            $result  = apiCall(TaskApi::SAVE_BY_ID,array($task_id,array('task_cost_money'=>$all_use_price,'task_status'=>TaskModel::STATUS_TYPE_OVER)));
             $this->success("结算成功!",U('Home/SJActivity/sj_tbhd'));
         }else{
             $this->error("操作失败！");

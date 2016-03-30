@@ -72,6 +72,8 @@
                 <div class="am-u-g">
                 <div class="order_info am-u-sm-5 am-text-left am-padding-sm">
                     <div>淘宝订单号: {$task_his['tb_orderid']}</div>
+                    <div>支付金额: {$task_his['tb_price']} 元</div>
+                    <div>支付方式: {$task_his['tb_pay_type_name']}</div>
                     <div>收货信息: {$task_his['tb_address']}</div>
                     <notempty name="task_his['tb_notes']">
                     <div>备注:{$task_his['tb_notes']}

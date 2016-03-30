@@ -61,7 +61,7 @@ class BbjmemberApi extends Api{
         return $this->save(array('uid'=>$uid),$entity);
     }
 
-    public function addFucoins($uid,$fucoin,$notes,$left_fucoin=0){
+    public function addFucoins($uid,$fucoin,$notes,$left_fucoin=0,$type=''){
 
         $result = $this->setInc(array('uid'=>$uid),"fucoin",$fucoin);
 
@@ -72,7 +72,7 @@ class BbjmemberApi extends Api{
                 'income'=>$fucoin,
                 'create_time'=>time(),
                 'notes'=>$notes,
-                'dtree_type'=>FinFucoinHisModel::PLUS_COMPLETE_TASK,
+                'dtree_type'=>$type,
                 'status'=>1,
                 'left_fucoin'=>$left_fucoin,
             );
@@ -86,6 +86,12 @@ class BbjmemberApi extends Api{
     }
 
     public function addMoney($uid,$price,$notes){
+        $result = $this->getInfo(array('uid'=>$uid));
+        if($result['status']){
+            $entity = $result['info'];
+        }else{
+            return array('status'=>false,'info'=>$uid.'找不到该用户信息');
+        }
 
         $result = $this->setInc(array('uid'=>$uid),"coins",$price);
 
@@ -99,6 +105,9 @@ class BbjmemberApi extends Api{
                 'dtree_type'=>FinAccountBalanceHisModel::TYPE_TASK_OVER_RETURN_TO_USER,
                 'imgurl'=>'',
                 'status'=>1,
+                'left_money'=>$entity['coins']+$price,
+                'frozen_money'=>$entity['frozen_money'],
+                'extra'=>'',
             );
             $api = new FinAccountBalanceHisApi();
             $result = $api->add($entity);

@@ -66,6 +66,8 @@ class HomeController extends  Controller {
         if($result['status']){
             $this->userinfo = $result['info'];
             session('user',$this->userinfo);
+            $this->assign("user",$this->userinfo);
+            $this->assign("username",$this->userinfo['username']);
         }else{
             $this->error($result['info']);
         }

@@ -136,18 +136,26 @@
 				<div class="am-modal-hd">更换提现账号
 					<a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
 				</div>
-				<form class="bank_form" action="{:U('Home/Usersm/addbank')}" method="post">
+				<form class="bank_form j_bank_form" action="{:U('Home/Usersm/addbank')}" method="post">
 
 					<div class="am-modal-bd" style="margin-left: 100px;">
 						<table>
 							<tr>
 								<td>开户行：</td>
-								<td><select id="j_bank_select" name="bank" class="" style="width: 160px;">
+								<td><select id="j_bank_select" name="bank_type" class="j_bank" style="width: 160px;">
 										<option value="">请选择</option>
-										<volist name="bank_list" id="vo">
-                                            <option value="{$vo.name}">{$vo.name}</option>
+                                        <volist name="bank_list" id="vo">
+                                            <option data-bank-name="{$vo.name}" data-extra="{$vo.notes}" data-hidden-value="{$vo.hidden_value}" value="{$vo.id}">{$vo.name}</option>
                                         </volist>
-									</select><br><span style="color: forestgreen;">推荐使用银行卡提现，每日提现三次且不收取手续费</span>
+                                    </select>
+
+                                    <div>
+                                        <span class="j_notes am-text-warning">
+                                            推荐使用银行卡提现，每日提现三次且不收取手续费
+                                        </span>
+                                    </div>
+                                    <input type="hidden" name="bank" value="" class="j_bank_name" />
+                                    <input type="hidden" name="poundage" value="0" class="j_hidden_value" />
 								</td>
 							</tr>
 							<tr>
@@ -295,6 +303,17 @@
 <block name="area_footer">
 <script type="text/javascript">
 		$(function(){
+            $(".j_bank").change(function(){
+                var $ele = $(".j_bank").find("option:selected");
+                var notes =  $ele.data('extra');
+                var hidden_value =  $ele.data('hidden-value');
+                var bank_name = $ele.data('bank-name');
+
+                $(".j_bank_form .j_notes").text(notes);
+                $(".j_bank_form .j_hidden_value").val(hidden_value);
+                $(".j_bank_form .j_bank_name").val(bank_name);
+
+            });
             $("#j_bank_select").select2();
 				$('#loc_province').change(function(){
 					var sheng=$('#loc_province option:selected').text();

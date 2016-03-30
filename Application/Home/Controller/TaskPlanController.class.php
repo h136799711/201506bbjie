@@ -41,6 +41,7 @@ class TaskPlanController extends SjController {
         //欲解冻的资金
 //        $income = $count * $income;
         $income = $result['info']['frozen_money'];
+        $this->reloadUserInfo();
 
         if(!empty($plan_id)){
             $result = apiCall(TaskPlanApi::DELETE,array(array('id'=>$plan_id)));
@@ -54,6 +55,9 @@ class TaskPlanController extends SjController {
                     'notes' => '用户删除了任务计划',
                     'dtree_type' => FinAccountBalanceHisModel::TYPE_UNFREEZE_DELETE_TASK_PLAN,
                     'status' => 1,
+                    'extra'=>'',
+                    'left_money'=>$this->userinfo['coins'] + $income,
+                    'frozen_money'=>$this->userinfo['frozen_money'] - $income,
                 );
 
                 $result = apiCall(FinAccountBalanceHisApi::ADD, array($entity));

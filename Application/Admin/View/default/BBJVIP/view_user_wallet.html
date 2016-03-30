@@ -1,0 +1,123 @@
+<extend name="template/base_index" />
+
+
+<block name="area_header">
+
+    <style type="text/css">
+        .form-horizontal .control-label{
+            padding-top:0px;
+        }
+    </style>
+
+</block>
+
+<block name="area_body">
+	{:W('Menus/topbar')}
+	<div class="admin-main container-fluid">
+		{:W('Menus/left')}
+		<div class="admin-main-content">
+			{:W('Menus/breadcrumb')}
+            <a class="btn btn-sm btn-default" href="javascript:history.back(-1);">
+                <i class="fa fa-reply"></i>返回
+            </a>
+
+            <div CLASS="padding-sm">
+
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation"><a href="{:U('Admin/BBJVIP/view_user',array('id'=>I('get.id',0)))}" >基本信息</a></li>
+                    <li role="presentation"  class="active"><a href="#profile" >余额变动</a></li>
+
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane " id="home"></div>
+
+                    <div role="tabpanel" class="tab-pane active" id="profile">
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        类型
+                                    </th>
+                                    <th>
+                                        收支
+                                    </th>
+                                    <th>
+                                        时间
+                                    </th>
+                                    <th>
+                                        备注
+                                    </th>
+                                    <th>
+                                        附加信息
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <empty name="list">
+                                    <tr>
+                                        <td colspan="5" class="text-center">没有相关数据!</td>
+                                    </tr>
+                                    <else/>
+                                    <volist name="list" id="vo">
+                                        <tr>
+                                            <td>
+                                                {$vo.dtree_type_name}
+                                            </td>
+                                            <td>
+                                                <if condition="$vo['defray'] gt 0">
+                                                    -{$vo.defray},
+                                                </if>
+                                                <if condition="$vo['income'] gt 0">
+                                                    +{$vo.income}
+                                                </if>
+                                            </td>
+                                            <td>
+                                                {$vo.create_time|date='Y-m-d H:i:s',###}
+                                            </td>
+                                            <td>
+                                                {$vo.notes}
+                                            </td>
+                                            <td>
+                                                <eq name="vo['dtree_type']" value="$withdraw">
+                                                <div class="am-text-warning">账户类别: {$vo['_withdraw']['bank_name']}</div>
+                                                <div class="am-text-warning">账户: {$vo['_withdraw']['bank_account']}</div>
+                                                <div class="am-text-warning">姓名: {$vo['_withdraw']['cardholder']}</div>
+                                                <div class="am-text-warning"> 开户信息: {$vo['_withdraw']['province']}{$vo['_withdraw']['city']}</div>
+                                            </eq>
+
+                                                <if condition="empty(trim($vo['imgurl']))">
+                                                    -
+                                                    <else/>
+                                                    <a href="{$vo.imgurl}" target="_blank" >
+                                                        <img src="{$vo.imgurl}" alt="凭证" style="width: 120px;height:60px;" />
+                                                    </a>
+                                                </if>
+                                            </td>
+                                        </tr>
+                                    </volist>
+
+                                </empty>
+                            </tbody>
+                        </table>
+                    </div>
+                    {$show}
+
+                </div>
+
+            </div>
+
+
+
+
+
+		</div>
+		<!-- END admin-main-content -->
+	</div>
+		<!-- END admin-main-->
+</block>
+
+<block name="area_footer">
+</block>

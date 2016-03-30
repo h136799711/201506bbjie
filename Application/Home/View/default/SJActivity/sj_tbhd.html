@@ -91,7 +91,7 @@
                                     <li>
                                         <a href="{:U('Home/TaskHis/all',array('status'=>'reject'))}">
                                             已驳回
-                                            <if condition="$count['wait_ret_money'] gt 0">
+                                            <if condition="$count['reject'] gt 0">
                                                 <span class="am-text-danger">{$count['reject']}</span>
                                             </if>
                                         </a>
@@ -168,6 +168,8 @@
 												</td>
 
 												<td>
+
+                                                    <eq name="vo['task_status']" value="1">
                                                     <eq name="user['task_gettype']" value="1">
 
                                                         <div class="am-btn-group">
@@ -184,6 +186,20 @@
 
                                                         <else/>
                                                         <a href="{:U('Home/SJActivity/sh_user',array('id'=>$vo['id']))}" class="am-btn-sm am-btn-primary am-btn  btn-fix-am">审批用户</a>
+                                                        <div class="am-dropdown" data-am-dropdown>
+                                                            <button class="am-btn am-btn-secondary am-dropdown-toggle  btn-fix-am" data-am-dropdown-toggle> <span class="am-icon-caret-down"></span></button>
+                                                            <ul class="am-dropdown-content">
+                                                                <li class="am-dropdown-header">
+                                                                    <a CLASS="am-btn-sm " href="{:U('Home/SJActivity/task_clear',array('id'=>$vo['id']))}">结算</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+
+
+                                                    </eq>
+                                                        <else/>
+                                                        <a CLASS="am-btn-sm am-btn-primary am-btn  btn-fix-am" href="{:U('Home/SJActivity/task_clear',array('id'=>$vo['id']))}">结算记录</a>
+
                                                     </eq>
                                                 </td>
 											</tr>
@@ -213,8 +229,10 @@
                                                 <td>
                                                 </td>
                                                 <td>
+
+                                                    <eq name="task_status" value="1">
                                                     <a  class="am-btn-sm am-btn-link am-btn ajax-get"  href="{:U('Home/SJActivity/zanting',array('id'=>$vo['id']))}">暂停任务</a>
-                                                    <BR/><a  class="am-btn-sm am-btn-link am-btn"  href="{:U('Home/SJActivity/alluser',array('id'=>$vo['id']))}">任务用户</a>
+                                                        <BR/></eq><a  class="am-btn-sm am-btn-link am-btn"  href="{:U('Home/SJActivity/alluser',array('id'=>$vo['id']))}">任务用户</a>
                                                 </td>
                                             </tr>
                                             <tr class="margin">

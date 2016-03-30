@@ -428,6 +428,9 @@ class SMActivityController extends HomeController {
             $this->getAddressList();
             $this->getGoodsForDelivery($task);
             $this->display('rws_reject');
+        }else{
+            $this->getLogList($id);
+            $this->display('rws_wait_check');
         }
 
 

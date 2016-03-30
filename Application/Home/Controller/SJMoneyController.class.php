@@ -10,6 +10,7 @@ use Home\Api\BbjmemberSellerApi;
 use Home\Api\FinAccountBalanceHisApi;
 use Home\Api\FinBankaccountApi;
 use Home\Model\BbjmemberSellerModel;
+use Home\Model\FinAccountBalanceHisModel;
 use Home\Model\FinBankaccountModel;
 use Think\Controller;
 use Home\Api\HomePublicApi;
@@ -29,15 +30,28 @@ class SJMoneyController extends HomeController {
 	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 * */
 	public function deposit() {
+        $this->reloadUserInfo();
 		$money = I('money', '0.00');
 
-		$entity = array('uid' => $this->uid,
+        $result = apiCall(FinBankaccountApi::GET_INFO,array(array('uid'=>$this->uid)));
+
+        if(!$result['status'] || empty($result['info'])){
+            $this->error("请先绑定银行账户!");
+        }
+
+        $extra = json_encode($result['info']);
+
+		$entity = array(
+            'uid' => $this->uid,
             'income' => '0',
             'defray' => $money . '.00',
             'create_time' => time(),
             'notes' => '用于提现',
-            'dtree_type' => 3,
-            'status' =>2
+            'dtree_type' => FinAccountBalanceHisModel::TYPE_WITHDRAW,
+            'status' =>2,
+            'extra'=>$extra,
+            'left_money'=>0,
+            'frozen_money'=>0,
             );
 
 		$result = apiCall(FinAccountBalanceHisApi::ADD, array($entity));
@@ -46,6 +60,10 @@ class SJMoneyController extends HomeController {
             'coins'=>$this->userinfo['coins'] - $money,
             'frozen_money'=>$this->userinfo['frozen_money'] + $money,
         );
+
+        if($entity['coins'] < 0){
+            $this->error("提现金额不能大于账户余额");
+        }
 
         $result = apiCall(BbjmemberSellerApi::SAVE_BY_ID,array($this->uid,$entity));
 
@@ -58,16 +76,38 @@ class SJMoneyController extends HomeController {
 	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 */
 	public function recharge(){
+        $this->reloadUserInfo();
         $user = $this->userinfo;
+        $zhanghao = I('post.zhanghao','');
+        $picurl = I('post.picurl','');
+        $stnum = I("post.stnum",'');
+        $money = I("post.money",'');
+
+	    if(empty($picurl)){
+            $picurl = "";
+        }
+
+        if(empty($zhanghao) || $zhanghao == "请选择"){
+            $this->error("请选择收款帐号!");
+        }
+
+        if(empty($stnum)){
+            $this->error("请填写流水号!");
+        }
+
 		$entity = array(
             'uid' => $user['uid'],
-            'imgurl'=>I('picurl'),
-            'income' => I('post.money','').'.000'
-            , 'defray' => '0.000',
+            'imgurl'=>$picurl,
+            'income' => $money.'.00',
+            'defray' => '0.0',
+            'frozen_money'=>$user['frozen_money'],
+            'left_money'=>$user['coins'],
             'create_time' => time(),
-            'notes' => I('post.zhanghao','').'流水号：'.I("post.stnum",''),
-            'dtree_type' => 1,
-            'status' => 2, );
+            'notes' => $zhanghao.',流水号：'.$stnum,
+            'dtree_type' => FinAccountBalanceHisModel::TYPE_RECHARGE,
+            'status' => 2,
+            'extra'=>'',
+            );
 
 		$result = apiCall(FinAccountBalanceHisApi::ADD, array($entity));
 
@@ -153,7 +193,7 @@ class SJMoneyController extends HomeController {
                     'income' => '0.000',
                     'create_time' => time(),
                     'notes' => '用于开通'.$type.'会员'.$month.'个月',
-                    'dtree_type' => 4,
+                    'dtree_type' => FinAccountBalanceHisModel::TYPE_BUY_MEMBER,
                     'status' => 1,
                     );
                 apiCall(HomePublicApi::FinAccountBalanceHis_Add, array($entity));
@@ -177,7 +217,14 @@ class SJMoneyController extends HomeController {
             $this->error("登录密码错误");
         }
 
-        $entity = array('uid' => $this->uid,
+        $poundage = I('post.poundage',0);
+
+        $bank_type = I('post.bank_type',0);
+
+
+        $entity = array(
+            'uid' => $this->uid,
+            'dtree_type'=>$bank_type,
             'bank_name' => I('bank', ''),
             'bank_account' => I('bank_num', ''),
             'create_time' => time(),
@@ -185,7 +232,8 @@ class SJMoneyController extends HomeController {
             'notes' => '',
             'cardholder' => I('name', ''),
             'province' => I('sheng', ''),
-            'city' => I('shi', '')
+            'city' => I('shi', ''),
+            'poundage' =>$poundage
             );
 
         $map = array('uid' => $this->uid, );

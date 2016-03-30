@@ -1,0 +1,132 @@
+<extend name="template/base_index" />
+
+
+<block name="area_header">
+    <style type="text/css">
+        .form-horizontal .control-label{
+            padding-top:0px;
+        }
+    </style>
+
+</block>
+
+<block name="area_body">
+	{:W('Menus/topbar')}
+	<div class="admin-main container-fluid">
+		{:W('Menus/left')}
+		<div class="admin-main-content">
+			{:W('Menus/breadcrumb')}
+            <a class="btn btn-sm btn-default" href="javascript:history.back(-1);">
+                <i class="fa fa-reply"></i>返回
+            </a>
+
+            <div CLASS="padding-sm">
+
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">任务基本信息</a></li>
+                    <li role="presentation"><a href="{:U('Admin/BBJVIP/taskgetview',array('id'=>I('get.id',0)))}" >任务用户</a></li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="home">
+                        <!-- 带验证 form -->
+                        <form class="form-horizontal validateForm">
+                            <fieldset>
+                                <legend>
+                                    </legend>
+                                <div class="form-group">
+                                    <label  class="col-md-2 col-lg-2 control-label">任务名称</label>
+                                    <div class="col-md-10 col-lg-10">
+                                        {$info.task_name}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label  class="col-md-2 col-lg-2 control-label">商家旺旺</label>
+                                    <div class="col-md-10 col-lg-10">
+                                        <span><a target="_blank" href="{:U('Admin/BBJVIP/view_user',array('id'=>$info['uid']))}">{$info.aliwawa}</a></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label  class="col-md-2 col-lg-2 control-label">发货模式</label>
+                                    <div class="col-md-10 col-lg-10">
+                                        <div>
+                                            <eq name="info['delivery_mode']" value="1">
+                                            平台发货
+                                            <else/>
+                                            商家发货
+                                        </eq>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label  class="col-md-2 col-lg-2 control-label">任务保证金、佣金、邮费</label>
+                                    <div class="col-md-10 col-lg-10">
+                                        <div class=""> ¥ {$info.task_gold}、¥ {$info.task_brokerage}、¥ {$info.task_postage}</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputtitle" class="col-md-2 col-lg-2 control-label">创建时间</label>
+                                    <div class="col-md-10 col-lg-10">
+                                        <div class="">{$info.create_time|date='Y-m-d h:i:s',###}</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-2 col-lg-2 control-label">冻结资金</label>
+                                    <div class="col-md-10 col-lg-10">
+                                        <div class="">{$info.frozen_money} 元</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-2 col-lg-2 control-label">奖励虚拟币</label>
+                                    <div class="col-md-10 col-lg-10">
+                                        <div class="">{$info.coin}</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-2 col-lg-2 control-label">聊天暗语</label>
+                                    <div class="col-md-10 col-lg-10">
+                                        <div class="">
+                                            <empty name="$info['chat_argot']">-<else/>{$info['chat_argot']}</empty>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-2 col-lg-2 control-label">优惠信息</label>
+                                    <div class="col-md-10 col-lg-10">
+                                        <div class="">{$info.dtree_preferential}</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-2 col-lg-2 control-label">备注</label>
+                                    <div class="col-md-10 col-lg-10">
+                                        <div class="">
+                                            <empty name="$info['notes']">-<else/>{$info['notes']}</empty>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="profile">
+
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+
+		</div>
+		<!-- END admin-main-content -->
+	</div>
+		<!-- END admin-main-->
+</block>
+
+<block name="area_footer">
+</block>

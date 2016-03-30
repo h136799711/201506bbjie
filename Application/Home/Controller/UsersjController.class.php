@@ -6,13 +6,16 @@
 // | Copyright (c) 2013-2016, http://www.itboye.com. All Rights Reserved.
 // |-----------------------------------------------------------------------------------
 namespace Home\Controller;
+use Admin\Api\DatatreeApi;
 use Admin\Api\MessageApi;
 use Admin\Api\MsgboxApi;
+use Admin\Model\DatatreeModel;
 use Admin\Model\MsgboxModel;
 use Home\Api\BbjmemberSellerApi;
 use Home\Api\FinAccountBalanceHisApi;
 use Home\Api\FinBankaccountApi;
 use Home\Api\VFinAccountBalanceHisApi;
+use Home\Model\FinAccountBalanceHisModel;
 use Think\Controller;
 use Home\Api\HomePublicApi;
 
@@ -277,6 +280,7 @@ class UsersjController extends SjController {
 	 * */
 	public function sj_zjgl(){
 
+        $this->reloadUserInfo();
 		$this->assign('head_title',"宝贝街-资金管理");
 
 		$uid = UID;
@@ -284,25 +288,36 @@ class UsersjController extends SjController {
         $page = array('curpage' => I('get.p', 0), 'size' => 10);
         $order = "create_time desc";
 
+
+        $info = apiCall(FinBankaccountApi::GET_INFO, array($map));
+
+        $this -> assign('bank', $info['info']);
+
+        $map['status'] = FinAccountBalanceHisModel::STATUS_PASSED;
+
         $result = apiCall(VFinAccountBalanceHisApi::QUERY, array($map, $page,$order));
         $this->assign('all',$result['info']['list']);
         $this->assign('show',$result['info']['show']);
 
-        $info = apiCall(FinBankaccountApi::GET_INFO, array($map));
-
-		$this -> assign('bank', $info['info']);
 
         //充值
-        $map['dtree_type'] = 1;
+        $map['dtree_type'] = FinAccountBalanceHisModel::TYPE_RECHARGE;
         $result = apiCall(FinAccountBalanceHisApi::QUERY, array($map, $page,$order));
         $this->assign('list_1',$result['info']['list']);
         $this->assign('show_1',$result['info']['show']);
         //
-        $map['dtree_type'] = 3;
+        $map['dtree_type'] = FinAccountBalanceHisModel::TYPE_WITHDRAW;
         $result = apiCall(FinAccountBalanceHisApi::QUERY, array($map, $page,$order));
         $this->assign('list_3',$result['info']['list']);
         $this->assign('show_3',$result['info']['show']);
-        $this->reloadUserInfo();
+
+        $result = apiCall(DatatreeApi::QUERY_NO_PAGING, array(array('parentid'=>DatatreeModel::BANK_LIST)));
+
+        $this -> assign('bank_list', $result['info']);
+
+        $result = apiCall(DatatreeApi::QUERY_NO_PAGING, array(array('parentid'=>DatatreeModel::RECEIPTS_ACCOUNT)));
+
+        $this -> assign('receipts_account', $result['info']);
 
 		$this->display();
 	}
