@@ -451,8 +451,7 @@ function action_log($action = null, $model = null, $record_id = null, $user_id =
     //查询行为,判断是否执行
     $action_info = apiCall("Admin/Action/getInfo", array(array("name"=>$action)));
 	
-	
-//	dump($action_info);
+
     if($action_info['status'] && is_array($action_info['info'])  && $action_info['info']['status'] != 1){
     		
         return '该行为被禁用或删除';
@@ -465,6 +464,7 @@ function action_log($action = null, $model = null, $record_id = null, $user_id =
     $data['model']          =   $model;
     $data['record_id']      =   $record_id;
     $data['create_time']    =   NOW_TIME;
+    $action_info            =   $action_info['info'];
 
     //解析日志规则,生成日志备注
     if(!empty($action_info['log'])){
@@ -482,7 +482,7 @@ function action_log($action = null, $model = null, $record_id = null, $user_id =
                     $replace[] = $log[$param[0]];
                 }
             }
-			
+
             $data['remark'] =   str_replace($match[0], $replace, $action_info['log']);
         }else{
             $data['remark'] =   $action_info['log'];
@@ -491,6 +491,7 @@ function action_log($action = null, $model = null, $record_id = null, $user_id =
         //未定义日志规则，记录操作url
         $data['remark']     =   '操作url：'.$_SERVER['REQUEST_URI'];
     }
+
 	$result = apiCall("Admin/ActionLog/add", array($data));
 	
 	if(!$result['status']){
@@ -586,7 +587,7 @@ function execute_action($rules = false, $action_id = null, $user_id = null){
         $map['create_time'] = array('gt', NOW_TIME - intval($rule['cycle']) * 3600);
 		
 		//统计执行次数
-        $exec_count = M('ActionLog')->where($map)->count();
+        $exec_count = M('ActionLog',"common_")->where($map)->count();
         if($exec_count > $rule['max']){
             continue;
         }

@@ -49,8 +49,10 @@
 					<tr style="border: 1px solid #ccc; height: 37px; ">
 						<td>{$vo.id}</td>
 						<td>
+                            <a href="{:U('Shop/Index/spxq',array('id'=>$vo['id']))}" target="_blank">
 							<img height="60" width="80" src="{$vo['main_img']}">
 							{$vo.name}
+                            </a>
 						</td>
 
 						<td>
@@ -62,7 +64,7 @@
                         </td>
 						<td>
                             <if condition="$vo['exchange_status'] eq 0">待审核</if>
-                            <if condition="$vo['exchange_status'] eq 1"><span class="am-text-success">审核成功，等待发货</span></if>
+                            <if condition="$vo['exchange_status'] eq 1"><span class="am-text-success">审核成功，等待分配任务</span></if>
                             <if condition="$vo['exchange_status'] eq 2"><span class="am-text-danger">审核失败，原因: {$vo.reject_reason}</span></if>
                             <if condition="$vo['exchange_status'] eq 3">
                                 已发货，<br/>

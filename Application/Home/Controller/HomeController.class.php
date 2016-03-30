@@ -68,6 +68,10 @@ class HomeController extends  Controller {
             session('user',$this->userinfo);
             $this->assign("user",$this->userinfo);
             $this->assign("username",$this->userinfo['username']);
+
+            $_SESSION['Shop'] = $_SESSION['Home'];
+
+
         }else{
             $this->error($result['info']);
         }

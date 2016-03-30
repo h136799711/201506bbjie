@@ -63,7 +63,7 @@ class SMActivityController extends HomeController {
 
         if($result['status']){
             $this->reloadUserInfo();
-            $this->success('状态设置成功',U('Home/Usersm/manager_rw'));
+            $this->success('状态设置成功',U('Home/Index/sm_manager'));
         }else{
             $this->error($result['info']);
         }

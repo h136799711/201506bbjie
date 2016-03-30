@@ -2,13 +2,26 @@
 
 <block name="area_header">
 	<LINK href="__PUBLIC__/Home/css/login-1.css" rel="stylesheet">
+    <style type="text/css">
+        body{
+            background: #FFFFFF;
+        }
+        .login_banner{
+            background: url("__IMG__/login/login_banner.png") no-repeat;
+            height: 70px;
+            width:980px;
+            margin:0 auto;
+            margin-top: 60px;
+        }
+    </style>
 
 </block>
 
 <block name="area_body">
+    <div></div>
 	<DIV>
 	<DIV class="main">
-		<A class="logo" href=""></A>
+        <div class="login_banner"></div>
 		<DIV class="content">
 			<DIV class="nav_menu">
 				<UL class="nav nav-tabs" role="menu">
@@ -95,7 +108,7 @@
 							<A href="{:U('Home/Index/login')}"></A>
 							<SPAN>我已注册,点击登录</SPAN>
 						</DIV>
-						<DIV class="jieshao"> 我想免费获得喜欢的商品，乐享不花钱的商品带来的惊喜！所以我要注册试民福币账号！ </DIV>
+						<DIV class="jieshao"> 我想免费获得喜欢的商品，乐享不花钱的商品带来的惊喜！所以我要注册账号！ </DIV>
 					</DIV>
 				</DIV>
 			</div>

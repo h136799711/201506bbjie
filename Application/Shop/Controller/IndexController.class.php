@@ -27,8 +27,7 @@ class IndexController extends ShopController{
      * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 */
 	public function index(){
-
-
+        $this->reloadUserinfo();
         $map=array();
         $map["parent"]=0;
         $result=apiCall(AdminPublicApi::Category_QueryNoPaging, array($map));
@@ -145,44 +144,26 @@ class IndexController extends ShopController{
 
 	
 	//========PC端使用
-	
-	
-	
-	//========移动端使用
 
-	
-	
 	
 	/*
 	  * 福品专场
+	 *  @author 老胖子-何必都 <hebiduhebi@126.com>
 	  * */
 	public function flzc(){
 		$this->assign('indexTitle',1);
-		$order = " post_modified desc ";
-		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
-		$this->assign('zxgg',$result['info'][0]);
-		
-		$headtitle="宝贝街-福品专场";
-		$this->assign('head_title',$headtitle);
-		$users=$_SESSION["Home"]['user'];
-		$this->assign('username',$users['info']['username']);
-		
-		$id=$users['info']['id'];
-			
+
+		$this->assign('head_title',"宝贝街-福品专场");
+
 		$map = array(
-			'uid'=>$id,
+			'uid'=>$this->userinfo['id'],
 		);
-		$result=apiCall(HomePublicApi::Group_QueryNpPage, array($map));
-			
-		$this->assign('group',$result['info'][0]['group_id']);
-		
+
 		$map=array();
 		$map["parent"]=0;
 		$result=apiCall(AdminPublicApi::Category_QueryNoPaging, array($map));
 		$this->assign('categoryParent',$result['info']);
-		
-		
-		
+
 		$cate_id=I("id");
 		$product_name=I("searchterm");
 		$minPrice=I("minPrice");
@@ -284,6 +265,7 @@ class IndexController extends ShopController{
 		$map = array();
 		$map['product_id']=$id;
 
+        $this->assign('currency',VIRTUAL_CURRENCY);
 		$this->assign('fubi',$this->userinfo['fucoin']);
 		
 		$this->display();

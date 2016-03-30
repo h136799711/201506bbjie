@@ -1,126 +1,138 @@
 ﻿﻿<extend name="template/base_index" />
 
 <block name="area_header">
-<LINK href="__PUBLIC__/Home/css/login-1.css" rel="stylesheet">
+
+    <link href="__PUBLIC__/Home/css/login-1.css" rel="stylesheet">
+    <style type="text/css">
+        body{
+            background: #FFFFFF;
+        }
+        .login_banner{
+            background: url("__IMG__/login/login_banner.png") no-repeat;
+            height: 70px;
+            width:980px;
+            margin:0 auto;
+            margin-top: 60px;
+        }
+    </style>
 
 </block>
 
 <block name="area_body">
-<DIV>
-			<DIV class="main">
-				<A class="logo" href=""></A>
-				<DIV class="content">
-					<DIV class="nav_menu">
-						<UL class="nav nav-tabs" role="menu">
-							<LI id="sm" class="active">
-								<A href="{:U('Home/Index/register_sm')}">试民注册</A>
-							</LI>
-							<LI id="sj" class="">
-								<A href="{:U('Home/Index/register_sj')}">商家注册</A>
-							</LI>
-						</UL>
-					</DIV>
-					<div class="bbj_sm">
-						<DIV class="register-form" >
-							<FORM class="form-horizontal reg_sm_form"   action="{:U('Home/Index/smzc')}" method="post">
-								<DIV class="control-group">
-									<LABEL class="control-label" for="user_name">
-										<I class="required">*</I>用户名：</LABEL>
-									<DIV class="controls">
-										<INPUT name="user_name" class="input-large" id="name" type="text" placeholder="用于登录的名字" value="" autocomplete="off">
-										<SPAN class="notice help-inline"></SPAN>
-									</DIV>
-								</DIV>
-								<DIV class="control-group">
-									<LABEL class="control-label" for="password">
-										<I class="required">*</I>密码：</LABEL>
-									<DIV class="controls">
-										<INPUT name="password" class="input-large" id="password" type="password" placeholder="6-12位登录密码，操作密码" value="" autocomplete="off">
-										<SPAN class="notice help-inline"></SPAN>
-									</DIV>
-								</DIV>
-								<DIV class="level clearfix">
-									<DIV class="101 li">
-										<SPAN class="ls1">危险</SPAN>
-									</DIV>
-									<DIV class="102 li">
-										<SPAN class="ls2">适中</SPAN>
-									</DIV>
-									<DIV class="103 li">
-										<SPAN class="ls3">安全</SPAN>
-									</DIV>
-								</DIV>
-								<DIV class="control-group">
-									<LABEL class="control-label" for="confirm_password">
-										<I class="required">*</I>确认密码：</LABEL>
-									<DIV class="controls">
-										<INPUT name="confirm_password" class="input-large" id="confirm_password" type="password" autocomplete="off">
-										<span></span>
-									</DIV>
-								</DIV>
-								<DIV class="control-group">
-									<LABEL class="control-label" for="phone_tel">
-										<I class="required">*</I>手机号码：</LABEL>
-									<DIV class="controls">
-										<INPUT name="phone_tel" class="input-large" id="phone_tel" type="text" placeholder="请输入要绑定的号码" value="" autocomplete="off">
-										<span> </span>
-									</DIV>
-								</DIV>
-								<div class="control-group">
-									<LABEL class="control-label" >
-										<I class="required">*</I>QQ号码：</LABEL>
-									<DIV class="controls">
-										<INPUT name="qq" class="input-large" id="phone_tel" type="text" placeholder="请输入要绑定的QQ" value="" autocomplete="off">
-										<span> </span>
-									</DIV>
-								</div>
-								<DIV class="control-group">
-									<LABEL class="control-label" for="yaoqingren">邀请人：</LABEL>
-									<DIV class="controls">
-										<INPUT name="yaoqingren"  value="{$reffer.username}" class="input-large" id="yaoqingren" type="text" placeholder="请填写邀你注册者的用户名，这样他能获得经验值奖励哦！">
-									    <span> </span>
-									</DIV>
 
-								</DIV>
-								<DIV class="control-group">
-									<DIV class="controls">
-										<LABEL class="checkbox">
-											<SPAN style="width: 299px; color: rgb(92, 91, 91); font-weight: normal; display: inline-block;">
+    <div class="main">
+        <div class="login_banner"></div>
+        <div class="content">
+            <div class="nav_menu">
+                <UL class="nav nav-tabs" role="menu">
+                    <LI id="sm" class="active">
+                        <A href="{:U('Home/Index/register_sm')}">试民注册</A>
+                    </LI>
+                    <LI id="sj" class="">
+                        <A href="{:U('Home/Index/register_sj')}">商家注册</A>
+                    </LI>
+                </UL>
+            </div>
+            <div class="bbj_sm">
+                <div class="register-form" >
+                    <FORM class="form-horizontal reg_sm_form"   action="{:U('Home/Index/smzc')}" method="post">
+                        <div class="control-group">
+                            <LABEL class="control-label" for="user_name">
+                                <I class="required">*</I>用户名：</LABEL>
+                            <div class="controls">
+                                <INPUT name="user_name" class="input-large" id="name" type="text" placeholder="用于登录的名字" value="" autocomplete="off">
+                                <SPAN class="notice help-inline"></SPAN>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <LABEL class="control-label" for="password">
+                                <I class="required">*</I>密码：</LABEL>
+                            <div class="controls">
+                                <INPUT name="password" class="input-large" id="password" type="password" placeholder="6-12位登录密码，操作密码" value="" autocomplete="off">
+                                <SPAN class="notice help-inline"></SPAN>
+                            </div>
+                        </div>
+                        <div class="level clearfix">
+                            <div class="101 li">
+                                <SPAN class="ls1">危险</SPAN>
+                            </div>
+                            <div class="102 li">
+                                <SPAN class="ls2">适中</SPAN>
+                            </div>
+                            <div class="103 li">
+                                <SPAN class="ls3">安全</SPAN>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <LABEL class="control-label" for="confirm_password">
+                                <I class="required">*</I>确认密码：</LABEL>
+                            <div class="controls">
+                                <INPUT name="confirm_password" class="input-large" id="confirm_password" type="password" autocomplete="off">
+                                <span></span>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <LABEL class="control-label" for="phone_tel">
+                                <I class="required">*</I>手机号码：</LABEL>
+                            <div class="controls">
+                                <INPUT name="phone_tel" class="input-large" id="phone_tel" type="text" placeholder="请输入要绑定的号码" value="" autocomplete="off">
+                                <span> </span>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <LABEL class="control-label" >
+                                <I class="required">*</I>QQ号码：</LABEL>
+                            <div class="controls">
+                                <INPUT name="qq" class="input-large" id="phone_tel" type="text" placeholder="请输入要绑定的QQ" value="" autocomplete="off">
+                                <span> </span>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <LABEL class="control-label" for="yaoqingren">邀请人：</LABEL>
+                            <div class="controls">
+                                <INPUT name="yaoqingren"  value="{$reffer.username}" class="input-large" id="yaoqingren" type="text" placeholder="请填写邀你注册者的用户名，这样他能获得经验值奖励哦！">
+                                <span> </span>
+                            </div>
 
-						<INPUT name="agree" id="agree" type="checkbox" value="1"> 我已经阅读并同意接收用户
+                        </div>
+                        <div class="control-group">
+                            <div class="controls">
+                                <LABEL class="checkbox">
+                                    <SPAN style="width: 299px; color: rgb(92, 91, 91); font-weight: normal; display: inline-block;">
 
-							<A style="color: rgb(224, 69, 21);" href="{:U('Home/Index/xieyi')}" target="_blank">《使用协议》</A>
+                <INPUT name="agree" id="agree" type="checkbox" value="1"> 我已经阅读并同意接收用户
 
-					</SPAN>
-											<SPAN class="notice help-inline"></SPAN>
-										</LABEL>
-									</DIV>
-								</DIV>
+                    <A style="color: rgb(224, 69, 21);" href="{:U('Home/Index/xieyi')}" target="_blank">《使用协议》</A>
 
-                                <DIV class="control-group">
-                                    <DIV class="controls">
-                                    <a href="{:U('Home/Index/smzc')}" target-form="reg_sm_form" data-no-alert="true" class="ajax-post am-btn-warning"
-                                        style="padding: 10px; width: 100px;">立即注册</a>
-                                    </DIV>
-                                </DIV>
+            </SPAN>
+                                    <SPAN class="notice help-inline"></SPAN>
+                                </LABEL>
+                            </div>
+                        </div>
 
-							</FORM>
-							<DIV class="right">
+                        <div class="control-group">
+                            <div class="controls">
+                            <a href="{:U('Home/Index/smzc')}" target-form="reg_sm_form" data-no-alert="true" class="ajax-post am-btn-warning"
+                                style="padding: 10px; width: 100px;">立即注册</a>
+                            </div>
+                        </div>
 
-								<DIV class="login">
-									<A href="{:U('Home/Index/login')}"></A>
-									<SPAN>我已注册,点击登录</SPAN>
-								</DIV>
+                    </FORM>
+                    <div class="right">
 
-								<DIV class="jieshao"> 我想免费获得喜欢的商品，乐享不花钱的商品带来的惊喜！所以我要注册试民福币账号！ </DIV>
-							</DIV>
-						</DIV>
-					</div>
+                        <div class="login">
+                            <A href="{:U('Home/Index/login')}"></A>
+                            <SPAN>我已注册,点击登录</SPAN>
+                        </div>
 
-				</DIV>
-			</DIV>
-		</DIV>
-		
+                        <div class="jieshao"> 我想免费获得喜欢的商品，乐享不花钱的商品带来的惊喜！所以我要注册账号！ </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 </block>
 
 <block name="area_footer">

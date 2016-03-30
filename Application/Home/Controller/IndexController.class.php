@@ -381,9 +381,12 @@ class IndexController extends HomeController {
                 $userinfo = $result['info'];
 
                 session("user",$userinfo);
+                session("global_user",$userinfo);
+                session("global_user_sign",data_auth_sign($userinfo));
+                session("uid",$uid);
 
                 if($userinfo['user_type'] == UserTypeConstVar::BBJ_MEMBER_GROUP){
-                    action_log('bbj_user_login','bbjmember',$uid,$uid,$uid);
+                    action_log('bbj_user_login','bbjmember',$uid,$uid);
                     //增加10 经验
 //                    $result = apiCall(BbjmemberApi::SET_INC,array(array('uid'=>$userinfo['uid']),'exp',10));
                     $this->success('登录成功!',U('Home/Index/sm_manager'));
@@ -461,7 +464,7 @@ class IndexController extends HomeController {
 	public function sm_manager(){
 
         $this->assign("head_title","首页");
-        $this->checkLogin();
+        $this->reloadUserInfo();
         $this->checklevel();
         $this->getNoticeForSm();
         $this->not_read_msg_cnt();

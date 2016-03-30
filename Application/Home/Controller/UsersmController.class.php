@@ -77,6 +77,7 @@ class UsersmController extends HomeController {
 	 * */
 	public function manager_rw() {
 
+        $this->reloadUserInfo();
 
 		$this -> assign('head_title', "试民中心-任务");
 

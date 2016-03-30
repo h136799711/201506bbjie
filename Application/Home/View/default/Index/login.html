@@ -2,38 +2,60 @@
 
 <block name="area_header">
 
-<link href="__PUBLIC__/Home/css/cssreset.css" rel="stylesheet" type="text/css">
 <link href="__PUBLIC__/Home/css/login.css" type="text/css" rel="stylesheet">
+    <style type="text/css">
+        #body{
+            width:1000px;
+            margin: 0 auto;
+            margin-top: 60px;
+        }
+        .login_banner{
+            background: url("__IMG__/login/login_banner.png") no-repeat;
+            height: 70px;
+        }
+        .login_left{
+            background: url("__IMG__/login/login_left.png") no-repeat;
+            height: 450px;
+            background-size: contain;
+            width: 550px;
+            float: left;
+        }
+    </style>
 </block>
 
 <block name="area_body">
 	<div id="body">
+        <div class="login_banner"></div>
 		<div class="login_body">
-			<a class="login_001" href="#"></a>
+            <div class="login_left"></div>
 			<div class="login_010">
 				<div class="login_011">
-					<a href="{:U('Home/Index/index')}">首页</a>
+					<a class="am-link-muted am-text-sm" href="{:U('Home/Index/index')}">首页</a>
 					<span>-</span>
-					<a href="{:U('Home/Index/register_sm')}">注册</a>
+					<a class="am-link-muted am-text-sm"  href="{:U('Home/Index/register_sm')}">注册</a>
 					<span>|</span>
-					<a href="{:U('Home/Index/bzzx')}">帮助中心</a>
+					<a class="am-link-muted am-text-sm"  href="{:U('Home/Index/bzzx')}">帮助中心</a>
 				</div>
 				<div class="login_002">
 					
-					<div class="login_003"><span>登录宝贝街</span> <a href="{:U('Home/Index/register_sm')}">还没有宝贝街账号？</a><a href="{:U('Home/Index/register_sm')}" style="color: #F01861;">30秒注册</a>
-					</div>
-					<div class="clear"></div>
-					<form class="fm" method="post">
+					<div class="login_003">
+                        <div class="am-h4">登录宝贝街</div>
+                    </div>
 
-						<input type="text" name="username" id="textfield2" class="login_004" placeholder="用户名" >
-						
-							<br><br><span style="color: red; font-size: 13px;">{$error}</span>
-						<input type="password" name="password" id="textfield"  placeholder="密码"  class="login_005">
+					<form class="am-form am-form-horizontal login_form" method="post">
+                        <div class="am-form-group">
+						    <input type="text" name="username" id="textfield2" class="login_004 am-form-field" placeholder="用户名" >
+                            <span style="color: red; font-size: 13px;">{$error}</span>
+                        </div>
+                        <div class="am-form-group">
+						<input type="password" name="password" id="textfield"   placeholder="密码"  class="login_005 am-form-field">
+                        </div>
 						<div class="login_006">
-							<input type="checkbox" name="auto_login" id="checkbox"> 自动登录 <span><!--<a href="#">忘记密码</a>--></span>
+							<input type="checkbox" name="auto_login" id="checkbox"> 自动登录
 						</div>
+
 						<div class="submit">
-							<a href="{:U('Home/Index/login')}" style="width: 265px;" target-form="fm" data-no-alert="true" class="ajax-post am-center am-btn-block am-btn am-btn-sm am-btn-danger">
+							<a href="{:U('Home/Index/login')}"  target-form="login_form" data-no-alert="true" class="am-radius ajax-post am-center am-btn-block am-btn am-btn-sm am-btn-danger">
                                 登录
                             </a>
 						</div>
@@ -43,8 +65,10 @@
 			<div></div>
 		</div>
 	</div>
+
+    <include file="partials/footer" />
+
 </block>
 
 <block name="area_footer">
-	<include file="partials/footer" />
 </block>

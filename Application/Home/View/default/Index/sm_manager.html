@@ -85,10 +85,11 @@
                                     <td style="text-align: right;">任务状态:</td>
                                     <td>
                                         <if condition="$user['task_status'] eq 1">
-
-                                            <a href="{:U('Home/SMActivity/changestatus',array('type'=>'on'))}"  class="ajax-get am-btn am-btn-xs am-btn-primary am-active am-round">{$user['daily_task_money']}元</button>
-                                                <else/>
-                                                <a href="{:U('Home/SMActivity/changestatus',array('type'=>'off'))}" class="ajax-get  am-btn-xs am-btn am-btn-default am-active am-round">任务未开启</button>
+                                            <a href="{:U('Home/SMActivity/changestatus',array('type'=>'off'))}"
+                                               class="ajax-get am-btn am-btn-xs am-btn-primary am-active btn-fix-am">开启中 {$user['daily_task_money']}元</a>
+                                            <else/>
+                                            <a href="{:U('Home/SMActivity/changestatus',array('type'=>'on'))}"
+                                               class="ajax-get  am-btn-xs am-btn am-btn-default am-active btn-fix-am">任务未开启</a>
                                         </if>
 
                                     </td>
@@ -132,7 +133,7 @@
                                     <td width="300">淘宝账号: {$user.taobao_account} <a href="javascript:void(0)" data-am-modal="{target: '#my-alert'}">设置</a> </td>
                                     <!--<td>手机任务: 关闭 <a href="">设置</a> </td>-->
                                     <td rowspan="2" style="">
-                                        <a href="{:U('Home/SMActivity/gettask')}" class="btn-fix-am am-btn am-btn-sm am-btn-primary ajax-get am-round" >点我领取任务</a>
+                                        <a href="{:U('Home/SMActivity/gettask')}" class="btn-fix-am am-btn am-btn-sm am-btn-primary ajax-get" >点我领取任务</a>
 
 
                                     </td>

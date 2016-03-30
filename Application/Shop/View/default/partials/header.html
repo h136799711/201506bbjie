@@ -1,33 +1,4 @@
-<!--<style type="text/css">
-	.sele{ width: 440px;font-size: 12px; margin-top: 15px;}
-	.field {
-	margin-top: -15px;
-	 display:flex;
-	  width:40%;
-	  flex-direction:row;
-	  box-shadow:
-	  1px 1px 0 #ECECEC,
-	  2px 2px 0 #ECECEC,
-	  3px 3px 0 #ECECEC,
-	  4px 4px 0 #ECECEC,
-	  5px 5px 0 #ECECEC,
-	  6px 6px 0 #ECECEC,
-	  7px 7px 0 #ECECEC;
-}
 
-.field>input[type=text] {
-  flex:1;
-  padding:0.6em;
-  border:0.2em solid #ECECEC;
-}
-
-.field>button {
-
-  background-color:#ECECEC;
-  color:white;
-  border:none;
-  }
-</style>-->
 <div id="div_all">
     <div id="div_top">
         <div class="div_info" style="min-width: 1100px;">
@@ -38,7 +9,8 @@
                 <div style="color:#FFF;float:right">您好，欢迎来到宝贝街！请[<a href="{:U('Home/Index/login')}">登录</a>][<a href="{:U('Home/Index/register_sj')}">免费注册</a>]|<a href="{:U('Home/Index/bzzx')}">帮助中心</a></div>
                 <else/>
                 <div style="color:#FFF;float:right"><a href="{:U('Home/Index/sm_manager',array('username'=>$username))}">{$username}</a>,您好，欢迎来到宝贝街！[<a href="{:U('Home/Index/exits')}">注销</a>]|
-                    <if condition="$group eq 14 ">
+
+                    <if condition="$userinfo['user_type'] eq 14">
                         <a href="{:U('Home/Index/sm_manager',array('username'=>$username))}">试民中心</a>
                         <else/>
                         <a href="{:U('Home/Usersj/index',array('username'=>$username))}">商家中心</a>

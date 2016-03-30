@@ -26,8 +26,8 @@
 							</form>
 							
 							<h3>{$detail.name}</h3>
-							<div style="background: #EC2B59;height: 80px; line-height: 80px; padding-left: 20px;color: white;font-size: 12px;">价值:<font size="+2" id="font_price">{:number_format($detail['price']/100.0,0,".","")}</font>福币
-                                <a class="am-badge am-badge-danger am-round" style="margin-left: 20px;">免费</a>
+							<div style="background: #EC2B59;height: 80px; line-height: 80px; padding-left: 20px;color: white;font-size: 12px;">价值:<font size="+2" id="font_price"> {:number_format($detail['price']/100.0,0,".","")}</font>{$currency}
+
                             </div>
 							<table style="font-size: 12px;">
 								<tr style="font-size: 13px; ">
@@ -58,7 +58,7 @@
 								<tr>
 									<td colspan="2" style="padding-top: 10px;">
                                         <a href="{:U('Shop/Index/exchange',array('pid'=>I('get.id',0)))}" class="ajax-get am-radius am-btn am-btn-warning"
-                                           style="width:120px;">我要兑换></a>
+                                           style="width:120px;">我要兑换</a>
 									</td>
 								</tr>
 								<tr>
