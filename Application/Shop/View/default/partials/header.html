@@ -1,14 +1,13 @@
 
-<div id="div_all">
     <div id="div_top">
         <div class="div_info" style="min-width: 1100px;">
             <div style="color:#FFF; float:left; background: url(__PUBLIC__/Home/img/gonggao.png) no-repeat 0 9px;padding-left:  25px;">
-                <a href="{:U('Home/Index/gfggxx',array('id'=>$zxgg['id']))}" style="color: white;">{$zxgg.post_title}</a>
+                <a href="{:U('Home/Index/gfggxx',array('id'=>$zxgg['id']))}" >{$zxgg.post_title}</a>
             </div>
             <empty name="username">
-                <div style="color:#FFF;float:right">您好，欢迎来到宝贝街！请[<a href="{:U('Home/Index/login')}">登录</a>][<a href="{:U('Home/Index/register_sj')}">免费注册</a>]|<a href="{:U('Home/Index/bzzx')}">帮助中心</a></div>
+                <div style="float:right">您好，欢迎来到宝贝街！请[<a href="{:U('Home/Index/login')}">登录</a>][<a href="{:U('Home/Index/register_sj')}">免费注册</a>]|<a href="{:U('Home/Index/bzzx')}">帮助中心</a></div>
                 <else/>
-                <div style="color:#FFF;float:right"><a href="{:U('Home/Index/sm_manager',array('username'=>$username))}">{$username}</a>,您好，欢迎来到宝贝街！[<a href="{:U('Home/Index/exits')}">注销</a>]|
+                <div style="float:right"><a href="{:U('Home/Index/sm_manager',array('username'=>$username))}">{$username}</a>,您好，欢迎来到宝贝街！[<a href="{:U('Home/Index/exits')}">注销</a>]|
 
                     <if condition="$userinfo['user_type'] eq 14">
                         <a href="{:U('Home/Index/sm_manager',array('username'=>$username))}">试民中心</a>
@@ -21,18 +20,20 @@
         </div>
     </div>
     <div style="width:100%;  height: 100px;background-color: white; min-width: 1100px;">
-        <div style="width: 1100px; margin: 0 auto;  ">
-            <img style="margin-top: -15px;" src="__IMG__/bbj.png"><img style="margin-top: -10px;" src="__IMG__/bbj4.png">
-
-            <div style="float: right; width: 290px; height: 100px; border: 1px solid #0000;">
+        <div style="width: 1200px; margin: 0 auto;  ">
+            <div class="am-fl">
+            <img  src="__IMG__/bbj.png">
+            <img  src="__IMG__/bbj4.png">
+            </div>
+            <div class="am-fl" style="width: 290px; height: 100px; border: 1px solid #0000;">
                 <form id="schfm"  action="{:U('Shop/Index/flzc')}" method="post">
-                    <input type="text" name="searchterm" placeholder="输入查找的商品" style="border: 1px solid #B02751;outline: none; font-size: 12px; height: 30px; width: 238px;  margin-top: 18px;float: left; " />
-                    <input type="button" name=""  id="sch" style="height: 30px; background-color: #B02751; border: 0;color: white; width: 50px;  margin-top: 18px;" value="搜索" />
+                    <input type="text" name="searchterm" placeholder="输入查找的商品" style="padding-left: 12px;border:2px solid #B02751;outline: none; font-size: 12px; height: 30px; width: 238px;  margin-top: 30px;float: left; " />
+                    <input type="button" name=""  id="sch" style="height: 30px; background-color: #B02751; border: 0;color: white; width: 50px;  margin-top: 30px;" value="搜索" />
                 </form>
             </div>
 
         </div>
-        <!--<img height="100" style="width: 100%;" src="__IMG__/guanggao.jpg">-->
+
     </div>
 
     <script type="text/javascript">
@@ -40,14 +41,11 @@
             $("#div_title .div_info ul li").eq({$indexTitle}).addClass("li_checkedtitle");
         })
     </script>
-    <div id="div_title" style="background: url(__IMG__/nav-bg.png) repeat-x 0 0 #fff;">
+    <div id="div_title">
         <div class="div_info" >
             <ul>
                 <li onclick="changePageTitle('{:U('Shop/Index/index')}')" >首页</li>
                 <li onclick="changePageTitle('{:U('Shop/Index/flzc')}')">福利专场</li>
-                <!--<li onclick="changePageTitle('{:U('Shop/Index/xfyd')}')">幸福一点</li>-->
-                <!--<li onclick="alert('该功能正在施工┏ (゜ω゜)=☞')">试江湖</li>
-                <li onclick="alert('该功能正在施工┏ (゜ω゜)=☞')">茶话馆</li>-->
                 <li onclick="changePageTitle('{:U('Home/Index/bzzx')}')" style="border-right: none;">帮助中心</li>
             </ul>
         </div>

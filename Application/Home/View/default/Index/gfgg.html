@@ -2,50 +2,21 @@
 
 <block name="area_header">
 	<script type="text/javascript" src="__PUBLIC__/Home/js/index.js"></script>
-		<link type="text/css" rel="stylesheet" href="__CDN__/fontawesome/4.3.0/css/font-awesome.min.css?V=4.3.0" />
-	 	<link type="text/css" rel="stylesheet" href="__CDN__/bootstrap/3.3.0/css/bootstrap.min.css" />
-		<link type="text/css" rel="stylesheet" href="__CDN__/theme/{$cfg.theme|default="simplex"}.min.css" />
-	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/index.css" />
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Shop/css/index.css" />
 	<style type="text/css">
 		* {
 			font-family: "微软雅黑" !important;
 		}
+
+        #div_title div ul{
+            margin-left: 0px;
+        }
 	</style>
 </block>
 
 <block name="area_body">
 	<div id="div_all">
-		<div id="div_top">
-			<div class="div_info">
-				<div style="color:#FFF; float:left; background: url(__PUBLIC__/Home/img/gonggao.png) no-repeat 0 9px;padding-left:  25px;">
-					<a href="{:U('Home/Index/gfggxx',array('id'=>$zxgg['id']))}" style="color: white;">{$zxgg.post_title}</a>
-				</div>
-				<empty name="username">
-					<div style="color:#FFF;float:right">您好，欢迎来到宝贝街！请[<a href="{:U('Home/Index/login')}">登录</a>][<a href="{:U('Home/Index/register_sj')}">免费注册</a>]|<a href="{:U('Home/Index/bzzx')}">帮助中心</a></div>
-					<else/>
-					<div style="color:#FFF;float:right"><a href="{:U('Home/Index/sm_manager',array('username'=>$username))}">{$username}</a>,您好，欢迎来到宝贝街！[<a href="{:U('Home/Index/exits')}">注销</a>]|<a href="{:U('Home/Index/bzzx')}">帮助中心</a></div>
-				</empty>
-			</div>
-		</div>
-		<div id="div_top2">
-			<div class="div_info">
-				<div align="right" style=" padding:10px; padding-top:30px;">
-
-				</div>
-			</div>
-		</div>
-		<div id="div_title">
-			<div class="div_info">
-				<ul>
-					<li onclick="changePageTitle('{:U('Shop/Index/index')}')">宝贝广场</li>
-					<li class="li_checkedtitle" onclick="changePageTitle('{:U('Shop/Index/flzc')}')">福利专场</li>
-					<li onclick="changePageTitle('{:U('Shop/Index/xfyd')}')">幸福一点</li>
-					<li onclick="changePageTitle('{:U('Shop/Index/sjh')}')">试江湖</li>
-					<li onclick="changePageTitle('{:U('Shop/Index/chg')}')">茶话馆</li>
-					<li onclick="changePageTitle('{:U('Home/Index/bzzx')}')" style="border-right: none;">帮助中心</li>
-				</ul>
-			</div>
-		</div>
+        <include file="default/partials/header" />
 		
 		<div id="div_main" style="border-top: 1px solid #ccc; background: #fde9f1;float: left;padding-bottom: 50px">
 			<div class="div_info" style="">
@@ -64,7 +35,7 @@
 					</ul>
 				</div>
 				<div class="div_gg_info" style="float: left;width: 865px; padding-bottom:50px; margin-top: 20px; margin-left: 10px;background: url(__PUBLIC__/Home/img/smgg2.png)no-repeat scroll -1px 0 #F2F2F2;">
-					<div style=" margin-left:600px;margin-top: 50px;">您的位置：<a href="#" style="color:red">首页</a>>{$list[0].cate_name}</div>
+					<div style=" margin-left:600px; margin-top: 10px; margin-bottom: 40px;">您的位置：<a href="#" style="color:red">首页</a>>{$list[0].cate_name}</div>
 					<ul class="ul_gg_info" style="font-size: 12px; width: 100%;">
 						
 							<empty name="list">
@@ -73,7 +44,15 @@
 							
 							<else/>
 							<volist name="list" id="vo">
-								<li><font class="am-icon-caret-right"></font><a href="{:U('Home/Index/gfggxx',array('id'=>$vo['id']))}" class="a_li">{$vo.post_title}</a></li>
+								<li>
+
+                                    <a href="{:U('Home/Index/gfggxx',array('id'=>$vo['id']))}" class="a_li am-cf">
+                                        <i class="am-fl am-icon-caret-right"></i>
+                                        <span class="am-fl">{$vo.post_title}</span>
+                                        <span class="am-fr">{$vo.post_date|date='Y-m-d',###}</span>
+                                    </a>
+
+                                </li>
 							</volist>
 						</empty>
 

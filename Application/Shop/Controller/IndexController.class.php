@@ -87,7 +87,7 @@ class IndexController extends ShopController{
         $this->assign('indexTitle',0);
 
 
-
+        $this->assign("currency",VIRTUAL_CURRENCY);
         $this->display();
 
 	}

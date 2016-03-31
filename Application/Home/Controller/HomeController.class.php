@@ -40,6 +40,7 @@ class HomeController extends  Controller {
         $this->userinfo = session('user');
         $this->uid = $this->userinfo['id'];
         $this->assign("user",$this->userinfo);
+        $this->assign("userinfo",$this->userinfo);
         $this->assign("username",$this->userinfo['username']);
 		
 	}

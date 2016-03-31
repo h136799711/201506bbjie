@@ -7,27 +7,36 @@ input{border:1px solid #ccc; list-style:none;}
 .div_info{ width:1200px; margin:0 auto;}
 
 #div_all{width:100%; height:768px;float:left;}
-#div_top{background-color:#000; height:30px;width: 100%; float:left;}
-#div_top .div_info{height:30px;font-size:12px;}
+#div_top{background-color:#FFFFFF; height:40px;width: 100%; border-bottom: 1px solid #e5e5e5;}
+#div_top .div_info{height:40px;font-size:12px;}
 	#div_top .div_info div{height:30px; line-height:30px;}
-	#div_top .div_info div a{text-decoration:none; color:#FFF}
+	#div_top .div_info div a{text-decoration:none; color:#323231;line-height: 40px;}
 	/*a:link ->a:hover ->a:active ->a:visited*/
 #div_top2{background-color:#FF3D65; height:13%;clear:left;width: 100%;}
 	#div_top2 .div_info{ height:100%; } 
 	#div_top2 .div_info div{margin-right:20px;}
-#div_title{ height:50px; }
+#div_title{ height:50px;border-bottom: 1px solid #f0235e; }
 	#div_title div{  height:100%; padding:12px; font-size: 18px;}
-	#div_title div ul{float:left}
-	#div_title div ul li{ padding-left:20px;padding-right: 20px; float: left; padding-top: 0; padding-bottom: 0; font-weight:bold; cursor:pointer; font-size: 14px; border-right:1px solid #ccc ;}
+	#div_title div ul{float:left;margin-left:350px;}
+	#div_title div ul li{ padding-left:60px;padding-right: 60px; float: left; padding-top: 0; padding-bottom: 0; font-weight:bold; cursor:pointer; font-size: 14px; }
 	/*#div_title div ul li.li_fenge{ color:#ccc}*/
 #div_lunbo{ height:422px;}
-	#div_lunbo .div_info{ border:1px solid #ccc; height:100% ;margin-top: 0px;}
-	#div_lunbo .div_info .div_info1{ height:100%; width:300px; float:left; background: #FFFFFF; }
-	#div_lunbo .div_info .div_info1 ul li{ clear: left; margin-left:30px; border-bottom: 1px dotted #CCCCCC; }
-	#div_lunbo .div_info .div_info1 ul li h3 a{color:#f69; text-decoration: none;}
+	#div_lunbo .div_info{height:100% ;margin-top: 0px;
+        position: relative;}
+	#div_lunbo .div_info .div_info1{ height:460px; width:240px; float:left; background: #FFFFFF;
+        position: absolute;top:-40px; }
+	#div_lunbo .div_info .div_info1 ul li{ clear: left;PADDING-LEFT: 12PX; border-bottom: 1px dotted #CCCCCC; }
+	#div_lunbo .div_info .div_info1 ul li h3 a{color:#f0235e; text-decoration: none;}
 	#div_lunbo .div_info .div_info1 ul li div{ width: 205px;margin-bottom: 3px;}
-	#div_lunbo .div_info .div_info1 ul li div a{text-decoration: none; font-size: 12px; color: #999;}
-	#div_lunbo .div_info .div_image{ height:100%; width:700px; float:left; background-color:#FFF}
+	#div_lunbo .div_info .div_info1 ul li div a{text-decoration: none; font-size: 12px; color: #646464;}
+	#div_lunbo .div_info .div_image{
+        height:408px;
+        width: 760px;
+        float: left;
+        background-color: #FFF;
+        margin-left: 250px;
+        MARGIN-TOP: 10px;
+    }
 	#div_lunbo .div_info .div_image .div_minlunbo{ height:100%; width: 100%; float:left; cursor: pointer; }
 	#div_lunbo .div_info .div_image .div_minlunbo img{ height:100%; width:100%; }
 	#div_lunbo .div_info .ul_lunbo{width: 200px; position:absolute;z-index: 999; display: block;margin:600px; margin-top: 380px;}
@@ -36,12 +45,12 @@ input{border:1px solid #ccc; list-style:none;}
 	
 	
 		.lunboli{border: 1px solid #FF5497;background: none repeat scroll 0 0 #fff;border-radius: 10px;cursor: pointer;display: inline-block;height: 10px;margin-right: 22px;width: 10px;}
-	#div_lunbo .div_info .div_info2{ height:100%;width:198px; float:right;z-index:1; }
+	#div_lunbo .div_info .div_info2{ height:100%;width:178px; float:right;z-index:1; }
 	#div_lunbo .div_info .div_info2 ul.ul_image li{ margin: 0; list-style: none;}
 	#div_lunbo .div_info .div_info2 ul.ul_image li a{ margin: 0;}
 	#div_lunbo .div_info .div_info2 ul.ul_image li a img{ margin: 0;}
 #div_main{width: 100%; }
-	#div_main .div_info{ padding-left: 20px;}
+	#div_main .div_info{ padding-left:  0px;}
 	
 	#div_main .div_info .div_condition { border-bottom: 1px solid #ccc; padding-bottom: 5px;}
 	#div_main .div_info .div_condition .ul_condition1{float: left;}
@@ -82,8 +91,8 @@ input{border:1px solid #ccc; list-style:none;}
 	#div_main .div_info .div_xfyd_info ul{width: 560px; height: 328px; border: 1px solid #ccc; margin: 10px;float: left;}
 	#div_main .div_info .div_xfyd_info ul li.li_imageinfo{ float: left;width: 260px; padding: 10px; padding-top:30px;}
 	#div_main .div_info .div_xfyd_info ul li.li_image{ float: left;width: 290px;}
-	#div_main .div_info .div_minInfo .div_minTitle{width: 98%; border-bottom: 1px solid #CCCCCC;  font-size: 20px;color: #000;float: left;font-weight: 400;}
-	#div_main .div_info .div_minInfo .div_minTitle h3{ float: left;}
+	#div_main .div_info .div_minInfo .div_minTitle{width: 100%; border-bottom: 1px solid #CCCCCC;  font-size: 20px;color: #000;float: left;font-weight: 400;}
+	#div_main .div_info .div_minInfo .div_minTitle h3{ float: left;color: #f0235e;}
 	#div_main .div_info .div_minInfo .div_minTitle a{ float: right;  color: white; text-decoration: none; background: url(../img/look-more.png) no-repeat scroll; width: 100px; margin-top: 8px;}
 	#div_main dl{ width:218px; height:320px;border:1px solid #fff; margin: 5px;float: left;}
 	#div_main dl.dl_info{ cursor:pointer;}
@@ -99,14 +108,14 @@ input{border:1px solid #ccc; list-style:none;}
 	#div_bzzx_top{width: 100%; height: 70px; border-bottom: 1px solid #ccc;}
 	.bzzx_li_title{font-size: 16px; color: black; font-weight: bold;}
 	.bzzx_li_titleSelect{ background: #ff5097; padding: 5px; border-radius: 5px; color: white; padding-left: 10px; padding-right: 10px;}
-#div_foot{padding-top: 50px; }
+#div_foot{padding-top: 50px;font-weight: 700; }
 	
-	#div_foot dl{ width:100px; height:100px; margin-left:20px; margin-bottom: 100px;float: left;}
+	#div_foot dl{ width:160px; height:100px; margin-left:80px; margin-bottom: 100px;float: left;}
 	#div_foot dl dt{ font-weight:bold ; text-align:center;color:#666;}
 	#div_foot dl dt.dt_phone{float:left; margin-top:12px;}
 	#div_foot dl dd{ color:#999; font-size: 12px; margin-top: 8px;}
-	#div_foot dl dd.dd_info{ margin-left: 20px;}
-	#div_foot dl dd a{ text-decoration:none; color:#7c7c7c;}
+	#div_foot dl dd.dd_info{ text-align: center;}
+	#div_foot dl dd a{ text-decoration:none; color:#7c7c7c; font-weight: 700;}
 	#div_foot dl.dl_phone{  width:200px; height:100px;margin-left:100px;}
 	#div_foot div.div_info{ padding-bottom:20px; margin-bottom: 20px;}
 	
@@ -152,10 +161,90 @@ a.a_footer:hover {color: #ff5497}		/* 鼠标移动到链接上 */
 a.a_footer:active {color: #ff5497}
 
 
+.p_cate_nav .cate_title i{
+    margin-right: 5px;
+}
+.p_cate_nav .cate_title{
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    FONT-WEIGHT: 700;
+    color: #fffFFF;
+    text-align: center;
+    background: #f0235e;
+    height: 40px;
+    line-height: 40px;
+}
+.p_cate_nav ul{
+    border: 1px solid #f0235e;
+}
 
 
 
 
+.pagination {
+    margin: 30px 0 30px;
+    padding: 0;
 
+    list-style: none;
+    line-height: 25px;
+    word-spacing: -1px;
+}
+.pagination li{
+    float: left;
+}
+/* 分页相关样式 */
+.pagination div, .pagination a {
+    display: inline-block;
 
+    height: 25px;
+    margin-right: 3px;
+    padding: 0 9px;
+
+    background: #fafafa;
+
+    border-radius: 2px;
+    border: 1px solid #e2e2e2;
+
+    text-shadow: 0 1px 0 white;
+    font-family: 'OpenSansSemiboldRegular';
+
+    text-align: center;
+    font-size: 12px;
+    color: #424346;
+
+    -webkit-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+
+.pagination a:hover {
+    background: #04BFEA;
+    border: 1px solid #2899B3;
+
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+
+    text-shadow: 0 -1px 0 #17d4ff;
+    color: #fff;
+}
+
+.pagination a.active {
+    background: #f5f5f5;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.07);
+    border-color: #d9d9d9;
+
+}
+.pagination li.active a{
+    color: #fff;
+    background-color: #0e90d2;
+    border-color: #0e90d2;
+    cursor: default;
+}
+
+.pagination a.active:hover {
+    text-shadow: 0 1px 0 white;
+    color: #424346;
+}
+
+.pagination a.active, .pagination div {
+    cursor: default;
+}
 

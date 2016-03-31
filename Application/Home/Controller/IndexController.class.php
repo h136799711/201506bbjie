@@ -77,91 +77,19 @@ class IndexController extends HomeController {
 		$this->redirect('Shop/Index/index');
 	}
 
-	/*
-	  * 福品专场
-	  * */
-	public function flzc(){
-		$order = " post_modified desc ";
-		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
-		$this->assign('zxgg',$result['info'][0]);
-		
-		$headtitle="宝贝街-福品专场";
-		$this->assign('head_title',$headtitle);
-		$users=session('user');
-		$this->assign('username',session('user')['info']['username']);
-		$this->display();
-	}
-	/*
-	  * 幸福一点
-	  * */
-	public function xfyd(){
-		$order = " post_modified desc ";
-		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
-		$this->assign('zxgg',$result['info'][0]);
-		
-		$headtitle="宝贝街-幸福一点";
-		$this->assign('head_title',$headtitle);
-		$users=session('user');
-		$this->assign('username',session('user')['info']['username']);
-		$this->display();
-	}
-	/*
-	  * 试江湖
-	  * */
-	public function sjh(){
-		$order = " post_modified desc ";
-		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
-		$this->assign('zxgg',$result['info'][0]);
-		
-		
-		$headtitle="宝贝街-试江湖";
-		$this->assign('head_title',$headtitle);
-		$users=session('user');
-		$this->assign('username',session('user')['info']['username']);
-		$this->display();
-	}
-	/*
-	  * 茶话馆
-	  * */
-	public function chg(){
-		$order = " post_modified desc ";
-		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
-		$this->assign('zxgg',$result['info'][0]);
-		
-		
-		$headtitle="宝贝街-茶话馆";
-		$this->assign('head_title',$headtitle);
-		$users=session('user');
-		$this->assign('username',session('user')['info']['username']);
-		$this->display();
-	}
-/*
+    /*
 	  * 帮助中心
 	  * */
 	public function bzzx(){
-		$order = " post_modified desc ";
-		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
-		$this->assign('zxgg',$result['info']);
-		$headtitle="宝贝街-帮助中心";
-		$this->assign('head_title',$headtitle);
-		$users=session('user');
-		$this->assign('username',session('user')['info']['username']);
+
+		$this->assign('head_title',"宝贝街-帮助中心");
 		$this->display();
 	}
 	/*
 	  * 商品详情
 	  * */
 	public function spxq(){
-		//查询最新通知
-		$order = " post_modified desc ";
-		$result = apiCall(AdminPublicApi::Post_QueryNoPaging,array($map, $order));
-		$this->assign('zxgg',$result['info'][0]);
-		
-		
-		$headtitle="宝贝街-商品详情";
-		$this->assign('head_title',$headtitle);
-		$users=session('user');
-		$this->assign('username',session('user')['info']['username']);
+		$this->assign('head_title',"宝贝街-商品详情");
 		$this->display();
 	}
 	/*
@@ -182,10 +110,11 @@ class IndexController extends HomeController {
 		$map = array();
 
 		$map['post_category'] = $post_category;
+        $order = "post_date desc";
 
-		$page = array('curpage' => I('get.p', 0), 'size' => 2);
+		$page = array('curpage' => I('get.p', 0), 'size' => 10);
 
-		$result=apiCall(VPostInfoApi::QUERY,array($map,$page));
+		$result=apiCall(VPostInfoApi::QUERY,array($map,$page,$order));
 
 		$this->assign('list',$result['info']['list']);
 		$this->assign('show',$result['info']['show']);

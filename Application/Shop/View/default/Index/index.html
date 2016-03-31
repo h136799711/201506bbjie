@@ -12,10 +12,14 @@
 </block>
 
 <block name="area_body">
+    <div id="div_all">
 	{:W('Page/head')}
+
 		<div id="div_lunbo">
 			<div class="div_info">
-				<div class="div_info1">
+				<div class="div_info1 p_cate_nav">
+                    <div class="cate_title">
+                        <i class="am-icon-list"></i>全部商品分类</div>
 					<ul>
 						<volist name="categoryParent" id="vo">
 							<li>
@@ -35,18 +39,19 @@
 					</ul>
 
 				</div>
+
 				<div class="div_image">
 					<volist name="lunboList" id="l" key="k">
 			
 						<div class="div_minlunbo" 
-						<if condition="$k neq 1">
-							style="display:none"
-						</if>
+                            <if condition="$k gt 1">
+                                style="display:none;"
+                            </if>
 						>
 						
 						<img src="{$l.img}" />
 						</div>
-						<input type="hidden" name="bgcolor" value="{$l.bgcolor}" />
+						<!--<input type="hidden" name="bgcolor" value="{$l.bgcolor}" />-->
 					</volist>
 					
 
@@ -71,6 +76,8 @@
 				</div>
 			</div>
 		</div>
+
+
 		<div id="div_main">
 			<div class="div_info">
 				<div class="div_minInfo">
@@ -78,17 +85,18 @@
 						<h3>上新预告</h3>
 						<a href="{:U('Shop/Index/flzc')}">&nbsp;</a>
 					</div>
-					<!--<volist name="newProductList" id="rpl">-->
+					<volist name="newProductList" id="rpl">
 						<dl class="dl_info" onclick="toUrl('{:U('Shop/Index/spxq',array('id'=>$rpl['id']))}')">
 							<dt>
 			                	<img src="{$rpl.main_img}" width="216" height="245"/>
 			                </dt>
-							<dd style=" border-bottom:1px dotted #666">{$rpl.name}</dd>
-							<dd style="color:#FF5899;"><span style="background: url(__PUBLIC__/Shop/img/fubi.png) no-repeat 0 1px; padding-left:17px;" >{:number_format($rpl['price']/100,0)}</span> </dd>
-						</dl>
+							<dd class="am-text-center">{$rpl.name}</dd>
+							<dd class="am-text-center" style="color:#FF5899;"><span >{:number_format($rpl['price']/100,0)} {$currency}</span> </dd>
+
+                        </dl>
 						
 						
-					<!--</volist>-->
+					</volist>
 
 				</div>
 
@@ -97,124 +105,31 @@
 						<h3>推荐福品</h3>
 						<a href="{:U('Shop/Index/flzc')}">&nbsp;</a>
 					</div>
-					
-					<!--<volist name="recommendProductList" id="npl">-->
+
+					<volist name="recommendProductList" id="npl">
 					<dl class="dl_info" onclick="toUrl('{:U('Shop/Index/spxq',array('id'=>$npl['id']))}')" >
 						<dt>
 
 		                <img src="{$npl.main_img}" width="216" height="245"/>
 
 		                </dt>
-						<dd style=" border-bottom:1px dotted #666">{$npl.name}</dd>
-						<dd style="color:#FF5899;"><span style="background: url(__PUBLIC__/Shop/img/fubi.png) no-repeat 0 1px; padding-left:17px;" >{:number_format($npl['price']/100,0)}</span> </dd>
-					</dl>
+
+                        <dd class="am-text-center">{$rpl.name}</dd>
+                        <dd class="am-text-center" style="color:#FF5899;"><span >{:number_format($rpl['price']/100,0)} {$currency}</span> </dd>
+                    </dl>
 						
-						
-<!--					</volist>-->
+
+                    </volist>
 				
 				</div>
-
-				<!--<div class="div_minInfo">
-					<div class="div_minTitle">
-						<h3>试民晒货</h3>
-						<a href=""></a>
-					</div>
-					<dl class="dl_shaihuo">
-						<dt>
-
-			                <a href=""><img src="__PUBLIC__/Shop/img/shai1.jpg" width="91" /></a>
-
-			                <a href=""><img src="__PUBLIC__/Shop/img/shai2.jpg" width="91" /></a>
-
-			                <a href=""><img src="__PUBLIC__/Shop/img/shai3.jpg" width="91" /></a>
-
-			                <a href=""><img src="__PUBLIC__/Shop/img/shai4.jpg" width="91" /></a>
-
-		                
-
-		                </dt>
-						<dd style="">1个晒货|1个推荐</dd>
-						<dd><a href="#">去看看</a>
-						</dd>
-					</dl>
-
-					<dl class="dl_shaihuo">
-						<dt>
-
-		                <a href=""><img src="__PUBLIC__/Shop/img/shai1.jpg" width="91" /></a>
-
-		                <a href=""><img src="__PUBLIC__/Shop/img/shai2.jpg" width="91" /></a>
-
-		                <a href=""><img src="__PUBLIC__/Shop/img/shai3.jpg" width="91" /></a>
-
-		                <a href=""><img src="__PUBLIC__/Shop/img/shai4.jpg" width="91" /></a>
-
-		                </dt>
-						<dd style="">1个晒货|1个推荐</dd>
-						<dd><a href="#">去看看</a>
-						</dd>
-					</dl>
-
-					<dl class="dl_shaihuo">
-						<dt>
-
-		                <a href=""><img src="__PUBLIC__/Shop/img/shai1.jpg" width="91" /></a>
-
-		                <a href=""><img src="__PUBLIC__/Shop/img/shai2.jpg" width="91" /></a>
-
-		                <a href=""><img src="__PUBLIC__/Shop/img/shai3.jpg" width="91" /></a>
-
-		                <a href=""><img src="__PUBLIC__/Shop/img/shai4.jpg" width="91" /></a>
-
-		                </dt>
-						<dd style="">1个晒货|1个推荐</dd>
-						<dd><a href="#">去看看</a>
-						</dd>
-					</dl>
-
-					<dl class="dl_shaihuo">
-						<dt>
-
-		               <a href=""><img src="__PUBLIC__/Shop/img/shai1.jpg" width="91" /></a>
-
-		                <a href=""><img src="__PUBLIC__/Shop/img/shai2.jpg" width="91" /></a>
-
-		                <a href=""><img src="__PUBLIC__/Shop/img/shai3.jpg" width="91" /></a>
-
-		                <a href=""><img src="__PUBLIC__/Shop/img/shai4.jpg" width="91" /></a>
-
-		                </dt>
-						<dd style="">1个晒货|1个推荐</dd>
-						<dd><a href="#">去看看</a>
-						</dd>
-					</dl>
-
-					<dl class="dl_shaihuo">
-						<dt>
-
-		                <a href=""><img src="__PUBLIC__/Shop/img/shai1.jpg" width="91" /></a>
-
-		                <a href=""><img src="__PUBLIC__/Shop/img/shai2.jpg" width="91" /></a>
-
-		                <a href=""><img src="__PUBLIC__/Shop/img/shai3.jpg" width="91" /></a>
-
-		                <a href=""><img src="__PUBLIC__/Shop/img/shai4.jpg" width="91" /></a>
-
-		                </dt>
-						<dd style="">1个晒货|1个推荐</dd>
-						<dd><a href="#">去看看</a>
-						</dd>
-					</dl>
-
-				</div>-->
-			
 
 			</div>
 		</div>
 	<include file="partials/footer" />
+    </div>
 
 </block>
 
 <block name="area_footer">
-	
 
+</block>
