@@ -497,7 +497,7 @@ class UsersmController extends HomeController {
             $this->assign("list",$result['info']['list']);
             $this->assign("show",$result['info']['show']);
         }
-
+        $this->assign("currency",VIRTUAL_CURRENCY);
         $this->display();
     }
 

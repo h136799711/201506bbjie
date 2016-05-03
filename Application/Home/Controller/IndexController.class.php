@@ -405,7 +405,7 @@ class IndexController extends HomeController {
         }else{
             $this->assign('doing_task',0);
         }
-
+        $this->assign("currency",VIRTUAL_CURRENCY);
         $this->rand_tip();
 		$this->display();
 	}

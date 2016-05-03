@@ -101,7 +101,7 @@
                         </li>
                         <li <eq name="status" value="reject">class="active"</eq> >
                         <a  href="{:U('Home/TaskHis/all',array('status'=>'reject'))}">已驳回
-                            <if condition="$count['wait_ret_money'] gt 0">
+                            <if condition="$count['reject'] gt 0">
                                 <span class="am-text-danger">{$count['reject']}</span>
                             </if>
                         </a>
@@ -281,7 +281,7 @@
                     <div class="am-form-group">
                         <label CLASS="am-text-left">驳回原因</label>
                         <div class="j_content">
-                            <textarea name="reason" rows="5" class="am-form-field "></textarea>
+                            <textarea name="reason" rows="5" class="am-form-field"></textarea>
                         </div>
                     </div>
 

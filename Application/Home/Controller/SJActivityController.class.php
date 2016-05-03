@@ -427,7 +427,6 @@ class SJActivityController extends SjController {
 
         $reason = I('post.reason','');
         $id = $this->_param('id','');
-
         $result = apiCall(TaskHisApi::GET_INFO,array(array('id'=>$id)));
         if($result['status'] && is_array($result['info'])){
             $his = $result['info'];
@@ -1010,11 +1009,10 @@ class SJActivityController extends SjController {
      */
 	public function edit_search() {
 
-		$map = array('id'=>$this->_param('id',0));
-
-		$map = array('uid' => $this->uid ) ;
+		$map = array('uid' => $this->uid,'id'=>$this->_param('id',0 ));
 
 		$product = apiCall(VTaskProductSearchWayApi::GET_INFO, array($map));
+
         $link = $product['info']['link'];
         if(strpos($link,'taobao.com') >= 0){
             $this->assign("url","www.taobao.com");
@@ -1177,7 +1175,7 @@ class SJActivityController extends SjController {
      * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 */
 	public function save() {
-		$user = $this->userinfo;
+//		$user = $this->userinfo;
         $founded = $this->_param('iscz',0);
 		$id   = I('id',0);
 
@@ -1193,7 +1191,7 @@ class SJActivityController extends SjController {
         );
 
 		if($id > 0){
-            $result = apiCall(ProductSearchWayApi::SAVE_BY_ID, array($id,$entity));
+            $result = apiCall(ProductSearchWayApi::SAVE, array(array('id'=>$id,'uid'=>$this->uid),$entity));
 		}else{
             $entity['uid'] = $user['id'];
             $entity['dtree_type'] = ProductSearchWayModel::SEARCH_TYPE_KEYWORD;
@@ -1410,19 +1408,19 @@ class SJActivityController extends SjController {
 
         $result = apiCall(TaskHisApi::SUM,array($map,'task_brokerage'));
 
-        if($result['status']){
+        if($result['status'] && intval($result['info']) > 0){
             $this->assign("all_task_brokerage",$result['info']);
         }
 
         $result = apiCall(VTaskHisInfoApi::SUM,array($map,'return_money'));
 
-        if($result['status']){
+        if($result['status'] && intval($result['info']) > 0){
             $this->assign("all_tb_price",$result['info']);
         }
 
         $result = apiCall(TaskHisApi::SUM,array($map,'express_price'));
 
-        if($result['status']){
+        if($result['status'] && intval($result['info']) > 0){
             $this->assign("all_tb_express",$result['info']);
         }
 

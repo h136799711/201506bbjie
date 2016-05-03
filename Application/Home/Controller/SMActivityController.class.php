@@ -413,6 +413,8 @@ class SMActivityController extends HomeController {
 
             $this->assign("search",$search);
         }
+
+        $this->assign("other",TaskHisModel::PAY_TYPE_LEGAL);
         //对不同的任务状态 显示不同的页面
         if($do_status == TaskHisModel::DO_STATUS_NOT_START){
             $this->getAddressList();

@@ -90,8 +90,8 @@
             </form>
 
             <div class="btns am-u-sm-12  am-padding-sm">
-                <a target-form="j_sh_order_form"  href="{:U('Home/SJActivity/confirm_order',array('id'=>$task_his['id']))}" class="ajax-post am-btn am-btn-primary btn-fix-am">审核通过</a>
-                <a  target-form="j_sh_order_form" href="{:U('Home/SJActivity/reject_order',array('id'=>$task_his['id']))}" class="ajax-post am-btn am-btn-danger
+                <a target-form="j_sh_order_form" href="javascript:void(0);" url="{:U('Home/SJActivity/confirm_order',array('id'=>$task_his['id']))}" class="ajax-post am-btn am-btn-primary btn-fix-am">审核通过</a>
+                <a  target-form="j_sh_order_form" href="javascript:void(0);"  url="{:U('Home/SJActivity/reject_order',array('id'=>$task_his['id']))}" class="ajax-post am-btn am-btn-danger
                  btn-fix-am">驳回</a>
             </div>
         </div>

@@ -238,33 +238,33 @@
     <!-- 日志查看窗口 END -->
 
     <!-- 驳回订单 START -->
-    <div class="am-modal am-modal-alert" tabindex="-1" id="j_reject_modal">
-        <div class="am-modal-dialog">
-            <div class="am-modal-hd am-text-left">#驳回订单编号#<span class="j_reject_id_text"></span>
-                <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
-            </div>
-            <div class="am-modal-bd">
-                <form class="j_reject_form" >
-                    <input type="hidden" class="j_reject_id" name="id"/>
-                    <div class="am-form-group">
-                        <label CLASS="am-text-left">驳回原因</label>
-                        <div class="j_content">
-                            <textarea name="reason" rows="5" class="am-form-field "></textarea>
-                        </div>
-                    </div>
+    <!--<div class="am-modal am-modal-alert" tabindex="-1" id="j_reject_modal">-->
+        <!--<div class="am-modal-dialog">-->
+            <!--<div class="am-modal-hd am-text-left">#驳回订单编号#<span class="j_reject_id_text"></span>-->
+                <!--<a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>-->
+            <!--</div>-->
+            <!--<div class="am-modal-bd">-->
+                <!--<form class="j_reject_form" >-->
+                    <!--<input type="hidden" class="j_reject_id" name="id"/>-->
+                    <!--<div class="am-form-group">-->
+                        <!--<label CLASS="am-text-left">驳回原因</label>-->
+                        <!--<div class="j_content">-->
+                            <!--<textarea name="reason" rows="5" class="am-form-field "></textarea>-->
+                        <!--</div>-->
+                    <!--</div>-->
 
-                    <div>
+                    <!--<div>-->
 
-                        <a href="javascript: void(0)" class=" am-btn am-btn-sm am-btn-default" data-am-modal-close>取消</a>
+                        <!--<a href="javascript: void(0)" class=" am-btn am-btn-sm am-btn-default" data-am-modal-close>取消</a>-->
 
-                        <a target-form="j_reject_form" href="{:U('Home/SJActivity/reject_order')}" class="ajax-post am-btn am-btn-sm am-btn-primary">确定</a>
-                    </div>
+                        <!--<a target-form="j_reject_form" href="{:U('Home/SJActivity/reject_order')}" class="ajax-post am-btn am-btn-sm am-btn-primary">确定</a>-->
+                    <!--</div>-->
 
-                </form>
+                <!--</form>-->
 
-            </div>
-        </div>
-    </div>
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
     <!-- 驳回订单 END -->
 
 
@@ -275,6 +275,7 @@
             </div>
             <div class="am-modal-bd">
                 <i class="am-icon-spinner am-icon-spin j_loading"></i>
+
                 <div class="j_content"></div>
             </div>
         </div>
@@ -335,63 +336,102 @@
                 });
 
             });
+
+
+
+
         });//end $ function
 
         function bind_ajax_post(class_name){
-            $(class_name+' .ajax-post').click(function(ev) {
-                //console.log("ajax-post");
-                var target, query, form;
-                var target_form = $(this).attr('target-form');
-                var that = this;
-                var need_confirm = false;
-                if (($(this).attr('type') == 'submit') || (target = $(this).attr('href')) || (target = $(this).attr('url'))) {
+            $(class_name+' .ajax-post').each(function(index,item){
+
+                $(item).click(function(ev) {
+                    console.log(ev);
+
+                    var target, query, form;
+                    var target_form = $(ev.target).attr('target-form');
+                    var that = ev.target;
+                    console.log(that);
+
                     form = $('.' + target_form);
 
                     if ($.validator && (form.hasClass("validate-form") || form.hasClass("validateForm"))) {
-                        if (!form.valid()) {
-                            alertMsg('表单验证不通过！');
-                            return false;
-                        }
+                            if (!form.valid()) {
+                                alertMsg('表单验证不通过！');
+                                return false;
+                            }
                     }
 
-                    if ($(this).attr('hide-data') === 'true') {
-                        //以隐藏数据作为参数
-                        form = $('.hide-data');
-                        query = form.serialize();
-                    } else if (form.get(0) == undefined) {
-                        return false;
-                    } else if (form.get(0).nodeName == 'FORM') {
-                        if ($(this).attr('url') !== undefined || $(this).attr("href") !== undefined) {
-                            target = $(this).attr('url') || $(this).attr("href");
+                    if (form.get(0).nodeName == 'FORM') {
+                        if ($(that).attr('url') !== undefined || $(that).attr("href") !== undefined) {
+                            target = $(that).attr('url') || $(that).attr("href");
                         } else {
                             target = form.get(0).action;
                         }
                         query = form.serialize();
-
-
-                    } else {
-
-                        query = form.find('input,select,textarea').serialize();
-
                     }
 
-
-                }
-
-                if ($(this).hasClass('confirm')) {
-                    //console.log("confirm");
-                    confirmMsg({
-                        content: '确认要执行该操作吗',
-                        action: function() {
-                            ajaxpost(that, target, query,ev);
-                        }
-                    });
-
-                } else {
                     ajaxpost(that, target, query,ev);
+
+                    return false;
+                }); //END ajax-post
+            });//END EACH
+        }//END function
+
+        function ajaxpost(that, target, query,ev) {
+//			$(that).button("loading");
+            console.log(that);
+            //var ele = loadingMsg("请求中...");
+            $(that).button('loading');
+            var funcname =  $(that).data("when-done");
+            $.post(target, query).always(function() {
+                //ele.modal("close");
+                setTimeout(function() {
+                    $(that).button("reset");
+                }, 1400);
+            }).done(function(data) {
+
+                if (data.status == 1) {
+                    if(!$(that).data('no-alert')){
+                        if (data.url) {
+                            alertMsg(data.info + ' <br/>页面即将自动跳转~');
+                        } else {
+                            alertMsg(data.info);
+                        }
+
+                        setTimeout(function() {
+                            if (data.url) {
+                                location.href = data.url;
+                            } else if ($(that).hasClass('no-refresh') || $(that).data('no-refresh')) {
+                                //不刷新
+                            } else {
+                                location.reload();
+                            }
+                        }, 1500);
+                    }else{
+                        if(funcname && funcname in window) {//判断是否是函数名
+                            window[funcname](ev);
+                        }
+                        if (data.url) {
+                            location.href = data.url;
+                        }else if ($(that).data('no-refresh')) {
+                            //不刷新
+                        }else{
+                            location.reload();
+                        }
+                    }
+                } else {
+
+                    alertMsg(data.info);
+                    setTimeout(function() {
+                        if (data.url) {
+                            location.href = data.url;
+                        } else {}
+                    }, 1500);
                 }
-                return false;
-            }); //END ajax-post
+            }).fail(function(){
+                alertMsg("操作失败！");
+            });
         }
     </script>
 </block>

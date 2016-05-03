@@ -140,17 +140,17 @@ class TaskHisController extends SjController {
      * 历史订单
      */
     public function history(){
-
+//        $task_id =
         $map = array(
             'seller_uid'=>$this->uid,
-            'task_id'=>$task_id,
+//            'task_id'=>$task_id,
             'do_status'=>TaskHisModel::DO_STATUS_RETURNED_MONEY
         );
 
         $page = array('curpage'=>I('get.p',0),'size'=>10);
         $order = " update_time desc ";
         $result = apiCall(VTaskHisInfoApi::QUERY,array($map,$page,$order));
-
+//        dump($result);
         if($result['status']){
             $this->assign("list",$result['info']['list']);
             $this->assign("show",$result['info']['show']);
