@@ -40,7 +40,9 @@
 			<dl class="dl_menu">
 				<dt class="dt_menu"><font ><i class="am-icon-bullhorn"></i>&nbsp;活动管理</font></dt>
 				<dd class="dd_menu"><a href="{:U('Home/SMActivity/task_manager',array('do_status'=>'doing'))}"><i class="am-icon-caret-right"></i>&nbsp;换宝活动</a>
-					<font color="red" id="xx" size="3">({$doing_task})</font>
+				<notempty name="doing_task">
+                    <font color="red" size="3">({$doing_task})</font>
+                </notempty>
 				</dd>
 
                 </dd>

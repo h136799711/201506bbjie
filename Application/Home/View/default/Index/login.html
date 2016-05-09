@@ -55,7 +55,7 @@
 						</div>
 
 						<div class="submit">
-							<a href="{:U('Home/Index/login')}"  target-form="login_form" data-no-alert="true" class="am-radius ajax-post am-center am-btn-block am-btn am-btn-sm am-btn-danger">
+							<a href="{:U('Home/Index/login')}"  target-form="login_form" data-no-alert="true" class="j_enter_login am-radius ajax-post am-center am-btn-block am-btn am-btn-sm am-btn-danger">
                                 登录
                             </a>
 						</div>
@@ -70,4 +70,14 @@
 </block>
 
 <block name="area_footer">
+    <script type="text/javascript">
+        $(function(){
+           $(window).keydown(function(e){
+                console.log(e);
+               if(e.keyCode == 13){
+                    $(".j_enter_login").click();
+               }
+           });
+        });
+    </script>
 </block>

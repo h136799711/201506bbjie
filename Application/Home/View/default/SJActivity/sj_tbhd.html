@@ -229,10 +229,16 @@
                                                 <td>
                                                 </td>
                                                 <td>
+                                                    <eq name="vo['task_status']" value="1">
+                                                        <a  class="am-btn-sm am-btn-link am-btn ajax-get confirm"  href="{:U('Home/SJActivity/zanting',array('id'=>$vo['id']))}">暂停任务</a><BR/>
 
-                                                    <eq name="task_status" value="1">
-                                                    <a  class="am-btn-sm am-btn-link am-btn ajax-get"  href="{:U('Home/SJActivity/zanting',array('id'=>$vo['id']))}">暂停任务</a>
-                                                        <BR/></eq><a  class="am-btn-sm am-btn-link am-btn"  href="{:U('Home/SJActivity/alluser',array('id'=>$vo['id']))}">任务用户</a>
+                                                    </eq>
+                                                    <eq name="vo['task_status']" value="2">
+                                                        <a  class="am-btn-sm am-btn-link am-btn ajax-get confirm"  href="{:U('Home/SJActivity/start_task',array('id'=>$vo['id']))}">开启任务</a><BR/>
+
+                                                    </eq>
+
+                                                    <a  class="am-btn-sm am-btn-link am-btn"  href="{:U('Home/SJActivity/alluser',array('id'=>$vo['id']))}">任务用户</a>
                                                 </td>
                                             </tr>
                                             <tr class="margin">

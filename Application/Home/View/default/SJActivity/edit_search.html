@@ -63,14 +63,18 @@
 							$("input[name='search_xz']").val(result.info.tab);
 							$("input[name='search_order']").val(result.info.order);
 							
-							var title1=$("#div_searchCondition .font_title1").text();
-							var wangwang1=$("#div_searchCondition .font_wangwang").html();
+							var title1=$("#product_base_info .font_title").text();
+
 							var result1="未能在结果页面找到对应搜索，提交后需等待客服审核";
 							$('#iscz').val('2');
 							var style1="am-alert-warning";
-							var curpage = pager.currentPage;
+                            var curpage = 1;
+                            if(pager != null){
+                                curpage ==pager.currentPage;
+                            }
 							for(var i=0;i<results.length;i++){
-								if(title1.indexOf(result.info.items[i].title.trim())!=-1||results[i].nick.trim()=='{$aliwawa}'){
+                                console.log(title1,results[i].title.trim());
+								if(title1.indexOf(results[i].title.trim())!=-1 || results[i].nick.trim() == '{$aliwawa}' ){
 									$('#iscz').val('1');
 
 									result1= "成功在第"+curpage+"页找到对应商品,保存搜索后可直接开始使用";
@@ -185,7 +189,7 @@
 				<div class="content">
 					<h1>搜索编辑</h1>
 					<div>
-
+    <input type="hidden" value="{$aliwawa}" class="j_aliwawa"/>
 						<form class="form-horizontal jquery-once-1-processed create2-processed ng-scope ng-valid ng-dirty" controller="extend/ajax_form,seller/sousuo_create2,extend/angular" id="yw0" action="#" method="post" novalidate="novalidate">
 							<div class="control-group">
 								<label class="control-label" style="line-height: 25px;">搜索类型</label>

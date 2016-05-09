@@ -86,9 +86,16 @@
                                             <br/> <span class="am-text-warning">手续费({:number_format($bank['poundage']*100,2,".","")}%)</span>
                                         </if>
                                     </div>
-                                    <div class="am-fl" style="width: 160px;">{$bank['bank_account']}</div>
-                                    <div class="am-fl" STYLE="width: 100px;">{$bank['cardholder']}</div>
-                                    <div class="am-fl" STYLE="width: 120px;"> {$bank['province']}{$bank['city']}</div>
+                                    <div class="am-fl" style="width: 160px;">
+                                        {$bank['bank_account']}
+                                    </div>
+                                    <div class="am-fl" STYLE="width: 100px;">
+
+                                        {$bank['cardholder']}
+                                    </div>
+                                    <div class="am-fl" STYLE="width: 120px;">
+                                        {$bank['province']}{$bank['city']}
+                                    </div>
                                 </div>
                                 </div>
 

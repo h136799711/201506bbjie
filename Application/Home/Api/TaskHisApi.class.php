@@ -84,11 +84,12 @@ class TaskHisApi extends Api{
      * @param $limit
      * @return array
      */
-    private function getNeedReturnMoney($interval,$limit){
+    public function getNeedReturnMoney($interval,$limit){
         $map = array();
         $map['do_status'] = TaskHisModel::DO_STATUS_RECEIVED_GOODS;
         $map['get_task_time'] = array('lt',time()-$interval);
         $result = $this -> model -> where($map)->limit(0,$limit)->select();
+
         if($result === false){
             return $this->apiReturnErr($this->model->getDbError());
         }

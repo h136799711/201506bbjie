@@ -29,10 +29,6 @@ class TaskHisModel extends \Think\Model{
      */
     const DO_STATUS_SUBMIT_ORDER = 91;
 
-    /**
-     * 已完成
-     */
-    const DO_STATUS_DONE = 95;
 
     /**
      * 订单审核通过

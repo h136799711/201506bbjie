@@ -58,6 +58,7 @@ class TaskController extends Controller{
 		ignore_user_abort(true); // 后台运行
 		set_time_limit(0); // 取消脚本运行时间的超时上限
         LogRecord("执行任务",__FILE__.__LINE__);
+
 //		$this->toRecieved();
 //		$this->toCompleted();
 //		$this->toCancel();
@@ -69,12 +70,12 @@ class TaskController extends Controller{
      * 1天内未确认还款则自动确认还款
      */
     private function autoConfirmReturnMoney(){
-        $interval = 24*3600;
+//        $interval = 24*3600;
+        $interval = 5*60;
         $limit = 20;
         $result = apiCall(TaskHisApi::GET_NEED_RETURN_MONEY,array($interval,$limit));
-
         if(!$result['status']){
-            LogRecord($result['info'], __FILE__.__LINE__);
+            LogRecord($result['info'], __FILE__.'LINE:'.__LINE__);
         }else{
 
             $list = $result['info'];

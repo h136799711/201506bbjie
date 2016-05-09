@@ -131,11 +131,9 @@
                             <table border="0" style="font-size: 12px;">
                                 <tr>
                                     <td width="300">淘宝账号: {$user.taobao_account} <a href="javascript:void(0)" data-am-modal="{target: '#my-alert'}">设置</a> </td>
-                                    <!--<td>手机任务: 关闭 <a href="">设置</a> </td>-->
                                     <td rowspan="2" style="">
                                         <a href="{:U('Home/SMActivity/gettask')}" class="btn-fix-am am-btn am-btn-sm am-btn-primary ajax-get" >点我领取任务</a>
-
-
+                                        有{$can_do_cnt}个可领取的任务
                                     </td>
                                 </tr>
                             </table>
@@ -220,7 +218,7 @@
                     淘宝账号：<input id="tbid" type="text" name="taobao" value="{$user.taobao_account}">
                 </div>
                 <div class="am-modal-footer am-margin-top-sm">
-                    <a href="{:U('Home/Usersm/settaobao')}" target-form="tb_form" class="btn-fix-am  ajax-get am-btn am-btn-sm am-btn-primary">
+                    <a href="{:U('Home/Usersm/settaobao')}" target-form="tb_form" class="btn-fix-am  ajax-post am-btn am-btn-sm am-btn-primary">
                         确定绑定
                     </a>
                 </div>

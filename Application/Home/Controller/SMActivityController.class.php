@@ -18,6 +18,7 @@ use Home\Api\TaskLogApi;
 use Home\Api\TaskPlanApi;
 use Home\Api\VBbjmemberSellerInfoApi;
 use Home\Api\VCanDoTaskApi;
+use Home\Api\VCanDoTaskWithAutoIdApi;
 use Home\Api\VMsgInfoApi;
 use Home\Api\VProductExchangeInfoApi;
 use Home\Api\VTaskHisInfoApi;
@@ -189,6 +190,7 @@ class SMActivityController extends HomeController {
         $do_status = I('get.do_status','');
 
         $map    = array('uid'=>$this->uid);
+
         switch($do_status){
             case "doing":
                 $map['do_status'] = array('not in',array(TaskHisModel::DO_STATUS_CANCEL,TaskHisModel::DO_STATUS_RETURNED_MONEY));
@@ -203,11 +205,14 @@ class SMActivityController extends HomeController {
                 $map['do_status'] = TaskHisModel::DO_STATUS_SUBMIT_ORDER;
                 break;
             case 'pass':
-                $map['do_status'] = TaskHisModel::DO_STATUS_PASS;
+                $map['do_status'] = array('in',array(TaskHisModel::DO_STATUS_DELIVERY_GOODS,TaskHisModel::DO_STATUS_PASS));
+
                 break;
             case 'wait_return':
-                $map['do_status'] = TaskHisModel::DO_STATUS_WAIT_RETURN;
-//                $map['order_status'] =
+                $map['do_status'] = TaskHisModel::DO_STATUS_RECEIVED_GOODS;
+                break;
+            case 'done':
+                $map['do_status'] = TaskHisModel::DO_STATUS_RETURNED_MONEY;
                 break;
             default:
 
@@ -232,7 +237,8 @@ class SMActivityController extends HomeController {
             $result = apiCall(VTaskProductInfoApi::QUERY_NO_PAGING, array($map));
             $his_list[$i]['_products']= $result['info'];
         }
-
+        //统计数量
+        $this->taskCount();
         $this->assign('status_delivery_order',TaskHisModel::DO_STATUS_DELIVERY_GOODS);
         $this->assign('status_received_goods',TaskHisModel::DO_STATUS_RECEIVED_GOODS);
         $this->assign('status_wait_return',TaskHisModel::DO_STATUS_WAIT_RETURN);
@@ -242,7 +248,6 @@ class SMActivityController extends HomeController {
         $this->assign('status',$do_status);
         $this->assign('his_list',$his_list);
         $this->assign('show',$result['info']['show']);
-
         $this -> boye_display();
 	}
 
@@ -290,12 +295,12 @@ class SMActivityController extends HomeController {
         $this->reloadUserInfo();
 
         $map = array('uid'=>$this->uid);
-        $map['do_status'] = array('notin',array(TaskHisModel::DO_STATUS_RETURNED_MONEY , TaskHisModel::DO_STATUS_DONE,TaskHisModel::DO_STATUS_CANCEL ));
+        $map['do_status'] = array('notin',array(TaskHisModel::DO_STATUS_RETURNED_MONEY ,TaskHisModel::DO_STATUS_CANCEL ));
 
 		$result = apiCall(TaskHisApi::GET_INFO,array($map));
 
         if($this->userinfo['auth_status'] == 0){
-            $this->error("用户信息认证完成才可以接任务哦");
+            $this->error("信息正在审核中... 审核完成才可接任务");
         }
 
 		if(is_array($result['info'])) {
@@ -303,9 +308,9 @@ class SMActivityController extends HomeController {
         }
 
 
-        $map = array('yuecount'=>array('gt',0),'start_time'=>array('lt',time()),'end_time'=>array('gt',time()));
+        $map = array();
 
-        $result = apiCall(TaskPlanApi::COUNT,array($map));
+        $result = apiCall(VCanDoTaskApi::COUNT,array($map));
         $total = 0;
         if($result['status']){
             $total = $result['info'];
@@ -313,9 +318,10 @@ class SMActivityController extends HomeController {
             $this->error($result['info']);
         }
 
-        $rand_id = rand(0,$total-1);
-        $map['id'] = array('egt',$rand_id);
-        $result = apiCall(VCanDoTaskApi::GET_INFO,array($map,'id desc'));
+        $rand_id = rand(1,$total);
+//        dump($rand_id);
+        $map['row_id'] = array('egt',$rand_id);
+        $result = apiCall(VCanDoTaskWithAutoIdApi::GET_INFO,array($map,'id desc'));
 
         if( !is_array($result['info']) ){
             $this->error('暂无可接任务，请稍候再试',U('Home/Index/sm_manager'));
@@ -325,6 +331,19 @@ class SMActivityController extends HomeController {
             if(!$result['status'] || is_null(($result['info']))){
                 $this->error("发生错误，请联系管理员!");
             }
+
+            if($result['info']['task_status'] != TaskModel::STATUS_TYPE_OPEN){
+                $this->error('暂无可接任务，请稍候再试',U('Home/Index/sm_manager'));
+            }
+
+            //检查该任务对应店铺是否在10天内已接收到
+            $task_id = $result['info']['id'];
+            $uid = $this->uid;
+
+            if(!$this->isLegalTask($task_id,$uid)){
+                $this->error('请稍候再试',U('Home/Index/sm_manager'));
+            }
+
 
             $task_brokerage  = $result['info']['task_brokerage'];
 
@@ -343,14 +362,29 @@ class SMActivityController extends HomeController {
                 'tb_address'=>'',
                 'tb_price'=>0,
                 'tb_pay_type'=>TaskHisModel::PAY_TYPE_LEGAL,
-
                 'tb_account'=>$this->userinfo['taobao_account'],
             );
+
+            //获取兑换商品信息
+            $exchange_map = array('exchange_status'=>ProductExchangeModel::CHECK_SUCCESS,'uid'=>$this->uid);
+            $result = apiCall(VProductExchangeInfoApi::GET_INFO,array($exchange_map,"update_time desc"));
+            $exchange_id = 0;
+            if($result['status'] && is_array($result['info'])){
+                $product_info = $result['info'];
+                $entity['express_pid'] = $product_info['p_id'];
+                $entity['express_name'] = $product_info['name'];
+                $exchange_id = $product_info['id'];
+            }
 
             $result = apiCall(TaskHisApi::ADD,array($entity));
 
 
             if($result['status']){
+
+                if($exchange_id > 0){
+                    apiCall(ProductExchangeApi::SAVE_BY_ID,array($exchange_id,array('exchange_status'=>ProductExchangeModel::ALLOC_TASK)));
+                }
+
                 $notes = "用户 (".$this->userinfo['username'].") 领取了任务";
                 task_log($result['info'] , $task_plan['id'],$this->uid,$task_plan['task_id'],TaskLogModel::TYPE_GET_TASK,$notes);
 
@@ -434,8 +468,6 @@ class SMActivityController extends HomeController {
             $this->getLogList($id);
             $this->display('rws_wait_check');
         }
-
-
 
 	}
 
@@ -570,7 +602,7 @@ class SMActivityController extends HomeController {
     private function get_doing_task_cnt(){
 
         $map = array('uid'=>$this->uid);
-        $map['do_status'] = array('not in',array(TaskHisModel::DO_STATUS_CANCEL,TaskHisModel::DO_STATUS_DONE,TaskHisModel::DO_STATUS_RETURNED_MONEY));
+        $map['do_status'] = array('not in',array(TaskHisModel::DO_STATUS_CANCEL,TaskHisModel::DO_STATUS_RETURNED_MONEY));
         $result = apiCall(TaskHisApi::COUNT,array($map));
         if($result['status']){
             $this->assign('doing_task',$result['info']);
@@ -607,6 +639,97 @@ class SMActivityController extends HomeController {
 
         $result = apiCall(VPostInfoApi::GET_INFO,array($map, $order));
         $this->assign('zxgg',$result['info']);
+    }
+
+    /**
+     * 判断领取的任务是否为该用户在10天内领取过的
+     * @param 任务ID $task_id
+     * @param 领取人ID $uid
+     * @return bool
+     */
+    private function isLegalTask($task_id,$uid){
+        $order = " get_task_time desc";
+        $map = array(
+            'task_id'=>$task_id,
+            'uid'=>$uid,
+            'do_status'=>array('not in',array(TaskHisModel::DO_STATUS_CANCEL)),
+        );
+
+        $result = apiCall(TaskHisApi::GET_INFO,array($map,$order));
+        if($result['status'] && is_array($result['info'])){
+            $task_his = $result['info'];
+            $min_time = time() - 10*24*3600;
+            if($task_his['get_task_time'] > $min_time){
+                return false;
+            }
+
+        }
+
+        return true;
+
+    }
+
+    /**
+     * 统计数量
+     */
+    private function taskCount(){
+
+        $map = array('uid'=>$this->uid);
+        $api = new TaskHisApi();
+        $total = 0;
+
+        $result = $api->count($map);
+        if($result['status']){
+            $total = $result['info'];
+        }
+
+        //已完成
+        $map['do_status'] = TaskHisModel::DO_STATUS_RETURNED_MONEY;
+
+        $result = $api->count($map);
+        if($result['status']){
+            $total -= $result['info'];
+            $this->assign("task_done_cnt",$result['info']);
+        }
+        //取消
+        $map['do_status'] = TaskHisModel::DO_STATUS_CANCEL;
+
+        $result = $api->count($map);
+        if($result['status']){
+            $total -= $result['info'];
+            $this->assign("task_cancel_cnt",$result['info']);
+        }
+        //被驳回
+        $map['do_status'] = TaskHisModel::DO_STATUS_REJECT;
+
+        $result = $api->count($map);
+        if($result['status']){
+            $this->assign("task_reject_cnt",$result['info']);
+        }
+        //等待审核
+        $map['do_status'] = TaskHisModel::DO_STATUS_SUBMIT_ORDER;
+
+        $result = $api->count($map);
+        if($result['status']){
+            $this->assign("task_wait_sh_cnt",$result['info']);
+        }
+        //待确认收货
+        $map['do_status'] = array('in',array(TaskHisModel::DO_STATUS_DELIVERY_GOODS,TaskHisModel::DO_STATUS_PASS));
+
+        $result = $api->count($map);
+        if($result['status']){
+            $this->assign("task_wait_receive_cnt",$result['info']);
+        }
+        //待返款
+        $map['do_status'] = TaskHisModel::DO_STATUS_RECEIVED_GOODS;
+
+        $result = $api->count($map);
+        if($result['status']){
+            $this->assign("task_wait_money_cnt",$result['info']);
+        }
+
+        $this->assign("task_doing_cnt",$total);
+
     }
 
 }

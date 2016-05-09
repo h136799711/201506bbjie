@@ -21,6 +21,8 @@ class ProductExchangeModel extends \Think\Model{
     const CHECK_FAIL = 2;
     // 已发货
     const DELIVERY_GOODS = 3;
+    // 已分配任务
+    const ALLOC_TASK = 4;
 
 
 }

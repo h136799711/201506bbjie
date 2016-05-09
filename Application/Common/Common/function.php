@@ -53,7 +53,7 @@ function apiCall($url, $vars, $layer = 'Api') {
  * SQL SQL语句，该级别只在调试模式开启时有效
  */
 function LogRecord($msg, $location, $level = 'ERR') {
-	Think\Log::write($location . $msg, $level);
+	Think\Log::write($location.'msg=' . $msg, $level);
 }
 
 /**

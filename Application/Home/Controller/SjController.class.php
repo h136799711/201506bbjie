@@ -90,7 +90,7 @@ class SjController extends HomeController {
     }
 
     private function getLevelAuth(){
-        $level  = $this->userinfo['level'];
+        $level  = $this->userinfo['vip_level'];
         $result = apiCall(LevelAuthApi::GET_INFO,array(array('level'=>$level)));
         if($result['status']){
             $this->level_auth = $result['info'];

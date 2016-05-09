@@ -2,6 +2,18 @@
 
 <block name="area_header">
     <link rel="stylesheet" type="text/css" href="__CSS__/manager.css"/>
+    <style type="text/css">
+        .syj-form table{
+            height:400px;
+            overflow: scroll;
+            display: block;
+            width: 360px;
+        }
+        .status-filter a{
+            font-size: 14px;
+            margin-right: 10px;
+        }
+    </style>
 </block>
 
 <block name="area_body">
@@ -25,13 +37,14 @@
                             <!--<button type="submit" class="am-btn am-btn-sm am-btn-primary am-radius" >搜索</button>-->
                             <!--</form>-->
 
-                <span class="am-text-sm" style="">
-                  <a href="{:U('Home/SMActivity/task_manager',array('do_status'=>'doing'))}" <eq name="status" value="doing">style="color: red;"<else/>style="color: #999;"</eq> >进行中任务</a>
-                    <a <eq name="status" value="reject">style="color: red;" <else/> style="color: #999;" </eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'reject'))}" >被驳回<font color="red">{$bh}</font></a>
-                    <a <eq name="status" value="submit">style="color: red;" <else/> style="color: #999;" </eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'submit'))}" >等待审核<font color="red">{$sh}</font></a>
-                    <a <eq name="status" value="pass">style="color: red;" <else/> style="color: #999;" </eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'pass'))}" >待确认收货<font color="red">{$qrsh}</font></a>
-                    <a <eq name="status" value="wait_return">style="color: red;" <else/> style="color: #999;" </eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'wait_return'))}" >等待返款<font color="red">{$fk}</font></a>
-                    <a <eq name="status" value="cancel">style="color: red;" <else/> style="color: #999;" </eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'cancel'))}" >取消/放弃</a><font color="red">{$qx}</font></a>
+                <span class="am-text-sm status-filter" style="">
+                  <a href="{:U('Home/SMActivity/task_manager',array('do_status'=>'doing'))}" <eq name="status" value="doing">style="color: red;"<else/>style="color: #999;"</eq> >进行中任务<notempty name="task_doing_cnt">({$task_doing_cnt})</notempty></a>
+                    <a <eq name="status" value="reject">style="color: red;" <else/> style="color: #999;" </eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'reject'))}" >被驳回<notempty name="task_reject_cnt">({$task_reject_cnt})</notempty></a>
+                    <a <eq name="status" value="submit">style="color: red;" <else/> style="color: #999;" </eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'submit'))}" >等待审核<notempty name="task_wait_sh_cnt">({$task_wait_sh_cnt})</notempty></a>
+                    <a <eq name="status" value="pass">style="color: red;" <else/> style="color: #999;" </eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'pass'))}" >待确认收货<notempty name="task_wait_receive_cnt">({$task_wait_receive_cnt})</notempty></a>
+                    <a <eq name="status" value="wait_return">style="color: red;" <else/> style="color: #999;" </eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'wait_return'))}" >等待返款<notempty name="task_wait_money_cnt">({$task_wait_money_cnt})</notempty></a>
+                    <a <eq name="status" value="cancel">style="color: red;" <else/> style="color: #999;" </eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'cancel'))}" >取消/放弃<notempty name="task_cancel_cnt">({$task_cancel_cnt})</notempty></a></a>
+                    <a <eq name="status" value="done">style="color: red;" <else/> style="color: #999;" </eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'done'))}" >已完成<notempty name="task_done_cnt">({$task_done_cnt})</notempty></a></a>
                 </span>
 
                         </td>

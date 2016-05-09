@@ -16,8 +16,10 @@ use Cms\Model\PostModel;
 use Common\Api\AccountApi;
 use Home\Api\BbjmemberApi;
 use Home\Api\TaskHisApi;
+use Home\Api\VCanDoTaskApi;
 use Home\Api\VMsgInfoApi;
 use Home\ConstVar\BoyeActionConstVar;
+use Home\ConstVar\TimeConstVar;
 use Home\ConstVar\UserTypeConstVar;
 use Home\Model\TaskHisModel;
 use Think\Controller;
@@ -398,7 +400,7 @@ class IndexController extends HomeController {
         $this->getNoticeForSm();
         $this->not_read_msg_cnt();
         $map = array('uid'=>$this->uid);
-        $map['do_status'] = array('not in',array(TaskHisModel::DO_STATUS_RETURNED_MONEY, TaskHisModel::DO_STATUS_CANCEL,TaskHisModel::DO_STATUS_DONE));
+        $map['do_status'] = array('not in',array(TaskHisModel::DO_STATUS_RETURNED_MONEY, TaskHisModel::DO_STATUS_CANCEL));
         $result = apiCall(TaskHisApi::COUNT,array($map));
         if($result['status']){
             $this->assign('doing_task',$result['info']);
@@ -407,8 +409,33 @@ class IndexController extends HomeController {
         }
         $this->assign("currency",VIRTUAL_CURRENCY);
         $this->rand_tip();
+        $this->getCanDoTaskCnt();
 		$this->display();
 	}
+
+    private function getCanDoTaskCnt(){
+        $map = array(
+        );
+
+        $result = apiCall(VCanDoTaskApi::COUNT,array($map));
+        $can_do_cnt = $result['info'];
+
+        $min_time = time() - TimeConstVar::MIN_TIME_FOR_GET_TASK;
+
+        $map['uid'] = $this->uid;
+        $map['do_status'] = array('neq',TaskHisModel::DO_STATUS_CANCEL);
+        $map['get_task_time'] = array('gt',$min_time);
+
+
+        $result = apiCall(TaskHisApi::COUNT,array($map));
+
+        if($result['status']){
+            $can_do_cnt = $can_do_cnt - intval($result['info']);
+            $this->assign("can_do_cnt",$can_do_cnt);
+        }else{
+            $this->assign("can_do_cnt",0);
+        }
+    }
 
     /**
      *

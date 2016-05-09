@@ -1,7 +1,7 @@
 <extend name="template/base_index" />
 
 <block name="area_header">
-    <!--<link rel="stylesheet" href="__CSS__/shangjia2.css">-->
+
     <link rel="stylesheet" href="__CSS__/common.css?v=__APP_VERSION__">
     <link type="text/css" rel="stylesheet" href="__CDN__/select2/4.0.0/css/select2.min.css" />
     <style type="text/css">
@@ -199,6 +199,7 @@
                                                 <eq name="vo['delivery_mode']" value="1">
                                                     <span class="am-text-warning">等待平台发货</span>
                                                     <else/>
+
                                                     <a data-id="{$vo.id}" href="javascript:void(0);"
                                                        class="am-margin-bottom-sm j_delivery btn-fix-am am-btn am-btn-sm am-btn-primary btn-fix-am">
                                                         填写发货信息
@@ -224,7 +225,7 @@
                                             </eq>
                                         </td>
                                         <td >
-                                            {$vo.create_time|date='Y-m-d H:i',###}
+                                            {$vo.update_time|date='Y-m-d H:i',###}
                                         </td>
                                         <td width="160" >
                                             <eq name="vo['do_status']" value="$submit_order">
@@ -233,7 +234,9 @@
                                             </eq>
 
                                             <eq name="vo['do_status']" value="$received_goods">
-                                                <a href="{:U('Home/SJActivity/return_money',array('id'=>$vo['id']))}" class="confirm ajax-get am-margin-bottom-sm btn-fix-am am-btn am-btn-sm am-btn-danger">确认还款</a>
+                                                <a href="{:U('Home/SJActivity/return_money',array('id'=>$vo['id']))}" class="confirm ajax-get am-margin-bottom-sm btn-fix-am am-btn am-btn-sm am-btn-danger">确认还款<span class="js_countdownwn"  data-until="{$vo['update_time'] + 24*3600}"></span></a>
+
+
                                                 <br/>
                                             </eq>
 
@@ -363,6 +366,19 @@
 </block>
 
 <block name="area_footer">
+    <script type="text/javascript" src="__CDN__/sco1.0.2-8/js/sco.countdown.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $(".js_countdownwn").each(function (index, item) {
+                var thid = $('#thid').val();
+                var until = $(item).data("until");
+                until = parseInt(until);
+                thid = parseInt(thid);
+                $(item).scojs_countdown({until: until, id: thid});
+
+            });
+        });
+    </script>
     <script type="text/javascript">
         $(function(){
 
@@ -394,6 +410,9 @@
 
                         $("#j_sh_modal").find(".j_loading").hide();
                         $("#j_sh_modal").find(".j_content").html(result);
+
+
+                        bind_ajax_post("#j_sh_modal .j_content");
 
                     }, 'html');
 
@@ -428,6 +447,99 @@
 
             });
         });//end $ function
+
+        function bind_ajax_post(class_name){
+            $(class_name+' .ajax-post').each(function(index,item){
+
+                $(item).click(function(ev) {
+                    console.log(ev);
+
+                    var target, query, form;
+                    var target_form = $(ev.target).attr('target-form');
+                    var that = ev.target;
+                    console.log(that);
+
+                    form = $('.' + target_form);
+
+                    if ($.validator && (form.hasClass("validate-form") || form.hasClass("validateForm"))) {
+                        if (!form.valid()) {
+                            alertMsg('表单验证不通过！');
+                            return false;
+                        }
+                    }
+
+                    if (form.get(0).nodeName == 'FORM') {
+                        if ($(that).attr('url') !== undefined || $(that).attr("href") !== undefined) {
+                            target = $(that).attr('url') || $(that).attr("href");
+                        } else {
+                            target = form.get(0).action;
+                        }
+                        query = form.serialize();
+                    }
+
+                    ajaxpost(that, target, query,ev);
+
+                    return false;
+                }); //END ajax-post
+            });//END EACH
+        }//END function
+
+        function ajaxpost(that, target, query,ev) {
+//			$(that).button("loading");
+            console.log(that);
+            //var ele = loadingMsg("请求中...");
+            $(that).button('loading');
+            var funcname =  $(that).data("when-done");
+            $.post(target, query).always(function() {
+                //ele.modal("close");
+                setTimeout(function() {
+                    $(that).button("reset");
+                }, 1400);
+            }).done(function(data) {
+
+                if (data.status == 1) {
+                    if(!$(that).data('no-alert')){
+                        if (data.url) {
+                            alertMsg(data.info + ' <br/>页面即将自动跳转~');
+                        } else {
+                            alertMsg(data.info);
+                        }
+
+                        setTimeout(function() {
+                            if (data.url) {
+                                location.href = data.url;
+                            } else if ($(that).hasClass('no-refresh') || $(that).data('no-refresh')) {
+                                //不刷新
+                            } else {
+                                location.reload();
+                            }
+                        }, 1500);
+                    }else{
+                        if(funcname && funcname in window) {//判断是否是函数名
+                            window[funcname](ev);
+                        }
+                        if (data.url) {
+                            location.href = data.url;
+                        }else if ($(that).data('no-refresh')) {
+                            //不刷新
+                        }else{
+                            location.reload();
+                        }
+                    }
+                } else {
+
+                    alertMsg(data.info);
+                    setTimeout(function() {
+                        if (data.url) {
+                            location.href = data.url;
+                        } else {}
+                    }, 1500);
+                }
+            }).fail(function(){
+                alertMsg("操作失败！");
+            });
+        }
+
     </script>
 
 

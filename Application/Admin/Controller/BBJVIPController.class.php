@@ -570,7 +570,7 @@ class BBJVIPController extends AdminController{
         //平台发货的已提交订单的任务
         $map['delivery_mode'] = TaskModel::DELIVERY_MODE_PLATFORM;
 
-        dump($map);
+//        dump($map);
         $page = array('curpage'=>I('get.p',1),'size'=>10);
         $order = "get_task_time desc";
         $result = apiCall(VTaskHisInfoApi::QUERY,array($map,$page,$order,$param));

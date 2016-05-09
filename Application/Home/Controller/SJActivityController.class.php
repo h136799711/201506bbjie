@@ -196,7 +196,7 @@ class SJActivityController extends SjController {
         $map = array(
 //            'seller_uid'=>$task['uid'],
             'task_id'=>$task_id,
-            'do_status'=>array('not in',array(TaskHisModel::DO_STATUS_DONE,TaskHisModel::DO_STATUS_CANCEL))
+            'do_status'=>array('not in',array(TaskHisModel::DO_STATUS_RETURNED_MONEY,TaskHisModel::DO_STATUS_CANCEL))
         );
         if(!empty($code)){
             $map['_string'] = '(id = '.$code.' or tb_orderid = '.$code.' or tb_account = '.$code.' )';
@@ -240,12 +240,12 @@ class SJActivityController extends SjController {
 
          //2. 统计
          $cnt_map = array('task_id'=>$task_id);
-         $cnt_map['do_status'] = array('not in',array(TaskHisModel::DO_STATUS_DONE,TaskHisModel::DO_STATUS_CANCEL));
+         $cnt_map['do_status'] = array('not in',array(TaskHisModel::DO_STATUS_RETURNED_MONEY,TaskHisModel::DO_STATUS_CANCEL));
 
          $result = apiCall(TaskHisApi::COUNT,array($cnt_map));
          $doing_cnt = $result['info'];
 
-         $cnt_map['do_status'] = TaskHisModel::DO_STATUS_DONE ;
+         $cnt_map['do_status'] = TaskHisModel::DO_STATUS_RETURNED_MONEY ;
          $result = apiCall(TaskHisApi::COUNT,array($cnt_map));
          $done_cnt = $result['info'];
 
@@ -653,7 +653,6 @@ class SJActivityController extends SjController {
 
 		$result = apiCall(TaskProductApi::QUERY_NO_PAGING, array($map));
 		$this -> assign('pros', $result['info']);
-
         if($this->hasMulLink()){
             $this->assign("links",3);
         }else{
@@ -849,6 +848,7 @@ class SJActivityController extends SjController {
 		$mod = new TaskHisApi();
 
 		$map['task_id']=$id;
+        $map['do_status'] = array('not in',array(TaskHisModel::DO_STATUS_CANCEL,TaskHisModel::DO_STATUS_RETURNED_MONEY));
 
 		$result = $mod->count($map);
 
@@ -870,6 +870,25 @@ class SJActivityController extends SjController {
 		}
 
 	}
+
+    /**
+     * 开启任务
+     * @author 老胖子-何必都 <hebiduhebi@126.com>
+     * @date 20160509
+     */
+    public function start_task(){
+
+        $id = I('get.id',0);
+        $entity = array('task_status' => TaskModel::STATUS_TYPE_OPEN);
+        $return = apiCall(HomePublicApi::Task_SaveByID, array($id, $entity));
+        if ($return['status']) {
+            $this -> success('操作成功', U('Home/SJActivity/sj_tbhd'));
+        }else{
+            $this->error($return['info']);
+        }
+    }
+
+
 	/*
 	 * 暂停搜索
 	 * @author 老胖子-何必都 <hebiduhebi@126.com>
@@ -1022,6 +1041,7 @@ class SJActivityController extends SjController {
             $this->assign("url","未知");
         }
 		$this->assign('search',$product['info']);
+        $this->assign('aliwawa',$this->userinfo['aliwawa']);
 		$this -> display();
 	}
 
@@ -1176,7 +1196,7 @@ class SJActivityController extends SjController {
 	 */
 	public function save() {
 //		$user = $this->userinfo;
-        $founded = $this->_param('iscz',0);
+        $founded = $this->_param('iscz',2);
 		$id   = I('id',0);
 
         $entity = array(
@@ -1190,12 +1210,15 @@ class SJActivityController extends SjController {
             'dtree_type'=>ProductSearchWayModel::SEARCH_TYPE_KEYWORD,
         );
 
+        if($founded == 1){
+            $entity['status'] = $founded;
+        }
+
 		if($id > 0){
             $result = apiCall(ProductSearchWayApi::SAVE, array(array('id'=>$id,'uid'=>$this->uid),$entity));
 		}else{
             $entity['uid'] = $user['id'];
             $entity['dtree_type'] = ProductSearchWayModel::SEARCH_TYPE_KEYWORD;
-            $entity['status'] = $founded;
             $entity['create_time'] = time();
             $result = apiCall(ProductSearchWayApi::ADD, array($entity));
 		}
@@ -1428,7 +1451,7 @@ class SJActivityController extends SjController {
             'seller_uid'=>$this->uid,
             'task_id'=>$task_id,
         );
-        $map['do_status'] = array('not in',array(TaskHisModel::DO_STATUS_DONE,TaskHisModel::DO_STATUS_RETURNED_MONEY,TaskHisModel::DO_STATUS_CANCEL));
+        $map['do_status'] = array('not in',array(TaskHisModel::DO_STATUS_RETURNED_MONEY,TaskHisModel::DO_STATUS_CANCEL));
 
         $result = apiCall(TaskHisApi::GET_INFO,array($map));
         $this->assign("can_clear",1);
@@ -1461,7 +1484,7 @@ class SJActivityController extends SjController {
             'seller_uid'=>$this->uid,
             'task_id'=>$task_id,
         );
-        $map['do_status'] = array('not in',array(TaskHisModel::DO_STATUS_DONE,TaskHisModel::DO_STATUS_RETURNED_MONEY,TaskHisModel::DO_STATUS_CANCEL));
+        $map['do_status'] = array('not in',array(TaskHisModel::DO_STATUS_RETURNED_MONEY,TaskHisModel::DO_STATUS_CANCEL));
         $result = apiCall(TaskHisApi::GET_INFO,array($map));
         if($result['status'] && is_array($result['info'])){
             $this->error("当前仍有任务正在进行中...");

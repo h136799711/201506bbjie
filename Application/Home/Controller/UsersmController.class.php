@@ -107,8 +107,8 @@ class UsersmController extends HomeController {
 
 
         //收支明细
-
-        $result = apiCall(FinAccountBalanceHisApi::QUERY,array($map));
+        $page = array('curpage'=>I('get.p',0),'size'=>10);
+        $result = apiCall(FinAccountBalanceHisApi::QUERY,array($map,$page,'create_time desc'));
 
         $this->assign("detail_list",$result['info']['list']);
         $this->assign("detail_show",$result['info']['show']);
@@ -116,7 +116,7 @@ class UsersmController extends HomeController {
 
         //提现明细
         $map['dtree_type'] = FinAccountBalanceHisModel::TYPE_WITHDRAW;
-        $result = apiCall(FinAccountBalanceHisApi::QUERY,array($map));
+        $result = apiCall(FinAccountBalanceHisApi::QUERY,array($map,$page,'create_time desc'));
 
         $this->assign("withdraw_list",$result['info']['list']);
         $this->assign("withdraw_show",$result['info']['show']);
@@ -130,7 +130,7 @@ class UsersmController extends HomeController {
 	 * */
 	public function settaobao(){
 
-		$entity=array('taobao_account'=>I('taobao','无'));
+		$entity=array('taobao_account'=>I('post.taobao',''));
 
 		$result = apiCall(BbjmemberApi::SAVE_BY_ID,array($this->uid,$entity));
 		if($result['status']){
@@ -222,7 +222,7 @@ class UsersmController extends HomeController {
         $this->assign("check_fail",$result['info']);
         //4. 已发货
         $map = array(
-            'exchange_status'=>ProductExchangeModel::DELIVERY_GOODS,
+            'exchange_status'=>ProductExchangeModel::ALLOC_TASK,
             'uid'=>$this->userinfo['id'],
         );
         $result = apiCall(ProductExchangeApi::COUNT,array($map));
@@ -490,8 +490,8 @@ class UsersmController extends HomeController {
      * @author 老胖子-何必都 <hebiduhebi@126.com>
      */
     public function view_fucoin(){
-
-        $result = apiCall(FinFucoinHisApi::QUERY,array(array('uid'=>$this->userinfo['id'])));
+        $page = array('curpage'=>I('get.p',0),'size'=>10);
+        $result = apiCall(FinFucoinHisApi::QUERY,array(array('uid'=>$this->userinfo['id']),$page,"create_time desc"));
 
         if($result['status']){
             $this->assign("list",$result['info']['list']);
