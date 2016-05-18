@@ -169,15 +169,16 @@
 						<div class="c renwu_list">
 							<div class="ovh">
 								<ul>
-									<li>
+                                    <volist name="products" id="vo">
+									<li class="am-block am-cf">
                                         <div class="am-fl">
-                                            <img src="{$pd.main_img}" style="width: 160px;height:120px;" alt="主图">
+                                            <img src="{$vo.main_img}" style="width: 160px;height:120px;" alt="主图">
                                         </div>
                                         <div class="am-fl am-margin-left-sm">
 
-                                            <p>{:mask_string($pd['pname'])}</p>
-                                            <p>规格: <empty name="pd['sku']">试民自由选择<else/>{$pd.sku}</empty></p>
-                                            <p>单价: {$pd.price}</p>
+                                            <p>{$vo['pname']}</p>
+                                            <p>规格: <empty name="vo.['sku']">试民自由选择<else/>{$vo.sku}</empty></p>
+                                            <p>单价: {$vo.price} 元 x{$vo.num}</p>
 
                                         </div>
                                         <div class="am-fr">
@@ -186,6 +187,7 @@
                                             </div>
                                         </div>
 									</li>
+                                    </volist>
 								</ul>
 							</div>
 						</div>
@@ -194,7 +196,7 @@
 							<span style="vertical-align:5px;">
                                 预期支付金额:<span style="font-size: 18px;">≤</span>
 							</span>
-							<span class="shuliang price">￥{$pd.price} </span>
+							<span class="shuliang price">￥{$cal_price} </span>
 						</div>
 
 						<div class="shuoming">

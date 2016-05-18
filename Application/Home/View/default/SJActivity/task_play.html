@@ -1,7 +1,9 @@
 <extend name="template/base_index" />
 
 <block name="area_header">
-    <link rel="stylesheet" href="__CSS__/common.css">
+    <link type="text/css" rel="stylesheet" href="__CDN__/select2/4.0.0/css/select2.min.css" />
+    <!--<link rel="stylesheet" href="__CSS__/common.css">-->
+    <link rel="stylesheet" href="__CSS__/shangjia2.css">
 	<style type="text/css">
 		#begin_time,#end_time,#count{ height: 30px;}
 		#yw1 li{list-style-type: none;}
@@ -11,7 +13,9 @@
         .am-modal select{
             font-size: 10px;
         }
-
+        .select2-dropdown{
+            z-index: 10510;
+        }
 	</style>
 </block>
 
@@ -167,6 +171,16 @@
                             </div>
                         </div>
                         <div class="am-form-group am-g">
+                            <label class="am-u-lg-2 am-u-md-2 am-form-label">搜索方式</label>
+                            <div class="am-u-lg-10 am-u-md-10 am-text-left">
+                                <select id="search_way" STYLE="width: 260px;" name="search_way_id" class="am-form-field">
+                                    <option value="0">选择搜索方式</option>
+                                </select>
+
+                            </div>
+                        </div>
+
+                        <div class="am-form-group am-g">
                             <label class="am-u-lg-2 am-u-md-2 am-form-label">发放份数</label>
                             <div class="am-u-lg-10 am-u-md-10 am-text-left">
                                 <input type="text" name="count" id="count" value="" />&nbsp;&nbsp;
@@ -236,11 +250,58 @@
 </block>
 
 <block name="area_footer">
+    <script type="text/javascript" src="__CDN__/select2/4.0.0/js/select2.full.js"></script>
+    <script type="text/javascript" src="__CDN__/select2/4.0.0/js/i18n/zh-CN.js"></script>
+
 	<script type="text/javascript">
 
 
 
 		$(function(){
+
+            $("#search_way").select2({
+                placeholder: "输入用户uid或昵称查询"
+                ,
+                language: "zh-CN",
+                ajax: {
+                    url: "{:U('SJActivity/searchWay')}",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        var queryParameters = {
+                            q: params.term
+                        }
+
+                        return queryParameters;
+
+                    },
+                    processResults: function (data, page) {
+                        if(!data.info){
+                            data.info = new Array();
+                            data.info['nodata']="无相关数据";
+                        }
+                        // parse the results into the format expected by Select2.
+                        // since we are using custom formatting functions we do not need to
+                        // alter the remote JSON data
+                        return {
+                            results: data.info
+                        };
+                    },
+                    cache: true
+                },
+                minimumInputLength: 0,
+                templateSelection: function (repo) {
+                    return repo.search_q || repo.text;
+                },
+                templateResult: function (repo) {
+
+                    if (repo.loading) return repo.text;
+                    if(repo.nodata) return repo.nodata;
+                    var markup = '<div>'+repo.search_q+'</div>';
+                    return $(markup);
+                },
+            });
+
 
 
 

@@ -3,6 +3,7 @@
 <block name="area_header">
     <!--<link rel="stylesheet" href="__CSS__/shangjia2.css">-->
     <link rel="stylesheet" href="__CSS__/common.css?v=__APP_VERSION__">
+    <link type="text/css" rel="stylesheet" href="__CDN__/select2/4.0.0/css/select2.min.css" />
     <style type="text/css">
         #begin_time,#end_time,#count{ height: 30px;}
         #yw1 li{list-style-type: none;}
@@ -51,6 +52,16 @@
                         <a href="{:U('Home/SJActivity/sj_tbhd')}">淘宝活动</a>&gt;<span>任务计划管理：{$task['task_name']}</span>
                     </div>
 
+                </div>
+
+                <div class="search_panel am-cf am-u-g">
+                    <form class="am-form-horizontal am-cf j_search_form" action="__SELF__" method="post">
+                        <div class="am-form-group">
+                            <select id="user_select2" name="view_uid" style="width:240px;">
+                                <option value="{$view_uid}">{$view_uid}</option>
+                            </select>
+                        </div>
+                    </form>
                 </div>
 
                 <div class="content">
@@ -186,10 +197,65 @@
 </block>
 
 <block name="area_footer">
+
+    <script src="__CDN__/select2/4.0.0/js/select2.min.js"></script>
+    <script src="__CDN__/select2/4.0.0/js/i18n/zh-CN.js"></script>
     <script type="text/javascript">
+
         $(function(){
 
-        });//end $ function
+
+            $("#user_select2").select2({
+                placeholder: "输入用户id或用户名查询"	,
+                language: "zh-CN",
+                ajax: {
+                    url: "{:U('Home/TaskHis/ajax_all_users')}",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        var queryParameters = {
+                            q: params.term
+                        }
+                        return queryParameters;
+
+                    },
+                    processResults: function (data, page) {
+                        if(!data.info){
+                            data.info = new Array();
+                            data.info['nodata']="无相关数据";
+                        }
+                        // parse the results into the format expected by Select2.
+                        // since we are using custom formatting functions we do not need to
+                        // alter the remote JSON data
+                        return {
+                            results: data.info
+                        };
+                    },
+                    cache: true
+                },
+                minimumInputLength: 0,
+                templateSelection: function (repo) {
+                    var selection = repo.nickname || repo.text;
+                    if(repo.nickname){
+
+                    }
+                    return selection;
+                },
+                templateResult: function (repo) {
+
+                    if (repo.loading) return repo.text;
+                    if(repo.nodata) return repo.nodata;
+                    var markup = '<div><img src="'+repo.head+'" style="width:30px;height:30px;"/>[id:'+repo.id+'] '+repo.nickname+'</div>';
+                    return $(markup);
+                },
+            });
+
+            $("#user_select2").change(function(){
+                $(".j_search_form").submit();
+            })
+
+        })
     </script>
+
 </block>
 

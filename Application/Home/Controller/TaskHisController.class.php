@@ -141,16 +141,21 @@ class TaskHisController extends SjController {
      */
     public function history(){
 //        $task_id =
+        $uid = I('post.view_uid',0);
         $map = array(
             'seller_uid'=>$this->uid,
 //            'task_id'=>$task_id,
             'do_status'=>TaskHisModel::DO_STATUS_RETURNED_MONEY
         );
+        if($uid > 0){
+            $map['uid'] = $uid;
+        }
 
         $page = array('curpage'=>I('get.p',0),'size'=>10);
         $order = " update_time desc ";
         $result = apiCall(VTaskHisInfoApi::QUERY,array($map,$page,$order));
 //        dump($result);
+        $this->assign("view_uid",$uid);
         if($result['status']){
             $this->assign("list",$result['info']['list']);
             $this->assign("show",$result['info']['show']);

@@ -152,7 +152,7 @@ color:#333333;
 .seller_main {
     width: 100%;
     position: relative;
-    margin-top: 88px;
+    padding-top: 88px;
 }
 /*修复 日期位置的问题*/
 .am-datepicker{

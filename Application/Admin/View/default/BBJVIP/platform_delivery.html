@@ -145,6 +145,13 @@
 
                                         </td>
                                         <td>
+                                            <notempty name="vo['express_pid']">
+                                            <div>
+
+                                                <p>{$vo.name}</p>
+                                                <img src="{$vo.main_img}" alt="主图" style="width: 60px;height: 60px;"/>
+                                            </div>
+                                            </notempty>
                                             <if condition="empty($vo['express_no'])">
                                                 <eq name="vo['delivery_mode']" value="2">
                                                     <span class="text-warning">等待商家发货</span>
@@ -163,6 +170,7 @@
                                                     修改发货信息
                                                 </a>
                                             </if>
+
 
                                         </td>
 

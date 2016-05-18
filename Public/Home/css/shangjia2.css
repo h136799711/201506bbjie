@@ -5441,7 +5441,7 @@ body {
 .seller_main {
 	width: 100%;
 	position: relative;
-	margin-top: 88px
+    padding-top: 88px;
 }
 #foot {
 	background-position: 0 -2px
@@ -7627,9 +7627,7 @@ ul.radio-list li.help span {
 	width: 12px;
 	height: 22px
 }
-.renwuku .renwu-caozuo a {
-	color: #166cb6
-}
+
 .task-head {
 	position: relative;
 	max-width: 1200px

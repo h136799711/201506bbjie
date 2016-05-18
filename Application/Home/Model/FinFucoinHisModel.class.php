@@ -28,4 +28,9 @@ class FinFucoinHisModel extends Model {
      */
     const PLUS_EXCHANGE_REJECT = 113;
 
+    /**
+     * 增加-兑换商品未取走
+     */
+    const PLUS_EXCHANGE_RETURN = 131;
+
 }

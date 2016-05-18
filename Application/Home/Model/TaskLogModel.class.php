@@ -13,6 +13,10 @@ namespace Home\Model;
  */
 class TaskLogModel extends \Think\Model{
 
+    /*
+     * 挂起
+     */
+    const TYPE_SUSPEND_TASK = "130";
     /**
      * 任务结算、还款
      */

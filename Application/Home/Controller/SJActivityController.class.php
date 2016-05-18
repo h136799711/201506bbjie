@@ -269,6 +269,26 @@ class SJActivityController extends SjController {
 
 	 }
 
+    /**
+     * 返回搜索方式
+     */
+    public function searchWay(){
+
+        $q = I('get.q','');
+
+        $map = array();
+        if(!empty($q)){
+            $map['search_q'] = array('like','%'.$q.'%');
+        }
+        $page = array('curpage'=>I('get.p',0),'size'=>10);
+        $result = apiCall(ProductSearchWayApi::QUERY,array($map,$page));
+        if($result['status']){
+            $this->success($result['info']['list']);
+        }else{
+            $this->error($result['info']);
+        }
+
+    }
 
 
 	 /*
@@ -278,6 +298,10 @@ class SJActivityController extends SjController {
 	public function create_tp(){
 
         $this->reloadUserInfo();
+        $search_way_id = I('post.search_way_id',0);
+        if(empty($search_way_id)){
+            $this->error('请选择搜索方式!');
+        }
         $count = I('count',0);
         $count = intval($count);
 
@@ -315,7 +339,7 @@ class SJActivityController extends SjController {
 			'enter_way'=>I('sele_type',0),
 			'task_cnt'=>$count,
 			'create_time'=>time(),
-			'search_way_id'=>0,
+			'search_way_id'=>$search_way_id,
 			'task_id'=>$task_id,
 			'yuecount'=>$count,
             'frozen_money'=>$defray,
@@ -625,8 +649,20 @@ class SJActivityController extends SjController {
         $pid = $this->_param('pid',0);
 		$map = array('task_id' => $id);
         $map['pid'] = $pid;
-		$result = apiCall(VTaskProductInfoApi::GET_INFO, array($map));
+        $result = apiCall(VTaskProductInfoApi::GET_INFO, array($map));
         $this -> assign('pd', $result['info']);
+        unset($map['pid']);
+        $result = apiCall(VTaskProductInfoApi::QUERY_NO_PAGING, array($map));
+        $this -> assign('products', $result['info']);
+        $cal_price = 0;
+        if(is_array($result['info'])){
+
+            foreach($result['info'] as $vo){
+                $cal_price += ($vo['price']*$vo['num']);
+            }
+        }
+        $this->assign('cal_price',$cal_price);
+
 
         $result = apiCall(ProductSearchWayApi::GET_INFO, array(array('pid'=>$pid)));
 

@@ -45,6 +45,9 @@
                     <a <eq name="status" value="wait_return">style="color: red;" <else/> style="color: #999;" </eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'wait_return'))}" >等待返款<notempty name="task_wait_money_cnt">({$task_wait_money_cnt})</notempty></a>
                     <a <eq name="status" value="cancel">style="color: red;" <else/> style="color: #999;" </eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'cancel'))}" >取消/放弃<notempty name="task_cancel_cnt">({$task_cancel_cnt})</notempty></a></a>
                     <a <eq name="status" value="done">style="color: red;" <else/> style="color: #999;" </eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'done'))}" >已完成<notempty name="task_done_cnt">({$task_done_cnt})</notempty></a></a>
+                    <a <eq name="status" value="suspend">style="color: red;" <else/> style="color: #999;" </eq> href="{:U('Home/SMActivity/task_manager',array('do_status'=>'suspend'))}" >已挂起<notempty name="task_suspend_cnt">({$task_suspend_cnt})</notempty></a></a>
+
+
                 </span>
 
                         </td>

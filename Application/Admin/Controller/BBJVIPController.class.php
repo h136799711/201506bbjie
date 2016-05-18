@@ -15,6 +15,7 @@ use Home\Api\HomePublicApi;
 use Home\Api\ProductSearchWayApi;
 use Home\Api\TaskApi;
 use Home\Api\TaskHisApi;
+use Home\Api\TaskLogApi;
 use Home\Api\VBbjmemberInfoApi;
 use Home\Api\VBbjmemberSellerInfoApi;
 use Home\Api\VFinAccountBalanceHisApi;
@@ -462,14 +463,22 @@ class BBJVIPController extends AdminController{
 	 * 所有任务
 	 * */
 	public function alltask(){
+        $task_status = I('post.task_status',TaskModel::STATUS_TYPE_OPEN);
 		$taskname=I('taskname','');
 		if (!empty($taskname)) {
 			$map['task_name'] = array('like','%'. $taskname . '%');
 		}
+        if(!empty($task_status)){
+            $map['task_status'] = $task_status;
+        }
 		$page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));
-//		$order = " create_time desc ";
-		$result = apiCall(HomePublicApi::Task_QueryAll, array($map, $page, $order));
-//		dump($result);
+		$order = " create_time desc ";
+		$result = apiCall(TaskApi::QUERY, array($map, $page, $order));
+
+        $this->assign("open",TaskModel::STATUS_TYPE_OPEN);
+        $this->assign("pause",TaskModel::STATUS_TYPE_PAUSE);
+        $this->assign("over",TaskModel::STATUS_TYPE_OVER);
+
 		$this->assign('list',$result['info']['list']);
 		$this->assign('show',$result['info']['show']);
 		$this->display();
@@ -525,8 +534,11 @@ class BBJVIPController extends AdminController{
 		$page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));
 		$order = " create_time desc ";
 		$result = apiCall(VTaskHisInfoApi::QUERY, array($map, $page, $order));
+        $suspend = TaskHisModel::DO_STATUS_CANCEL.','.TaskHisModel::DO_STATUS_SUSPEND.','.TaskHisModel::DO_STATUS_RETURNED_MONEY;
 
+        $this->assign("suspend",$suspend);
         $this->assign('status',$status);
+        $this->assign('status_suspend',TaskHisModel::DO_STATUS_SUSPEND);
         $this->assign('status_return_money',TaskHisModel::DO_STATUS_RETURNED_MONEY);
         $this->assign('status_submit',TaskHisModel::DO_STATUS_SUBMIT_ORDER);
         $this->assign('status_wait_return_money',TaskHisModel::DO_STATUS_RECEIVED_GOODS);
@@ -561,7 +573,7 @@ class BBJVIPController extends AdminController{
                     $map['do_status'] = TaskHisModel::DO_STATUS_PASS;
                     break;
                 case "delivery":
-                    $map['do_status'] = TaskHisModel::DO_STATUS_DELIVERY_GOODS;
+                    $map['express_no'] = array('gt',"0");
                     break;
                 default:
                     break;
@@ -650,6 +662,56 @@ class BBJVIPController extends AdminController{
         }
 
         $this->display();
+    }
+
+    /**
+     * 挂起任务
+     * @author 老胖子-何必都 <hebiduhebi@126.com>
+     */
+    public function suspend(){
+
+        $id = $this->_param('id',0);
+
+        if($id > 0){
+            $result = apiCall(TaskHisApi::GET_INFO,array(array('id'=>$id)));
+            if(!$result['status']){
+                $this->error($result['info']);
+            }
+
+            if($task_his['do_status'] == TaskHisModel::DO_STATUS_CANCEL
+            || $task_his['do_status'] == TaskHisModel::DO_STATUS_RETURNED_MONEY){
+               $this->error("修改失败！");
+            }
+
+            $task_his = $result['info'];
+
+            $task_id = $task_his['task_id'];
+            $uid = $task_his['uid'];
+            $plan_id = $task_his['tpid'];
+
+            $entity = array(
+                'do_status'=>TaskHisModel::DO_STATUS_SUSPEND,
+            );
+
+            $result = apiCall(TaskHisApi::SAVE_BY_ID,array($id,$entity));
+
+            if($result['status']){
+                $entity = array(
+                    'task_id'=>$task_id,
+                    'plan_id'=>$plan_id,
+                    'uid'=>$uid,
+                    'task_his_id'=>$id,
+                    'dtree_type'=>TaskLogModel::TYPE_SUSPEND_TASK,
+                    'log_time'=>time(),
+                    'notes'=>"系统挂起了任务！" ,
+                );
+                apiCall(TaskLogApi::ADD,array($entity));
+            }
+            $this->success("操作成功");
+        }else{
+            $this->error('参数错误');
+        }
+
     }
 
 

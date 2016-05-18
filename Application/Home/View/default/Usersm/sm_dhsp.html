@@ -71,6 +71,9 @@
                                 快递单号: $vo['express_code'],<br/>
                                 快递公司: $vo['express_name'],
                             </if>
+                            <if condition="$vo['exchange_status'] eq 4">
+                                已分配任务
+                            </if>
                         </td>
 						<td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
 					</tr>

@@ -17,7 +17,21 @@
 			<div class="filter-controls">
 				<!-- 日期查询 -->
 				<form action="{:U('Admin/BBJVIP/alltask')}" method="post" class="searchForm form-inline">
-					<div class="form-group row   col-lg-12 col-md-12">
+
+                    <div class="form-group row   col-lg-12 col-md-12">
+                        <div class="input-group">
+                            <div class="input-group-addon">任务状态</div>
+                            <div>
+                                <select class="form-control" id="js_task_status" name="task_status">
+                                    <option value="">全部</option>
+                                    <option selected="selected" value="{$open}">开启中</option>
+                                    <option value="{$pause}">暂停中</option>
+                                    <option value="{$over}">已结算</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row   col-lg-12 col-md-12">
 						<div class="input-group">
 							<div class="input-group-addon">任务名称</div>
 							<input type="text" name="taskname" style="height: 40px; margin-left: 5px;" placeholder="请输入任务关键字">
@@ -108,7 +122,11 @@
 	<script src="__CDN__/select2/4.0.0/js/select2.min.js"></script>
 	<script src="__CDN__/select2/4.0.0/js/i18n/zh-CN.js"></script>
 	<script type="text/javascript">
-	
+	    $(function(){
+            $(".js_task_status").change(function(){
+               $(".searchForm").submit();
+            });
+        })
 	</script>
 	
 </block>

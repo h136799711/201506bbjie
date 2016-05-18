@@ -39,9 +39,12 @@
                                 <input class="j_status"  <eq name="status" value="$status_return_money">checked</eq>  type="radio" name="status"  value="{$status_return_money}"> 已还款、已结算
                             </label>
 
-                                <label class="radio-inline">
-                                    <input class="j_status"  <eq name="status" value="$status_cancel">checked</eq>  type="radio" name="status"  value="{$status_cancel}"> 已取消、放弃
-                                </label>
+                            <label class="radio-inline">
+                                <input class="j_status"  <eq name="status" value="$status_cancel">checked</eq>  type="radio" name="status"  value="{$status_cancel}"> 已取消、放弃
+                            </label>
+                            <label class="radio-inline">
+                                <input class="j_status"  <eq name="status" value="$status_suspend">checked</eq>  type="radio" name="status"  value="{$status_suspend}"> 已挂起
+                            </label>
 						</div>
 					</div>
 				</form>
@@ -118,6 +121,11 @@
 									{$vo.create_time|date='Y-m-d H:i:s',###}
 								</td>
 								<td>
+                                    <notin name="vo['do_status']" value="$suspend">
+                                        <a href="{:U('Admin/BBJVIP/suspend',array('id'=>$vo['id'],'status'=>$status_suspend))}" class="confirm ajax-get btn-sm btn btn-danger">
+                                            挂起任务
+                                        </a>
+                                    </notin>
                                 </td>
 							</tr>
 

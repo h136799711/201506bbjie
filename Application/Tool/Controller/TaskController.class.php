@@ -10,10 +10,16 @@ namespace Tool\Controller;
 use Admin\Api\AuthRuleApi;
 use Home\Api\BbjmemberApi;
 use Home\Api\BbjmemberSellerApi;
+use Home\Api\FinAccountBalanceHisApi;
+use Home\Api\FinFucoinHisApi;
+use Home\Api\ProductExchangeApi;
 use Home\Api\TaskApi;
 use Home\Api\TaskHisApi;
 use Home\Api\TaskLogApi;
 use Home\Api\TaskPlanApi;
+use Home\Api\VProductExchangeInfoApi;
+use Home\Model\FinFucoinHisModel;
+use Home\Model\ProductExchangeModel;
 use Home\Model\TaskHisModel;
 use Home\Model\TaskLogModel;
 use Think\Controller;
@@ -64,14 +70,99 @@ class TaskController extends Controller{
 //		$this->toCancel();
         $this->cancelTaskHis();
         $this->autoConfirmReturnMoney();
-	}
+	    $this->backPreorder();
+    }
+
+    /**
+     * 退回预定商品的元宝
+     */
+    private function backPreorder(){
+//        $interval = 10*24*3600;
+        $interval = 3600;
+        $map = array(
+            'update_time'=>array('elt',time()-$interval),
+            'exchange_status'=>ProductExchangeModel::CHECK_SUCCESS
+        );
+
+        $result = apiCall(ProductExchangeApi::QUERY,array($map,array('curpage'=>0,'size'=>20)));
+
+        if($result['status']){
+            $list = $result['info']['list'];
+
+            if($list){
+                $seller = new BbjmemberSellerApi();
+                $fucoin = new FinFucoinHisApi();
+                foreach($list as $vo){
+                    //1. 通过审核状态下，超过指定时间，则驳回
+                    $price = $vo['price'];
+                    $result = $seller->getInfo(array('uid'=>$vo['uid']));
+
+                    if($result['status']){
+                        $left_fucoin = $result['info']['fucoin'];
+                        $notes = "超过10天未取走兑换商品，退回".VIRTUAL_CURRENCY.":".$price;
+                        $fucoin->plus($vo['uid'],$price,$left_fucoin,FinFucoinHisModel::PLUS_EXCHANGE_RETURN,$notes);
+                    }
+
+                }
+            }
+        }
+
+    }
+
+    //2. 已分配任务的情况下，检测关联的任务最近的活动时间，是否超时，是则驳回，虚拟币不返还
+    private function returnBackFucoin(){
+//        $interval = 10*24*3600;
+//        $interval = 3600;
+//        $map = array(
+//            'update_time'=>array('elt',time()-$interval),
+//            'exchange_status'=>ProductExchangeModel::ALLOC_TASK
+//        );
+//
+//        $result = apiCall(ProductExchangeApi::QUERY,array($map,array('curpage'=>0,'size'=>20)));
+//
+//        if($result['status']) {
+//            $list = $result['info']['list'];
+//
+//            if ($list) {
+//                $seller = new BbjmemberSellerApi();
+//                $fucoin = new FinFucoinHisApi();
+//                $task_his = new TaskHisApi();
+//
+//                foreach($list as $vo){
+//
+//                    $result = $task_his->getInfo(array('exchange_id'=>$vo['id']));
+//                    if(!$result['status'] || !is_array($result['info'])){
+//                        continue;
+//                    }
+//                    $task_his_info = $result['info'];
+//
+//                    if($task_his_info['do_status'] == TaskHisModel::DO_STATUS_SUSPEND
+//                       || $task_his_info['do_status'] == TaskHisModel::DO_STATUS_CANCEL){
+//
+//                    }
+//
+//                    //1. 通过审核状态下，超过指定时间，则驳回
+//                    $price = $vo['price'];
+//                    $result = $seller->getInfo(array('uid'=>$vo['uid']));
+//
+//                    if($result['status']){
+//                        $left_fucoin = $result['info']['fucoin'];
+//                        $notes = "超过10天未取走兑换商品，退回".VIRTUAL_CURRENCY.":".$price;
+//                        $fucoin->plus($vo['uid'],$price,$left_fucoin,FinFucoinHisModel::PLUS_EXCHANGE_RETURN,$notes);
+//                    }
+//
+//                }
+//            }
+//        }
+    }
+
 
     /**
      * 1天内未确认还款则自动确认还款
      */
     private function autoConfirmReturnMoney(){
-//        $interval = 24*3600;
-        $interval = 5*60;
+        $interval = 24*3600;
+//        $interval = 5*60;
         $limit = 20;
         $result = apiCall(TaskHisApi::GET_NEED_RETURN_MONEY,array($interval,$limit));
         if(!$result['status']){

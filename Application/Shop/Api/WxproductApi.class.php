@@ -12,6 +12,8 @@ use Common\Model\WxproductModel;
 
 class WxproductApi extends Api{
 
+    const GET_INFO = 'Admin/Wxproduct/getInfo';
+
 	const SET_DEC='Admin/Wxproduct/setDec';
 
 	protected function _init(){

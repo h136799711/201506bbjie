@@ -1,0 +1,386 @@
+<extend name="template/base_index" />
+
+<block name="area_header">
+    <link rel="stylesheet" href="__CSS__/shangjia.css">
+    <link rel="stylesheet" href="__CSS__/rws.css">
+    <style type="text/css">
+        .info_seller{
+            background: url(__IMG__/rws-fixed.png);
+            position: fixed;
+            right: 10px;
+            width: 275px;
+            height: 240px;
+            z-index: 100;
+            top: 100px;
+        }
+        .info_seller .contact_name{
+            width: 160px;
+            margin: 0 auto;
+            text-align: center;
+            margin-top: 30px;
+        }
+        .info_seller .contact_qq{
+            width: 160px;
+            margin: 0 auto;
+            text-align: center;
+            margin-top: 8px;
+        }
+
+        .info_seller .contact_tel{
+            width: 160px;
+            margin: 0 auto;
+            text-align: center;
+            margin-top: 8px;
+        }
+        .info_seller .faq{
+            margin-top: 60px;
+            text-align: center;
+            font-size: 12px;
+        }
+        .tishi{
+            cursor: pointer;
+        }
+        .submit_order_info{
+
+            border: 1px solid #A4ABAF;
+            border-radius: 5px;
+            width: 80%;
+            margin: 0 auto;
+            background: #EADBDB;
+            color: #840C0C;
+            MARGIN-BOTTOM: 30PX;
+        }
+    </style>
+</block>
+
+<block name="area_body">
+    <div >
+        <div class="info_seller">
+            <p class="faq">（请使用以下联系方式联系商家)</p>
+            <p class="contact_name am-text-warning">
+                商家联系人：{$seller.task_linkman}
+            </p>
+            <p class="contact_qq am-text-warning">
+                QQ：{$seller.task_linkman_qq}
+            </p>
+            <p class="contact_tel am-text-warning">
+                电话：{$seller.task_linkman_tel}
+            </p>
+        </div>
+        <div class="renwu3-processed">
+
+            <div class="head_wrap clearfix">
+                <div class="renwu_head">
+
+                    <div class="renwu_nav">
+                        <ul class="clearfix">
+                            <li class="l-ico"></li>
+                            <li>
+                                <a href="#" class="active">正常模式</a>
+                            </li>
+                            <li class="r-ico"></li>
+                        </ul>
+                    </div>
+
+                    <div class="clearfix">
+                        <div class="body">
+                            <div class="lc">
+
+                                进店流程概述：
+                                <br> 1、清除浏览器cookies，使用淘宝号“
+                                <em>{$user.taobao_account}</em>”登录淘宝；<span class="tishi j_tishi">如何清除cookie？ <span class="tip"></span> </span>
+                                <br>
+                                <div style="width: 610px;">2、搜索关键字"
+                                    <em>{$search.search_q}</em>"，并按筛选要求缩小搜索范围；
+                                </div>
+                                3、Ctrl+F"
+                                <em>{:msubstr($seller['aliwawa'])}</em>"核对店铺旺旺；
+
+                                <br> 4、货比三家后，进入店铺；
+                                <br> 5、多点开几款宝贝浏览，并
+                                <em>收藏</em>宝贝；
+                                <br> 6、进店后需与商家旺旺
+                                <em>聊天</em>，若商家旺旺不在线，询问几句可直接下单；
+                                <br> 7、店铺停留时间不低于
+                                <em>10分钟</em>，严禁秒拍！
+                                <br> </div>
+                            <hr> 注意事项：
+                            <br> 1、禁止使用“
+                            <em>淘宝客</em>”“<em>返利网</em>”“<em>天猫积分</em>”“<em>淘金币</em>”等有损商家利益的方式下单；
+                            <br>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div style="height: 40px;"></div>
+
+            <div class="renwu_widget">
+                <div class="h"></div>
+                <div class="renwu_widget_box clearfix">
+                    <h2>
+
+                        <span class="t">进入店铺</span>
+
+                        <div class="sub_t">请核对商家的“旺旺”，确保下单无误</div>
+
+                    </h2>
+
+                    <div class="tip">
+                        <i></i>如果逛过各类导购返利网站，开始任务前请记得先清除浏览器缓存(如果您不确定，那也最好操作下)
+                    </div>
+
+                    <div class="body">
+
+                        <div class="c">
+                            <div class="m20">
+                                <div>1、打开淘宝网址：{$search.url} 登录淘宝账号</div>
+                                <p class="keywords_p"  >
+                                    <span>{$search.search_q}</span>
+                                </p>
+                            </div>
+
+                            <div class="m20">
+                                <div>2、按照筛选要求进一步缩小搜索结果范围</div>
+
+                                <div style="padding: 10px;background: #eee;color:#222;margin-bottom: 20px;">
+                                    <p>&gt;&gt; {$search.search_condition}</p>
+
+                                    <p>&gt;&gt; {$search.search_order}</p>
+                                    <if condition="$search.price_max gt 0">
+                                        <p>&gt;&gt; 价格区间:
+                                            <input style="width:60px;" readonly="readonly" type="text" value="{$search.price_min}"> -
+                                            <input style="width:60px;" readonly="readonly" type="text" value="{$search.price_max}">
+                                        </p>
+                                    </if>
+
+                                </div>
+                            </div>
+                            <div class="m20">
+                                <div unselectable="on" onselectstart="return false;">3 、按下：<em>Ctrl+F</em>左上角搜索框输入“<em>{:msubstr($seller['aliwawa'])}</em>” 查找当前页 (浏览器不同搜索框位置可能有所偏差)
+                                    <br>
+                                    <small class="muted" style="font-weight: 400;">如果筛选结果一步中未作特殊说明的话，一般在前5页就能找到对应商品。如果未找到，也请您耐心再翻两页</small>
+                                </div>
+                                <p class="ctrl_f" unselectable="on" onselectstart="return false;">
+                                    <span>{$seller.aliwawa}</span>
+                                </p>
+                            </div>
+
+                            <div class="m20">
+                                <div>4、你可以将第3步中找到的商品与下图比较进入店铺</div>
+                                <p style="font-size:12px;color:#fc3ac3;font-weight: 400;">
+                                    ps:搜索商品与试用品/任务商品不一定相关,下单时请以任务书为准
+                                </p>
+
+                                <div unselectable="on" onselectstart="return false;">
+                                    <div class="theme_taobao_item_wrap">
+                                        <volist name="products" id="vo">
+                                            <div class="theme_taobao">
+                                                <img class="img" src="{$vo['main_img']}" alt="">
+                                                <div class="row-1">
+                                                    <span class="pull-right">XX人付款</span>
+												<span class="price">
+                									<span>¥</span> {$vo.price}
+												</span>
+                                                </div>
+                                                <div class="row-2"><i class="title_msk"></i> {$vo.pname} </div>
+                                                <div class="row-3">
+                                                    <div class="pull-right">XX XX</div>
+                                                    <i class="goods_store"></i><span>{$seller.wangwang}<i class="ali_wang"></i></span>
+                                                </div>
+                                                <div class="row-4">
+                                                    <i class="pull-right wangwang"></i> &nbsp;
+                                                </div>
+                                            </div>
+                                        </volist>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="m20" >
+                                <div>5、核对旺旺号</div>
+                                <div>
+                                    <div class="input-append">
+                                        <input placeholder="请在这里输入找到的旺旺号" type="text" value="" name="" id="seller_wawa">
+                                        <a id="queren_btn" onclick="return false;" class="btn" href="javascript:void(0)">确认掌柜旺旺号</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="f"></div>
+            </div>
+
+
+            <a name="a-xiadan" id="a-xiadan"></a>
+            <div class="renwu_widget">
+                <div class="h"></div>
+                <div class="renwu_widget_box clearfix">
+                    <h2>
+
+                        <span class="t">拍下商品并付款</span>
+
+                        <div class="sub_t">请核对“款号”“件数”“金额”无误后付款</div>
+
+                    </h2>
+
+                    <!--<div class="tip">-->
+                    <!--<i></i>浏览宝贝时请深度浏览至页面底部(直接滚动条拉到底暂时不关闭页面即可),顺手也收藏下宝贝呗～-->
+                    <!--</div>-->
+
+                    <div class="body">
+                        <div class="c renwu_list">
+                            <div class="ovh">
+                                <ul>
+                                    <volist name="products" id='vo'>
+                                        <li>
+                                            <div class="item clearfix">
+                                                <div class="img">
+                                                    <img src="{$vo['main_img']}">
+                                                </div>
+                                                <div class="bd">
+                                                    <div class="t">
+                                                        {$vo.pname}
+                                                        <br> 规格: <empty name="vo['sku']">买家自由选择<else/>{$vo.sku}</empty> </div>
+                                                    <div class="sx">
+                                                        单价：{$vo.price} 元
+                                                        <br> 件数：
+                                                        <span>{$vo.num}</span>
+                                                        <br>
+                                                    </div>
+
+                                                </div>
+                                                <div class="weizhi">
+                                                    <span class="muted">位置信息：</span>
+                                                    <br> {$search.search_position} </div>
+                                            </div>
+                                        </li>
+                                    </volist>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="text-right songti" style="line-height: 30px;margin-bottom: 10px;">
+								<span style="vertical-align:5px;">
+                                    预期支付金额:<span style="font-size: 18px;">≤</span>
+								</span>
+
+                            <span class="shuliang price">￥{:($task['task_gold']-$task['task_postage'])}</span>
+                        </div>
+
+                        <div class="shuoming">
+                            进店聊天: 需要与客服聊天、浏览店铺<span>十分钟</span>以上，禁止秒拍
+                        </div>
+
+                        <div class="shuoming">
+                            包邮：商品拍下不包邮联系客服改价
+                        </div>
+                        <notempty name="$task['chat_argot']">
+
+                            <div class="shuoming">
+                                旺旺暗语: 聊天时使用可提示商家试民身份
+                                <div class="input-append" style="margin:0;">
+                                    <input readonly="readonly" type="text" value="{$task['chat_argot']}" >
+                                </div>
+                            </div>
+
+                        </notempty>
+
+                    </div>
+                </div>
+
+                <div class="f"></div>
+            </div>
+
+        </div>
+
+        <a name="a-tijiao" id="a-tijiao"></a>
+
+        <div class="renwu_widget">
+            <div class="h"></div>
+            <div class="renwu_widget_box clearfix">
+                <h2>
+
+                    <span class="t">提交订单</span>
+
+                    <div class="sub_t">所提交的“订单号”“金额”“地址”必须与淘宝订单一致</div>
+
+                </h2>
+
+                <div class="submit_order_info am-padding-sm">
+                    <p>您的任务被挂起，有任何疑问请咨询 官方人员！！</p>
+                </div>
+
+
+            </div>
+
+            <div class="f"></div>
+        </div>
+    </div>
+    <div class="renwu_footer">
+        <div class="f1"></div>
+        <div class="text-center small">如有疑问请加入官方群<span class="price">（{:C('BBJ_QQ_GROUP')}）</span>或咨询热线：<span class="price">{:C('BBJ_PHONE')}</span></div>
+    </div>
+</block>
+
+<block name="area_footer">
+
+    <script type="text/javascript">
+
+        function getMayreturnPrice(){
+            var str_price = $("#zhifu_price").val();
+            var price = parseFloat(str_price);
+
+            if(isNaN(price)){
+                price = 0;
+                alert("支付金额填写错误!");
+                return;
+            }
+            var pay_type = $("input[name='pay_type']:checked").val();
+
+            if(pay_type != 101){
+                price = 0.99 * price;
+            }
+
+            $(".j_mayreturn_price").removeClass("am-hide");
+            $(".j_mayreturn_price input").val(price);
+        }
+
+        $(function(){
+            var a=$('#pid').val();
+            $('#spid').val(a);
+            $(".radio").click(function(){
+                var val=$('input:radio[name="address_id"]:checked').val();
+                $('#address').val(val);
+            })
+
+            $("#queren_btn").click(function(){
+                var ww=$('#seller_wawa').val();
+                var wangwang="{$seller.aliwawa}".trim();
+                if(wangwang==ww){
+                    alert('恭喜您，这个就是铺主的旺旺');
+                }else{
+                    alert('抱歉，这不是铺主的旺旺');
+                }
+            });
+
+            $(".j_tishi").click(function(){
+                $(".j_tishi .tip").toggleClass("am-hide");
+            });
+
+
+            $("input:radio[name='pay_type']").change(function (){
+                getMayreturnPrice();
+            });
+
+            $("#zhifu_price").blur(function(){
+                getMayreturnPrice();
+            })
+
+        });
+    </script>
+</block>
+

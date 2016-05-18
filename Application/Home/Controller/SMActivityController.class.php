@@ -11,6 +11,7 @@ use Cms\Api\VPostInfoApi;
 use Home\Api\AddressApi;
 use Home\Api\BbjmemberApi;
 use Home\Api\ProductExchangeApi;
+use Home\Api\ProductSearchWayApi;
 use Home\Api\TaskApi;
 use Home\Api\TaskHasProductApi;
 use Home\Api\TaskHisApi;
@@ -28,6 +29,7 @@ use Home\Model\ProductExchangeModel;
 use Home\Model\TaskHisModel;
 use Home\Model\TaskLogModel;
 use Home\Model\TaskModel;
+use Shop\Api\WxproductApi;
 use Think\Controller;
 use Home\Api\HomePublicApi;
 use Admin\Api\AdminPublicApi;
@@ -193,7 +195,7 @@ class SMActivityController extends HomeController {
 
         switch($do_status){
             case "doing":
-                $map['do_status'] = array('not in',array(TaskHisModel::DO_STATUS_CANCEL,TaskHisModel::DO_STATUS_RETURNED_MONEY));
+                $map['do_status'] = array('not in',array(TaskHisModel::DO_STATUS_SUSPEND,TaskHisModel::DO_STATUS_CANCEL,TaskHisModel::DO_STATUS_RETURNED_MONEY));
                 break;
             case 'cancel':
                 $map['do_status'] = TaskHisModel::DO_STATUS_CANCEL;
@@ -213,6 +215,9 @@ class SMActivityController extends HomeController {
                 break;
             case 'done':
                 $map['do_status'] = TaskHisModel::DO_STATUS_RETURNED_MONEY;
+                break;
+            case 'suspend':
+                $map['do_status'] = TaskHisModel::DO_STATUS_SUSPEND;
                 break;
             default:
 
@@ -245,6 +250,7 @@ class SMActivityController extends HomeController {
         $this->assign('status_pass_order',TaskHisModel::DO_STATUS_PASS);
         $this->assign('status_reject_order',TaskHisModel::DO_STATUS_REJECT);
         $this->assign('status_not_start',TaskHisModel::DO_STATUS_NOT_START);
+        $this->assign('status_suspend',TaskHisModel::DO_STATUS_SUSPEND);
         $this->assign('status',$do_status);
         $this->assign('his_list',$his_list);
         $this->assign('show',$result['info']['show']);
@@ -295,7 +301,7 @@ class SMActivityController extends HomeController {
         $this->reloadUserInfo();
 
         $map = array('uid'=>$this->uid);
-        $map['do_status'] = array('notin',array(TaskHisModel::DO_STATUS_RETURNED_MONEY ,TaskHisModel::DO_STATUS_CANCEL ));
+        $map['do_status'] = array('notin',array(TaskHisModel::DO_STATUS_SUSPEND,TaskHisModel::DO_STATUS_RETURNED_MONEY ,TaskHisModel::DO_STATUS_CANCEL ));
 
 		$result = apiCall(TaskHisApi::GET_INFO,array($map));
 
@@ -371,6 +377,7 @@ class SMActivityController extends HomeController {
             $exchange_id = 0;
             if($result['status'] && is_array($result['info'])){
                 $product_info = $result['info'];
+                $entity['exchange_id'] = $product_info['id'];
                 $entity['express_pid'] = $product_info['p_id'];
                 $entity['express_name'] = $product_info['name'];
                 $exchange_id = $product_info['id'];
@@ -416,6 +423,7 @@ class SMActivityController extends HomeController {
 		$task=apiCall(VTaskHisInfoApi::GET_INFO, array(array('id'=>$id)));
         $do_status = $task['info']['do_status'];
 		$this->assign('task',$task['info']);
+        $search_way_id = $task['info']['search_way_id'];
 
         $seller_uid = $task['info']['seller_uid'];
         $result = apiCall(VBbjmemberSellerInfoApi::GET_INFO,array(array('uid'=>$seller_uid)));
@@ -430,9 +438,9 @@ class SMActivityController extends HomeController {
             $product = $result['info'];
             $this->assign("products",$result['info']);
         }
-
-        $result = apiCall(VTaskProductSearchWayApi::GET_INFO,array(array('pid'=>$product[0]['pid'])));
-
+        //多件商品 ，也是同一种搜索方式
+//        $result = apiCall(VTaskProductSearchWayApi::GET_INFO,array(array('pid'=>$product[0]['pid'])));
+        $result = apiCall(VTaskProductSearchWayApi::GET_INFO,array(array('id'=>$search_way_id)));
         if($result['status']){
 
             $search = $result['info'];
@@ -464,12 +472,18 @@ class SMActivityController extends HomeController {
             $this->getAddressList();
             $this->getGoodsForDelivery($task);
             $this->display('rws_reject');
+        }elseif($do_status == TaskHisModel::DO_STATUS_SUSPEND){
+            $this->getAddressList();
+            $this->getGoodsForDelivery($task);
+            $this->display('rws_suspend');
         }else{
             $this->getLogList($id);
             $this->display('rws_wait_check');
         }
 
 	}
+
+
 
     private function getAddressList(){
         $result = apiCall(AddressApi::QUERY,array(array('uid'=>$this->uid),array('curpage'=>1,'size'=>10)));
@@ -560,14 +574,13 @@ class SMActivityController extends HomeController {
      */
     private function getGoodsForDelivery($task){
         $mode = intval($task['info']['delivery_mode']);
+
         if($mode == TaskModel::DELIVERY_MODE_PLATFORM) {
             //平台发货
             $map = array(
-                'uid'=>$this->userinfo['id'],
-                'exchange_status'=>ProductExchangeModel::CHECK_SUCCESS,
+                'id'=>$task['info']['express_pid']
             );
-            $result  = apiCall(VProductExchangeInfoApi::GET_INFO,array($map,'update_time desc'));
-
+            $result  = apiCall(WxproductApi::GET_INFO,array($map));
             $this->assign("exchange",$result['info']);
 
 
@@ -602,7 +615,7 @@ class SMActivityController extends HomeController {
     private function get_doing_task_cnt(){
 
         $map = array('uid'=>$this->uid);
-        $map['do_status'] = array('not in',array(TaskHisModel::DO_STATUS_CANCEL,TaskHisModel::DO_STATUS_RETURNED_MONEY));
+        $map['do_status'] = array('not in',array(TaskHisModel::DO_STATUS_SUSPEND,TaskHisModel::DO_STATUS_CANCEL,TaskHisModel::DO_STATUS_RETURNED_MONEY));
         $result = apiCall(TaskHisApi::COUNT,array($map));
         if($result['status']){
             $this->assign('doing_task',$result['info']);
@@ -727,6 +740,17 @@ class SMActivityController extends HomeController {
         if($result['status']){
             $this->assign("task_wait_money_cnt",$result['info']);
         }
+
+        //已挂起
+        $map['do_status'] = TaskHisModel::DO_STATUS_SUSPEND;
+        $result = $api->count($map);
+
+        if($result['status']){
+            $total -= $result['info'];
+            $this->assign("task_suspend_cnt",$result['info']);
+        }
+
+
 
         $this->assign("task_doing_cnt",$total);
 

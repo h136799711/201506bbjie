@@ -170,7 +170,7 @@
 											<div class="row-1">
 												<span class="pull-right">XX人付款</span>
 												<span class="price">
-                									<span>¥</span> {$task.task_gold}
+                									<span>¥</span> {$vo.price}
 												</span>
 											</div>
 											<div class="row-2"><i class="title_msk"></i> {$vo.pname} </div>
@@ -245,7 +245,7 @@
 												</div>
 												<div class="weizhi">
 													<span class="muted">位置信息：</span>
-													<br> {$search.position} </div>
+													<br> {$search.search_position} </div>
 											</div>
 										</li>
 										</volist>
@@ -398,6 +398,7 @@
 											</td>
 											<td width="300" style="text-align:center;border-left: 1px solid #EFD3D3;">
 												<div>
+
                                                     <empty name="exchange">
                                                         <div class="">
                                                             <img src="__IMG__/hbd/empty_box.png" alt="empty" />

@@ -400,7 +400,7 @@ class IndexController extends HomeController {
         $this->getNoticeForSm();
         $this->not_read_msg_cnt();
         $map = array('uid'=>$this->uid);
-        $map['do_status'] = array('not in',array(TaskHisModel::DO_STATUS_RETURNED_MONEY, TaskHisModel::DO_STATUS_CANCEL));
+        $map['do_status'] = array('not in',array(TaskHisModel::DO_STATUS_SUSPEND,TaskHisModel::DO_STATUS_RETURNED_MONEY, TaskHisModel::DO_STATUS_CANCEL));
         $result = apiCall(TaskHisApi::COUNT,array($map));
         if($result['status']){
             $this->assign('doing_task',$result['info']);

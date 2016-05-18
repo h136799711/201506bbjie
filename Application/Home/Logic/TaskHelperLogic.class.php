@@ -25,7 +25,7 @@ class TaskHelperLogic {
     public function get_doing_task_cnt($uid){
 
         $map = array('uid'=>$uid);
-        $map['do_status'] = array('not in',array(TaskHisModel::DO_STATUS_CANCEL,TaskHisModel::DO_STATUS_RETURNED_MONEY));
+        $map['do_status'] = array('not in',array(TaskHisModel::DO_STATUS_SUSPEND,TaskHisModel::DO_STATUS_CANCEL,TaskHisModel::DO_STATUS_RETURNED_MONEY));
         $result = apiCall(TaskHisApi::COUNT,array($map));
         if($result['status']){
             return $result['info'];

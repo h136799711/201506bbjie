@@ -61,7 +61,7 @@ class ActionLogController extends AdminController {
         $map['status']    =   array('gt', -1);
 		$page = array('curpage'=>I("p",0),'size'=>C("LIST_ROWS"));
 		
-		$result = apiCall("Admin/ActionLog/query", array($map));
+		$result = apiCall("Admin/ActionLog/query", array($map,$page));
 		$this->exitIfError($result);
 		
 //      $list   =   $this->lists('ActionLog', $map);

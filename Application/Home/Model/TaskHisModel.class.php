@@ -15,6 +15,11 @@ class TaskHisModel extends \Think\Model{
 //任务状态 ( 2:已完成 3: 待审核订单 4: 确认还款 5: 挂起中 6.待发货 7. 试民收货 8. 已驳回 9.未开始，0: 放弃｜取消)
 
     /**
+     * 挂起Suspend
+     */
+    const DO_STATUS_SUSPEND = 129;
+
+    /**
      * 已结算
      */
     const DO_STATUS_RETURNED_MONEY = 116;
