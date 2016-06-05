@@ -8,6 +8,7 @@
 namespace Home\Api;
 
 use \Common\Api\Api;
+use Home\Model\BbjmemberModel;
 use Home\Model\VBbjmemberInfoModel;
 use Home\Model\VTaskHisInfoModel;
 
@@ -40,9 +41,24 @@ class VBbjmemberInfoApi extends Api{
      */
     const SAVE_BY_ID = "Home/VBbjmemberInfo/saveByID";
 
+    /**
+     * 获取审批的用户信息
+     */
+    const QUERY_SH_USER = "Home/VBbjmemberInfo/queryShUser";
+
 	protected function _init(){
 		$this->model = new VBbjmemberInfoModel();
 	}
+
+    public function queryShUser($page,$params){
+        $map = array();
+        $map['task_status'] = BbjmemberModel::TASK_OPEN;
+        $map['auth_status'] = BbjmemberModel::AUTH_PASS;
+
+
+        return $this->query($map,$page,"update_time desc",$params);
+    }
+
 
 }
 

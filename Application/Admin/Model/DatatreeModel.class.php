@@ -19,7 +19,12 @@ class DatatreeModel extends Model{
     /**
      * 收款账户
      */
-    const RECEIPTS_ACCOUNT = "129";
+    const RECEIPTS_ACCOUNT = "132";
+
+    /**
+     * 优惠方式
+     */
+    const YHFS = "134";
 
 	
 	protected $tablePrefix = 'common_';

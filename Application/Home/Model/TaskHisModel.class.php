@@ -72,6 +72,21 @@ class TaskHisModel extends \Think\Model{
     const PAY_TYPE_CREIDT_CARD = 102;
     //花呗支付
     const PAY_TYPE_HUABEI = 103;
+
+
+    //订单来源*****************
+
+    /**
+     * 主动申请
+     */
+    const COME_FROM_USER_APPLY = 0;
+
+    /**
+     * 商家分配
+     */
+    const COME_FROM_SELLER_GIVEN = 1;
+
+
     protected $_auto = array(
         array('update_time', NOW_TIME, self::MODEL_BOTH),
     );

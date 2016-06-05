@@ -1,6 +1,8 @@
 <?php
 return array(
-	'SESSION_PREFIX'=>'Home',//Home前缀,不与后台共通
+
+
+	'SESSION_PREFIX'=>'BBJ',//Home前缀,不与后台共通
 	
     
 	'DEFAULT_THEME'=>"default",

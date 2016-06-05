@@ -128,9 +128,9 @@
 																<td>
 																	<span class="small">自助选择任务试民: </span>
 																	<if condition="$user['task_gettype'] eq 2">
-																		<a style="color: red;" data-no-alert="true" class="ajax-get text-info small" tooltip="开启之后您的任务试民将由您自己审核通过" href="{:U('Home/SJActivity/changestatus',array('id'=>$user['id'],'status'=>1))}">已关闭</a>
+																		<a data-no-alert="true" class="ajax-get am-btn btn-mini btn-fix-am am-btn-small am-btn-primary" tooltip="开启之后您的任务试民将由您自己审核通过" href="{:U('Home/SJActivity/changestatus',array('id'=>$user['id'],'status'=>1))}">已开启</a>
 																		<else/>
-																		<a style="color: darkgreen;" data-no-alert="true"  class="ajax-get text-info small" tooltip="关闭之后您的任务试民将由试民自己领取" href="{:U('Home/SJActivity/changestatus',array('id'=>$user['id'],'status'=>2))}">已开启</a>
+																		<a data-no-alert="true" class="ajax-get am-btn btn-mini am-btn-small am-btn-default"  tooltip="关闭之后您的任务试民将由试民自己领取" href="{:U('Home/SJActivity/changestatus',array('id'=>$user['id'],'status'=>2))}">已关闭</a>
 																	</if>
 																</td>
 																</td>

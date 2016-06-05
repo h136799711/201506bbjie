@@ -32,6 +32,19 @@ abstract class Api {
 	 */
 	abstract protected function _init();
 
+    /**
+     * 返回结果
+     * @param $result
+     * @return array
+     */
+    protected function returnResult($result){
+        if($result === false){
+            $error = $this->getModel()->getDbError();
+            return $this->apiReturnErr($error);
+        }
+        return $this->apiReturnSuc($result);
+    }
+
 	/**
 	 * 返回错误结构
 	 * @return array('status'=>boolean,'info'=>Object)

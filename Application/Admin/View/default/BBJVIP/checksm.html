@@ -50,6 +50,9 @@
 							<th>
 								用户ID
 							</th>
+                            <th>
+                                登录账号
+                            </th>
 							<th>
 								淘宝号
 							</th>
@@ -75,17 +78,20 @@
 							<else/>
 							<volist name="list" id="vo">
 									<tr>
+                                        <td>
+                                            {$vo.uid}
+                                        </td>
+                                        <td>
+                                            <a href="{:U('Admin/BBJVIP/view_user',array('id'=>$vo['uid']))}">
+                                                {$vo.username}
+                                            </a>
+                                        </td>
 										<td>
-											{$vo.uid}
-										</td>
-										<td>
-											<a href="{:U('Admin/BBJVIP/view_user',array('id'=>$vo['uid']))}">
-                                                <empty name="vo['taobao_account']">
-                                                    [无淘宝帐号]
+											    <empty name="vo['taobao_account']">
+                                                    -
                                                     <else/>
                                                     {$vo.taobao_account}
                                                 </empty>
-                                            </a>
 										</td>
                                         <td>
                                             {$vo.create_time|date='Y-m-d h:i:s',###}

@@ -6,6 +6,8 @@
 // | Copyright (c) 2013-2016, http://www.itboye.com. All Rights Reserved.
 // |-----------------------------------------------------------------------------------
 namespace Home\Controller;
+use Admin\Api\DatatreeApi;
+use Admin\Model\DatatreeModel;
 use Common\Model\ProductSearchWayModel;
 use Home\Api\BbjmemberApi;
 use Home\Api\BbjmemberSellerApi;
@@ -16,6 +18,7 @@ use Home\Api\TaskHasProductApi;
 use Home\Api\TaskHisApi;
 use Home\Api\TaskPlanApi;
 use Home\Api\TaskProductApi;
+use Home\Api\VBbjmemberInfoApi;
 use Home\Api\VTaskHisInfoApi;
 use Home\Api\VTaskProductInfoApi;
 use Home\Api\VTaskProductSearchWayApi;
@@ -26,6 +29,8 @@ use Home\Model\FinFucoinHisModel;
 use Home\Model\TaskHisModel;
 use Home\Model\TaskLogModel;
 use Home\Model\TaskModel;
+use Home\Model\VTaskProductSearchWayModel;
+use Money\Logic\TaskLogic;
 use Think\Controller;
 use Home\Api\HomePublicApi;
 use Admin\Api\AdminPublicApi;
@@ -41,6 +46,76 @@ class SJActivityController extends SjController {
         $this->checkLogin();
     }
 
+    /**
+     * 发放任务
+     * @author 老胖子-何必都 <hebiduhebi@126.com>
+     */
+    public function give_task_to(){
+
+        $uid = I("get.uid",0);
+        $task_id = I('get.task_id',0);
+        $tp_id = I('get.tp_id',0);
+
+        $logic = new TaskLogic();
+        $result = $logic->sellerGiveTaskTo($uid,$task_id,$tp_id);
+
+        if($result['status']){
+            $this->success('成功分配任务');
+        }else{
+            $this->error($result['info']);
+        }
+
+
+//        $seller_uid = $this->uid;
+//        $helper = new TaskHelperLogic();
+//        $result = $helper->giveTaskFromTo($seller_uid,$uid,$task_id);
+//
+//        if($result['status']){
+//            $this->success($result['info']);
+//        }else{
+//            $this->error($result['info']);
+//        }
+
+    }
+
+    /**
+     * 审批用户
+     * @author 老胖子-何必都 <hebiduhebi@126.com>
+     */
+    public function sh_user(){
+        $id  = I('get.id',0);
+        $tp_id  = I('get.tp_id',0);//任务计划id
+
+        $page = array('curpage'=>I('get.p',1),'size'=>10);
+        $params = array();
+        $result = apiCall(VBbjmemberInfoApi::QUERY_SH_USER,array($page,$params));
+
+        if($result['status']){
+            $list = $result['info']['list'];
+
+            foreach($list as &$vo){
+                $order = 'get_task_time desc';
+                $map = array(
+                    'seller_uid'=>$this->uid,
+                    'uid'=>$vo['uid'],
+                );
+
+                $result = apiCall(VTaskHisInfoApi::GET_INFO,array($map,$order));
+
+
+                if($result['status']){
+                    $vo['_last_get_task'] = $result['info'];
+                }
+            }
+
+            $this->assign("tp_id",$tp_id);
+            $this->assign("task_id",$id);
+            $this->assign("list",$list);
+            $this->assign("show",$result['info']['show']);
+        }
+
+        $this->boye_display();
+    }
 
 	/*
 	 * 淘宝活动
@@ -280,8 +355,12 @@ class SJActivityController extends SjController {
         if(!empty($q)){
             $map['search_q'] = array('like','%'.$q.'%');
         }
+        $map['uid'] = $this->uid;
+        $expire_time = time() - 7*24*3600;
+        $map['update_time'] = array('gt',$expire_time);
+        $map['status'] = "1";
         $page = array('curpage'=>I('get.p',0),'size'=>10);
-        $result = apiCall(ProductSearchWayApi::QUERY,array($map,$page));
+        $result = apiCall(VTaskProductSearchWayApi::QUERY,array($map,$page));
         if($result['status']){
             $this->success($result['info']['list']);
         }else{
@@ -734,7 +813,7 @@ class SJActivityController extends SjController {
 	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 * */
 	public function save_1() {
-
+        $this->checkLogin();
         $task = session('sj_task_info');
         if(empty($products)){
             $task = array();
@@ -762,27 +841,43 @@ class SJActivityController extends SjController {
         $seller_deliver = $this->hasSellerDeliver();
         $task['rebate'] = $rebate;
         $task['seller_deliver'] = $seller_deliver;
-
         session('sj_task_info', $task);
+
 
         $this->assign("seller_deliver",$seller_deliver);
         $this->assign("rebate",$rebate);
         $this->assign("total_price",$total_price);
 		$this -> assign('head_title', "宝贝街-创建任务");
+        $this->assignYhfs();
         $this -> assign("products",$task['_products']);
 		$this -> display('activity_2');
 	}
+
+    /**
+     * 分配优惠信息
+     */
+    private function assignYhfs(){
+        $map = array(
+            'parentid'=>DatatreeModel::YHFS
+        );
+
+        $result = apiCall(DatatreeApi::QUERY_NO_PAGING,array($map));
+        $this->assign("yhfs",$result['info']);
+    }
 
 	/*
 	 * 创建任务第二步
 	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 * */
 	public function activity_2() {
+
 		if(IS_GET){
 
+            $this->assignYhfs();
             $this -> assign('head_title', "宝贝街-创建任务");
 
             $task = session("sj_task_info");
+
             $this->assign("seller_deliver",$task['seller_deliver']);
             $this->assign("rebate",$task['rebate']);
             $this->assign("total_price",$task['total_price']);
@@ -790,20 +885,29 @@ class SJActivityController extends SjController {
 		    $this -> display();
         }else{
 
-            $delivery_type = I('post.fhtype','1');
-            $bzj = I('post.bzj',0);//保证金
-            $yj = I('post.yj',0);//佣金
-            $price = I('post.xiadan',0);//用户下单单份商品金额
-            $yhfs = I('post.yhfs','');//优惠方式
             $task = session('sj_task_info');
-            $by = I('post.by',0);
+            $delivery_mode = I('post.fhfs','1');
+            $bzj = I('post.bzj',0);//保证金
+            $task_brokerage = I('post.task_brokerage',0);//佣金
+            $price = I('post.pronum',0);//用户下单单份商品金额
+            $yhfs = I('post.yhfs','');//优惠方式
+            $task_postage = I('post.task_postage',0);//包邮
 
-            $task['coin'] = $yj * 0.7 * VIRTUAL_RATE; //可获得福币
+
+            $rate = VIRTUAL_COIN_PERCENTAGE;
+            $task['coin'] = $task_brokerage * $rate * VIRTUAL_RATE; //可获得福币
             $task['dtree_preferential'] = $yhfs;
-            $task['task_brokerage'] = $yj;
-            $task['task_postage'] = $by;
+
+            $task['task_brokerage'] = $task_brokerage;
+            if(intval($fhfs) == 1){
+                $task['task_postage'] = 10;
+            }else{
+                $task['task_postage'] = $task_postage;
+            }
+
             $task['task_gold'] = $bzj;
-            $task['delivery_type'] = $delivery_type;
+            $task['delivery_mode'] = $delivery_mode;
+
             session("sj_task_info",$task);
 
             $this->display("activity_3");
@@ -822,7 +926,6 @@ class SJActivityController extends SjController {
         }else{
 
             $task = session("sj_task_info");
-
             $task_name = I('post.task_name','');
             $notes = I('post.notes','');
             $chat_argot = I('post.chat_argot','');
@@ -830,7 +933,7 @@ class SJActivityController extends SjController {
                 'uid'=>$this->uid,
                 'create_time'=>time(),
                 'aliwawa'=>$this->userinfo['aliwawa'],
-                'delivery_mode'=>$task['delivery_type'],
+                'delivery_mode'=>$task['delivery_mode'],
                 'task_gold'=>$task['task_gold'],
                 'task_brokerage'=>$task['task_brokerage'],
                 'task_postage'=>$task['task_postage'],
@@ -1076,7 +1179,21 @@ class SJActivityController extends SjController {
         }else{
             $this->assign("url","未知");
         }
-		$this->assign('search',$product['info']);
+
+        $search_info = $product['info'];
+        $condition = json_decode($search_info['search_condition'],JSON_OBJECT_AS_ARRAY);
+
+        if(is_array($condition)){
+            $attrs = $condition['attr'];
+            if(strlen($attrs) > 0){
+                $tmp_arr = explode(",",$attrs);
+                $condition['attr_list'] = $tmp_arr;
+            }
+
+            $search_info = array_merge($search_info,$condition);
+        }
+
+        $this->assign('search',$search_info);
         $this->assign('aliwawa',$this->userinfo['aliwawa']);
 		$this -> display();
 	}
@@ -1231,17 +1348,35 @@ class SJActivityController extends SjController {
      * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 */
 	public function save() {
-//		$user = $this->userinfo;
+
         $founded = $this->_param('iscz',2);
 		$id   = I('id',0);
+        $search_xz = I("post.search_xz","");
+        $search_filter = I("post.search_filter","");
+        $search_attr = I("post.search_attr","");
+
+
+        $price_min = I("post.price_min",0);
+        $price_max = I("post.price_max",0);
+
+        $price_min = floatval($price_min);
+        $price_max = floatval($price_max);
+
+        $condition = array(
+            'tab'=>$search_xz,
+            'filter'=>$search_filter,
+            'attr'=>$search_attr,
+        );
 
         $entity = array(
             'update_time' => time(),
+            'price_min'=>$price_min,
+            'price_max'=>$price_max,
             'pid' => I('pid', ''),
             'search_url' => I('search_url', ''),
             'search_q' => I('search_q', ''),
             'search_order' => I('search_order', ''),
-            'search_condition' => I('search_xz', ''),
+            'search_condition' => json_encode($condition),
             'status'=>2,
             'dtree_type'=>ProductSearchWayModel::SEARCH_TYPE_KEYWORD,
         );
@@ -1251,9 +1386,9 @@ class SJActivityController extends SjController {
         }
 
 		if($id > 0){
-            $result = apiCall(ProductSearchWayApi::SAVE, array(array('id'=>$id,'uid'=>$this->uid),$entity));
+            $result = apiCall(ProductSearchWayApi::SAVE, array(array('id'=>$id),$entity));
 		}else{
-            $entity['uid'] = $user['id'];
+            $entity['uid'] = $this->uid;
             $entity['dtree_type'] = ProductSearchWayModel::SEARCH_TYPE_KEYWORD;
             $entity['create_time'] = time();
             $result = apiCall(ProductSearchWayApi::ADD, array($entity));
@@ -1294,7 +1429,7 @@ class SJActivityController extends SjController {
 //		$user=session('user');
 //	 	$id=I('sid',0);
 //		$mapp=array('id'=>$id);
-//		$money=I('dfmoney','');
+//		$money=I('dfmonfey','');
 //		$result = apiCall(HomePublicApi::TaskPlan_Query, array($mapp));
 //		$fenshu=$result['info'][0]['task_cnt'];
 //		$yue=$result['info'][0]['yuecount'];
@@ -1434,14 +1569,15 @@ class SJActivityController extends SjController {
      */
     public function task_clear(){
 
-
+        $task_info = array();
         $task_id = $this->_param('id',0);
 
         $result = apiCall(TaskApi::GET_INFO,array(array('id'=>$task_id)));
         if($result['status']){
-            $this->assign("task_info",$result['info']);
+            $task_info = $result['info'];
+            $this->assign("task_info",$task_info);
         }
-        if(is_null($result['info'])){
+        if(is_null($task_info)){
             $this->error("任务信息获取失败!");
         }
 
@@ -1460,40 +1596,59 @@ class SJActivityController extends SjController {
             $this->assign("show",$result['info']['show']);
         }
 
-
-        $this->assign("all_tb_price",0);
-        $this->assign("all_task_brokerage",0);
-        $this->assign("all_tb_express",0);
+        $all_tb_price = 0;
+        $all_task_brokerage = 0;
+        $all_tb_express = 0;
+        $this->assign("all_tb_price",$all_tb_price);
+        $this->assign("all_task_brokerage",$all_task_brokerage);
+        $this->assign("all_tb_express",$all_tb_express);
 
         $result = apiCall(TaskHisApi::SUM,array($map,'task_brokerage'));
 
         if($result['status'] && intval($result['info']) > 0){
-            $this->assign("all_task_brokerage",$result['info']);
+            $all_task_brokerage = $result['info'];
+            $this->assign("all_task_brokerage",$all_task_brokerage);
         }
 
         $result = apiCall(VTaskHisInfoApi::SUM,array($map,'return_money'));
 
         if($result['status'] && intval($result['info']) > 0){
-            $this->assign("all_tb_price",$result['info']);
+            $all_tb_price = $result['info'];
+            $this->assign("all_tb_price",$all_tb_price);
         }
 
         $result = apiCall(TaskHisApi::SUM,array($map,'express_price'));
 
         if($result['status'] && intval($result['info']) > 0){
-            $this->assign("all_tb_express",$result['info']);
+
+            $all_tb_express = $result['info'];
+            $this->assign("all_tb_express",$all_tb_express);
         }
 
+
+
+        //1. 查找是否存在 正进行中的任务
         $map = array(
             'seller_uid'=>$this->uid,
             'task_id'=>$task_id,
         );
+
         $map['do_status'] = array('not in',array(TaskHisModel::DO_STATUS_RETURNED_MONEY,TaskHisModel::DO_STATUS_CANCEL));
 
         $result = apiCall(TaskHisApi::GET_INFO,array($map));
         $this->assign("can_clear",1);
+
         if($result['status'] && is_array($result['info'])){
             $this->assign("can_clear",0);
         }
+
+        //end
+
+
+        $expect_money = $task_info['frozen_money'] - number_format($all_tb_price+$all_task_brokerage+$all_tb_express  ,2,".","");
+
+        $expect_money = $expect_money < 0 ? 0.00 : $expect_money;
+        $this->assign("expect_money",$expect_money);
         $this->display();
     }
 
@@ -1554,11 +1709,14 @@ class SJActivityController extends SjController {
         }
 
         $all_use_price = $all_task_brokerage + $all_tb_express + $all_tb_price;
+
         $left_price = $task_info['frozen_money'] - $all_use_price;
 
         if($left_price < 0){
-            $this->error("该任务资金出现异常，请联系管理员!");
+            $left_price = 0;
         }
+
+
         //记录帐号资金变动日志
         $notes = "任务#".$task_id."#已结算,花费了".$all_use_price."元";
         $entity = array(
@@ -1574,6 +1732,7 @@ class SJActivityController extends SjController {
             'frozen_money'=>$this->userinfo['frozen_money'] - $task_info['frozen_money'],
             'extra'=>'',
         );
+
         $result = apiCall(FinAccountBalanceHisApi::ADD,array($entity));
 
 

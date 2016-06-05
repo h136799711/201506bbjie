@@ -29,6 +29,7 @@ use Home\Model\ProductExchangeModel;
 use Home\Model\TaskHisModel;
 use Home\Model\TaskLogModel;
 use Home\Model\TaskModel;
+use Money\Logic\TaskLogic;
 use Shop\Api\WxproductApi;
 use Think\Controller;
 use Home\Api\HomePublicApi;
@@ -297,116 +298,126 @@ class SMActivityController extends HomeController {
 	 * */
 	public function gettask(){
 
-		$now_time = time();
         $this->reloadUserInfo();
+        $logic = new TaskLogic();
+        $result = $logic->giveTaskTo($this->uid);
 
-        $map = array('uid'=>$this->uid);
-        $map['do_status'] = array('notin',array(TaskHisModel::DO_STATUS_SUSPEND,TaskHisModel::DO_STATUS_RETURNED_MONEY ,TaskHisModel::DO_STATUS_CANCEL ));
-
-		$result = apiCall(TaskHisApi::GET_INFO,array($map));
-
-        if($this->userinfo['auth_status'] == 0){
-            $this->error("信息正在审核中... 审核完成才可接任务");
-        }
-
-		if(is_array($result['info'])) {
-            $this->error("请先完成或取消之前接的任务！");
-        }
-
-
-        $map = array();
-
-        $result = apiCall(VCanDoTaskApi::COUNT,array($map));
-        $total = 0;
         if($result['status']){
-            $total = $result['info'];
+            $this->success('成功接收任务，正在跳转任务界面',U('Home/SMActivity/task_manager',array('do_status'=>'doing')));
         }else{
-            $this->error($result['info']);
+            $this->error('领取任务失败');
         }
 
-        $rand_id = rand(1,$total);
-//        dump($rand_id);
-        $map['row_id'] = array('egt',$rand_id);
-        $result = apiCall(VCanDoTaskWithAutoIdApi::GET_INFO,array($map,'id desc'));
-
-        if( !is_array($result['info']) ){
-            $this->error('暂无可接任务，请稍候再试',U('Home/Index/sm_manager'));
-        }else{
-            $task_plan = $result['info'];
-            $result = apiCall(TaskApi::GET_INFO,array(array('id'=>$task_plan['task_id'])));
-            if(!$result['status'] || is_null(($result['info']))){
-                $this->error("发生错误，请联系管理员!");
-            }
-
-            if($result['info']['task_status'] != TaskModel::STATUS_TYPE_OPEN){
-                $this->error('暂无可接任务，请稍候再试',U('Home/Index/sm_manager'));
-            }
-
-            //检查该任务对应店铺是否在10天内已接收到
-            $task_id = $result['info']['id'];
-            $uid = $this->uid;
-
-            if(!$this->isLegalTask($task_id,$uid)){
-                $this->error('请稍候再试',U('Home/Index/sm_manager'));
-            }
-
-
-            $task_brokerage  = $result['info']['task_brokerage'];
-
-            //新增到接收任务表
-            $entity = array(
-                'tpid'=>$task_plan['id'],
-                'uid'=>$this->uid,
-                'order_status'=>2,
-                'create_time'=>$now_time,
-                'get_task_time'=>$now_time,
-                'do_status'=>TaskHisModel::DO_STATUS_NOT_START,
-                'task_id'=>$task_plan['task_id'],
-                'task_brokerage'=>$task_brokerage,
-                'notes'=>'',
-                'tb_orderid'=>'',
-                'tb_address'=>'',
-                'tb_price'=>0,
-                'tb_pay_type'=>TaskHisModel::PAY_TYPE_LEGAL,
-                'tb_account'=>$this->userinfo['taobao_account'],
-            );
-
-            //获取兑换商品信息
-            $exchange_map = array('exchange_status'=>ProductExchangeModel::CHECK_SUCCESS,'uid'=>$this->uid);
-            $result = apiCall(VProductExchangeInfoApi::GET_INFO,array($exchange_map,"update_time desc"));
-            $exchange_id = 0;
-            if($result['status'] && is_array($result['info'])){
-                $product_info = $result['info'];
-                $entity['exchange_id'] = $product_info['id'];
-                $entity['express_pid'] = $product_info['p_id'];
-                $entity['express_name'] = $product_info['name'];
-                $exchange_id = $product_info['id'];
-            }
-
-            $result = apiCall(TaskHisApi::ADD,array($entity));
-
-
-            if($result['status']){
-
-                if($exchange_id > 0){
-                    apiCall(ProductExchangeApi::SAVE_BY_ID,array($exchange_id,array('exchange_status'=>ProductExchangeModel::ALLOC_TASK)));
-                }
-
-                $notes = "用户 (".$this->userinfo['username'].") 领取了任务";
-                task_log($result['info'] , $task_plan['id'],$this->uid,$task_plan['task_id'],TaskLogModel::TYPE_GET_TASK,$notes);
-
-                $map = array('id'=>$task_plan['id']);
-                $result = apiCall(TaskPlanApi::SET_DEC,array($map,'yuecount',1));
-
-                if($result['status']){
-
-                    $this->success('成功接收任务，正在跳转任务界面',U('Home/SMActivity/task_manager',array('do_status'=>'doing')));
-                }else{
-                    $this->error('领取任务失败');
-                }
-
-            }
-        }
+//		$now_time = time();
+//
+//        $map = array('uid'=>$this->uid);
+//        $map['do_status'] = array('notin',array(TaskHisModel::DO_STATUS_SUSPEND,TaskHisModel::DO_STATUS_RETURNED_MONEY ,TaskHisModel::DO_STATUS_CANCEL ));
+//
+//		$result = apiCall(TaskHisApi::GET_INFO,array($map));
+//
+//        if($this->userinfo['auth_status'] == 0){
+//            $this->error("信息正在审核中... 审核完成才可接任务");
+//        }
+//
+//		if(is_array($result['info'])) {
+//            $this->error("请先完成或取消之前接的任务！");
+//        }
+//
+//
+//        $map = array();
+//
+//        $result = apiCall(VCanDoTaskApi::COUNT,array($map));
+//        $total = 0;
+//        if($result['status']){
+//            $total = $result['info'];
+//        }else{
+//            $this->error($result['info']);
+//        }
+//
+//        $rand_id = rand(1,$total);
+////        dump($rand_id);
+//        $map['row_id'] = array('egt',$rand_id);
+//        $result = apiCall(VCanDoTaskWithAutoIdApi::GET_INFO,array($map,'id desc'));
+//
+//        if( !is_array($result['info']) ){
+//            $this->error('暂无可接任务，请稍候再试',U('Home/Index/sm_manager'));
+//        }else{
+//            $task_plan = $result['info'];
+//            $result = apiCall(TaskApi::GET_INFO,array(array('id'=>$task_plan['task_id'])));
+//            if(!$result['status'] || is_null(($result['info']))){
+//                $this->error("发生错误，请联系管理员!");
+//            }
+//
+//            if($result['info']['task_status'] != TaskModel::STATUS_TYPE_OPEN){
+//                $this->error('暂无可接任务，请稍候再试',U('Home/Index/sm_manager'));
+//            }
+//
+//            //检查该任务对应店铺是否在10天内已接收到
+//            $task_id = $result['info']['id'];
+//            $seller_uid = $result['info']['uid'];//商家ID
+//            $uid = $this->uid;
+////            dump($result['info']);
+//            if(!$this->isLegalTask($task_id,$uid,$seller_uid)){
+//                $this->error('请稍候再试',U('Home/Index/sm_manager'));
+//            }
+//
+//
+//            $task_brokerage  = $result['info']['task_brokerage'];
+//
+//            //新增到接收任务表
+//            $entity = array(
+//                'tpid'=>$task_plan['id'],
+//                'uid'=>$this->uid,
+//                'order_status'=>2,
+//                'create_time'=>$now_time,
+//                'get_task_time'=>$now_time,
+//                'do_status'=>TaskHisModel::DO_STATUS_NOT_START,
+//                'task_id'=>$task_plan['task_id'],
+//                'task_brokerage'=>$task_brokerage,
+//                'notes'=>'',
+//                'tb_orderid'=>'',
+//                'tb_address'=>'',
+//                'tb_price'=>0,
+//                'tb_pay_type'=>TaskHisModel::PAY_TYPE_LEGAL,
+//                'tb_account'=>$this->userinfo['taobao_account'],
+//            );
+//
+//            //获取兑换商品信息
+//            $exchange_map = array('exchange_status'=>ProductExchangeModel::CHECK_SUCCESS,'uid'=>$this->uid);
+//            $result = apiCall(VProductExchangeInfoApi::GET_INFO,array($exchange_map,"update_time desc"));
+//            $exchange_id = 0;
+//            if($result['status'] && is_array($result['info'])){
+//                $product_info = $result['info'];
+//                $entity['exchange_id'] = $product_info['id'];
+//                $entity['express_pid'] = $product_info['p_id'];
+//                $entity['express_name'] = $product_info['name'];
+//                $exchange_id = $product_info['id'];
+//            }
+//
+//            $result = apiCall(TaskHisApi::ADD,array($entity));
+//
+//
+//            if($result['status']){
+//
+//                if($exchange_id > 0){
+//                    apiCall(ProductExchangeApi::SAVE_BY_ID,array($exchange_id,array('exchange_status'=>ProductExchangeModel::ALLOC_TASK)));
+//                }
+//
+//                $notes = "用户 (".$this->userinfo['username'].") 领取了任务";
+//                task_log($result['info'] , $task_plan['id'],$this->uid,$task_plan['task_id'],TaskLogModel::TYPE_GET_TASK,$notes);
+//
+//                $map = array('id'=>$task_plan['id']);
+//                $result = apiCall(TaskPlanApi::SET_DEC,array($map,'yuecount',1));
+//
+//                if($result['status']){
+//
+//                    $this->success('成功接收任务，正在跳转任务界面',U('Home/SMActivity/task_manager',array('do_status'=>'doing')));
+//                }else{
+//                    $this->error('领取任务失败');
+//                }
+//
+//            }
+//        }
 		
 	}
 
@@ -660,10 +671,11 @@ class SMActivityController extends HomeController {
      * @param 领取人ID $uid
      * @return bool
      */
-    private function isLegalTask($task_id,$uid){
+    private function isLegalTask($task_id,$uid,$seller_uid){
         $order = " get_task_time desc";
         $map = array(
-            'task_id'=>$task_id,
+//            'task_id'=>$task_id,
+            'seller_uid'=>$seller_uid,
             'uid'=>$uid,
             'do_status'=>array('not in',array(TaskHisModel::DO_STATUS_CANCEL)),
         );

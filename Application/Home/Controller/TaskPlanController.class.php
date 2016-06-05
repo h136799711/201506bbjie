@@ -60,6 +60,10 @@ class TaskPlanController extends SjController {
                     'frozen_money'=>$this->userinfo['frozen_money'] - $income,
                 );
 
+                if($entity['frozen_money'] < 0){
+                    $this->error("您的账户发生异常，若有疑问，请联系官方人员!");
+                }
+
                 $result = apiCall(FinAccountBalanceHisApi::ADD, array($entity));
                 if ($result['status']) {
 

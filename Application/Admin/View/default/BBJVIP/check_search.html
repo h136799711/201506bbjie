@@ -28,6 +28,12 @@
                             <input class="j_status" type="radio" <eq name="status" value="3">checked</eq>  name="status"  value="3" > 已驳回
                         </label>
                     </div>
+                    <div class="form-group">
+                        <div><input placeholder="输入商家名称" name="seller_name" type="text" class="input-small " />
+                            <a class="btn btn-primary btn-sm" target-form="j_filter_form" href="__SELF__" ><i class="icon-search"></i> 查询</a>
+                        </div>
+
+                    </div>
                 </form>
             </div>
 			<!-- 操作按钮 -->
@@ -74,9 +80,7 @@
                                     {$vo.username}
 								</td>
 								<td>
-                                    <eq name="vo['dtree_type']" value="0">关键词 </eq>
-									<eq name="vo['dtree_type']" value="1">关键词 </eq>
-									<eq name="vo['dtree_type']" value="2">自定义 </eq>
+                                    {$vo.type_name}
 								</td>
                                 <td  style="width: 160px;text-overflow: ellipsis">
                                     <a href="{:U('Admin/BBJVIP/searchview',array('id'=>$vo['id']))}" class="btn btn-link btn-sm ">
@@ -88,7 +92,7 @@
 								</td>
 								
 								<td>
-									{$vo.search_condition},{$vo.search_order}
+									{:getSearchDesc($vo['search_condition'])}{$vo.search_order}
 								</td>
 								<td>
 									{$vo.create_time|date='Y-m-d H:i:s',###}

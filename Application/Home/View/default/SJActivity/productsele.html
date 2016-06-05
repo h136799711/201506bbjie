@@ -68,7 +68,7 @@
 									<thead>
 										<tr>
 											
-											<th width="120" id="product-grid_c0">
+											<th width="100" id="product-grid_c0">
 												<a class="sort-link">
 													搜索商品
 													<span class="caret">
@@ -78,7 +78,7 @@
 											<th id="product-grid_c1">
 												关键字/搜索名称
 											</th>
-											<th width="120" id="product-grid_c2">
+											<th width="100" id="product-grid_c2">
 												<a class="sort-link">
 													搜索类型
 													<span class="caret">
@@ -106,7 +106,7 @@
 
 												</a>
 											</th>
-											<th width="60" id="product-grid_c6">
+											<th width="100" id="product-grid_c6">
 												操作
 											</th>
 										</tr>
@@ -153,7 +153,7 @@
 														</if>
 
                                                         <if condition="$vo['status'] eq 2">
-                                                            正在审核
+                                                            {:date('Y-m-d H:i',$vo['update_time'])}
                                                         </if>
                                                         <if condition="$vo['status'] eq 3">
                                                             已驳回
@@ -169,7 +169,9 @@
 
 														</if>
                                                         <if condition="$vo['status'] eq 2">
-                                                            等待管理员审核
+                                                            <div>等待审核</div>
+                                                            <a tooltip="编辑" class="btn btn-mini" href="{:U('Home/SJActivity/edit_search',array('id'=>$vo['id']))}">重新编辑</a>
+
                                                         </if>
                                                         <if condition="$vo['status'] eq 3">
                                                             <a tooltip="更新" class="btn btn-mini" href="{:U('Home/SJActivity/edit_search',array('id'=>$vo['id']))}">重新更新</a>

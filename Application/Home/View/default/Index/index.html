@@ -17,11 +17,13 @@
 				<div style="color:#FFF; float:left; background: url(__PUBLIC__/Home/img/gonggao.png) no-repeat 0 9px;padding-left:  25px;">
 					<a href="{:U('Home/Index/gfggxx',array('id'=>$zxgg['id']))}" style="color: white;">{$zxgg.post_title}</a>
 				</div>
-				<empty name="username">
+
+                <empty name="username">
 					<div style="color:#FFF;float:right">您好，欢迎来到宝贝街！请[<a href="{:U('Home/Index/login')}">登录</a>][<a href="{:U('Home/Index/register_sj')}">免费注册</a>]|帮助中心</div>
 					<else/>
 					<div style="color:#FFF;float:right"><a href="{:U('Home/Index/sm_manager')}">{$username}</a>,您好，欢迎来到宝贝街！[<a href="{:U('Home/Index/register_sm')}">免费注册</a>]|帮助中心</div>
 				</empty>
+
 			</div>
 		</div>
 		<div id="div_top2">
@@ -497,6 +499,7 @@
 					<dd class="dd_info"><a href="#">活动安全</a>
 					</dd>
 				</dl>
+
 				<dl>
 					<dt>宝贝街特色</dt>
 					<dd class="dd_info"><a href="#">许愿树</a>
@@ -506,6 +509,7 @@
 					<dd class="dd_info"><a href="#">因伙得福</a>
 					</dd>
 				</dl>
+
 				<dl>
 					<dt>共图大业</dt>
 					<dd class="dd_info"><a href="#">招兵买马</a>

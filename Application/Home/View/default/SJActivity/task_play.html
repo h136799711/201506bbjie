@@ -102,7 +102,7 @@
                                                     </if>
                                                     <a target="_blank" CLASS="am-btn am-btn-sm am-btn-primary btn-fix-am am-margin-bottom-sm" href="{:U('Home/SJActivity/alluser',array('id'=>$vo['task_id']))}">查看试民</a>
 
-                                                    <!--<a class="j_update_task am-btn am-btn-sm am-btn-primary btn-fix-am  am-margin-bottom-sm" data-task-count="{$vo.task_cnt}" data-task-id="{$vo.id}" href="javascript:void(0)">修改任务信息</a>-->
+                                                    <a href="{:U('Home/SJActivity/sh_user',array('tp_id'=>$vo['id'],'id'=>$task['id']))}" class="am-btn-sm am-btn-primary am-btn  btn-fix-am  am-margin-bottom-sm">审批用户</a>
 
 												</div>&nbsp;
                                             </td>
@@ -173,10 +173,9 @@
                         <div class="am-form-group am-g">
                             <label class="am-u-lg-2 am-u-md-2 am-form-label">搜索方式</label>
                             <div class="am-u-lg-10 am-u-md-10 am-text-left">
-                                <select id="search_way" STYLE="width: 260px;" name="search_way_id" class="am-form-field">
+                                <select id="search_way" style="width:100%;"  name="search_way_id" class="am-form-field">
                                     <option value="0">选择搜索方式</option>
                                 </select>
-
                             </div>
                         </div>
 
@@ -297,7 +296,9 @@
 
                     if (repo.loading) return repo.text;
                     if(repo.nodata) return repo.nodata;
-                    var markup = '<div>'+repo.search_q+'</div>';
+
+                    var img =  "<img src=\""+repo.main_img+"\" style='float:left;width:60px;height:60px;'/>";
+                    var markup =  '<div class="am-cf">'+img+"<div>"+repo.search_q+'</div></div>';
                     return $(markup);
                 },
             });

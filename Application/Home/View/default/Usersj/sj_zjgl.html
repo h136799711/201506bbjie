@@ -335,14 +335,15 @@
                                 </div>
                             </div>
                             <div class="am-form-group am-u-g">
-                                <label class="am-u-md-3  am-form-label">银行卡号或支付宝账户</label>
+                                <label class="am-u-md-3  am-form-label">银行卡号</label>
                                 <div class="am-u-md-9" >
                                     <input type="text" name="bank_num"   class="am-form-field"  />
+                                    <div class="help-block">如果选了支付宝，则填写账号名</div>
                                 </div>
                             </div>
                             <div class="am-form-group am-u-g">
-                                <label class="am-u-md-3  am-form-label">登录密码</label>
-                                <div class="am-u-md-9" ><input type="password" name="pwd"  class="am-form-field"  value="" />
+                                <label class="am-u-md-3  am-form-label">验证登录密码</label>
+                                <div class="am-u-md-9" ><input placeholder="请输入当前登录账号密码" type="password" name="pwd"  class="am-form-field"  value="" />
                                     <input type="hidden" name="sheng" class="sheng" />
                                     <input type="hidden" name="shi" class="shi" />
                                 </div>
@@ -485,10 +486,10 @@
                 var notes =  $ele.data('extra');
                 var hidden_value =  $ele.data('hidden-value');
                 var bank_name = $ele.data('bank-name');
+
                 $(".j_bank_form .j_notes").text(notes);
                 $(".j_bank_form .j_hidden_value").val(hidden_value);
                 $(".j_bank_form .j_bank_name").val(bank_name);
-
             });
 				$('#loc_province').change(function(){
 					var sheng=$('#loc_province option:selected').text();
@@ -499,10 +500,9 @@
 					$('.shi').val(shi);
 				})
 				$('#loc_town').change(function() {
-				//$('input[@name=location_id]').val($(this).val());
+
 				var qu=$('#loc_town option:selected').text();
-							//var qu=$('#loc_town').select2('data').text
-							//alert(qu);
+
 				$('.qi').val(qu);
 		
 				})

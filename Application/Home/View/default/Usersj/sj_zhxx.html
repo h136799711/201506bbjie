@@ -48,40 +48,40 @@
 										<form  class="j_edit_form <eq name="entity['auth_status']" value="3">am-hide</eq> <eq name="entity['auth_status']" value="2">am-hide</eq>  <eq name="entity['auth_status']" value="1">am-hide</eq> form-horizontal edit_base_form"  action="{:U('Home/Usersj/edit_base')}" method="post" >
 
 											<input type="hidden" value="{$entity['uid']}" name="id" id="form_id">
-											<div class="control-group">
-												<label class="control-label">会员名</label>
-												<div class="controls">
+											<div class="am-form-group  am-cf">
+												<label class="am-u-sm-2 am-text-right">会员名</label>
+												<div class="am-u-sm-10">
 													<input readonly="readonly" type="text" value="{$user.username}" name="" id="">
 												</div>
 											</div>
-											<div class="control-group">
-												<label class="control-label" for="ali_wang">绑定旺旺</label>
-												<div class="controls">
+											<div class="am-form-group  am-cf">
+												<label class="am-u-sm-2 am-text-right" for="ali_wang">绑定旺旺</label>
+												<div class="am-u-sm-10">
 													<input required="required" type="text" value="{$entity['aliwawa']}"  name="aliwawa" id="ali_wang"><span class="help-inline"><span class="required_label">*</span></span>
 												</div>
 											</div>
-											<div class="control-group">
-												<label class="control-label" for="store_name">店铺名称</label>
-												<div class="controls">
+											<div class="am-form-group  am-cf">
+												<label class="am-u-sm-2 am-text-right" for="store_name">店铺名称</label>
+												<div class="am-u-sm-10">
 													<input required="required" type="text" value="{$entity['store_name']}" name="store_name" id="store_name"><span class="help-inline"><span class="required_label">*</span></span>
 												</div>
 											</div>
-											<div class="control-group">
-												<label class="control-label" for="taobao_link">店铺网址</label>
-												<div class="controls">
+											<div class="am-form-group  am-cf">
+												<label class="am-u-sm-2 am-text-right" for="taobao_link">店铺网址</label>
+												<div class="am-u-sm-10">
 													<input class="span5" type="text" value="{$entity['store_url']}" name="store_url" id="taobao_link">
 												</div>
 											</div>
 
-                                            <div class="control-group">
-                                                <label class="control-label" for="region_id">所在地</label>
+                                            <div class="am-form-group  am-cf">
+                                                <label class="am-u-sm-2 am-text-right" for="region_id">所在地</label>
 
-                                                <div class="controls j_address_show <empty name="entity['address']">am-hide</empty>">
+                                                <div class="am-u-sm-10 j_address_show <empty name="entity['address']">am-hide</empty>">
                                                     <span>{$entity.address}</span>
                                                     <a href="javascript:void(0)" onclick="showAddress();">修改</a>
                                                 </div>
 
-                                                <div class="controls j_address_edit  <notempty name="entity['address']">am-hide</notempty>">
+                                                <div class="am-u-sm-10 j_address_edit  <notempty name="entity['address']">am-hide</notempty>">
                                                     <select id="loc_province" style="width:120px;"></select>
                                                     <select id="loc_city" style="width:120px; margin-left: 10px"></select>
                                                     <select id="loc_town" style="width:120px;margin-left: 10px"></select>
@@ -108,35 +108,40 @@
                                 </eq>
 
 
-                                            <div class="am-form-group">
+                                            <div class="am-form-group  am-cf">
                                                 <div class="am-u-sm-2 am-text-right">会员名</div>
                                                 <div class="am-u-sm-10 ">
                                                     {$user.username}
                                                 </div>
                                             </div>
-                                            <div class="am-form-group">
+                                            <div class="am-form-group  am-cf">
                                                 <div class="am-u-sm-2 am-text-right">绑定旺旺</div>
                                                 <div class="am-u-sm-10 ">
                                                     {$entity.aliwawa}
                                                 </div>
                                             </div>
-                                            <div class="am-form-group">
+                                            <div class="am-form-group  am-cf">
                                                 <div class="am-u-sm-2 am-text-right">店铺名称</div>
                                                 <div class="am-u-sm-10 ">
                                                     {$entity.store_name}
                                                 </div>
                                             </div>
-                                            <div class="am-form-group">
+                                            <div class="am-form-group  am-cf">
                                                 <div class="am-u-sm-2 am-text-right">店铺网址</div>
                                                 <div class="am-u-sm-10 ">
                                                     {$entity.store_url}
                                                 </div>
                                             </div>
 
-                                            <div class="form-actions">
-                                                <a class="am-btn am-btn-sm am-btn-danger" onclick="showBaseForm();" href="javascript:void(0)" >重新认证</a>
-                                            </div>
-                                        </form>
+                                <div class="am-form-group  am-cf">
+
+                                    <label class="am-u-sm-2 am-text-right" for="im_msn">&nbsp;</label>
+
+                                    <div class="am-u-sm-10">
+                                        <a class="am-btn am-btn-sm am-btn-danger" onclick="showBaseForm();" href="javascript:void(0)" >重新认证</a>
+                                    </div>
+                                </div>
+                                </form>
 
                                     </div>
 								</div>
@@ -153,37 +158,44 @@
 
 											<input type="hidden" name="id" value="{$entity.uid}" >
 
-											<div class="control-group">
-												<label class="control-label" for="xs_wang">运单显示</label>
-												<div class="controls">
+											<div class="am-form-group  am-cf">
+												<label class="am-u-sm-2 am-text-right" for="xs_wang">运单显示</label>
+												<div class="am-u-sm-10">
 													<input type="text" value="{$entity['waybill_show']}" name="ydxs" id="xs_wang"><span class="help-inline">宝贝活动中在物流单号上显示，默认显示旺旺号</span>
 												</div>
 											</div>
 											
-											<div class="control-group">
-												<label class="control-label" for="renwu_fzr">任务负责人</label>
-												<div class="controls">
+											<div class="am-form-group  am-cf">
+												<label class="am-u-sm-2 am-text-right" for="renwu_fzr">任务负责人</label>
+												<div class="am-u-sm-10">
 													<input type="text"  name="rwfzr" id="renwu_fzr" value="{$entity['task_linkman']}" ><span class="help-inline">试民搜索进店、任务时寻求帮助</span>
 												</div>
 											</div>
 
-											<div class="control-group">
-												<label class="control-label" for="renwu_tel">负责人电话</label>
-												<div class="controls">
+											<div class="am-form-group  am-cf">
+												<label class="am-u-sm-2 am-text-right" for="renwu_tel">负责人电话</label>
+												<div class="am-u-sm-10">
 													<input  type="text" value="{$entity['task_linkman_tel']}" name="fzrdh" id="renwu_tel">
 												</div>
 											</div>
 
-											<div class="control-group">
-												<label class="control-label" for="renwu_qq">负责人QQ</label>
-												<div class="controls">
+											<div class="am-form-group  am-cf">
+												<label class="am-u-sm-2 am-text-right" for="renwu_qq">负责人QQ</label>
+												<div class="am-u-sm-10">
 													<input type="text" value="{$entity['task_linkman_qq']}" name="fzrqq" id="renwu_qq">
 												</div>
 											</div>
 
-											<div class="form-actions">
-                                                <a class="am-btn am-btn-sm am-btn-danger ajax-post" target-form="fzr_form" href="{:U('Home/Usersj/edit_fzr')}" >保存</a>
-											</div>
+                                            <div class="am-form-group  am-cf">
+
+                                                <label class="am-u-sm-2 am-text-right" for="im_msn">&nbsp;</label>
+
+                                                <div class="am-u-sm-10">
+                                                    <a class="am-btn am-btn-sm am-btn-danger ajax-post" target-form="fzr_form" href="{:U('Home/Usersj/edit_fzr')}" >保存</a>
+                                                </div>
+                                            </div>
+
+
 
 										</form>
 									</div>
@@ -199,33 +211,37 @@
 									<div class="form-wrap">
 										<form class="form-horizontal form3"  action="{:U('Home/Usersj/edit3')}" method="post" >
 											<input type="hidden" value="{$entity.uid}" name="id" >
-											<div class="control-group">
-												<label class="control-label" for="owner_name">联系人</label>
-												<div class="controls">
+											<div class="am-form-group  am-cf">
+												<label class="am-u-sm-2 am-text-right" for="owner_name">联系人</label>
+												<div class="am-u-sm-10">
 													<input required="required" type="text" value="{$entity['linkman']}" name="lxr" id="owner_name"><span class="help-inline"><span class="required_label">*</span>处理宝贝街相关业务的负责人</span>
 												</div>
 											</div>
-											<div class="control-group">
-												<label class="control-label" for="tel">电话</label>
-												<div class="controls">
+											<div class="am-form-group  am-cf">
+												<label class="am-u-sm-2 am-text-right" for="tel">电话</label>
+												<div class="am-u-sm-10">
 													<input required="required" type="text" value="{$entity['linkman_tel']}" name="tel" id="tel">
 												</div>
 											</div>
-											<div class="control-group">
-												<label class="control-label" for="im_qq">QQ</label>
-												<div class="controls">
+											<div class="am-form-group  am-cf">
+												<label class="am-u-sm-2 am-text-right" for="im_qq">QQ</label>
+												<div class="am-u-sm-10">
 													<input type="text" value="{$entity['linkman_qq']}" name="qq" id="im_qq">
 												</div>
 											</div>
-											<div class="control-group">
-												<label class="control-label" for="im_msn">其他联系方式</label>
-												<div class="controls">
+											<div class="am-form-group  am-cf">
+												<label class="am-u-sm-2 am-text-right" for="im_msn">其他联系方式</label>
+												<div class="am-u-sm-10">
 													<input type="text"  value="{$entity['linkman_otherlink']}" name="qt" id="im_msn">
 												</div>
 											</div>
-											<div class="form-actions">
-                                                <a class="am-btn am-btn-sm am-btn-danger ajax-post" target-form="form3" href="{:U('Home/Usersj/edit3')}" >保存</a>
+                                            <div class="am-form-group  am-cf">
 
+                                                <label class="am-u-sm-2 am-text-right" for="im_msn">&nbsp;</label>
+
+                                                <div class="am-u-sm-10">
+                                                    <a class="am-btn am-btn-sm am-btn-danger ajax-post" target-form="form3" href="{:U('Home/Usersj/edit3')}" >保存</a>
+                                                </div>
                                              </div>
 										</form>
 									</div>

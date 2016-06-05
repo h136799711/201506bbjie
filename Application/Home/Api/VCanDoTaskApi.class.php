@@ -44,9 +44,27 @@ class VCanDoTaskApi extends Api{
      */
     const SAVE_BY_ID = "Home/VCanDoTask/saveByID";
 
+    /**
+     * 统计
+     */
+    const COUNT_CAN_DO_TASK_BY_SELLER = "Home/VCanDoTask/countCanDoTaskBySeller";
+
 	protected function _init(){
 		$this->model = new VCanDoTaskModel();
 	}
+
+    /**
+     * 统计可以做任务的商家数量
+     * @return array
+     */
+    public function countCanDoTaskBySeller(){
+
+        $result = $this->model->distinct(true)->field('uid')->select();
+        if($result === false){
+            return $this->apiReturnErr($this->model->getDbError());
+        }
+        return $this->apiReturnSuc($result);
+    }
 
 }
 

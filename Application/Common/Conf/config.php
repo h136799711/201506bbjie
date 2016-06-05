@@ -6,6 +6,7 @@
 
 define('VIRTUAL_CURRENCY','元宝');//虚拟货币的单位
 define('VIRTUAL_RATE',4);//对1元人民币的汇率
+define('VIRTUAL_COIN_PERCENTAGE',0.7);//做任务可获得虚拟货币杠杆比例
 
 return array(
 

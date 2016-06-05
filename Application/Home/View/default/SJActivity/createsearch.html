@@ -15,8 +15,34 @@
 				margin-top: -85px;
 				background: white;
 			}
+
+        .sm_disable_input{
+            width: 40px;
+            text-align: center;
+        }
 	</style>
 	<script type="text/javascript">
+
+        function setPrice(price){
+            if(price.length < 2){
+                price[1] = "";
+            }
+            price[0] = parseFloat(price[0]);
+            price[1] = parseFloat(price[1]);
+
+            if(!isNaN(price[1]) || !isNaN(price[0])) {
+                $('#div_searchCondition').find('.j_price').html("价格区间: <input disabled class='sm_disable_input' value='" + price[0] + "'\/> － <input disabled class='sm_disable_input' value='" + price[1] + "'\/>");
+            }
+
+            if(price.length > 0 && !isNaN(price[0])){
+                $("input[name='price_min']").val(price[0]);
+            }
+
+            if(price.length > 1 && !isNaN(price[1])){
+                $("input[name='price_max']").val(price[1]);
+            }
+        }
+
 		$(function(){
 			$('#parseBtn').click(function(){
                 if($('#parseBtn').text() == '正在解析...'){
@@ -36,23 +62,46 @@
 					success:function(data){
 
 
+                        console.log(data);
 
 						if(data.status==0){
 							alert(data.info);
 						}else{
-
-							var items = data.info.items;
+                            var info = data.info;
+							var items = info.items;
+                            var price = info.price;
                             console.log(items);
+                            var attr = info.attr;
 
-							$('#div_searchCondition').find('.font_openUrl').html(data.info.url);
-							$('#div_searchCondition').find('.font_key').html(data.info.key);
-							$('#div_searchCondition').find('.font_tab').html(data.info.tab);
-							$('#div_searchCondition').find('.font_order').html(data.info.order);
-							
-							$("input[name='search_url']").val($('#url').val());
-							$("input[name='search_q']").val(data.info.key);
-							$("input[name='search_xz']").val(data.info.tab);
-							$("input[name='search_order']").val(data.info.order);
+                            var j_props =  $('#div_searchCondition').find('.j_props');
+                            j_props.empty();
+
+                            for(var i=0;i<attr.length;i++){
+                                j_props.append("<p>"+attr[i]+"</p>");
+                            }
+
+
+							$('#div_searchCondition').find('.font_openUrl').html(info.url);
+							$('#div_searchCondition').find('.font_key').html(info.key);
+							$('#div_searchCondition').find('.font_tab').html(info.tab);
+                            $('#div_searchCondition').find('.font_order').html(info.order);
+
+                            if(info.filter.length > 0){
+                                $('#div_searchCondition').find('.j_filter').html("过滤: "+info.filter);
+                            }else{
+                                $('#div_searchCondition').find('.j_filter').empty();
+                            }
+
+                            //设置价格区间
+                            setPrice(price);
+
+                            $("input[name='search_attr']").val( attr.toString() );
+                            $("input[name='search_xz']").val(info.tab);
+                            $("input[name='search_filter']").val(info.filter);
+
+                            $("input[name='search_url']").val($('#url').val());
+                            $("input[name='search_q']").val(info.key);
+                            $("input[name='search_order']").val(info.order);
 							
 							var title1=$("#div_searchCondition .font_title1").text().trim();
 							var wangwang1=$("#div_searchCondition .font_wangwang").html().trim();
@@ -248,16 +297,29 @@
 
 						</form>
 					</div>
+
+                    <div class="control-group" style="margin-left:103px;">
+                        <div id="div_search_result" class="controls">
+
+                            <!--<div class="alert alert-warning in fade"><a href="#" class="close" data-dismiss="alert" type="button">×</a></div> -->
+                        </div>
+                    </div>
 					<div id="sousuo_preview">
 						<div>
-							<form class="form-horizontal jquery-once-1-processed fm" controller="extend/ajax_form" id="yw0" action="{:U('Home/SJActivity/save')}" method="post" novalidate="novalidate">
+							<form class="form-horizontal jquery-once-1-processed fm" action="{:U('Home/SJActivity/save')}" method="post" novalidate="novalidate">
 								<input type="hidden" value="" name="iscz" id="iscz">
 								<input type="hidden" value="" name="pid">
                                 <input type="hidden" value="" name="dtree_type" />
-								<input type="hidden" value="" name="search_url" />
+                                <input type="hidden" value="" name="search_url" />
+                                <input type="hidden" value="" name="search_filter" />
+                                <input type="hidden" value="" name="search_props" />
 								<input type="hidden" value="" name="search_q" />
 								<input type="hidden" value="" name="search_xz" />
 								<input type="hidden" value="" name="search_order" />
+                                <input type="hidden" value="" name="search_attr" />
+                                <input type="hidden" value="" name="price_min" />
+                                <input type="hidden" value="" name="price_max" />
+
 								<div id="div_searchCondition" style="display: none;">
 									<div class="form-horizontal">
 										<div class="control-group">
@@ -271,10 +333,18 @@
 													</p>
 													<p>搜索关键词: <font class="font_key"></font>
 													</p>
+                                                    <p class="j_props">
+                                                    </p>
 													<p>选择 <font class="font_tab"></font>
 													</p>
-													<p>排序: <font class="font_order"></font>
-													</p>
+                                                    <p>排序: <font class="font_order"></font>
+                                                    </p>
+
+                                                    <p class="j_price">
+                                                    </p>
+                                                    <p class="j_filter">
+
+                                                    </p>
 													<p>一般在前五页即可找到对应商品</p>
 												</div>
 											</div>
@@ -313,17 +383,12 @@
 										</div>
 
 									</div>
-									<div class="control-group">
-										<div id="div_search_result" class="controls">
-
-											<!--<div class="alert alert-warning in fade"><a href="#" class="close" data-dismiss="alert" type="button">×</a></div> -->
-										</div>
-									</div>
 
 									<div class="form-actions">
 										<button class="am-btn am-btn-primary ajax-post" url="{:U('Home/SJActivity/save')}" target-form="fm" type="button">保存搜索</button>
 									</div>
 								</div>
+
 								<div style="padding: 50px;"></div>
 
 							</form>

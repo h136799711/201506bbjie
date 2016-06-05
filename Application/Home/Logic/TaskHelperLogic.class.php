@@ -10,12 +10,132 @@ namespace Home\Logic;
 
 
 use Admin\Model\MsgboxModel;
+use Home\Api\BbjmemberSellerApi;
+use Home\Api\ProductExchangeApi;
+use Home\Api\TaskApi;
 use Home\Api\TaskHisApi;
 use Home\Api\VMsgInfoApi;
+use Home\Api\VProductExchangeInfoApi;
 use Home\Api\VTaskHisInfoApi;
+use Home\Model\ProductExchangeModel;
 use Home\Model\TaskHisModel;
+use Home\Model\TaskLogModel;
+use Money\Logic\WalletLogic;
+use Uclient\Api\UserApi;
 
 class TaskHelperLogic {
+
+    /**
+     * 发放任务
+     * @param $uid
+     * @param $task_id
+     * @return array
+     */
+//    public function giveTaskFromTo($seller_uid,$uid,$task_id,$tp_id=0){
+//        //判断商家是否有足够金额，
+//
+////        $result = apiCall(BbjmemberSellerApi::GET_INFO,array(array('uid'=>$seller_uid));
+////
+////        if(!$result['status']){
+////            return array('status'=>false,'info'=>$result['info']);
+////        }
+////        $bbjmember = $result['info'];
+//
+//
+//
+//        //1. 扣除金额 , 增加冻结金额 ,
+//        //2. 创建task_his
+//        //3.
+//
+//        $map  = array(
+//            'id'=>$task_id,
+//        );
+//        $result = apiCall(TaskApi::GET_INFO,array($map));
+//
+//        if(!$result['status']){
+//            return array('status'=>false,'info'=>$result['info']);
+//        }
+//        $task = $result['info'];
+//        //单份任务保证金
+//        $task_gold =  $task['task_gold'];
+//
+//        $logic = new WalletLogic();
+//        $result = $logic->addFrozenFromCoins($seller_uid,$task_gold);
+//        if(!$result['status']){
+//            return $result;
+//        }
+//
+//        //获取用户名
+//        $result = apiCall(UserApi::GET_INFO,array($uid));
+//
+//        if(!$result['status']){
+//            return array('status'=>false,'info'=>$result['info']);
+//        }
+//
+//        $user = $result['info'];
+//
+//        $task_brokerage = $task['task_brokerage'];
+//        $now_time = time();
+//        $task_his = array(
+//            'express_code'=>'',
+//            'express_name'=>'',
+//            'express_no'=>'',
+//            'express_pid'=>0,
+//            'exchange_id'=>0,//兑换的商品ID
+//            'express_price'=>0,//快递费用
+//            'express_pname'=>'',//兑换的商品名称
+//            'tpid'=>$tp_id,//任务计划ID
+//            'uid'=>$uid,
+//            'order_status'=>2,
+//            'create_time'=>$now_time,
+//            'get_task_time'=>$now_time,
+//            'do_status'=>TaskHisModel::DO_STATUS_NOT_START,
+//            'task_id'=>$task_id,
+//            'task_brokerage'=>$task_brokerage,
+//            'tb_orderid'=>'',
+//            'tb_address'=>'',
+//            'tb_price'=>0,
+//            'return_money'=>0,
+//            'tb_pay_type'=>TaskHisModel::PAY_TYPE_LEGAL,
+//            'notes'=>'',
+//            'tb_seller_notes'=>'',
+//            'tb_account'=>'',
+//            'task_from'=>TaskHisModel::COME_FROM_SELLER_GIVEN,
+//        );
+//
+//        //获取兑换商品信息
+//        $exchange_map = array('exchange_status'=>ProductExchangeModel::CHECK_SUCCESS,'uid'=>$this->uid);
+//        $result = apiCall(VProductExchangeInfoApi::GET_INFO,array($exchange_map,"update_time desc"));
+//
+//        $exchange_id = 0;
+//        if($result['status'] && is_array($result['info'])){
+//            $product_info = $result['info'];
+//            $task_his['exchange_id'] = $product_info['id'];
+//            $task_his['express_pid'] = $product_info['p_id'];
+//            $task_his['express_name'] = $product_info['name'];
+//            $exchange_id = $product_info['id'];
+//        }
+//
+//        $result = apiCall(TaskHisApi::ADD,array($task_his));
+//
+//        if($result['status']) {
+//
+//            //添加冻结资金
+//            $result = apiCall(TaskApi::SET_INC,array($task_id,"frozen_money",$task_gold));
+//
+//            if ($exchange_id > 0) {
+//                apiCall(ProductExchangeApi::SAVE_BY_ID, array($exchange_id, array('exchange_status' => ProductExchangeModel::ALLOC_TASK)));
+//            }
+//
+//            $notes = "商家分配了任务给用户 (" . $user['username'] . ")";
+//            task_log($result['info'], 0, $uid, $task_id, TaskLogModel::TYPE_GET_TASK, $notes);
+//
+//            return array('status'=>true,'info'=>'分配成功');
+//        }
+//    }
+
+
+
     /**
      * 获取试民正在进行的任务数
      * @author 老胖子-何必都 <hebiduhebi@126.com>

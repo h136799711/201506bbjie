@@ -76,10 +76,18 @@ class BBJVIPController extends AdminController{
 	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 * */
 	public function check_search(){
+        $seller_name = $this->_param('seller_name','');
+
+
         $status = $this->_param('status','2');
 		$map = array('status'=>$status);
 		$page = array('curpage' => I('get.p', 0), 'size' => 10 );
         $order = "create_time desc";
+
+        if(!empty($seller_name)){
+            $map[''] = '';
+        }
+
         $result = apiCall(VTaskProductSearchWayApi::QUERY,array($map,$page,$order));
 
         $this->assign('status',$status);
@@ -293,7 +301,7 @@ class BBJVIPController extends AdminController{
 
 		$page = array('curpage' => I('get.p', 0), 'size' => 10);
         $order = "create_time desc";
-		$result=apiCall(BbjmemberApi::QUERY, array($map,$page,$order,$param));
+		$result=apiCall(VBbjmemberInfoApi::QUERY, array($map,$page,$order,$param));
 
         $this->assign('taobao',$taobao);
         $this->assign('auth_status',$auth_status);
@@ -461,16 +469,21 @@ class BBJVIPController extends AdminController{
 
 	/*
 	 * 所有任务
+	 * @author 老胖子-何必都 <hebiduhebi@126.com>
 	 * */
 	public function alltask(){
+
         $task_status = I('post.task_status',TaskModel::STATUS_TYPE_OPEN);
-		$taskname=I('taskname','');
-		if (!empty($taskname)) {
-			$map['task_name'] = array('like','%'. $taskname . '%');
+
+		$aliwawa = I('post.aliwawa','');
+		if (!empty($aliwawa)) {
+			$map['aliwawa'] = array('like','%'. $aliwawa . '%');
 		}
+
         if(!empty($task_status)){
             $map['task_status'] = $task_status;
         }
+
 		$page = array('curpage' => I('get.p', 0), 'size' => C('LIST_ROWS'));
 		$order = " create_time desc ";
 		$result = apiCall(TaskApi::QUERY, array($map, $page, $order));

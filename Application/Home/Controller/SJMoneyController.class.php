@@ -158,7 +158,6 @@ class SJMoneyController extends HomeController {
             $this->error("您当前是超级VIP，不能充值一般VIP");
         }
 
-
         $coin = $coin - $money;
 
         if($coin < 0){
@@ -217,7 +216,9 @@ class SJMoneyController extends HomeController {
             $this->error("登录密码错误");
         }
 
-        $poundage = I('post.poundage',0);
+        //手续费
+        $poundage = I('post.poundage',0,'floatval');
+
 
         $bank_type = I('post.bank_type',0);
 

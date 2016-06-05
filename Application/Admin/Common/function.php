@@ -162,3 +162,32 @@ function show_status_op($status) {
         default : return    false;      break;
     }
 }
+
+function getSearchDesc($condition){
+
+    $desc = "";
+    if(strlen($condition) > 0){
+        $json = json_decode($condition,JSON_OBJECT_AS_ARRAY);
+
+        if(!empty($json['tab'])){
+            $desc = $json['tab'].',';
+        }
+        if(!empty($json['filter'])){
+            $desc .= '所有分类: '.$json['filter'].',';
+        }
+        if(!empty($json['attr'])){
+            $attrs = $json['attr'];
+            if(strlen($attrs) > 0){
+                $tmp_arr = explode(",",$attrs);
+                foreach($tmp_arr as $tmp){
+                    $desc .= $tmp.",";
+                }
+
+            }
+        }
+
+
+    }
+
+    return $desc;
+}

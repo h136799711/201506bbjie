@@ -91,7 +91,9 @@
                                             <a href="{:U('Home/SMActivity/changestatus',array('type'=>'on'))}"
                                                class="ajax-get  am-btn-xs am-btn am-btn-default am-active btn-fix-am">任务未开启</a>
                                         </if>
-
+                                        <div class="help-block">
+                                            只有开启了之后，才可以接受任务,金额设置越大，任务获取几率越高
+                                        </div>
                                     </td>
                                 </tr>
                             </table>
@@ -132,8 +134,12 @@
                                 <tr>
                                     <td width="300">淘宝账号: {$user.taobao_account} <a href="javascript:void(0)" data-am-modal="{target: '#my-alert'}">设置</a> </td>
                                     <td rowspan="2" style="">
+                                        <if condition="$can_do_cnt gt 0">
                                         <a href="{:U('Home/SMActivity/gettask')}" class="btn-fix-am am-btn am-btn-sm am-btn-primary ajax-get" >点我领取任务</a>
                                         有{$can_do_cnt}个可领取的任务
+                                        <else/>
+                                            <a href="javascript:void(0)" class="btn-fix-am am-btn am-btn-sm am-btn-primary disabled" disabled >暂无任务可领取</a>
+                                        </if>
                                     </td>
                                 </tr>
                             </table>

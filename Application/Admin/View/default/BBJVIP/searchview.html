@@ -19,7 +19,7 @@
 		{:W('Menus/left')}
 		<div class="admin-main-content">
 			{:W('Menus/breadcrumb')}
-
+            <a href="javascript:history.back(-1);" class="btn btn-default">返回</a>
 			<!-- 带验证 form -->
 			<form class="form-horizontal well validateForm">
 				<input type="hidden" name="id" value="{$vo.id}" />
@@ -27,51 +27,51 @@
 					<legend>
 						</legend>
 					<div class="form-group">
-						<label for="inputtitle" class="col-md-2 col-lg-2 control-label">搜索ID</label>
+						<label for="inputtitle" class="col-md-2 col-lg-2  text-right">搜索ID</label>
 						<div class="col-md-10 col-lg-10">
 							
 							<div class="help-block">{$vo.id}</div>
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="inputtitle" class="col-md-2 col-lg-2 control-label">搜索方式</label>
+						<label for="inputtitle" class="col-md-2 col-lg-2  text-right">搜索方式</label>
 						<div class="col-md-10 col-lg-10">
-							<div class="help-block"><if condition="$vo['dtree_type'] eq 1">关键词 </if><if condition="$vo['dtree_type'] eq 0">关键词 </if>
-									<if condition="$vo['dtree_type'] eq 2">自定义 </if></div>
+							<div class="help-block">
+
+                                {$vo.type_name}
+
+                            </div>
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="inputtitle" class="col-md-2 col-lg-2 control-label">商品名称</label>
+						<label for="inputtitle" class="col-md-2 col-lg-2  text-right">商品名称</label>
 						<div class="col-md-10 col-lg-10">
                             {$vo.title}
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="inputtitle" class="col-md-2 col-lg-2 control-label">搜索地址</label>
+						<label for="inputtitle" class="col-md-2 col-lg-2 text-right">搜索地址</label>
 						<div class="col-md-10 col-lg-10">
-							
-							<div class="help-block">{$vo.search_url}</div>
+                                <a href="{$vo.search_url}" target="_blank" class="">点击打开</a>
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="inputtitle" class="col-md-2 col-lg-2 control-label">搜索条件</label>
+						<label for="inputtitle" class="col-md-2 col-lg-2  text-right">搜索条件</label>
 						<div class="col-md-10 col-lg-10">
-							
-							<div class="help-block">{$vo.search_condition},{$vo.search_order}</div>
+                            {:getSearchDesc($vo['search_condition'])},{$vo.search_order}
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="inputtitle" class="col-md-2 col-lg-2 control-label">搜索关键字</label>
+						<label for="inputtitle" class="col-md-2 col-lg-2  text-right">搜索关键字</label>
 						<div class="col-md-10 col-lg-10">
-							
-							<div class="help-block">{$vo.search_q}</div>
+                            {$vo.search_q}
+
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="inputtitle" class="col-md-2 col-lg-2 control-label">创建时间</label>
+						<label for="inputtitle" class="col-md-2 col-lg-2  text-right">创建时间</label>
 						<div class="col-md-10 col-lg-10">
-							
-							<div class="help-block">{$vo.create_time|date='Y-m-d h:i:s',###}</div>
+                            {$vo.create_time|date='Y-m-d h:i:s',###}
 						</div>
 					</div>
 				</fieldset>

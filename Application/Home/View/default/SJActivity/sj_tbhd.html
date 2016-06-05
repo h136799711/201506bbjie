@@ -170,7 +170,6 @@
 												<td>
 
                                                     <eq name="vo['task_status']" value="1">
-                                                    <eq name="user['task_gettype']" value="1">
 
                                                         <div class="am-btn-group">
                                                             <a href="{:U('Home/SJActivity/task_play',array('id'=>$vo['id']))}" class="am-btn-sm am-btn-primary am-btn btn-fix-am">发放任务</a>
@@ -184,19 +183,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <else/>
-                                                        <a href="{:U('Home/SJActivity/sh_user',array('id'=>$vo['id']))}" class="am-btn-sm am-btn-primary am-btn  btn-fix-am">审批用户</a>
-                                                        <div class="am-dropdown" data-am-dropdown>
-                                                            <button class="am-btn am-btn-secondary am-dropdown-toggle  btn-fix-am" data-am-dropdown-toggle> <span class="am-icon-caret-down"></span></button>
-                                                            <ul class="am-dropdown-content">
-                                                                <li class="am-dropdown-header">
-                                                                    <a CLASS="am-btn-sm " href="{:U('Home/SJActivity/task_clear',array('id'=>$vo['id']))}">结算</a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
 
-
-                                                    </eq>
                                                         <else/>
                                                         <a CLASS="am-btn-sm am-btn-primary am-btn  btn-fix-am" href="{:U('Home/SJActivity/task_clear',array('id'=>$vo['id']))}">结算记录</a>
 

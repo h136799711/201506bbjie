@@ -1,7 +1,7 @@
 <extend name="template/base_index" />
 
 <block name="area_header">
-    <!--<link rel="stylesheet" href="__CSS__/shangjia2.css">-->
+
     <link rel="stylesheet" href="__CSS__/common.css?v=__APP_VERSION__">
     <link type="text/css" rel="stylesheet" href="__CDN__/select2/4.0.0/css/select2.min.css" />
     <style type="text/css">
@@ -36,6 +36,9 @@
             font-size: 1.8rem;
             font-weight: 500;
         }
+        .select2-dropdown{
+            margin-top: -88px;
+        }
     </style>
 </block>
 
@@ -49,13 +52,15 @@
 
                 <div class="task-head">
                     <div class="breadcrumbs">
-                        <a href="{:U('Home/SJActivity/sj_tbhd')}">淘宝活动</a>&gt;<span>任务计划管理：{$task['task_name']}</span>
+                        <a href="{:U('Home/SJActivity/sj_tbhd')}">淘宝活动</a>&gt;<span>试民：{$task['task_name']}</span>
                     </div>
-
                 </div>
 
-                <div class="search_panel am-cf am-u-g am-margin-top-sm">
+                <div class="search_panel am-cf am-u-g am-padding-sm">
                     <form class="am-form-horizontal am-cf j_search_form" action="__SELF__" method="post">
+                        <div class="am-form-group">
+                            <a href="{:U('SJActivity/task_play',array('id'=>$task_id))}" class="am-btn am-btn-sm am-btn-default">返回</a>
+                        </div>
                         <div class="am-form-group">
                             <select id="user_select2" name="view_uid" style="width:240px;">
                                 <option value="{$view_uid}">{$view_uid}</option>
@@ -63,22 +68,20 @@
                         </div>
                     </form>
                 </div>
-
-                <div class="content">
-
-                    <div class="renwuku ">
+                <div class="content am-fl">
+                    <div class="renwuku">
                         <div id="yw1" class="grid-view" >
                             <table class="items am-table am-table-hover">
                                 <thead>
-                                <tr>
-                                    <th width="80">编号</th>
-                                    <th width="120" >任务用户</th>
-                                    <th width="160" >用户订单</th>
-                                    <th width="160" >佣金</th>
-                                    <th width="160" >物流信息</th>
-                                    <th width="160" >通过时间</th>
-                                    <th width="160" >最后时间</th>
-                                </tr>
+                                    <tr>
+                                        <th width="80"  >编号</th>
+                                        <th width="120" >任务试民</th>
+                                        <th width="160" >淘宝账号</th>
+                                        <th width="160" >任务情况</th>
+                                        <th width="160" >最近登录时间</th>
+
+                                        <th width="160" >操作</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                 <empty name="list">
@@ -89,7 +92,7 @@
                                 <volist name='list' id='vo'>
                                     <tr class="odd">
                                         <td>
-                                            {$vo.id}
+                                            {$vo.uid}
                                         </td>
 
                                         <td>
@@ -97,6 +100,7 @@
                                                 <div class="am-fl">
                                                     <empty name="vo['head']">
                                                         <img class="" style="width: 48px;height:48px;" src="__IMG__/default_user_portrait.gif" alt="">
+
                                                         <else/>
                                                         <img style="width: 48px;height:48px;" src="{$vo['head']}" >
                                                     </empty>
@@ -107,85 +111,46 @@
                                         </td>
 
                                         <td>
-                                            <div>{$vo.tb_account}</div>
-                                            <div class="">
-                                                <small>
-                                                    <if condition="empty($vo['tb_orderid'])">
-                                                        订单:-
-                                                        <else/>
-                                                        订单:<span class="am-text-sm">{$vo.tb_orderid}</span>
-                                                    </if>
-                                                </small>
-                                            </div>
-
-                                            <div >
-                                                <small >订单金额:
-                                                    <if condition="$vo['tb_price'] gt 0">
-                                                        <span class="am-text-danger">￥{$vo.tb_price}</span>
-                                                        <else/>
-                                                        -
-                                                    </if>
-                                                </small>
-                                            </div>
-
+                                            <div>{$vo.taobao_account}</div>
                                         </td>
-                                        <td width="160" >
-                                           <span class="am-text-danger"> ¥ {$vo.task_brokerage} </span>
-                                        </td>
-                                        <td>
-                                            <if condition="empty($vo['express_no'])">
-                                                <eq name="vo['delivery_mode']" value="1">
-                                                    <span class="am-text-warning">等待平台发货</span>
-                                                    <else/>
-                                                    <a data-id="{$vo.id}" href="javascript:void(0);"
-                                                       class="am-margin-bottom-sm j_delivery btn-fix-am am-btn am-btn-sm am-btn-primary btn-fix-am">
-                                                        填写发货信息
-                                                    </a>
-                                                </eq>
+
+                                        <td >
+                                            <!--<p>已完成任务数: {$vo.done}</p>-->
+                                            <p>已取消、放弃数: {$vo.cancel_task_cnt}</p>
+                                            <notempty name="vo['_last_get_task']">
+                                            最近领取了您的任务:
+                                               <div class="am-text-danger">{$vo['_last_get_task']['task_name']}</div>
+                                                <div class="am-text-danger">领取时间: {:date("Y-m-d",$vo['_last_get_task']['get_task_time'])}</div>
+
                                                 <else/>
-                                                <div class="am-text-warning am-text-sm">{$vo.express_name}</div>
-                                                <div class="am-text-warning am-text-sm">{$vo.express_no}</div>
-                                                <div class="am-text-danger am-text-sm">¥ {$vo.express_price}</div>
-                                            </if>
 
+                                            </notempty>
                                         </td>
+
                                         <td >
-                                            {$vo.get_task_time|date='Y-m-d H:i',###}
+                                            {$vo.last_login_time|date='Y-m-d H:i',###}
                                         </td>
-                                        <td >
-                                            {$vo.update_time|date='Y-m-d H:i',###}
+
+                                        <td width="160" >
+
+                                            <a href="{:U('Home/SJActivity/give_task_to',array('task_id'=>$task_id,'uid'=>$vo['uid'],'tp_id'=>$tp_id))}"
+                                               class="ajax-get confirm am-margin-bottom-sm btn-fix-am am-btn am-btn-sm am-btn-primary btn-fix-am">
+                                                让他做
+                                            </a>
+
+
                                         </td>
 
                                     </tr>
                                 </volist>
                                 </tbody>
                             </table>
+
                             <div class="am-padding-sm am-margin-bottom-lg">
                                 {$show}
                             </div>
 
                         </div>
-
-                        <!--<div class="am-text-center  am-u-g">-->
-                           <!--<div class="am-u-sm-4 am-u-md-4  am-text-center am-fl am-padding-sm">共返还任务金额:-->
-                                <!--<span class="am-text-danger">¥ {$all_tb_price}</span>-->
-                           <!--</div>-->
-                            <!--<div class="am-u-sm-4 am-u-md-4 am-fl am-text-center am-padding-sm">共消耗任务佣金:-->
-                                <!--<span class="am-text-danger">¥ {$all_tb_price}</span>-->
-                            <!--</div>-->
-                            <!--<div class="am-u-sm-4 am-u-md-4 am-fl am-text-center am-padding-sm">共消耗邮费:-->
-                                <!--<span class="am-text-danger">¥ {$all_tb_express}</span>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="am-text-center am-u-g">-->
-                            <!--<div class="am-u-sm-6 am-u-md-6 am-text-center am-padding-sm">冻结资金:-->
-                                <!--<span class="am-text-danger">¥ {$all_frzee_price}</span>-->
-                            <!--</div>-->
-                            <!--<div class="am-u-sm-6 am-u-md-6 am-text-center am-padding-sm">共计使用:-->
-                                <!--<span class="am-text-danger">¥ {:($all_tb_price+$all_tb_price+$all_tb_express)}</span>-->
-                            <!--</div>-->
-                        <!--</div>-->
-
                     </div>
 
                 </div>
@@ -203,7 +168,6 @@
     <script type="text/javascript">
 
         $(function(){
-
 
             $("#user_select2").select2({
                 placeholder: "输入用户id或用户名查询"	,
@@ -256,6 +220,5 @@
 
         })
     </script>
-
 </block>
 

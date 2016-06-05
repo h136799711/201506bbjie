@@ -32,10 +32,6 @@ class ShopController extends  Controller {
 
 		C('SHOW_PAGE_TRACE', false);//设置不显示trace
 
-        $session = $_SESSION['Home'];
-        if(!empty($session)){
-            $_SESSION['Shop'] = $session;
-        }
 
         $this->userinfo = session('user');
 

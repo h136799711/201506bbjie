@@ -415,23 +415,26 @@ class IndexController extends HomeController {
 
     private function getCanDoTaskCnt(){
         $map = array(
+
         );
 
-        $result = apiCall(VCanDoTaskApi::COUNT,array($map));
-        $can_do_cnt = $result['info'];
+        $result = apiCall(VCanDoTaskApi::COUNT_CAN_DO_TASK_BY_SELLER,array($map));
+        $can_do_cnt = count($result['info']);
 
+        //这期间内做了的任务数量
         $min_time = time() - TimeConstVar::MIN_TIME_FOR_GET_TASK;
 
         $map['uid'] = $this->uid;
         $map['do_status'] = array('neq',TaskHisModel::DO_STATUS_CANCEL);
         $map['get_task_time'] = array('gt',$min_time);
 
-
-        $result = apiCall(TaskHisApi::COUNT,array($map));
-
+        $result = apiCall(TaskHisApi::COUNT_CAN_DO_TASK_BY_SELLER,array($map));
+        $done_cnt =  $result['info'];
         if($result['status']){
-            $can_do_cnt = $can_do_cnt - intval($result['info']);
+
+            $can_do_cnt = $can_do_cnt - intval(count($done_cnt));
             $this->assign("can_do_cnt",$can_do_cnt);
+
         }else{
             $this->assign("can_do_cnt",0);
         }
