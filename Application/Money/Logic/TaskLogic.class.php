@@ -18,6 +18,7 @@ use Home\Api\VBbjmemberInfoApi;
 use Home\Api\VCanDoTaskApi;
 use Home\Api\VCanDoTaskWithAutoIdApi;
 use Home\Api\VProductExchangeInfoApi;
+use Home\Api\VTaskHisInfoApi;
 use Home\Model\BbjmemberModel;
 use Home\Model\ProductExchangeModel;
 use Home\Model\TaskHisModel;
@@ -116,17 +117,21 @@ class TaskLogic {
 
         $userinfo = $result['info'];
 
-        $map['do_status'] = array('notin',array(TaskHisModel::DO_STATUS_SUSPEND,TaskHisModel::DO_STATUS_RETURNED_MONEY ,TaskHisModel::DO_STATUS_CANCEL ));
-
-        $result = apiCall(TaskHisApi::GET_INFO,array($map));
-
-        if($userinfo['auth_status'] == 0){
-            return array('status'=>false,'info'=>"信息正在审核中... 审核完成才可接任务");
+        if($userinfo['auth_status'] == BbjmemberModel::AUTH_WAIT){
+            return array('status'=>false,'info'=>"请到[任务设置]中，设置淘宝账号，设置后才可接任务");
         }
 
+        $map['do_status'] = array('notin',array(TaskHisModel::DO_STATUS_SUSPEND,TaskHisModel::DO_STATUS_RETURNED_MONEY ,TaskHisModel::DO_STATUS_CANCEL ));
+
+        $result = apiCall(TaskHisApi::COUNT,array($map));
+
         //增加数量控制
-        if(is_array($result['info'])) {
-            return array('status'=>false,'info'=>"请先完成或取消之前接的任务!");
+
+        $doing_cnt = $result['info'];//正在做的任务数量
+        $sync_task_cnt = intval($userinfo['sync_task_cnt']);
+
+        if($doing_cnt >= $sync_task_cnt) {
+            return array('status'=>false,'info'=>"您同时只能做".$sync_task_cnt."个任务");
         }
 
         $map = array();
@@ -159,9 +164,8 @@ class TaskLogic {
             //检查该任务对应店铺是否在10天内已接收到
             $task_id = $result['info']['id'];
             $seller_uid = $result['info']['uid'];//商家ID
-
             if(!$this->isLegalTask($uid,$seller_uid)){
-                return array('status'=>false,'info'=>"暂无可接任务，请稍候再试(-3)");
+                return array('status'=>false,'info'=>"很遗憾, 未领取到任务，请重新领取(-3)");
             }
 
             $task_brokerage  = $result['info']['task_brokerage'];
@@ -254,11 +258,16 @@ class TaskLogic {
             'do_status'=>array('not in',array(TaskHisModel::DO_STATUS_CANCEL)),
         );
 
-        $result = apiCall(TaskHisApi::GET_INFO,array($map,$order));
+        $result = apiCall(VTaskHisInfoApi::GET_INFO,array($map,$order));
 
         if($result['status'] && is_array($result['info'])){
             $task_his = $result['info'];
             $min_time = time() - TaskLogic::TASK_DO_INTERVAL * 24 * 3600;
+//            dump($task_his);
+//
+//            dump(date("Y-m-d H:i:s",$task_his['get_task_time']));
+//            dump(date("Y-m-d H:i:s",$min_time));
+
             if($task_his['get_task_time'] > $min_time){
                 return false;
             }

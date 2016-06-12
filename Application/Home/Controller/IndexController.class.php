@@ -18,6 +18,7 @@ use Home\Api\BbjmemberApi;
 use Home\Api\TaskHisApi;
 use Home\Api\VCanDoTaskApi;
 use Home\Api\VMsgInfoApi;
+use Home\Api\VTaskHisInfoApi;
 use Home\ConstVar\BoyeActionConstVar;
 use Home\ConstVar\TimeConstVar;
 use Home\ConstVar\UserTypeConstVar;
@@ -164,11 +165,11 @@ class IndexController extends HomeController {
 	  * */
 	public function smzc(){
 
-		$username=I('post.user_name');
-		$password=I('post.password');
-		$mobile=I('post.phone_tel');
-		$email=$username."@qq.com";
-		$yqr=I('post.yaoqingren','');
+		$username = I('post.user_name');
+		$password = I('post.password');
+		$mobile = I('post.phone_tel');
+		$email = $username."@qq.com";
+		$yqr = I('post.yaoqingren','');
 
         $map = array('username'=>$yqr);
         $result = apiCall(UserApi::FIND,array($map));
@@ -414,9 +415,7 @@ class IndexController extends HomeController {
 	}
 
     private function getCanDoTaskCnt(){
-        $map = array(
-
-        );
+        $map = array( );
 
         $result = apiCall(VCanDoTaskApi::COUNT_CAN_DO_TASK_BY_SELLER,array($map));
         $can_do_cnt = count($result['info']);
@@ -427,9 +426,9 @@ class IndexController extends HomeController {
         $map['uid'] = $this->uid;
         $map['do_status'] = array('neq',TaskHisModel::DO_STATUS_CANCEL);
         $map['get_task_time'] = array('gt',$min_time);
-
-        $result = apiCall(TaskHisApi::COUNT_CAN_DO_TASK_BY_SELLER,array($map));
+        $result = apiCall(VTaskHisInfoApi::COUNT_HAD_DONE_TASK_BY_SELLER,array($map));
         $done_cnt =  $result['info'];
+
         if($result['status']){
 
             $can_do_cnt = $can_do_cnt - intval(count($done_cnt));

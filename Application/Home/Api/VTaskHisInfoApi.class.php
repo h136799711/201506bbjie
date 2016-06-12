@@ -43,9 +43,29 @@ class VTaskHisInfoApi extends Api{
      */
     const SAVE_BY_ID = "Home/VTaskHisInfo/saveByID";
 
+
+    /**
+     * 统计
+     */
+    const COUNT_HAD_DONE_TASK_BY_SELLER = "Home/VTaskHisInfo/countHadDoneTaskBySeller";
+
 	protected function _init(){
 		$this->model = new VTaskHisInfoModel();
 	}
 
+    /**
+     * 统计可以做任务的商家数量
+     * @param $map
+     * @return array
+     */
+    public function countHadDoneTaskBySeller($map){
+
+        $result = $this->model->distinct(true)->field('seller_uid')->where($map)->select();
+
+        if($result === false){
+            return $this->apiReturnErr($this->model->getDbError());
+        }
+        return $this->apiReturnSuc($result);
+    }
 }
 

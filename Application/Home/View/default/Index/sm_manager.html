@@ -136,7 +136,7 @@
                                     <td rowspan="2" style="">
                                         <if condition="$can_do_cnt gt 0">
                                         <a href="{:U('Home/SMActivity/gettask')}" class="btn-fix-am am-btn am-btn-sm am-btn-primary ajax-get" >点我领取任务</a>
-                                        有{$can_do_cnt}个可领取的任务
+                                            <div>预计有{$can_do_cnt}个可领取的任务（注意: 不是一定能领取到）</div>
                                         <else/>
                                             <a href="javascript:void(0)" class="btn-fix-am am-btn am-btn-sm am-btn-primary disabled" disabled >暂无任务可领取</a>
                                         </if>

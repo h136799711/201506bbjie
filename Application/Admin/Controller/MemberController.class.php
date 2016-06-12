@@ -7,6 +7,11 @@
 // |-----------------------------------------------------------------------------------
 namespace Admin\Controller;
 
+use Admin\Api\MemberApi;
+use Admin\Api\VMemberApi;
+use Ucenter\Api\AuthGroupAccessApi;
+use Ucenter\Model\AuthGroupModel;
+
 class MemberController extends AdminController {
 
 	public function index() {
@@ -24,7 +29,7 @@ class MemberController extends AdminController {
 		$order = " last_login_time desc ";
 		$params['nickname'] = I('nickname','','trim');
 		
-		$result = apiCall("Admin/Member/query", array($map, $page, $order));
+		$result = apiCall(MemberApi::QUERY, array($map, $page, $order));
 		
 		if ($result['status']) {
 			
@@ -51,11 +56,13 @@ class MemberController extends AdminController {
 			$this->error($result['info']);
 		}
 		$this->assign("useraccount",$result['info']);
+
 		
-		$result = apiCall("Admin/AuthGroupAccess/queryGroupInfo", array($id));
+		$result = apiCall(AuthGroupAccessApi::QUERY_GROUP_INFO, array($id));
 		if(!$result['status']){
 			$this->error($result['info']);
 		}
+
 		$this->assign("userroles",$result['info']);
 		
 		
@@ -115,12 +122,14 @@ class MemberController extends AdminController {
 			$result = apiCall("Uclient/User/register", array($username, $password, $email));
 
             if($result['status']){ //注册成功
-            		$entity = array(
+
+            	$entity = array(
 					'uid'=>$result['info'],
 					'nickname'=>$username,
 					'realname'=>'',
 					'idnumber'=>'',
 				);
+
 				$result = apiCall("Admin/Member/add", array($entity));
                 if(!$result['status']){
                     $this->error('用户添加失败！');

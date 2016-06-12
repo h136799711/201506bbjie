@@ -219,22 +219,25 @@
                                         </td>
                                         <td >
                                             {$vo.do_status_name}
+                                            <p class="js_countdownwn"  data-until="{$vo['update_time'] + 24*3600}"></p>
 
                                             <eq name="vo['do_status']" value="$reject_order">
                                                 <p class="am-text-danger">原因: {$vo.notes}</p>
                                             </eq>
+
                                         </td>
                                         <td >
                                             {$vo.update_time|date='Y-m-d H:i',###}
                                         </td>
                                         <td width="160" >
+
                                             <eq name="vo['do_status']" value="$submit_order">
                                                 <a href="javascript:void(0)" data-href="{:U('Home/TaskHis/sh_view',array('id'=>$vo['id']))}" data-id="{$vo.id}" class="j_sh_order am-margin-bottom-sm btn-fix-am am-btn am-btn-sm am-btn-warning">审核订单</a>
                                                 <br/>
                                             </eq>
 
                                             <eq name="vo['do_status']" value="$received_goods">
-                                                <a href="{:U('Home/SJActivity/return_money',array('id'=>$vo['id']))}" class="confirm ajax-get am-margin-bottom-sm btn-fix-am am-btn am-btn-sm am-btn-danger">确认还款<span class="js_countdownwn"  data-until="{$vo['update_time'] + 24*3600}"></span></a>
+                                                <a href="{:U('Home/SJActivity/return_money',array('id'=>$vo['id']))}" class="confirm ajax-get am-margin-bottom-sm btn-fix-am am-btn am-btn-sm am-btn-danger">确认还款</a>
 
 
                                                 <br/>

@@ -27,6 +27,7 @@ use Home\Api\VMsgInfoApi;
 use Home\Api\VProductExchangeInfoApi;
 use Home\Logic\TaskHelperLogic;
 use Home\Model\FinAccountBalanceHisModel;
+use Home\Model\FinFucoinHisModel;
 use Home\Model\ProductExchangeModel;
 use Home\Model\TaskHisModel;
 use Think\Controller;
@@ -120,6 +121,14 @@ class UsersmController extends HomeController {
 
         $this->assign("withdraw_list",$result['info']['list']);
         $this->assign("withdraw_show",$result['info']['show']);
+
+
+        //元宝明细
+        $map['status'] = 1;
+        $result = apiCall(FinFucoinHisApi::QUERY,array($map,$page,'create_time desc'));
+
+        $this->assign("fucoin_list",$result['info']['list']);
+        $this->assign("fucoin_show",$result['info']['show']);
 
 
 		$this -> display();
@@ -316,7 +325,8 @@ class UsersmController extends HomeController {
 
 
         if ($password == $pp) {
-            $poundage = I('post.poundage',0);
+            $poundage = I('post.poundage',0,'intval');
+
 
             $bank_type = I('post.bank_type',0);
 
@@ -343,7 +353,7 @@ class UsersmController extends HomeController {
 				$this -> success('修改成功', U('Home/Usersm/sm_bbqz'));
 			}
 		} else {
-			$this -> error('登录密码错误！', U('Home/Usersm/sm_bbqz'));
+			$this -> error('登录密码错误！');
 		}
 	}
 

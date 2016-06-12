@@ -244,6 +244,15 @@ class TaskHelperLogic {
             $ret['reject'] = 0;
             $ret['error'] .= $result['info'];
         }
+        //7.  已挂起
+        $map['do_status'] = TaskHisModel::DO_STATUS_SUSPEND;
+        $result = $api->count($map);
+        if($result['status']){
+            $ret['suspend'] = $result['info'];
+        }else{
+            $ret['suspend'] = 0;
+            $ret['error'] .= $result['info'];
+        }
 
         return $ret;
     }

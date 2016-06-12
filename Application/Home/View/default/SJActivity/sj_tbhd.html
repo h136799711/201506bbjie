@@ -97,6 +97,14 @@
                                         </a>
                                     </li>
                                     <li>
+                                        <a href="{:U('Home/TaskHis/all',array('status'=>'suspend'))}">
+                                            已挂起
+                                            <if condition="$count['suspend'] gt 0">
+                                                <span class="am-text-danger">{$count['suspend']}</span>
+                                            </if>
+                                        </a>
+                                    </li>
+                                    <li>
                                         &nbsp;
                                     </li>
                                     <li>
@@ -210,6 +218,8 @@
                                                     <span class="">任务中: {$vo._doing_task}</span>
                                                     <BR/>
                                                     <span class="">已完成: {$vo._done_task}</span>
+                                                    <BR/>
+                                                    <span class="">已挂起: {$vo._suspend_task}</span>
                                                 </td>
                                                 <td>
                                                 </td>

@@ -77,34 +77,18 @@ class SMActivityController extends HomeController {
 	 * 确认收货
 	 * */
 	public function sure(){
-		$id=I('id',0);
-		$uid=I('uid',0);
-		if($id!=0){
-			$map=array('order_status'=>5,'do_status'=>4);
-			$result=apiCall(HomePublicApi::Task_His_SaveByID,array($id,$map));
+		$id = I('id',0);
+
+		if($id != 0){
+			$map = array('order_status'=>5,'do_status'=>TaskHisModel::DO_STATUS_RECEIVED_GOODS);
+			$result = apiCall(TaskHisApi::SAVE_BY_ID,array($id,$map));
 			if($result['status'] ){
-				$ida=array('uid'=>$uid);
-				$results = apiCall(HomePublicApi::Task_His_Query, array($ida));
-				$entity=array(
-					'dtree_type'=>1,
-					'content'=>"您的订单".$results['info'][0]['tb_orderid']."已确认收货请尽快返款",
-					'title'=>'系统提示',
-					'create_time'=>time(),
-					'send_time'=>0,
-					'from_id'=>0,
-					'summary'=>"您的订单".$results['info'][0]['tb_orderid']."已确认收货请尽快返款",
-					'status'=>1,
-				);
-				
-				$return = apiCall(AdminPublicApi::Message_Add, array($entity));
-				$msg=array('to_id'=>$uid,'msg_status'=>0,'msg_id'=>$return['info']);
-				$returns = apiCall(AdminPublicApi::Msgbox_Add, array($msg));
 				$this->success('确认成功，请等待商家返款',U('Home/SMActivity/hd_sened'));
 			}else{
 				$this->error('未知错误');
 			}
 		}else{
-			$this->error('未知错误');
+			$this->error('缺少ID参数');
 		}
 	}
 
@@ -305,119 +289,8 @@ class SMActivityController extends HomeController {
         if($result['status']){
             $this->success('成功接收任务，正在跳转任务界面',U('Home/SMActivity/task_manager',array('do_status'=>'doing')));
         }else{
-            $this->error('领取任务失败');
+            $this->error($result['info']);
         }
-
-//		$now_time = time();
-//
-//        $map = array('uid'=>$this->uid);
-//        $map['do_status'] = array('notin',array(TaskHisModel::DO_STATUS_SUSPEND,TaskHisModel::DO_STATUS_RETURNED_MONEY ,TaskHisModel::DO_STATUS_CANCEL ));
-//
-//		$result = apiCall(TaskHisApi::GET_INFO,array($map));
-//
-//        if($this->userinfo['auth_status'] == 0){
-//            $this->error("信息正在审核中... 审核完成才可接任务");
-//        }
-//
-//		if(is_array($result['info'])) {
-//            $this->error("请先完成或取消之前接的任务！");
-//        }
-//
-//
-//        $map = array();
-//
-//        $result = apiCall(VCanDoTaskApi::COUNT,array($map));
-//        $total = 0;
-//        if($result['status']){
-//            $total = $result['info'];
-//        }else{
-//            $this->error($result['info']);
-//        }
-//
-//        $rand_id = rand(1,$total);
-////        dump($rand_id);
-//        $map['row_id'] = array('egt',$rand_id);
-//        $result = apiCall(VCanDoTaskWithAutoIdApi::GET_INFO,array($map,'id desc'));
-//
-//        if( !is_array($result['info']) ){
-//            $this->error('暂无可接任务，请稍候再试',U('Home/Index/sm_manager'));
-//        }else{
-//            $task_plan = $result['info'];
-//            $result = apiCall(TaskApi::GET_INFO,array(array('id'=>$task_plan['task_id'])));
-//            if(!$result['status'] || is_null(($result['info']))){
-//                $this->error("发生错误，请联系管理员!");
-//            }
-//
-//            if($result['info']['task_status'] != TaskModel::STATUS_TYPE_OPEN){
-//                $this->error('暂无可接任务，请稍候再试',U('Home/Index/sm_manager'));
-//            }
-//
-//            //检查该任务对应店铺是否在10天内已接收到
-//            $task_id = $result['info']['id'];
-//            $seller_uid = $result['info']['uid'];//商家ID
-//            $uid = $this->uid;
-////            dump($result['info']);
-//            if(!$this->isLegalTask($task_id,$uid,$seller_uid)){
-//                $this->error('请稍候再试',U('Home/Index/sm_manager'));
-//            }
-//
-//
-//            $task_brokerage  = $result['info']['task_brokerage'];
-//
-//            //新增到接收任务表
-//            $entity = array(
-//                'tpid'=>$task_plan['id'],
-//                'uid'=>$this->uid,
-//                'order_status'=>2,
-//                'create_time'=>$now_time,
-//                'get_task_time'=>$now_time,
-//                'do_status'=>TaskHisModel::DO_STATUS_NOT_START,
-//                'task_id'=>$task_plan['task_id'],
-//                'task_brokerage'=>$task_brokerage,
-//                'notes'=>'',
-//                'tb_orderid'=>'',
-//                'tb_address'=>'',
-//                'tb_price'=>0,
-//                'tb_pay_type'=>TaskHisModel::PAY_TYPE_LEGAL,
-//                'tb_account'=>$this->userinfo['taobao_account'],
-//            );
-//
-//            //获取兑换商品信息
-//            $exchange_map = array('exchange_status'=>ProductExchangeModel::CHECK_SUCCESS,'uid'=>$this->uid);
-//            $result = apiCall(VProductExchangeInfoApi::GET_INFO,array($exchange_map,"update_time desc"));
-//            $exchange_id = 0;
-//            if($result['status'] && is_array($result['info'])){
-//                $product_info = $result['info'];
-//                $entity['exchange_id'] = $product_info['id'];
-//                $entity['express_pid'] = $product_info['p_id'];
-//                $entity['express_name'] = $product_info['name'];
-//                $exchange_id = $product_info['id'];
-//            }
-//
-//            $result = apiCall(TaskHisApi::ADD,array($entity));
-//
-//
-//            if($result['status']){
-//
-//                if($exchange_id > 0){
-//                    apiCall(ProductExchangeApi::SAVE_BY_ID,array($exchange_id,array('exchange_status'=>ProductExchangeModel::ALLOC_TASK)));
-//                }
-//
-//                $notes = "用户 (".$this->userinfo['username'].") 领取了任务";
-//                task_log($result['info'] , $task_plan['id'],$this->uid,$task_plan['task_id'],TaskLogModel::TYPE_GET_TASK,$notes);
-//
-//                $map = array('id'=>$task_plan['id']);
-//                $result = apiCall(TaskPlanApi::SET_DEC,array($map,'yuecount',1));
-//
-//                if($result['status']){
-//
-//                    $this->success('成功接收任务，正在跳转任务界面',U('Home/SMActivity/task_manager',array('do_status'=>'doing')));
-//                }else{
-//                    $this->error('领取任务失败');
-//                }
-//
-//            }
-//        }
 		
 	}
 
@@ -512,7 +385,11 @@ class SMActivityController extends HomeController {
         $zhifu_price = I('post.zhifu_price',0,'floatval');
         $notes = I('post.notes','');
         $pay_type = I('post.pay_type','');
-        $tb_address = $this->_param('tb_address','');
+        $tb_address = $this->_param('tb_address','','收货地址不能为空');
+
+        if(empty($order_num)){
+            $this->error("订单号必须填写");
+        }
 
         if($zhifu_price <= 0){
             $this->error("支付金额是不是填错了？");

@@ -7,5 +7,15 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="react" level="project" />
+    <orderEntry type="module-library">
+      <library name="PHP">
+        <CLASSES>
+          <root url="file://$thinkphp$" />
+        </CLASSES>
+        <SOURCES>
+          <root url="file://$thinkphp$" />
+        </SOURCES>
+      </library>
+    </orderEntry>
   </component>
 </module>

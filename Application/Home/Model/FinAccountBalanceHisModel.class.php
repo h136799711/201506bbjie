@@ -14,6 +14,10 @@ namespace Home\Model;
  */
 class FinAccountBalanceHisModel extends \Think\Model{
 
+    /**
+     * 商家-任务结束时结算的金额
+     */
+    const TYPE_TASK_OVER_CLEAR = 140;
 
     /**
      * 购买会员

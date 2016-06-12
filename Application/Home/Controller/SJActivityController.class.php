@@ -6,12 +6,14 @@
 // | Copyright (c) 2013-2016, http://www.itboye.com. All Rights Reserved.
 // |-----------------------------------------------------------------------------------
 namespace Home\Controller;
+use Admin\Api\AdminPublicApi;
 use Admin\Api\DatatreeApi;
 use Admin\Model\DatatreeModel;
 use Common\Model\ProductSearchWayModel;
 use Home\Api\BbjmemberApi;
 use Home\Api\BbjmemberSellerApi;
 use Home\Api\FinAccountBalanceHisApi;
+use Home\Api\HomePublicApi;
 use Home\Api\ProductSearchWayApi;
 use Home\Api\TaskApi;
 use Home\Api\TaskHasProductApi;
@@ -29,12 +31,8 @@ use Home\Model\FinFucoinHisModel;
 use Home\Model\TaskHisModel;
 use Home\Model\TaskLogModel;
 use Home\Model\TaskModel;
-use Home\Model\VTaskProductSearchWayModel;
 use Money\Logic\TaskLogic;
 use Think\Controller;
-use Home\Api\HomePublicApi;
-use Admin\Api\AdminPublicApi;
-use Think\Log;
 
 /*
  * 资金提现
@@ -172,6 +170,8 @@ class SJActivityController extends SjController {
             $vo['_all_task'] = $all_plan_total;
             $vo['_doing_task'] = 0;
             $vo['_done_task'] = 0;
+            $vo['_suspend_task'] = 0;
+
             $result = $task_his_api->count(array('do_status'=>array('neq',TaskHisModel::DO_STATUS_CANCEL),'task_id'=>$vo['id']));
             if($result['status']){
                 $vo['_all_task'] += $result['info'];
@@ -180,6 +180,11 @@ class SJActivityController extends SjController {
             $result = $task_his_api->count(array('do_status'=>TaskHisModel::DO_STATUS_RETURNED_MONEY,'task_id'=>$vo['id']));
             if($result['status']){
                 $vo['_done_task'] = $result['info'];
+            }
+
+            $result = $task_his_api->count(array('do_status'=>TaskHisModel::DO_STATUS_SUSPEND,'task_id'=>$vo['id']));
+            if($result['status']){
+                $vo['_suspend_task'] = $result['info'];
             }
 
             $vo['_doing_task'] = $vo['_all_task'] - $vo['_done_task'] - $all_plan_total;
@@ -271,12 +276,13 @@ class SJActivityController extends SjController {
         $map = array(
 //            'seller_uid'=>$task['uid'],
             'task_id'=>$task_id,
-            'do_status'=>array('not in',array(TaskHisModel::DO_STATUS_RETURNED_MONEY,TaskHisModel::DO_STATUS_CANCEL))
+            'do_status'=>array('not in',array(TaskHisModel::DO_STATUS_SUSPEND,TaskHisModel::DO_STATUS_RETURNED_MONEY,TaskHisModel::DO_STATUS_CANCEL))
         );
         if(!empty($code)){
             $map['_string'] = '(id = '.$code.' or tb_orderid = '.$code.' or tb_account = '.$code.' )';
             $this->assign("code",$code);
         }
+
         $result  = apiCall(VTaskHisInfoApi::QUERY,array($map));
 
         $this -> assign('list', $result['info']['list']);
@@ -631,7 +637,7 @@ class SJActivityController extends SjController {
 
         $tb_price = $his['tb_price'];
         if($his['tb_pay_type'] != TaskHisModel::PAY_TYPE_LEGAL){
-            //扣除手续费
+            //信用卡，花呗支付扣除手续费 1%
             $tb_price = number_format($tb_price * 0.99,2,".","");
         }
         $result = apiCall(TaskHisApi::SAVE_BY_ID,array($his['id'],array('return_money'=>$tb_price)));
@@ -1725,7 +1731,7 @@ class SJActivityController extends SjController {
             'income'=>$left_price,
             'create_time'=>time(),
             'notes'=>$notes,
-            'dtree_type'=>FinAccountBalanceHisModel::TYPE_TASK_OVER_MINUS_MONEY,
+            'dtree_type'=>FinAccountBalanceHisModel::TYPE_TASK_OVER_CLEAR,
             'imgurl'=>'',
             'status'=>1,
             'left_money'=>$this->userinfo['coins'] + $left_price,

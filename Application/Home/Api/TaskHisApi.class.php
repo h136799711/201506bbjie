@@ -56,10 +56,6 @@ class TaskHisApi extends Api{
     const GET_NEED_CANCEL_TASK_HIS = "Home/TaskHis/getNeedCancelTaskHis";
 
 
-    /**
-     * 统计
-     */
-    const COUNT_CAN_DO_TASK_BY_SELLER = "Home/VCanDoTask/countCanDoTaskBySeller";
 
 	protected function _init(){
 		$this->model = new TaskHisModel();
@@ -103,18 +99,7 @@ class TaskHisApi extends Api{
     }
 
 
-    /**
-     * 统计可以做任务的商家数量
-     * @return array
-     */
-    public function countCanDoTaskBySeller($map){
 
-        $result = $this->model->distinct(true)->field('uid')->where($map)->select();
-        if($result === false){
-            return $this->apiReturnErr($this->model->getDbError());
-        }
-        return $this->apiReturnSuc($result);
-    }
 
 }
 

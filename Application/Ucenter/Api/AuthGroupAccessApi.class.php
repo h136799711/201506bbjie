@@ -13,11 +13,28 @@ use Ucenter\Model\AuthGroupAccessModel;
 class AuthGroupAccessApi extends \Common\Api\Api{
 
     const ADD = "Admin/AuthGroupAccess/add";
+
     const QUERY_NO_PAGING = "Admin/AuthGroupAccess/queryNoPaging";
+
+    const QUERY_GROUP_INFO = "Admin/AuthGroupAccess/queryGroupInfo";
+
 
 	protected function _init(){
 		$this->model = new AuthGroupAccessModel();
 	}
+
+    public function queryGroupInfo($uid){
+
+        $uid = intval($uid);
+        $result = $this->model->alias(" aga ")->join(" LEFT JOIN __AUTH_GROUP__ as ag ON ag.id = aga.group_id and ag.status = 1")->field("aga.uid , ag.title,ag.notes ")->where(" aga.uid = $uid")->select();
+        dump($this->model->getLastSql());
+        if($result === false){
+            return $this->apiReturnErr($this->model->getDbError());
+        }else{
+            return $this->apiReturnSuc($result);
+        }
+    }
+
 	
 	/**
      * 把用户添加到用户组,支持批量添加用户到用户组

@@ -29,7 +29,12 @@ class BbjmemberModel extends \Think\Model{
     const AUTH_PASS = 1;
 
     /**
+     * 待审核中
+     */
+    const AUTH_WAIT = 0;
+
+    /**
      * 审核拒绝状态
      */
-    const AUTH_DENY = 0;
+    const AUTH_DENY = 2;
 }

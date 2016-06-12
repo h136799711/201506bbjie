@@ -7,6 +7,7 @@
 // |-----------------------------------------------------------------------------------
 namespace Admin\Controller;
 use Admin\Api\DatatreeApi;
+use Admin\Model\MsgboxModel;
 use Common\Api\AccountApi;
 use Home\Api\BbjmemberApi;
 use Home\Api\BbjmemberSellerApi;
@@ -23,11 +24,13 @@ use Home\Api\VTaskHisInfoApi;
 use Home\Api\VTaskProductSearchWayApi;
 use Home\ConstVar\UserTypeConstVar;
 use Home\Logic\TaskHelperLogic;
+use Home\Model\BbjmemberModel;
 use Home\Model\BbjmemberSellerModel;
 use Home\Model\FinAccountBalanceHisModel;
 use Home\Model\TaskHisModel;
 use Home\Model\TaskLogModel;
 use Home\Model\TaskModel;
+use Money\Logic\MessageLogic;
 
 class BBJVIPController extends AdminController{
     /**
@@ -425,16 +428,44 @@ class BBJVIPController extends AdminController{
         }
 	}
 
+    /**
+     * 商家信息驳回
+     */
 	public function checksb(){
 
 		$id=I('get.id',0);
-		$entity=array('auth_status'=>2);
+		$entity=array('auth_status'=>BbjmemberSellerModel::AUTH_DENY);
 		$result=apiCall(BbjmemberSellerApi::SAVE_BY_ID, array($id,$entity));
 
 		if($result['status']){
 			$this->success('操作成功',U('Admin/BBJVIP/checksj'));
 		}
 	}
+
+    /**
+     * 试民审核
+     */
+    public function checksmsb(){
+
+        $id=I('get.id',0);
+        $entity=array('auth_status'=>BbjmemberModel::AUTH_DENY);
+        $result=apiCall(BbjmemberApi::SAVE_BY_ID, array($id,$entity));
+
+        if($result['status']){
+            $logic = new MessageLogic();
+
+            $title = "您的信息被驳回";
+            $content = "";
+            $summary = "";
+
+            $logic->sendMsg(MessageLogic::SYSTEM_UID,$id,0,$title,$content,$summary,time());
+
+            $this->success('操作成功',U('Admin/BBJVIP/checksm'));
+        }else{
+
+            $this->error('操作失败',U('Admin/BBJVIP/checksm'));
+        }
+    }
 
 
     /**
@@ -597,7 +628,8 @@ class BBJVIPController extends AdminController{
 
 //        dump($map);
         $page = array('curpage'=>I('get.p',1),'size'=>10);
-        $order = "get_task_time desc";
+        $order = "update_time desc";
+
         $result = apiCall(VTaskHisInfoApi::QUERY,array($map,$page,$order,$param));
 
         if($result['status']){

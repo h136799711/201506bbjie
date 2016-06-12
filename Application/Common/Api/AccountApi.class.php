@@ -14,6 +14,7 @@ use Admin\Api\MemberApi;
 use Home\Api\BbjmemberApi;
 use Home\Api\BbjmemberSellerApi;
 use Home\ConstVar\UserTypeConstVar;
+use Home\Model\BbjmemberModel;
 use Ucenter\Api\AuthGroupAccessApi;
 use Uclient\Api\UserApi;
 
@@ -214,6 +215,7 @@ class AccountApi {
                 'fucoin'=>0,
                 'contact_tel'=>'',
                 'cancel_task_cnt'=>0,
+                'auth_status'=>BbjmemberModel::AUTH_WAIT,
             );
             $result = apiCall(BbjmemberApi::ADD,array($member));
             if(!$result['status']){

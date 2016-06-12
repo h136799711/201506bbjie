@@ -93,14 +93,14 @@
 					<ul>
 						<if condition="($user['email'] eq '') && ($user['mobile'] eq '') "><li id="psz" class="li_first">未设置</li><else/><li id="psz" class="li_first">已设置</li></if>
 						<li class="li_title">联系方式 &nbsp;</li>
-						<li  class="am-text-left"  style="width:70%; ">邮箱: {$user['email']} 手机号: {$user['mobile']}</li>
+						<li  class="am-text-left"  style="width:70%; ">邮箱: {$user['email']} 手机号: {$user['contact_tel']}</li>
 						<li class="li_last"><a id="sqphone" href="javascript:void(0)">收起</a>
 						</li>
 					</ul>
 				</div>
 				<div class="div_minSetInfo" style="line-height: 40px;" id="sqpho">
 					<div>
-						<font style="margin-left: 40px;" color="green">请到个人中心设置个人信息！！！！！</font>
+						<font style="margin-left: 40px;" color="green">请到<a href="{:U('Usersm/index')}">个人中心</a>设置</font>
 						<!--<input style=" list-style: none; margin-left: 10px; border-bottom-left-radius: 3px; border-top-left-radius: 3px; border: 1px solid #ccc; " />
 						<input type="button" value="设置" style="list-style:none; background: #d13f3a; border:none; color: white; border-bottom-right-radius: 3px;border-top-right-radius:3px; font-size: 14px; padding:3px; " />-->
 					</div>

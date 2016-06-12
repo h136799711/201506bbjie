@@ -29,6 +29,7 @@
     <file url="file://$PROJECT_DIR$/Application/Admin/Api/UidMgroupApi.class.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Application/Admin/Api/UserExpHisApi.class.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Application/Admin/Api/UserPictureApi.class.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Application/Admin/Api/VMemberApi.class.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Application/Admin/Api/WeixinLogApi.class.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Application/Home/Controller/AvatarController.class.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Application/Home/View/default/Avatar" charset="UTF-8" />

@@ -80,10 +80,14 @@ class TaskHisController extends SjController {
                 case "reject":
                     $map['do_status'] = TaskHisModel::DO_STATUS_REJECT;
                     break;
+                case 'suspend':
+                    $map['do_status'] = TaskHisModel::DO_STATUS_SUSPEND;
+                    break;
                 default:
                     break;
             }
         }
+
         $page = array('curpage'=>I('get.p',1),'size'=>10);
         $order = "get_task_time desc";
         $result = apiCall(VTaskHisInfoApi::QUERY,array($map,$page,$order,$param));

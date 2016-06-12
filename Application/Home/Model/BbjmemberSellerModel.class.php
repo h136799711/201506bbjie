@@ -36,5 +36,19 @@ class BbjmemberSellerModel extends \Think\Model{
      */
     const VIP_TYPE_SUPER = 2;
 
+    /*
+     * 已通过审核状态
+     */
+    const AUTH_PASS = 1;
+
+    /**
+     * 待审核中
+     */
+    const AUTH_WAIT = 0;
+
+    /**
+     * 审核拒绝状态
+     */
+    const AUTH_DENY = 2;
 
 }

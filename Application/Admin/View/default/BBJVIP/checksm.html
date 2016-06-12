@@ -113,7 +113,7 @@
 										</td>
 										<td>
 											<a href="{:U('Admin/BBJVIP/check_user',array('type'=>'0','id'=>$vo['uid']))}"  class="ajax-get btn btn-sm btn-primary"><i class="fa fa-eye"></i>通过</a>
-											<a href="{:U('Admin/BBJVIP/checksb',array('id'=>$vo['uid']))}" class="ajax-get confirm btn btn-sm btn-danger"><i class="fa fa-reply"></i>驳回</a>
+											<a href="{:U('Admin/BBJVIP/checksmsb',array('id'=>$vo['uid']))}"  class=" btn btn-sm btn-danger"><i class="fa fa-reply"></i>驳回</a>
 										</td>
 									</tr>
 								</volist>
@@ -140,6 +140,11 @@
 		</div>
 		<!-- END admin-main-content -->
 	</div>
+
+    <div>
+
+    </div>
+
 		<!-- END admin-main-->
 </block>
 
