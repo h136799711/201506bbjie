@@ -253,6 +253,26 @@ class TaskHelperLogic {
             $ret['suspend'] = 0;
             $ret['error'] .= $result['info'];
         }
+        //8.  总数
+        unset($map['do_status']);
+
+        $result = $api->count($map);
+        if($result['status']){
+            $ret['total'] = $result['info'];
+        }else{
+            $ret['total'] = 0;
+            $ret['error'] .= $result['info'];
+        }
+
+        //9. 已完成
+        $map['do_status'] = TaskHisModel::DO_STATUS_RETURNED_MONEY;
+        $result = $api->count($map);
+        if($result['status']){
+            $ret['over'] = $result['info'];
+        }else{
+            $ret['over'] = 0;
+            $ret['error'] .= $result['info'];
+        }
 
         return $ret;
     }

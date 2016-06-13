@@ -49,7 +49,14 @@
 
                             <div class=" am-fl am-padding-sm">
                                 <ul class="task_status_list" style="list-style-type: none;position: relative;">
-                                    <li><a class="active" href="{:U('Home/TaskHis/all')}">任务试民</a></li>
+                                    <li>
+                                        <a class="active" href="{:U('Home/TaskHis/all')}">任务试民
+
+                                            <if condition="$count['total'] gt 0">
+                                                <span class="am-text-danger">{$count['total']}</span>
+                                            </if>
+                                        </a>
+                                    </li>
                                     <li><a href="{:U('Home/TaskHis/all',array('status'=>'wait_check'))}">
                                         审核订单
                                         <if condition="$count['submit'] gt 0">
@@ -107,10 +114,12 @@
                                     <li>
                                         &nbsp;
                                     </li>
-                                    <li>
-                                        <a href="{:U('Home/TaskHis/history')}">
-                                        历史订单
-                                        </a>
+                                    <li> <a href="{:U('Home/TaskHis/all',array('status'=>'over'))}">
+                                        已完成订单
+                                        <if condition="$count['over'] gt 0">
+                                            <span class="am-text-danger">{$count['over']}</span>
+                                        </if>
+                                    </a>
                                     </li>
                                 </ul>
                             </div>
@@ -235,7 +244,7 @@
 
                                                     </eq>
 
-                                                    <a  class="am-btn-sm am-btn-link am-btn"  href="{:U('Home/SJActivity/alluser',array('id'=>$vo['id']))}">任务用户</a>
+                                                    <!--<a  class="am-btn-sm am-btn-link am-btn"  href="{:U('Home/SJActivity/alluser',array('id'=>$vo['id']))}">任务用户</a>-->
                                                 </td>
                                             </tr>
                                             <tr class="margin">

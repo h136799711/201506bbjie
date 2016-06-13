@@ -1,37 +1,53 @@
 <?php
-// +----------------------------------------------------------------------
-// | OneThink [ WE CAN DO IT JUST THINK IT ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2013 http://www.onethink.cn All rights reserved.
-// +----------------------------------------------------------------------
-// | Author: 麦当苗儿 <zuojiazi@vip.qq.com> <http://www.zjzit.cn>
-// +----------------------------------------------------------------------
+$n = 1;
+$total = 129.0;
+$value = 100.0;
 
-if(version_compare(PHP_VERSION,'5.3.0','<'))  die('require PHP > 5.3.0 !');
+$E = 0;
 
-define('BOYE_SYS_NAME',true);
+while($n < $value){
+    $E = ($n/$total) * ($value - $n) + (1 - $n/$total) * ($n);
+    echo "n= ".$n.' e='.$E.'<br/>';
+    $n++;
+}
 
-//$_GET['m'] = 'Install';
-define('BIND_MODULE','Install');
-/**
- * 系统调试设置
- * 项目正式部署后请设置为false
- */
-define ( 'APP_DEBUG', true );
+$cost = 30;
+$get = 100;
+$probability = 30.0;
+$total = 129;
+$my_number = array();
 
-/**
- * 应用目录设置
- * 安全期间，建议安装调试完成后移动到非WEB目录
- */
-define ( 'APP_PATH', './Application/' );
 
-/**
- * 缓存目录设置
- * 此目录必须可写，建议移动到非WEB目录
- */
-define ( 'RUNTIME_PATH', './Runtime/' );
 
-/**
- * 引入核心入口
- */
-require './Core/ThinkPHP.php';
+$test  = 1;
+$total = 5;
+$get_cnt =0 ;
+
+$total_cost = $total * $cost;
+$total_get = 0;
+
+while($test < $total){
+    $my_number = array();
+    $tmp = 1;
+    while($probability > $tmp){
+        array_push($my_number,mt_rand(1,129));
+        $tmp ++;
+    }
+
+    $first = mt_rand(1,129);
+
+    if(in_array($first,$my_number)){
+        $get_cnt++;
+        echo "<br/>中奖号码".$first.",你中奖了!<BR/>";
+        $total_get += 100;
+    }
+
+
+    $test ++;
+}
+
+echo '<BR/>总中奖'.($get_cnt).'次数<br/>';
+echo '<BR/>总花费'.($total_cost).'<br/>';
+echo '<BR/>总获得'.($total_get).'<br/>';
+
+

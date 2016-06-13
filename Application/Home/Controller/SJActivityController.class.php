@@ -603,17 +603,17 @@ class SJActivityController extends SjController {
     public function return_money(){
         $id = $this->_param('id','');
 
-        $result = apiCall(TaskHisApi::GET_INFO,array(array('id'=>$id)));
+        $result = apiCall(VTaskHisInfoApi::GET_INFO,array(array('id'=>$id)));
         if($result['status'] && is_array($result['info'])){
             $his = $result['info'];
         }
 
         $entity = array('do_status'=>TaskHisModel::DO_STATUS_RETURNED_MONEY);
         if($his['do_status'] == TaskHisModel::DO_STATUS_RETURNED_MONEY){
-            $this->error("还款失败(CODE＝－1)");
+            $this->error("已经还款了");
         }
-        $result = array('status'=>true);
-        $result=apiCall(TaskHisApi::SAVE_BY_ID,array($id,$entity));
+
+        $result = apiCall(TaskHisApi::SAVE_BY_ID,array($id,$entity));
 
         if($result['status']){
 
@@ -651,6 +651,13 @@ class SJActivityController extends SjController {
             $bbj_member = $result['info'];
         }
 
+        $result = apiCall(BbjmemberSellerApi::GET_INFO,array(array('uid'=>$his['seller_uid'])));
+        if($result['status']){
+            $bbjSeller_member = $result['info'];
+        }else{
+            $this->error("商家信息获取失败!");
+        }
+
         ifFailedLogRecord($result,__FILE__.__LINE__);
 
         $result = apiCall(TaskApi::GET_INFO,array(array('id'=>$his['task_id'])));
@@ -682,10 +689,26 @@ class SJActivityController extends SjController {
 
         LogRecord(json_encode($result),__FILE__.__LINE__);
 
-        //3. 扣除商家冻结资金
-//        $notes = "用户完成了任务#".$his['id']."#,还款给用户#".$uid."#,".$tb_price;
-//        $result = apiCall(BbjmemberSellerApi::MINUS_FROZEN_MONEY,array($task['uid'],$tb_price,$notes));
-//        LogRecord(json_encode($result),__FILE__.__LINE__);
+        //3. 纪录返款日志
+        $notes = "用户完成了任务#".$his['id']."#,还款给用户#".$uid."#,金额: ".$tb_price.'元';
+        $entity = array(
+            'uid'=>$bbjSeller_member['uid'],
+            'defray'=>$tb_price,
+            'income'=>0,
+            'create_time'=>time(),
+            'notes'=>$notes,
+            'dtree_type'=>FinAccountBalanceHisModel::TYPE_TASK_OVER_MINUS_MONEY,
+            'imgurl'=>'',
+            'status'=>1,
+            'left_money'=>$bbjSeller_member['coins'],
+            'frozen_money'=>$bbjSeller_member['frozen_money'],
+            'extra'=>'',
+        );
+
+        $api = new FinAccountBalanceHisApi();
+        $result = $api->add($entity);
+
+        LogRecord(json_encode($result),__FILE__.__LINE__);
 
 
         //4. 增加用户经验值
@@ -702,23 +725,21 @@ class SJActivityController extends SjController {
         LogRecord(json_encode($result),__FILE__.__LINE__);
 
         //返还给推荐人 1个福币
+        $reffer_uid = $bbj_member['referrer_id'];
+        if($reffer_uid > 0){
+            $result = apiCall(BbjmemberApi::GET_INFO, array(array('uid' => $reffer_uid)));
 
-        $result = apiCall(BbjmemberApi::GET_INFO,array(array('uid'=>$uid)));
-        if($result['status'] && is_array($result['info'])){
-            $reffer_uid = $result['info']['referrer_id'];
-            $reffer_uid = $result['info']['referrer_id'];
-            $result = apiCall(BbjmemberApi::GET_INFO,array(array('uid'=>$reffer_uid)));
-
-            if($reffer_uid > 0 && is_array($result['info'])){
+            if($result['status'] && is_array($result['info'])) {
                 $reffer_coin = 1;
                 $left_coin = $result['info']['fucoin'];
-                $notes = "您推荐的用户#".$uid."#完成了任务#".$his['id']."#,您因此获得了 ".$reffer_coin.VIRTUAL_CURRENCY;
-                $result = apiCall(BbjmemberApi::ADD_FU_COINS,array($uid,$reffer_coin,$notes,$left_coin));
-                if($result['status']){
+                $notes = "您推荐的用户#" . $uid . "#完成了任务#" . $his['id'] . "#,您因此获得了 " . $reffer_coin . VIRTUAL_CURRENCY;
+                $result = apiCall(BbjmemberApi::ADD_FU_COINS, array($uid, $reffer_coin, $notes, $left_coin));
+                if ($result['status']) {
                     $this->error($result['info']);
                 }
             }
         }
+
 
     }
 
@@ -905,10 +926,10 @@ class SJActivityController extends SjController {
             $task['dtree_preferential'] = $yhfs;
 
             $task['task_brokerage'] = $task_brokerage;
-            if(intval($fhfs) == 1){
+            if(intval($delivery_mode) == 1){
                 $task['task_postage'] = 10;
             }else{
-                $task['task_postage'] = $task_postage;
+                $task['task_postage'] = 0;
             }
 
             $task['task_gold'] = $bzj;

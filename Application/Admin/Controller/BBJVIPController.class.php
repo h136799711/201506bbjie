@@ -7,6 +7,7 @@
 // |-----------------------------------------------------------------------------------
 namespace Admin\Controller;
 use Admin\Api\DatatreeApi;
+use Admin\Model\MessageModel;
 use Admin\Model\MsgboxModel;
 use Common\Api\AccountApi;
 use Home\Api\BbjmemberApi;
@@ -681,15 +682,20 @@ class BBJVIPController extends AdminController{
         $result = apiCall(TaskHisApi::SAVE_BY_ID,array($id,$entity));
 
         if($result['status']){
-
-            $notes = "系统已发出快递，".$express_name." , ".$express_no;
+            $title = "系统提醒[任务编号#".$his['task_id']."#已发货]";
+            $notes = "系统已发出快递,".$express_name." , ".$express_no.',请在收货后，及时来平台进行确认收货.';
             task_log($id,$his['tpid'],$his['uid'],$his['task_id'],TaskLogModel::TYPE_PLATFORM_DELIVERY,$notes);
+            $msgLogic = new MessageLogic();
+            $msgLogic->sendMsg(MessageLogic::SYSTEM_UID,$his['uid'],MessageModel::DELIVERY_GOOD,$title,$notes,"",time());
+
             $this->success("操作成功!");
         }else{
             $this->error("操作失败!");
         }
 
     }
+
+
 
     /**
      * 已经将提现金额转入用户账户转账

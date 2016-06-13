@@ -807,3 +807,31 @@ function task_log($task_his_id,$plan_id,$uid,$task_id,$type,$notes){
 
     return $api->add($entity);
 }
+
+function getImageUrl($url){
+    if(empty($url)){
+        return "http://bbj.itboye.com/Public/Home/img/default_user_portrait.gif";
+    }
+    return $url;
+}
+
+/**
+ * 获取任务领取方式
+ * @param $from
+ * @return string
+ */
+function getTaskFrom($from){
+    switch($from){
+
+        case \Home\Model\TaskHisModel::COME_FROM_USER_APPLY:
+            $desc = "自主领取";
+            break;
+        case \Home\Model\TaskHisModel::COME_FROM_SELLER_GIVEN:
+            $desc = "商家分配";
+            break;
+        default:
+            $desc = "未知方式";
+            break;
+    }
+    return $desc;
+}

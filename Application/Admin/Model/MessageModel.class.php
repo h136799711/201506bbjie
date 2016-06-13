@@ -11,6 +11,6 @@ use Think\Model;
 
 class MessageModel extends Model{
 
-
+    const DELIVERY_GOOD = 0;
 
 }

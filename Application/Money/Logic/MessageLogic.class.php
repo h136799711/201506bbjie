@@ -42,6 +42,7 @@ class MessageLogic {
             'from_id'=>$from_uid,
             'summary'=>$summary,
             'status'=>1,
+            'extra'=>'',
         );
 
         $result = apiCall(MessageApi::ADD, array($entity));

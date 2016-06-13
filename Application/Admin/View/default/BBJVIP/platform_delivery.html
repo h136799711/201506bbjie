@@ -163,21 +163,26 @@
                                         </td>
                                         <td>
                                             <notempty name="vo['express_pid']">
-                                            <div>
-
-                                                <p>{$vo.name}</p>
-                                                <img src="{$vo.main_img}" alt="主图" style="width: 60px;height: 60px;"/>
-                                            </div>
+                                                <div STYLE="margin-bottom: 5px;">
+                                                    <a target="_blank" href="{:U('Shop/Index/spxq',array('id'=>$vo['pid']))}">
+                                                        <p>{$vo.name}</p>
+                                                        <img src="{$vo.main_img}" alt="主图" style="width: 60px;height: 60px;"/>
+                                                    </a>
+                                                </div>
                                             </notempty>
+
                                             <if condition="empty($vo['express_no'])">
+                                                <div class="margin-top-sm">
                                                 <eq name="vo['delivery_mode']" value="2">
                                                     <span class="text-warning">等待商家发货</span>
                                                     <else/>
+
                                                     <a data-id="{$vo.id}" href="javascript:void(0);"
                                                        class="margin-bottom-sm j_delivery fix-am btn btn-sm btn-primary btn-fix-am">
                                                         填写发货信息
                                                     </a>
                                                 </eq>
+                                                </div>
                                                 <else/>
                                                 <div class="text-warning text-sm">{$vo.express_name}</div>
                                                 <div class="text-warning text-sm">{$vo.express_no}</div>

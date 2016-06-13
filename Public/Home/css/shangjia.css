@@ -5582,7 +5582,7 @@ body {
 .seller_main {
 	width: 100%;
 	position: relative;
-    padding-top: 88px;
+    margin-top: 88px;
 }
 #foot {
 	background-position: 0 -2px

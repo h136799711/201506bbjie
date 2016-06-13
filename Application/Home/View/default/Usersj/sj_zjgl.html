@@ -166,11 +166,15 @@
                                             <td>
                                                 <if condition="$v['income'] gt 0">
                                                     +{$v.income}
+                                                    <else/>
+                                                    -
                                                 </if>
                                             </td>
                                             <td>
                                                 <if condition="$v['defray'] gt 0">
                                                     -{$v.defray}
+                                                    <else/>
+                                                    -
                                                 </if>
                                             </td>
                                             <td>{$v.left_money}</td>

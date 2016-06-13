@@ -25,19 +25,7 @@
 					
 					<div class="modal-body">
 						<form action="" class="loginForm form clearfix validate-form" method="post">
-							<notempty name="testAccount">
-								
-							<div class="form-group form-group-sm">
-								<div class="input-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-									<select name="username" class="form-control">
-										<volist name="testAccount"  id="vo">
-											<option value="{$key}">{$key}-{$vo['roledesc']}</option>
-										</volist>
-									</select>
-								</div>
-							</div>
-							
-							<else/>
+
 							<div class="form-group form-group-sm ">
 								<div class="input-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
 									<input type="text" class="required form-control  username" name="username" placeholder="{:L('PLACEHOLDER_USERNAME')}" />
@@ -60,7 +48,7 @@
 									<img onclick="refresh_verify('.verifyimg');" src="{:U('Admin/Public/verify',array('r'=>time()))}" class="verifyimg"  alt="验证码" title="点击换一张"/>
 								</div>
 							</div>
-							</notempty>
+
 							<div class="form-group form-group-sm">
 								<button type="button" url="{:U('Admin/Public/checkLogin')}" target-form="loginForm" data-loading-text="{:L('BTN_LOGIN')}..." class="ajax-post btn btn-primary col-xs-12 col-sm-12 col-md-12 col-lg-12" autofocus="autofocus">
 {:L('BTN_LOGIN')}</button>

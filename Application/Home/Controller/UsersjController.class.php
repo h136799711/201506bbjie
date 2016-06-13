@@ -303,7 +303,7 @@ class UsersjController extends SjController {
         //充值
         $map['dtree_type'] = FinAccountBalanceHisModel::TYPE_RECHARGE;
         $result = apiCall(FinAccountBalanceHisApi::QUERY, array($map, $page,$order));
-//        dump($result);
+
         $this->assign('list_1',$result['info']['list']);
         $this->assign('show_1',$result['info']['show']);
         //

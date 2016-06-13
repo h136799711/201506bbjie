@@ -10,6 +10,7 @@ namespace Home\Controller;
 
 
 use Admin\Api\DatatreeApi;
+use Home\Api\TaskApi;
 use Home\Api\TaskHisApi;
 use Home\Api\TaskLogApi;
 use Home\Api\VDoTaskUserApi;
@@ -33,6 +34,7 @@ class TaskHisController extends SjController {
     public function all(){
 
         $view_uid = $this->_param('view_uid','');
+        $task_id = $this->_param('task_id','');
         $type = $this->_param('status','');
 
         $this->assign('status',$type);
@@ -46,10 +48,27 @@ class TaskHisController extends SjController {
         $param = array(
             'status'=>$type,
         );
+
         if(!empty($view_uid)){
             $map['uid'] = $view_uid;
             $param['view_uid'] = $view_uid;
+            $result = apiCall(UserApi::GET_INFO,array($view_uid));
+            $view_username = $view_uid;
+
+            if($result['status']){
+                $view_username = $result['info']['username'];
+            }
+
             $this->assign('view_uid',$view_uid);
+            $this->assign('view_username',$view_username);
+
+        }
+
+        if(!empty($task_id)){
+            $map['task_id'] = $task_id;
+            $param['task_id'] = $task_id;
+
+            $this->assign('task_id',$task_id);
         }
 
 
@@ -83,13 +102,17 @@ class TaskHisController extends SjController {
                 case 'suspend':
                     $map['do_status'] = TaskHisModel::DO_STATUS_SUSPEND;
                     break;
+                case 'over':
+                    $map['do_status'] = TaskHisModel::DO_STATUS_RETURNED_MONEY;
+                    break;
+
                 default:
                     break;
             }
         }
 
         $page = array('curpage'=>I('get.p',1),'size'=>10);
-        $order = "get_task_time desc";
+        $order = "task_id desc,get_task_time desc";
         $result = apiCall(VTaskHisInfoApi::QUERY,array($map,$page,$order,$param));
 
         if($result['status']){
@@ -158,13 +181,13 @@ class TaskHisController extends SjController {
         $page = array('curpage'=>I('get.p',0),'size'=>10);
         $order = " update_time desc ";
         $result = apiCall(VTaskHisInfoApi::QUERY,array($map,$page,$order));
-//        dump($result);
+
         $this->assign("view_uid",$uid);
+
         if($result['status']){
             $this->assign("list",$result['info']['list']);
             $this->assign("show",$result['info']['show']);
         }
-
 
         $this->display();
     }
@@ -195,10 +218,31 @@ class TaskHisController extends SjController {
                 array_push($ret_list,array(
                     'id'=>$vo['uid'],
                     'nickname'=>$vo['username'],
-                    'head'=>$vo['head'],
+                    'head'=>getImageUrl($vo['head']),
                 ));
             }
             $this->success($ret_list);
+        }else{
+            $this->error($result);
+        }
+
+    }
+
+
+    /**
+     * 所有任务的信息
+     */
+    public function ajax_all_task(){
+        $map = array(
+            'uid'=>$this->uid,
+        );
+        $order = "update_time desc";
+        $result = apiCall(TaskApi::QUERY_NO_PAGING,array($map,$order));
+//        dump($result);
+        if($result['status']){
+            $list = $result['info'];
+
+            $this->success($list);
         }else{
             $this->error($result);
         }

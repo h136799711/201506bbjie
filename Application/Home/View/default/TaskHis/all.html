@@ -60,7 +60,12 @@
                 <div class=" am-fl am-padding-sm">
                     <ul class="task_status_list" style="position: relative;list-style-type: none;">
                         <li <eq name="status" value="all">class="active"</eq> >
-                        <a href="{:U('Home/TaskHis/all')}">任务试民</a>
+                        <a href="{:U('Home/TaskHis/all')}">任务试民
+                            <if condition="$count['total'] gt 0">
+                                <span class="am-text-danger">{$count['total']}</span>
+                            </if>
+                        </a>
+
                         </li>
                         <li <eq name="status" value="wait_check">class="active"</eq> >
                         <a href="{:U('Home/TaskHis/all',array('status'=>'wait_check'))}">审核订单
@@ -106,13 +111,23 @@
                             </if>
                         </a>
                         </li>
+                        <li <eq name="status" value="suspend">class="active"</eq> >
+                        <a  href="{:U('Home/TaskHis/all',array('status'=>'suspend'))}">已挂起
+                            <if condition="$count['suspend'] gt 0">
+                                <span class="am-text-danger">{$count['suspend']}</span>
+                            </if>
+                        </a>
+                        </li>
 
                         <li>
                             &nbsp;
                         </li>
                         <li>
-                            <a href="{:U('Home/TaskHis/history')}">
-                                历史订单
+                            <a href="{:U('Home/TaskHis/all',array('status'=>'over'))}">
+                                已完成订单
+                                <if condition="$count['over'] gt 0">
+                                    <span class="am-text-danger">{$count['over']}</span>
+                                </if>
                             </a>
                         </li>
                     </ul>
@@ -120,11 +135,22 @@
 
                 <div class="search_panel am-cf am-u-g">
                     <form class="am-form-horizontal am-cf j_search_form" action="__SELF__" method="post">
-                        <div class="am-form-group">
+                        <div class="am-form-group am-fl">
                             <select id="user_select2" name="view_uid" style="width:240px;">
-                                <option value="{$view_uid}">{$view_uid}</option>
+                                <option value="{$view_uid}">{$view_username}</option>
                             </select>
                         </div>
+
+                        <div class="am-form-group am-fl am-margin-left-sm">
+                            <select id="task_select2" name="task_id" style="width:240px;">
+                                <option value="{$task_id}">{$task_id}</option>
+                            </select>
+                        </div>
+
+                        <div class="am-form-group am-fl am-margin-left-sm">
+                            <a href="__SELF__" class="am-btn am-btn-danger   am-btn-sm btn-fix-am">重置查询条件</a>
+                        </div>
+
                     </form>
                 </div>
 
@@ -136,7 +162,8 @@
                                 <thead>
                                     <tr>
                                         <th width="80">编号</th>
-                                        <th width="120" >任务试民</th>
+                                        <th width="120" >任务名称</th>
+                                        <th width="120" >申请人信息</th>
                                         <th width="160" >订单信息</th>
                                         <th width="160" >物流信息</th>
                                         <th width="160" >发货模式</th>
@@ -155,6 +182,9 @@
                                     <tr class="odd">
                                         <td>
                                             {$vo.id}
+                                        </td>
+                                        <td>
+                                            {$vo.task_name}
                                         </td>
 
                                         <td>
@@ -184,7 +214,8 @@
                                                 </small>
                                             </div>
                                             <div >
-                                                <small >返款:
+                                                <small >
+                                                    返款:
                                                     <if condition="$vo['tb_price'] gt 0">
                                                         <span class="am-text-danger">￥{$vo.tb_price}</span>
                                                         <else/>
@@ -195,22 +226,28 @@
 
                                         </td>
                                         <td>
-                                            <if condition="empty($vo['express_no'])">
-                                                <eq name="vo['delivery_mode']" value="1">
-                                                    <span class="am-text-warning">等待平台发货</span>
+
+                                            <neq name="vo['do_status']" value="96">
+
+                                                <if condition="empty($vo['express_no'])">
+                                                    <eq name="vo['delivery_mode']" value="1">
+                                                        <span class="am-text-warning">等待平台发货</span>
+                                                        <else/>
+
+                                                        <a data-id="{$vo.id}" href="javascript:void(0);"
+                                                           class="am-margin-bottom-sm j_delivery btn-fix-am am-btn am-btn-sm am-btn-primary btn-fix-am">
+                                                            填写发货信息
+                                                        </a>
+
+                                                    </eq>
                                                     <else/>
-
-                                                    <a data-id="{$vo.id}" href="javascript:void(0);"
-                                                       class="am-margin-bottom-sm j_delivery btn-fix-am am-btn am-btn-sm am-btn-primary btn-fix-am">
-                                                        填写发货信息
-                                                    </a>
-
-                                                </eq>
+                                                    <div class="am-text-warning am-text-sm">{$vo.express_name}</div>
+                                                    <div class="am-text-warning am-text-sm">{$vo.express_no}</div>
+                                                    <div class="am-text-danger am-text-sm">¥ {$vo.express_price}</div>
+                                                </if>
                                                 <else/>
-                                                <div class="am-text-warning am-text-sm">{$vo.express_name}</div>
-                                                <div class="am-text-warning am-text-sm">{$vo.express_no}</div>
-                                                <div class="am-text-danger am-text-sm">¥ {$vo.express_price}</div>
-                                            </if>
+                                                -
+                                            </neq>
 
                                         </td>
 
@@ -219,7 +256,11 @@
                                         </td>
                                         <td >
                                             {$vo.do_status_name}
+
+
+                                            <eq name="vo['do_status']" value="$received_goods">
                                             <p class="js_countdownwn"  data-until="{$vo['update_time'] + 24*3600}"></p>
+                                            </eq>
 
                                             <eq name="vo['do_status']" value="$reject_order">
                                                 <p class="am-text-danger">原因: {$vo.notes}</p>
@@ -348,7 +389,7 @@
                     <div class="form-group">
                         <label CLASS="text-left">实际邮费(元)</label>
                         <div class="j_content">
-                            <input type="text" placeholder="填写邮费" class="form-control" name="express_price" />
+                            <input type="text" placeholder="填写邮费" class="am-form-field" name="express_price" />
                         </div>
                     </div>
 
@@ -599,6 +640,64 @@
             });
 
             $("#user_select2").change(function(){
+                $(".j_search_form").submit();
+            })
+
+        })
+    </script>
+
+
+    <script type="text/javascript">
+
+        $(function(){
+
+
+            $("#task_select2").select2({
+                placeholder: "输入任务id或任务名查询"	,
+                language: "zh-CN",
+                ajax: {
+                    url: "{:U('Home/TaskHis/ajax_all_task')}",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        var queryParameters = {
+                            q: params.term
+                        }
+                        return queryParameters;
+
+                    },
+                    processResults: function (data, page) {
+                        if(!data.info){
+                            data.info = new Array();
+                            data.info['nodata']="无相关数据";
+                        }
+                        // parse the results into the format expected by Select2.
+                        // since we are using custom formatting functions we do not need to
+                        // alter the remote JSON data
+                        return {
+                            results: data.info
+                        };
+                    },
+                    cache: true
+                },
+                minimumInputLength: 0,
+                templateSelection: function (repo) {
+                    var selection = repo.nickname || repo.text;
+                    if(repo.nickname){
+
+                    }
+                    return selection;
+                },
+                templateResult: function (repo) {
+
+                    if (repo.loading) return repo.text;
+                    if(repo.nodata) return repo.nodata;
+                    var markup = '<div>[id:'+repo.id+'] '+repo.task_name+'</div>';
+                    return $(markup);
+                },
+            });
+
+            $("#task_select2").change(function(){
                 $(".j_search_form").submit();
             })
 

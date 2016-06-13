@@ -28,7 +28,8 @@
                 <div class="am-form-group am-cf am-margin-bottom-xs">
                     <div class="am-fl am-margin-right-sm">任务金额</div>
                     <div class="am-fl">
-                        <span class="am-text-danger"><= {$task_his.task_gold}</span> 元
+                        <span class="am-text-danger">
+                            {$task_his.task_gold} (含预收邮费: {$task_his.task_postage},佣金: {$task_his.task_brokerage})</span> 元
                     </div>
                 </div>
                 <div class="am-form-group am-cf am-margin-bottom-xs">

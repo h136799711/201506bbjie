@@ -39,6 +39,10 @@
         .select2-dropdown{
             margin-top: -88px;
         }
+        .seller_content .content{
+            width: 100%;
+
+        }
     </style>
 </block>
 
@@ -77,8 +81,8 @@
                                         <th width="80"  >编号</th>
                                         <th width="120" >任务试民</th>
                                         <th width="160" >淘宝账号</th>
-                                        <th width="160" >任务情况</th>
-                                        <th width="160" >最近登录时间</th>
+                                        <th width="200" >任务情况</th>
+                                        <th width="120" >最近登录时间</th>
 
                                         <th width="160" >操作</th>
                                     </tr>
@@ -107,11 +111,18 @@
                                                 </div>
                                                 <div class="am-fl">{$vo.nickname}</div>
                                             </div>
+                                            {$vo.username}
 
                                         </td>
 
                                         <td>
-                                            <div>{$vo.taobao_account}</div>
+                                            <div>
+                                                <empty name="vo['taobao_account']">
+                                                    -
+                                                    <else/>
+                                                    {$vo.taobao_account}
+                                                </empty>
+                                            </div>
                                         </td>
 
                                         <td >
@@ -119,9 +130,9 @@
                                             <p>已取消、放弃数: {$vo.cancel_task_cnt}</p>
                                             <notempty name="vo['_last_get_task']">
                                             最近领取了您的任务:
-                                               <div class="am-text-danger">{$vo['_last_get_task']['task_name']}</div>
-                                                <div class="am-text-danger">领取时间: {:date("Y-m-d",$vo['_last_get_task']['get_task_time'])}</div>
-
+                                               <div class="am-text-danger"><small>名称: {$vo['_last_get_task']['task_name']}</small></div>
+                                                <div class="am-text-danger"><small>时间: {:date("Y-m-d",$vo['_last_get_task']['get_task_time'])}</small></div>
+                                                <div class="am-text-danger"><small>方式: {:getTaskFrom($vo['_last_get_task']['task_from'])}</small></div>
                                                 <else/>
 
                                             </notempty>
