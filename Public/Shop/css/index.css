@@ -55,9 +55,9 @@ input{border:1px solid #ccc; list-style:none;}
 	#div_main .div_info .div_condition { border-bottom: 1px solid #ccc; padding-bottom: 5px;}
 	#div_main .div_info .div_condition .ul_condition1{float: left;}
 	#div_main .div_info .div_condition .ul_condition1 li{ margin-left: 5px; padding: 5px; margin-top: 10px; float: left;}
-	#div_main .div_info .div_condition .ul_condition1 li a:hover{font-size: 12px;color:#CCC;text-decoration: none;}
-	#div_main .div_info .div_condition .ul_condition1 li a:link{font-size: 12px;color: #ccc;text-decoration: none;}
-	#div_main .div_info .div_condition .ul_condition1 li a:visited{font-size: 12px;color: #ccc;text-decoration: none;}
+	#div_main .div_info .div_condition .ul_condition1 li a:hover{font-size: 12px;color:#333333;text-decoration: none;}
+	#div_main .div_info .div_condition .ul_condition1 li a:link{font-size: 12px;color: #333333;text-decoration: none;}
+	#div_main .div_info .div_condition .ul_condition1 li a:visited{font-size: 12px;color: #333333;text-decoration: none;}
 	#div_main .div_info .div_condition .ul_condition1 li a:active {color: white;font-size: 12px;text-decoration: none;}
 	
 	#div_main .div_info .div_condition span{ font-size: 14px;}
@@ -246,5 +246,16 @@ a.a_footer:active {color: #ff5497}
 
 .pagination a.active, .pagination div {
     cursor: default;
+}
+.pagination  .disabled a{
+    background: #ecebeb;
+    cursor: not-allowed;
+}
+.pagination  .disabled a:hover {
+    background: #ecebeb;
+    cursor: not-allowed;
+    box-shadow: 0 0px 0px #ffffff;
+    text-shadow: 0 0px 0 #ffffff;
+    color: #424346;
 }
 
