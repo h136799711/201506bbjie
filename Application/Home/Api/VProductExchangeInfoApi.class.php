@@ -46,5 +46,28 @@ class VProductExchangeInfoApi extends Api{
 		$this->model = new VProductExchangeInfoModel();
 	}
 
+    public function getPersonInfo($map,$pager){
+        $result = $this->model->where($map)->order(" create_time desc ")->field("create_time,p_id,uid,id,username,head")-> page($pager['curpageindex'] . ',' . $pager['pagesize']) ->select();
+        if($result === false){
+            return $this->apiReturnErr($this->model->getDbError());
+        }else{
+
+            $ret = array(
+                'list'=>$result,
+                'pager'=>array(
+                    'pageindex'=>$pager['curpageindex'] ,
+                    'pagesize'=>$pager['pagesize'],
+                    'total'=>0,
+                )
+            );
+
+            $count = $this -> model -> where($map) -> count();
+
+            $ret['pager']['total'] = $count;
+
+            return $this->apiReturnSuc($ret);
+        }
+    }
+
 }
 

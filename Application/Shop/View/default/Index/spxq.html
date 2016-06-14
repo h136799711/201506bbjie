@@ -9,7 +9,23 @@
 		* {
 			font-family: "微软雅黑" !important;
 		}
-	</style>
+        #exchange_user_list .user-info {
+            float: left;
+            TEXT-ALIGN: CENTER;
+            WIDTH: 160PX;
+        }
+        #exchange_user_list .user-info .avatar img{
+            width:60px;
+            height: 60px;
+            border-radius: 50%;
+        }
+
+        #exchange_user_list .user-list .list-bd{
+            width:100%;
+        }
+
+
+    </style>
 
 </block>
 
@@ -80,11 +96,11 @@
 					    <li class="am-active">
 					      <a href="[data-tab-panel-0]">商品展示</a>
 					    </li>
+					    <!--<li class="">-->
+					      <!--<a href="[data-tab-panel-1]">宝贝晒货</a>-->
+					    <!--</li>-->
 					    <li class="">
-					      <a href="[data-tab-panel-1]">宝贝晒货</a>
-					    </li>
-					    <li class="">
-					      <a href="[data-tab-panel-2]">已审核宝民</a>
+					      <a href="[data-tab-panel-2]">兑换纪录</a>
 					    </li>
 					  </ul>
 					  <div class="am-tabs-bd" style="padding: 0; ">
@@ -93,10 +109,10 @@
 					    		<img src="{$img}" width="630"/>
 					    	</volist>
 					    </div>
-					   <div data-tab-panel-1 class="am-tab-panel " style="height: 800px;">
-					   <h3>	已晒货的试民：</h3>
-					  		当前商品还没有人晒货哦！！！
-					   </div>
+					   <!--<div data-tab-panel-1 class="am-tab-panel " style="height: 800px;">-->
+					   <!--<h3>	已晒货的试民：</h3>-->
+					  		<!--当前商品还没有人晒货哦！！！-->
+					   <!--</div>-->
 					  <div data-tab-panel-2 class="am-tab-panel " style="height: 800px;">
 					    <h3>	申请兑换的用户：</h3>
                               <div id="exchange_user_list">
@@ -159,8 +175,10 @@
     <script type="text/javascript" src="__CDN__/react/15.1.0/react.js"></script>
     <script type="text/javascript" src="__CDN__/react/15.1.0/react-dom.js"></script>
     <script src="__CDN__/babel-core/5.8.24/browser.min.js"></script>
+    <script type="text/babel"  src="__JS__/react-pager.js"></script>
 
     <script type="text/babel">
+
         var itboye = {
             api_url : "http://bbj.itboye.com/index.php"
         };
@@ -168,7 +186,7 @@
         var UserInfo = React.createClass({
             render: function(){
                 return (<div className="user-info">
-                    <div className="avatar">
+                    <div className="avatar"  >
                         <img src={this.props.avatar} />
                     </div>
                     <div className="user-name">
@@ -181,54 +199,66 @@
 
         var ExchangeUserList = React.createClass({
 
-        showError:function(info){
-
-        },
         loadCommentsFromServer: function() {
+            var p = this.state.pageIndex;
+            var pagesize = this.state.pageSize;
+            var params = "p="+p+"&pagesize="+pagesize;
+
             $.ajax({
-              url: itboye.api_url + this.props.url,
+              url: itboye.api_url + this.props.url + "&"+params,
               dataType: 'json',
               cache: false,
               success: function(data) {
-                console.log(data);
-                this.setState({data: data});
+                if(data.status){
+                    var pager = data.info.pager;
+                    this.setState({status:data.status,info:data.info,totalCount:pager.total,pageSize:pager.pagesize,pageIndex:pager.pageindex});
+                }else{
+                    this.setState({status:data.status,info:data.info,totalCount:0,pageSize:0,pageIndex:1});
+                }
               }.bind(this),
 
               error: function(xhr, status, err) {
-                var errData = {
-                    'status':false,
-                    'info':'网络请求发生错误',
-                };
-                this.setState({data:errData });
-                console.log(err);
 
+                this.setState({status:false,info:'网络请求发生错误',totalCount: 0,pageSize:10,pageIndex:0});
+                console.log(err);
               }.bind(this)
             });
           },
+
+          pageIndexChanged:function(index){
+          console.log(index);
+            this.state.pageIndex = index;
+            this.loadCommentsFromServer();
+          },
+
           getInitialState: function() {
-            return {data: {}};
+            return {status:false,info:'正在请求数据...',totalCount:0,pageSize:30,pageIndex:1};
           },
           componentDidMount: function() {
             this.loadCommentsFromServer();
           },
+
           render: function() {
 
-            var status = this.state.data.status;
-            var info = this.state.data.info;
+            var status = this.state.status;
+            var info = this.state.info;
 
             console.log(status,info);
-
             if(status){
                 var list = info.list;
                 var pager = info.pager;
+                this.state.totalCount = pager.total;
+                this.state.pageSize = pager.pagesize;
+                this.state.pageIndex = pager.pageindex;
+
                 console.log("list数据",list);
                 if(list.length > 0){
-                var content = list.map(function(user) {
-                  return (
-                    <UserInfo avatar={user.head} username={user.username}  key={user.id} >
-                    </UserInfo>
-                  );
-                });
+                    var content = list.map(function(user) {
+                      return (
+                        <UserInfo avatar={user.head} username={user.username}  key={user.id} id={user.id} >
+                        </UserInfo>
+                      );
+                    });
                 }else{
                     var content = "还没有人兑换哦";
                 }
@@ -236,10 +266,27 @@
             }else{
                 var content = info;
             }
+            console.log(this.state);
+            var pagerSetting={
+			    totalCount:this.state.totalCount,
+			    pageSize:this.state.pageSize,
+			    pageIndex:this.state.pageIndex,
+			    firstText:"首页" ,
+			    prevText:"上一页",
+			    nextText:"下一页",
+			    lastText:"尾页",
+			    recordTextFormat: "{0}/{1}页 共{2}条记录",
+			    showLinkNum:2,
+			    callBack:this.pageIndexChanged
+		    };
+
 
             return (
               <div className="user-list">
-                {content}
+                <div className="list-bd am-cf">
+                    {content}
+                </div>
+                <Pager {...pagerSetting} />
               </div>
             );
           }
@@ -255,7 +302,8 @@
 		$(function(){
 			var price=$('#font_price').text();
 			$('#duihuan').click(function(){
-				if({$fubi}>=price){
+                var fucoin = {:(empty($fubi)?0:$fubi)};
+				if(fucoin >= price){
 					$('#ec').submit();
 				}else{
 					alert('您的福币不足，无法兑换！！');

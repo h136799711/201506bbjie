@@ -381,9 +381,21 @@ class ProductController extends ShopController {
         $map = array(
             'p_id'=>$pid,
         );
+        $p = I('get.p',1,'intval');
 
-        $result = apiCall(VProductExchangeInfoApi::QUERY,array($map,"update_time desc"));
-//        dump($result);
+        $pagesize = I('get.pagesize',10,'intval');
+
+        if($pagesize < 0 || $pagesize > 50){
+            $pagesize = 10;
+        }
+
+        $pager = array(
+            'curpageindex'=>$p,
+            'pagesize'=>$pagesize,
+        );
+        $api = new VProductExchangeInfoApi();
+        $result = $api->getPersonInfo($map,$pager);
+
         if($result['status']){
             $list = $result['info']['list'];
             $pager = $result['info']['pager'];
