@@ -18,6 +18,7 @@ define("ITBOYE_CDN","http://bbj.cdn.itboye.com");
 return array(
 
     'SITE_URL'=>'http://bbj.itboye.com',
+    'API_URL'=>'http://bbj.itboye.com',
 
     'DB_TYPE'                   =>  'mysql',
     'DB_HOST'                   =>  'localhost',//rdsrrbifmrrbifm.mysql.rds.aliyuncs.com

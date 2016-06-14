@@ -93,6 +93,9 @@ class UsersmController extends HomeController {
 	public function sm_bbqz() {
 
         $this->reloadUserInfo();
+        $account_tab = I('get.tab',1);
+
+        $this -> assign("account_tab",$account_tab);
 		$this -> assign('head_title', "宝贝街-宝贝钱庄");
 
         //获取绑定的提现银行帐号信息
@@ -109,7 +112,10 @@ class UsersmController extends HomeController {
 
         //收支明细
         $page = array('curpage'=>I('get.p',0),'size'=>10);
-        $result = apiCall(FinAccountBalanceHisApi::QUERY,array($map,$page,'create_time desc'));
+        $params = array(
+            'tab'=>$account_tab,
+        );
+        $result = apiCall(FinAccountBalanceHisApi::QUERY,array($map,$page,'create_time desc',$params));
 
         $this->assign("detail_list",$result['info']['list']);
         $this->assign("detail_show",$result['info']['show']);
@@ -117,13 +123,17 @@ class UsersmController extends HomeController {
 
         //提现明细
         $map['dtree_type'] = FinAccountBalanceHisModel::TYPE_WITHDRAW;
-        $result = apiCall(FinAccountBalanceHisApi::QUERY,array($map,$page,'create_time desc'));
+        $params = array(
+            'tab'=>$account_tab,
+        );
+        $result = apiCall(FinAccountBalanceHisApi::QUERY,array($map,$page,'create_time desc',$params));
 
         $this->assign("withdraw_list",$result['info']['list']);
         $this->assign("withdraw_show",$result['info']['show']);
 
 
         //元宝明细
+        $map = array('uid' => $uid, );
         $map['status'] = 1;
         $result = apiCall(FinFucoinHisApi::QUERY,array($map,$page,'create_time desc'));
 

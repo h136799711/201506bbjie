@@ -17,6 +17,11 @@
 		.bank tr td{font-size: 13px;}
 		.am-icon-mobile{padding-left: 10px;}
 		.am-modal-hd { position :relative; }
+        .am-tabs-d2 .account-nav li{
+            width: 120px;
+            text-align: center;
+        }
+
 	</style>
 	
 </block>
@@ -45,7 +50,7 @@
 				<h3>宝贝钱庄</h3>
 			</div>
 			<div class="div_minContent" style="padding: 20px;">
-				<table border="1" style=" width: 1100px; height: 300px; margin-left: 10px;" bordercolor="#ccc">
+				<table border="1" style=" width: 100%; height: 300px; " bordercolor="#ccc">
 					<tr>
 						<td>
 							<div>
@@ -192,27 +197,22 @@
 				</form>
 			</div>
 		</div>
-				<script type="text/javascript">
-					function changeTab(i){
-						$(".div_right .div_minContent #div_tabs ul li").eq(i).addClass("am-active").siblings().removeClass("am-active");
-						$(".div_right .div_minContent #div_tabs .am-tabs-bd .am-tab-panel").eq(i).addClass("am-active").siblings().removeClass("am-active");
-					}
-				</script>
-				<div data-am-widget="tabs" id="div_tabs" class="am-tabs am-tabs-d2" style="width: 1100px;">
-					<ul class="am-tabs-nav am-cf" style="width: 300px;">
-						<li class="am-active">
-							<a href="javascript:changeTab(0)">账号收支明细</a>
+
+				<div  class="am-tabs am-tabs-d2" style="width: 100%;">
+					<ul class="account-nav am-tabs-nav am-cf" style="width: 100%;MARGIN: 0px;margin-top: 10px;">
+						<li class="am-fl <eq name="account_tab" value="1">am-active</eq>" >
+							<a href="{:U('Home/Usersm/sm_bbqz',array('tab'=>1))}">账号收支明细</a>
 						</li>
-                        <li class="">
-                            <a href="javascript:changeTab(1)">提现明细记录</a>
+                        <li class="am-fl  <eq name="account_tab" value="2">am-active</eq>"  >
+                            <a href="{:U('Home/Usersm/sm_bbqz',array('tab'=>2))}">提现明细记录</a>
                         </li>
-                        <li class="">
-                            <a href="javascript:changeTab(2)">元宝明细记录</a>
+                        <li class="am-fl  <eq name="account_tab" value="3">am-active</eq>"  >
+                            <a href="{:U('Home/Usersm/sm_bbqz',array('tab'=>3))}">元宝明细记录</a>
                         </li>
 
 					</ul>
 					<div class="am-tabs-bd" style="border: 1px solid #CCCCCC; font-size: 14px;">
-						<div data-tab-panel-0 class="am-tab-panel am-active">
+						<div data-tab-panel-0 class="am-tab-panel <eq name="account_tab" value="1"> am-active</eq> ">
 							<table class="am-table" style="border: 1px solid #CCCCCC;">
 								<thead>
 									<tr style="background: white;">
@@ -256,7 +256,7 @@
 							</table>
 							<div>{$detail_show}</div>
 						</div>
-						<div data-tab-panel-1 class="am-tab-panel  ">
+						<div data-tab-panel-1 class="am-tab-panel   <eq name="account_tab" value="2"> am-active</eq>">
 							<table class="am-table" style="border: 1px solid #CCCCCC;">
 								<thead>
 									<tr style="background: white;">
@@ -294,17 +294,18 @@
 
 								</tbody>
 							</table>
-							<div>{$shows}</div>
+							<div>{$withdraw_show}</div>
 						</div>
-                        <div data-tab-panel-2 class="am-tab-panel  ">
+                        <div data-tab-panel-2 class="am-tab-panel  <eq name="account_tab" value="3"> am-active</eq> ">
                             <table class="am-table" style="border: 1px solid #CCCCCC;">
                                 <thead>
                                     <tr style="background: white;">
-                                        <th>交易编号</th>
-                                        <th>交易时间</th>
-                                        <th style="width: 50%;">备注</th>
+                                        <th>编号</th>
+                                        <th>操作时间</th>
+                                        <th>剩余</th>
                                         <th>收入</th>
                                         <th>支出</th>
+                                        <th>备注</th>
                                     </tr>
                                 </thead>
 
@@ -320,19 +321,30 @@
                                         <tr>
                                             <td>{$vo.id}</td>
                                             <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
-                                            <td>{$vo.income}</td>
-                                            <td>{$vo.defray}</td>
-                                            <td>{$vo.notes}</td><td>
-                                            <if condition="$vo.status eq 1">成功</if>
-                                            <if condition="$vo.status eq 2">审核中</if>
-                                        </td>
+                                            <td>{$vo.left_fucoin} </td>
+                                            <td>
+                                                <if condition="$vo['income'] gt 0">
+                                                    +{:number_format($vo['income'],0,".","")}
+                                                    <else/>
+                                                    -
+                                                </if>
+                                            </td>
+                                            <td>
+
+                                                <if condition="$vo['defray'] gt 0" >
+                                                    +{:number_format($vo['defray'],0,".","")}
+                                                    <else/>
+                                                    -
+                                                </if>
+                                            </td>
+                                            <td>{$vo.notes}</td>
                                         </tr>
                                     </volist>
                                 </empty>
 
                                 </tbody>
                             </table>
-                            <div>{$shows}</div>
+                            <div>{$fucoin_show}</div>
                         </div>
 
 

@@ -398,4 +398,58 @@ abstract class Api {
 		return $this -> apiReturnSuc(array("show" => $show, "list" => $list));
 	}
 
+    /**
+     * query
+     * @param map 查询条件
+     * @param page 分页参数
+     * @param order 排序参数
+     * @param params 点击分页时带参数
+     */
+    public function apiQuery($map = null, $page = array('curpage'=>0,'size'=>10), $order = false, $params = false, $fields = false) {
+        $query = $this->model;
+        if(!is_null($map)){
+            $query = $query->where($map);
+        }
+        if(!($order === false)){
+            $query = $query->order($order);
+        }
+        if(!($fields === false)){
+            $query = $query->field($fields);
+        }
+        $list = $query -> page($page['curpage'] . ',' . $page['size']) -> select();
+
+
+        if ($list === false) {
+            $error = $this -> model -> getDbError();
+            return $this -> apiReturnErr($error);
+        }
+
+        $count = $this -> model -> where($map) -> count();
+        // 查询满足要求的总记录数
+        $Page = new \Think\Page($count, $page['size']);
+
+        //分页跳转的时候保证查询条件
+        if ($params !== false) {
+            foreach ($params as $key => $val) {
+                $Page -> parameter[$key] = urlencode($val);
+            }
+        }
+
+        // 实例化分页类 传入总记录数和每页显示的记录数
+        $pager = array(
+            'firstRow'=>$Page->firstRow,
+            'listRows'=>$Page->listRows,
+            'parameter'=>$Page->parameter,
+            'totalRows'=>$Page->totalRows,
+            'totalPages'=>$Page->totalPages,
+            'rollPage'=>$Page->rollPage,
+            'lastSuffix'=>$Page->lastSuffix,
+//            'p'=>$Page->p,
+//            'nowPage'=>$Page->nowPage,
+//            'url'=>$Page->url,
+        );
+
+        return $this -> apiReturnSuc(array("pager" => $pager, "list" => $list));
+    }
+
 }

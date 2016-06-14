@@ -8,6 +8,9 @@
 
 namespace Shop\Controller;
 
+use Home\Api\ProductExchangeApi;
+use Home\Api\VProductExchangeInfoApi;
+
 class ProductController extends ShopController {
 
 	public function quickSort($left, $right, $arr) {
@@ -367,5 +370,35 @@ class ProductController extends ShopController {
 		array_push($imgs, $product['main_img']);
 		return $imgs;
 	}
+
+    /**
+     * 商品兑换的用户信息
+     */
+    public function ajax_exchange_user_list(){
+
+        $pid = I('get.id',0);
+
+        $map = array(
+            'p_id'=>$pid,
+        );
+
+        $result = apiCall(VProductExchangeInfoApi::QUERY,array($map,"update_time desc"));
+//        dump($result);
+        if($result['status']){
+            $list = $result['info']['list'];
+            $pager = $result['info']['pager'];
+
+            foreach($list as &$vo){
+                $vo['head'] = getImageUrl($vo['head']);
+            }
+            if(empty($list)){
+                $list = array();
+            }
+
+            $this->success(array('list'=>$list,'pager'=>$pager));
+        }else{
+            $this->error($result['info']);
+        }
+    }
 
 }
