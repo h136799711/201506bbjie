@@ -10,14 +10,94 @@ namespace Admin\Controller;
 
 
 use Admin\Api\AuthGroupAccessApi;
-use Admin\Api\AuthGroupApi;
 use Admin\Api\MemberApi;
 use Admin\Api\VMemberApi;
-use Common\Api\AccountApi;
+use Home\Api\VBbjmemberInfoApi;
+use Home\Api\VBbjmemberSellerInfoApi;
 use Ucenter\Model\AuthGroupModel;
 use Uclient\Api\UserApi;
 
 class DistributorController extends AdminController {
+
+
+
+    /**
+     * 经销商个人中心
+     */
+    public function my(){
+
+        $global_user = session("global_user");
+        $invite_id = $global_user['username'];
+        $invite_url = C('SITE_URL').U('Home/Index/register_sm',array('reffer'=>$global_user['id']));
+
+        $this->assign("invite_id",$invite_id);
+        $this->assign("invite_url",$invite_url);
+        $this->display();
+    }
+
+    /**
+     * 经销商推荐的人查询
+     */
+    public function myPerson(){
+
+        $global_user = session("global_user");
+        $invite_id = $global_user['id'];
+        $map = array(
+            'referrer_id'=>$invite_id,
+        );
+
+        $order = "create_time desc";
+
+        if(IS_POST || IS_AJAX){
+
+            $p = I('get.p',1);
+            $pageSize = I('get.pagesize',10);
+            $type = I('get.type','seller');
+            if($pageSize < 0 || $pageSize > 50){
+                $pageSize = 10;
+            }
+            $page = array(
+                'curpage'=>$p,
+                'size'=>$pageSize,
+            );
+
+            if($type == 'normal'){
+                $result = apiCall(VBbjmemberInfoApi::API_QUERY,array($map,$page,$order));
+
+            }else{
+                $result = apiCall(VBbjmemberSellerInfoApi::API_QUERY,array($map,$page,$order));
+            }
+
+            $this->apiReturn($result);
+            return ;
+        }
+
+
+        $result = apiCall(VBbjmemberInfoApi::QUERY,array($map,$order));
+
+        if($result['status']){
+            $this->assign("bbj_list",$result['info']['list']);
+            $this->assign("bbj_show",$result['info']['show']);
+        }
+
+        //2.
+        $map = array(
+            'referrer_id'=>$invite_id,
+        );
+
+        $order = "create_time desc";
+
+        $result = apiCall(VBbjmemberSellerInfoApi::QUERY,array($map,$order));
+
+        if($result['status']){
+            $this->assign("bbjSeller_list",$result['info']['list']);
+            $this->assign("bbjSeller_show",$result['info']['show']);
+        }
+
+        $this->display();
+    }
+
+
 
     public function view(){
         $id = I('get.id',0);

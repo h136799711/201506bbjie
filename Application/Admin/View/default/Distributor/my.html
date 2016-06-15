@@ -1,0 +1,58 @@
+<extend name="template/base_index" />
+
+
+<block name="area_header">
+
+    <!--<script src="__CDN__/react/15.1.0/react.js"></script>-->
+    <!--<script src="__CDN__/react/15.1.0/react-dom.js"></script>-->
+    <!--<script src="__CDN__/babel-core/5.8.24/browser.min.js"></script>-->
+
+
+    <style type="text/css">
+        input.error {
+            border: 1px solid red;
+        }
+
+        label.checked {
+
+            padding-left: 25px;
+        }
+
+        label.error {
+            padding-left: 25px;
+            padding-bottom: 2px;
+            font-weight: bold;
+            color: #EA5200;
+        }
+    </style>
+
+</block>
+
+<block name="area_body">
+    {:W('Menus/topbar')}
+    <div class="admin-main container-fluid">
+        {:W('Menus/left')}
+        <div class="admin-main-content">
+            {:W('Menus/breadcrumb')}
+
+            <div CLASS="padding-sm well">
+
+                我的推荐码 : <h2 class="text-danger">{$invite_id}</h2>
+
+                我的推荐链接: <h2 class="text-danger"><a href="{$invite_url}" target="_blank">{$invite_url}</a></h2>
+
+            </div>
+
+            <!-- form -->
+
+        </div>
+        <!-- END admin-main-content -->
+    </div>
+    <!-- END admin-main-->
+</block>
+
+<block name="area_footer">
+
+
+
+</block>

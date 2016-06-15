@@ -437,17 +437,12 @@ abstract class Api {
 
         // 实例化分页类 传入总记录数和每页显示的记录数
         $pager = array(
-            'firstRow'=>$Page->firstRow,
-            'listRows'=>$Page->listRows,
-            'parameter'=>$Page->parameter,
-            'totalRows'=>$Page->totalRows,
-            'totalPages'=>$Page->totalPages,
-            'rollPage'=>$Page->rollPage,
-            'lastSuffix'=>$Page->lastSuffix,
-//            'p'=>$Page->p,
-//            'nowPage'=>$Page->nowPage,
-//            'url'=>$Page->url,
+            'pageindex'=>$page['curpage'],
+            'pagesize'=>$page['size'],
+            'total'=>0,
         );
+
+        $pager['total'] = $count;
 
         return $this -> apiReturnSuc(array("pager" => $pager, "list" => $list));
     }

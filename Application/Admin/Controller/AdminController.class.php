@@ -378,6 +378,14 @@ class AdminController extends CheckLoginController {
 		}
 	}
 
+    public function apiReturn($result){
+        if($result['status']){
+            $this -> success($result['info']);
+        }else{
+            $this -> error($result['info']);
+        }
+    }
+
 	/**
 	 * 分页查询结果处理
 	 */

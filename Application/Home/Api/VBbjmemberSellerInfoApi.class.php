@@ -13,6 +13,10 @@ use Home\Model\VBbjmemberInfoSellerModel;
 class VBbjmemberSellerInfoApi extends Api{
 
     /**
+     * API分页查询
+     */
+    const API_QUERY = "Home/VBbjmemberInfo/apiQuery";
+    /**
      * 新增
      */
     const ADD = "Home/VBbjmemberSellerInfo/add";

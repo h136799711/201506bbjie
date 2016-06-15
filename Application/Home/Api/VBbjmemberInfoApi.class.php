@@ -30,6 +30,11 @@ class VBbjmemberInfoApi extends Api{
      * 分页查询
      */
     const QUERY = "Home/VBbjmemberInfo/query";
+    /**
+     * API分页查询
+     */
+    const API_QUERY = "Home/VBbjmemberInfo/apiQuery";
+
 
     /**
      * 获取用户信息
