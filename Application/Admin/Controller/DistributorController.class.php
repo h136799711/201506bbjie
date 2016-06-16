@@ -12,6 +12,8 @@ namespace Admin\Controller;
 use Admin\Api\AuthGroupAccessApi;
 use Admin\Api\MemberApi;
 use Admin\Api\VMemberApi;
+use Home\Api\BbjmemberApi;
+use Home\Api\BbjmemberSellerApi;
 use Home\Api\VBbjmemberInfoApi;
 use Home\Api\VBbjmemberSellerInfoApi;
 use Ucenter\Model\AuthGroupModel;
@@ -32,6 +34,53 @@ class DistributorController extends AdminController {
 
         $this->assign("invite_id",$invite_id);
         $this->assign("invite_url",$invite_url);
+        $this->display();
+    }
+
+    public function myPersonDetail(){
+
+        $uid = I('get.uid',0,'intval');
+        $userType = -1;
+        $userInfo = null;
+        if($uid > 0){
+            $map  = array(
+                'uid'=>$uid,
+            );
+
+            $result = apiCall(BbjmemberApi::GET_INFO,array($map));
+            if($result['status'] && is_array($result['info'])){
+                $userType = 0;
+                $userInfo = $result['info'];
+            }else{
+                $result = apiCall(BbjmemberSellerApi::GET_INFO,array($map));
+
+                if($result['status'] && is_array($result['info'])){
+                    $userType = 1;
+                    $userInfo = $result['info'];
+                }
+            }
+
+        }
+
+        if($userType == -1){
+            $this->error("无法获取用户信息!");
+        }
+
+        $this->assign("usertype",$userType);
+        $this->assign("userinfo",$userInfo);
+
+        if($userType == 1){
+            //商家发任务信息
+
+        }else if($userType == 0){
+            //试民完成的任务信息
+            
+        }
+
+
+
+
+
         $this->display();
     }
 
@@ -67,7 +116,14 @@ class DistributorController extends AdminController {
             }else{
                 $result = apiCall(VBbjmemberSellerInfoApi::API_QUERY,array($map,$page,$order));
             }
-
+            if($result['status']){
+                $list = $result['info']['list'];
+                foreach ($list as &$vo){
+                    $vo['create_time'] = date("Y-m-d",$vo['create_time']);
+                    $vo['last_login_time'] = date("Y-m-d",$vo['last_login_time']);
+                }
+                $result['info']['list'] = $list;
+            }
             $this->apiReturn($result);
             return ;
         }

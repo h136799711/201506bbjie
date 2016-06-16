@@ -7,16 +7,16 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="react" level="project" />
+    <orderEntry type="library" name="BABEL" level="project" />
     <orderEntry type="module-library">
       <library name="PHP">
         <CLASSES>
-          <root url="file://$thinkphp$" />
+          <root url="file://$MODULE_DIR$/../../thinkphp/thinkphp_clone" />
         </CLASSES>
         <SOURCES>
-          <root url="file://$thinkphp$" />
+          <root url="file://$MODULE_DIR$/../../thinkphp/thinkphp_clone" />
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="BABEL" level="project" />
   </component>
 </module>

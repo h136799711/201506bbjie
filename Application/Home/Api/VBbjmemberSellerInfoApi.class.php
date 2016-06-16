@@ -15,7 +15,7 @@ class VBbjmemberSellerInfoApi extends Api{
     /**
      * API分页查询
      */
-    const API_QUERY = "Home/VBbjmemberInfo/apiQuery";
+    const API_QUERY = "Home/VBbjmemberSellerInfo/apiQuery";
     /**
      * 新增
      */

@@ -46,10 +46,10 @@
                     <!-- Tab panes -->
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="seller">
-
+                            loading...
                         </div>
                         <div role="tabpanel" class="tab-pane" id="normal">
-
+                            loading...
                         </div>
                     </div>
 
@@ -76,6 +76,25 @@
 
         var Alert = ReactBootstrap.Alert;
         var Table = ReactBootstrap.Table;
+        var Button = ReactBootstrap.Button;
+
+        var UserItem = React.createClass({
+
+            viewClick:function(){
+
+            },
+            render:function(){
+
+                return (
+                        <tr>
+                            <td>0</td>
+                            <td>
+                                <Button bsStyle="primary" onClick={this.viewClick} >查看</Button>
+                            </td>
+                        </tr>
+                );
+            }
+        });
 
         var UserList = React.createClass({
             loadData:function(){
@@ -133,13 +152,32 @@
                 }
 
 
-                var tbody = "<tr><td colspan='5'>没有相关数据</td></tr>";
+                var tbody = (
+                     <tr>
+                         <td style={{textAlign:'center'}} colSpan='5' >没有相关数据</td>
+                     </tr>
+                );
+
                 console.log(info);
                 var list = info.list;
                 var pager = info.pager;
+
                 if(list && list.length > 0){
-                    list.map(function(ele){
+
+                    var view_url  = this.props.view_url+"?uid=";
+                    tbody = list.map(function(ele){
                         console.log(ele);
+                        return (
+                            <tr key={ele.uid}>
+                                <td >{ele.uid}</td>
+                                <td >{ele.username}</td>
+                                <td >{ele.create_time}</td>
+                                <td >{ele.last_login_time}</td>
+                                <td >
+                                    <Button bsStyle="primary" bsSize="small" href={view_url+ele.uid} >查看</Button>
+                                </td>
+                            </tr>
+                        );
 
                     });
                 }
@@ -169,11 +207,11 @@
         });
 
         var url = "{:U('Admin/Distributor/myPerson')}";
-        var url = "{:U('Admin/Distributor/myPerson')}";
+        var view_url = "{:U('Admin/Distributor/myPersonDetail')}";
 
-        ReactDOM.render(<UserList url={url} type='seller'  />, document.getElementById("seller"));
+        ReactDOM.render(<UserList url={url} type='seller' view_url={view_url} />, document.getElementById("seller"));
 
-        ReactDOM.render(<UserList url={url} type='normal'  />, document.getElementById("normal"));
+        ReactDOM.render(<UserList url={url} type='normal' view_url={view_url}  />, document.getElementById("normal"));
 
 
     </script>

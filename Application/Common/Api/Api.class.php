@@ -418,7 +418,6 @@ abstract class Api {
         }
         $list = $query -> page($page['curpage'] . ',' . $page['size']) -> select();
 
-
         if ($list === false) {
             $error = $this -> model -> getDbError();
             return $this -> apiReturnErr($error);
@@ -443,7 +442,6 @@ abstract class Api {
         );
 
         $pager['total'] = $count;
-
         return $this -> apiReturnSuc(array("pager" => $pager, "list" => $list));
     }
 
