@@ -58,6 +58,25 @@ class AdminController extends CheckLoginController {
 	}
 
 	//===================权限相关START=======================
+
+    protected function getUserInfo(){
+        $userInfo = session("global_user");
+        $userSign = session("global_user_sign");
+
+        $calUserSign = data_auth_sign($userInfo);
+        if($calUserSign != $userSign){
+            //转发登录
+            if (session("?LOGIN_MOD")) {
+                $redirect_url = session("LOGIN_MOD") . '/Public/login';
+            } else {
+                $redirect_url = "Public/login";
+            }
+            session(null);
+            session("[destroy]");
+            $this -> redirect($redirect_url);
+        }
+        return $userInfo;
+    }
 	
 	protected function exitIfError($result){
 		if(!$result['status']){

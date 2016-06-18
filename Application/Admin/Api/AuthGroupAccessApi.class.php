@@ -96,7 +96,7 @@ class AuthGroupAccessApi extends Api{
      */
     public function queryGroupInfo($uid){
         $uid = intval($uid);
-        $result = $this->model->alias(" aga ")->join(" LEFT JOIN __AUTH_GROUP__ as ag ON ag.id = aga.group_id and ag.status = 1")->field("aga.uid , ag.title,ag.notes ")->where(" aga.uid = $uid")->select();
+        $result = $this->model->alias(" aga ")->join(" LEFT JOIN __AUTH_GROUP__ as ag ON ag.id = aga.group_id and ag.status = 1")->field("aga.uid ,ag.id as group_id, ag.title,ag.notes ")->where(" aga.uid = $uid")->select();
 
         if($result === false){
             return $this->apiReturnErr($this->model->getDbError());

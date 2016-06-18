@@ -14,13 +14,45 @@ use Admin\Api\MemberApi;
 use Admin\Api\VMemberApi;
 use Home\Api\BbjmemberApi;
 use Home\Api\BbjmemberSellerApi;
+use Home\Api\DistributorCfgApi;
 use Home\Api\VBbjmemberInfoApi;
 use Home\Api\VBbjmemberSellerInfoApi;
+use Home\Api\VFinAccountBalanceHisApi;
+use Home\Model\DistributorCfgModel;
+use Home\Model\FinAccountBalanceHisModel;
 use Ucenter\Model\AuthGroupModel;
 use Uclient\Api\UserApi;
 
 class DistributorController extends AdminController {
 
+    public function myProfit(){
+        $userInfo = $this->getUserInfo();
+        $map = array(
+            'uid'=>$userInfo['id'],
+        );
+
+        $result = apiCall(DistributorCfgApi::GET_INFO,array($map));
+
+        if($result['status']){
+            $this->assign("distributor",$result['info']);
+        }
+
+        $map = array(
+            'uid'=>$userInfo['id'],
+            'dtree_type'=>FinAccountBalanceHisModel::TYPE_DISTRIBUTOR_GET,
+        );
+
+        $order = " create_time desc ";
+        $page = array('curpage'=>I('get.p',0),'size'=>10);
+        $result = apiCall(VFinAccountBalanceHisApi::QUERY,array($map,$page,$order));
+
+        if($result['status']){
+            $this->assign("show",$result['info']['show']);
+            $this->assign("list",$result['info']['list']);
+        }
+
+        $this->display();
+    }
 
 
     /**

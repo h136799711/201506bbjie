@@ -30,11 +30,25 @@
         <div class="admin-main-content">
             {:W('Menus/breadcrumb')}
 
-            <div CLASS="padding-sm well">
+            <div CLASS="padding-sm">
 
-                我的推荐码 : <h2 class="text-danger">{$invite_id}</h2>
+                <div class="filter-controls">
+                    <a href="{:U('')}">返回</a>
+                </div>
 
-                我的推荐链接: <h2 class="text-danger"><a href="{$invite_url}" target="_blank">{$invite_url}</a></h2>
+                <div class="user_info">
+
+                </div>
+
+                <eq name="userType" value="1">
+                    <div class="seller_info">
+                        我是商家
+                    </div>
+                    <else/>
+                    <div class="buyer_info">
+                        我是试民
+                    </div>
+                </eq>
 
             </div>
 

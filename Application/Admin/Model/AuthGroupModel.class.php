@@ -14,7 +14,14 @@ use Think\Model;
  * title,status,rules
  */
 class AuthGroupModel extends Model{
-	
+
+
+
+    /**
+     * 分销商ID
+     */
+    const DISTRIBUTOR_GROUP_ID = 25;
+
 	protected $tablePrefix = "common_";
 	//自动验证
 	protected $_validate = array(

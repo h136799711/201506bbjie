@@ -30,32 +30,48 @@
             {:W('Menus/breadcrumb')}
 
             <div>
-
-                <div>
-
-                    <!-- Nav tabs -->
-                    <ul class="nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active">
-                            <a href="#seller" aria-controls="home" role="tab" data-toggle="tab">商家用户</a>
-                        </li>
-                        <li role="presentation">
-                            <a href="#normal" aria-controls="profile" role="tab" data-toggle="tab">宝民用户</a>
-                        </li>
-                     </ul>
-
-                    <!-- Tab panes -->
-                    <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane active" id="seller">
-                            loading...
-                        </div>
-                        <div role="tabpanel" class="tab-pane" id="normal">
-                            loading...
-                        </div>
-                    </div>
-
+                <div class="my-wealth">
+                    <h3>可提现余额: {$user['coins']}</h3>
                 </div>
+                <div class="">
+                    <h2>我的收益纪录</h2>
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <td>编号</td>
+                                <td>收入</td>
+                                <td>备注</td>
+                                <td>来源</td>
+                            </tr>
+                        </thead>
+                        <tr>
+                            <empty name="list">
+                                <td colspan="4">暂无纪录</td>
+                                <else/>
+                                <volist name="list" id="vo">
+                                    <td>
+                                        {$vo.id}
+                                    </td>
+                                    <td>
+                                        {$vo.income}
+                                    </td>
+                                    <td>
+                                        {$vo.notes}
+                                    </td>
+                                    <td>
+                                        <notempty name="vo['userinfo']">
+                                            用户名: {$vo['userinfo']['username']}
+                                            用户角色: {$vo['userinfo']['userrole']}
+                                            <else/>
+                                            -
+                                        </notempty>
+                                    </td>
+                                </volist>
 
-
+                            </empty>
+                        </tr>
+                    </table>
+                </div>
             </div>
 
             <!-- form -->
