@@ -337,8 +337,20 @@ class SMActivityController extends HomeController {
                 $search['url'] = "未知";
             }
 
+            $search_condition = json_decode($search['search_condition'],JSON_OBJECT_AS_ARRAY);
+            $search_url = $search['search_url'];
+
+            if( strpos($search_url,"taobao.com") >= 0 ){
+                $this->assign("search_url","www.taobao.com");
+            }else if( strpos($search_url,"tmall.com") >= 0 ){
+                $this->assign("search_url","www.tmall.com");
+            }
+
+            $this->assign("search_condition",$search_condition);
             $this->assign("search",$search);
         }
+
+
 
         $this->assign("other",TaskHisModel::PAY_TYPE_LEGAL);
         //对不同的任务状态 显示不同的页面

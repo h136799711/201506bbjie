@@ -144,9 +144,21 @@
                                 <div>2、按照筛选要求进一步缩小搜索结果范围</div>
 
                                 <div style="padding: 10px;background: #eee;color:#222;margin-bottom: 20px;">
-                                    <p>&gt;&gt; {$search.search_condition}</p>
 
-                                    <p>&gt;&gt; {$search.search_order}</p>
+                                    <p>&gt;&gt; 排序:  <span class="am-text-danger" >{$search.search_order}</span></p>
+
+                                    <notempty name="search_condition['tab']" >
+                                        <p>&gt;&gt; 选择: <span class="am-text-danger" >{$search_condition['tab']}</span>
+                                        </p>
+                                    </notempty>
+
+                                    <notempty name="search_condition['filter']" >
+                                        <p>&gt;&gt; 过滤:  <span class="am-text-danger" >{$search_condition['filter']}</span></p>
+                                    </notempty>
+                                    <notempty name="search_condition['attr']" >
+                                        <p>&gt;&gt; 分类: <span class="am-text-danger" >{$search_condition['attr']}</span></p>
+                                    </notempty>
+
                                     <if condition="$search.price_max gt 0">
                                         <p>&gt;&gt; 价格区间:
                                             <input style="width:60px;" readonly="readonly" type="text" value="{$search.price_min}"> -
