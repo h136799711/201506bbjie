@@ -22,7 +22,7 @@ class IndexController extends AdminController {
         if($result['status']){
 
             $group_info = $result['info'];
-            dump($group_info);
+//            dump($group_info);
 
             foreach($group_info as $vo){
 

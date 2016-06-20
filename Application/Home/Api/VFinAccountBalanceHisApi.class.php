@@ -43,5 +43,7 @@ class VFinAccountBalanceHisApi extends Api{
 	protected function _init(){
 		$this->model = new VFinAccountBalanceHisModel();
 	}
+
+
 }
 

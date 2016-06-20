@@ -17,6 +17,7 @@ use Home\Api\BbjmemberSellerApi;
 use Home\Api\DistributorCfgApi;
 use Home\Api\VBbjmemberInfoApi;
 use Home\Api\VBbjmemberSellerInfoApi;
+use Home\Api\VDistributorCfgApi;
 use Home\Api\VFinAccountBalanceHisApi;
 use Home\Model\DistributorCfgModel;
 use Home\Model\FinAccountBalanceHisModel;
@@ -32,7 +33,7 @@ class DistributorController extends AdminController {
         );
 
         $result = apiCall(DistributorCfgApi::GET_INFO,array($map));
-
+//        dump($result);
         if($result['status']){
             $this->assign("distributor",$result['info']);
         }
@@ -47,8 +48,14 @@ class DistributorController extends AdminController {
         $result = apiCall(VFinAccountBalanceHisApi::QUERY,array($map,$page,$order));
 
         if($result['status']){
+            $list = $result['info']['list'];
+
+            foreach($list as &$vo){
+//                $vo['_ditributor'] = ;
+            }
+
             $this->assign("show",$result['info']['show']);
-            $this->assign("list",$result['info']['list']);
+            $this->assign("list",$list);
         }
 
         $this->display();
@@ -128,7 +135,7 @@ class DistributorController extends AdminController {
         );
 
         $order = "create_time desc";
-
+//        dump($map);
         if(IS_POST || IS_AJAX){
 
             $p = I('get.p',1);
@@ -148,6 +155,7 @@ class DistributorController extends AdminController {
             }else{
                 $result = apiCall(VBbjmemberSellerInfoApi::API_QUERY,array($map,$page,$order));
             }
+
             if($result['status']){
                 $list = $result['info']['list'];
                 foreach ($list as &$vo){
@@ -162,8 +170,9 @@ class DistributorController extends AdminController {
 
 
         $result = apiCall(VBbjmemberInfoApi::QUERY,array($map,$order));
-
+        $normal_cnt = 0;
         if($result['status']){
+            $normal_cnt = count($result['info']['list']);
             $this->assign("bbj_list",$result['info']['list']);
             $this->assign("bbj_show",$result['info']['show']);
         }
@@ -176,12 +185,15 @@ class DistributorController extends AdminController {
         $order = "create_time desc";
 
         $result = apiCall(VBbjmemberSellerInfoApi::QUERY,array($map,$order));
-
+        $seller_cnt = 0;
         if($result['status']){
+            $seller_cnt = count($result['info']['list']);
             $this->assign("bbjSeller_list",$result['info']['list']);
             $this->assign("bbjSeller_show",$result['info']['show']);
         }
 
+        $this->assign("normal_cnt",$normal_cnt);
+        $this->assign("seller_cnt",$seller_cnt);
         $this->display();
     }
 
@@ -223,6 +235,7 @@ class DistributorController extends AdminController {
 
         if(IS_POST){
 
+            $rebate = I('post.rebate',0,'floatval');
             $username = I('post.username','');
             $password = I('post.password','');
             $repassword = I('post.repassword','');
@@ -230,6 +243,11 @@ class DistributorController extends AdminController {
 
             if($password != $repassword){
                 $this->error("密码和重复密码不一致！");
+            }
+
+            if($rebate < 0 || $rebate > 1){
+                $rebate = 0;
+                $this->error("分成比例只能在0-1之间的数字");
             }
 
             /* 调用注册接口注册用户 */
@@ -251,7 +269,24 @@ class DistributorController extends AdminController {
 
                     $result = apiCall(AuthGroupAccessApi::ADD_TO_GROUP,array($uid,AuthGroupModel::DISTRIBUTOR_GROUP_ID));
 
-                    $this->success('经销商添加成功！',U('Distributor/index'));
+                    if($result['status']){
+
+                        $entity = array(
+                            'uid'=>$uid,
+                            'rebate'=>$rebate,
+                            'money'=>0,
+                            'frozen_money'=>0,
+                        );
+
+                        $result = apiCall(DistributorCfgApi::ADD,array($entity));
+                        if($result['status']){
+                            $this->success('经销商添加成功！',U('Distributor/index'));
+
+                        }
+
+                    }
+
+                    $this->error('经销商添加失败！',U('Distributor/index'));
 
                 }
             } else { //注册失败，显示错误信息
@@ -282,7 +317,7 @@ class DistributorController extends AdminController {
         $params['nickname'] = I('nickname','','trim');
         $map['group_id'] = AuthGroupModel::DISTRIBUTOR_GROUP_ID;
 
-        $result = apiCall(VMemberApi::QUERY, array($map, $page, $order));
+        $result = apiCall(VDistributorCfgApi::QUERY, array($map, $page, $order));
 
         if ($result['status']) {
 
@@ -294,4 +329,9 @@ class DistributorController extends AdminController {
         }
 
     }
+
+    public function disable($key=1){
+
+    }
+
 }

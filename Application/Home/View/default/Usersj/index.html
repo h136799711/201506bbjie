@@ -92,9 +92,19 @@
                                                             </empty>
                                                             </p>
                                                             <eq name="auth_status" value="0">
-																<div class="alert alert-warning in fade"><a href="javascript:void(0)" class="close" data-dismiss="alert" type="button">×</a>您还没有对您的主旺旺进行认证，请先认证您的主旺旺 <a class="text-info" href="{:U('Home/Usersj/sj_zhxx')}">前往验证</a>
-															</eq>
-															</div>
+																<div class="alert alert-warning in fade">
+                                                                    <a href="javascript:void(0)" class="close" data-dismiss="alert" type="button">×</a>请先填写您的淘宝帐号，不然无法领取任务 <a class="text-info" href="{:U('Home/Usersj/sj_zhxx')}">前往填写</a>
+
+                                                                </div>
+                                                                <else/>
+                                                            </eq>
+                                                            <notempty name="referrer">
+                                                            <p class="alert alert-info">
+                                                                我的推荐人:
+                                                                <img class="am-round" style="width:60px;height:60px;" src="{$referrer['head']}" />
+                                                                {$referrer['nickname']}
+                                                            </p>
+                                                            </notempty>
 														</div>
 
 													</td>

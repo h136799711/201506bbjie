@@ -7,6 +7,7 @@
 // |-----------------------------------------------------------------------------------
 namespace Home\Controller;
 use Admin\Api\DatatreeApi;
+use Admin\Api\MemberApi;
 use Admin\Api\MessageApi;
 use Admin\Api\MsgboxApi;
 use Admin\Model\DatatreeModel;
@@ -32,14 +33,25 @@ class UsersjController extends SjController {
 	 * 
 	 * */
 	public function index(){
-		$headtitle="宝贝街-商家中心";
-		$this->assign('head_title',$headtitle);
+
+		$this->assign('head_title',"宝贝街-商家中心");
 
 		$map=array(
 			'uid'=>UID,
 		);
 
 		$this->getcount();
+
+        //获取推荐人信息
+        $referrer_id = $this->userinfo['referrer_id'];
+
+        $result = apiCall(MemberApi::GET_INFO,array(array('uid'=>$referrer_id)));
+
+        if($result['status']){
+            $referrer = $result['info'];
+            $referrer['head'] = getImageUrl($referrer['head']);
+            $this->assign("referrer",$referrer);
+        }
 
         $this->boye_display();
 	}

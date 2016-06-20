@@ -14,6 +14,20 @@ use Home\Model\DistributorCfgModel;
 
 class DistributorCfgApi extends Api {
 
+
+    /**
+     * 修改
+     */
+    const SET_INC = "Home/DistributorCfg/setInc";
+    /**
+     * 修改
+     */
+    const SAVE_BY_ID = "Home/DistributorCfg/saveByID";
+
+    /**
+     * 添加
+     */
+    const ADD = "Home/DistributorCfg/add";
     /**
      * 获取单个用户信息
      */

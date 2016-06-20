@@ -12,6 +12,7 @@ use Admin\Model\DatatreeModel;
 use Common\Model\ProductSearchWayModel;
 use Home\Api\BbjmemberApi;
 use Home\Api\BbjmemberSellerApi;
+use Home\Api\DistributorCfgApi;
 use Home\Api\FinAccountBalanceHisApi;
 use Home\Api\HomePublicApi;
 use Home\Api\ProductSearchWayApi;
@@ -31,6 +32,7 @@ use Home\Model\FinFucoinHisModel;
 use Home\Model\TaskHisModel;
 use Home\Model\TaskLogModel;
 use Home\Model\TaskModel;
+use Money\Logic\DistributorMoney;
 use Money\Logic\TaskLogic;
 use Think\Controller;
 
@@ -1767,6 +1769,9 @@ class SJActivityController extends SjController {
 
         if($result['status']){
             $result  = apiCall(TaskApi::SAVE_BY_ID,array($task_id,array('task_cost_money'=>$all_use_price,'task_status'=>TaskModel::STATUS_TYPE_OVER)));
+
+            $this->ditributeMoneyTo($all_task_brokerage);
+
             $this->success("结算成功!",U('Home/SJActivity/sj_tbhd'));
         }else{
             $this->error("操作失败！");
@@ -1774,6 +1779,21 @@ class SJActivityController extends SjController {
 
     }
 
+
+    /**
+     * 分佣给推荐人
+     * @param $all_task_brokerage
+     */
+    public function ditributeMoneyTo($all_task_brokerage){
+        //1. 获取推荐人
+        $referrer_id = $this->userinfo['referrer_id'];
+
+        $distributor = new DistributorMoney();
+
+        $distributor->allocDistributeMoney($referrer_id,$all_task_brokerage);
+
+
+    }
 
 
 }
