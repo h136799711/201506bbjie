@@ -32,45 +32,47 @@
             <div>
 
                 <div class="my-wealth">
-                    <h3>可提现余额: {$distributor['money']} 元  <a href="{:U('Admin/Distributor/myWithdrawAdd')}" class="btn btn-sm btn-primary">我要提现</a></h3>
-                    <h3>冻结资金: {$distributor['frozen_money']} 元</h3>
+                    <h3>可提现余额: {$distributor['money']} 元  <a href="{:U('Admin/Distributor/myWithdrawAdd')}" class="btn btn-sm btn-primary">发起提现</a></h3>
 
+                    <h3>冻结资金: {$distributor['frozen_money']} 元</h3>
                 </div>
 
                 <div class="">
-                    <h2>我的收益纪录</h2>
+                    <h2>我的提现纪录</h2>
                     <table class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                <td>编号</td>
-                                <td>收入</td>
-                                <td>备注</td>
-                                <td>来源</td>
+                                <td>提现时间</td>
+                                <td>提现金额</td>
+                                <td>提现帐号</td>
+                                <td>提现状态</td>
                             </tr>
                         </thead>
                         <tr>
                             <empty name="list">
+                                <tr>
                                 <td colspan="4">暂无纪录</td>
+                                </tr>
                                 <else/>
                                 <volist name="list" id="vo">
+                                    <tr>
                                     <td>
-                                        {$vo.id}
+                                        {:date("Y-m-d H:i",$vo['create_time'])}
                                     </td>
                                     <td>
-                                        {$vo.income}
+                                        {$vo.defray}
                                     </td>
-                                    <td>
-                                        {$vo.notes}
-                                    </td>
-                                    <td>
-                                        <notempty name="vo['_distributor']">
 
-                                            <img style="width: 60px;height:60px;" src="{:getImageUrl($vo['_distributor']['head'])}" alt="" />
-                                            {$vo['_distributor']['nickname']}
-                                            <else/>
-                                            -
-                                        </notempty>
+                                    <td>
+                                        帐号类型: <span class="text-danger">{$vo['_account']['bank_name']}</span>,帐户:
+                                        <span class="text-danger">{$vo['_account']['account']}</span>
                                     </td>
+
+
+                                    <td>
+                                        {:getStatus($vo['status'])}
+                                    </td>
+                                    </tr>
                                 </volist>
 
                             </empty>

@@ -15,6 +15,30 @@ use Home\Model\FinAccountBalanceHisModel;
 
 class DistributorMoney {
 
+    public function withdrawMoney($uid,$money){
+        $map = array(
+            'uid'=>$uid,
+        );
+
+        $api = new DistributorCfgApi();
+        $api->startTrans();
+
+        $result = $api->setDec($map,"money",$money);
+        if(!$result['status']){
+            return $result;
+        }
+
+        $api->setInc($map,"frozen_money",$money);
+
+        if($result['status']){
+            $api->commit();
+        }else{
+            $api->rollback();
+        }
+
+        return $result;
+    }
+
     /**
      * 分配给推荐人一部分佣金
      * @param $uid

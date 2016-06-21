@@ -18,6 +18,10 @@ class DistributorCfgApi extends Api {
     /**
      * 修改
      */
+    const SET_DEC = "Home/DistributorCfg/setDec";
+    /**
+     * 修改
+     */
     const SET_INC = "Home/DistributorCfg/setInc";
     /**
      * 修改

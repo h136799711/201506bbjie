@@ -7,6 +7,7 @@
 // |-----------------------------------------------------------------------------------
 
 namespace Common\Api;
+use Think\Model;
 
 /**
  * API基类
@@ -115,6 +116,23 @@ abstract class Api {
 	public function waitCheck($map) {
 		return $this -> save($map, array('status' => 5));
 	}
+
+    public function startTrans(){
+        $this->model->startTrans();
+    }
+
+    public function commit(){
+        $this->model->commit();
+    }
+
+    public function rollback(){
+        $this->model->rollback();
+    }
+
+    public function lock(){
+        $this->model->lock(true);
+        return $this;
+    }
 
 	/**
 	 * 待审核

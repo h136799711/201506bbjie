@@ -10,22 +10,213 @@ namespace Admin\Controller;
 
 
 use Admin\Api\AuthGroupAccessApi;
+use Admin\Api\DatatreeApi;
 use Admin\Api\MemberApi;
 use Admin\Api\VMemberApi;
+use Admin\Model\DatatreeModel;
 use Home\Api\BbjmemberApi;
 use Home\Api\BbjmemberSellerApi;
 use Home\Api\DistributorCfgApi;
+use Home\Api\FinAccountBalanceHisApi;
+use Home\Api\FinBankaccountApi;
 use Home\Api\VBbjmemberInfoApi;
 use Home\Api\VBbjmemberSellerInfoApi;
 use Home\Api\VDistributorCfgApi;
 use Home\Api\VFinAccountBalanceHisApi;
 use Home\Model\DistributorCfgModel;
 use Home\Model\FinAccountBalanceHisModel;
+use Money\Logic\DistributorMoney;
 use Ucenter\Model\AuthGroupModel;
 use Uclient\Api\UserApi;
 
 class DistributorController extends AdminController {
 
+    public function check(){
+
+        $id = $this->_param('id',0);
+        if((IS_POST || IS_AJAX ) && $id > 0){
+
+            $type = $this->_param('type','fail');
+            if($type == 'fail'){
+                $result = apiCall(FinAccountBalanceHisApi::SAVE_BY_ID,array($id,array('status'=>FinAccountBalanceHisModel::STATUS_DENY)));
+            }else if($type == 'pass'){
+                $result = apiCall(FinAccountBalanceHisApi::SAVE_BY_ID,array($id,array('status'=>FinAccountBalanceHisModel::STATUS_PASSED)));
+            }
+
+
+            if($result['status']){
+                $this->success("操作成功!");
+            }else{
+                $this->error($result['info']);
+            }
+
+        }
+
+        $status = $this->_param("status",'2');
+        $uid = $this->_param('uid',0);
+
+        $page = array('curpage' => I('get.p', 0), 'size' => 10);
+
+        $map=array(
+            'status'=>$status
+        );
+
+        $param = array(
+            'status'=>$status
+        );
+
+        if($uid > 0){
+            $map['uid'] = $uid;
+            $param['uid'] = $uid;
+        }
+
+        $map['dtree_type'] = FinAccountBalanceHisModel::TYPE_WITHDRAW_OF_DISTRIBUTOR;
+        $order = "create_time desc";
+
+        $result = apiCall(VFinAccountBalanceHisApi::QUERY,array($map,$page,$order,$param));
+        $this->assign('status',$status);
+        $list = $result['info']['list'];
+
+        foreach($list as &$vo){
+            if($vo['dtree_type'] == FinAccountBalanceHisModel::TYPE_WITHDRAW_OF_DISTRIBUTOR){
+                $vo['_bank'] = json_decode($vo['extra'],JSON_OBJECT_AS_ARRAY);
+            }
+        }
+
+        $this->assign('list',$list);
+        $this->assign('show',$result['info']['show']);
+        $this->assign("withdraw",FinAccountBalanceHisModel::TYPE_WITHDRAW);
+        $this->display();
+    }
+
+    /**
+     * 发起提现
+     */
+    public function myWithdrawAdd(){
+        $userInfo = $this->getUserInfo();
+        $map = array(
+            'uid'=>$userInfo['id'],
+        );
+
+        $result = apiCall(DistributorCfgApi::GET_INFO,array($map));
+        $distributor = $result['info'];
+        if($result['status']){
+            $this->assign("distributor",$distributor);
+        }
+
+        if(IS_GET){
+
+
+            $map = array(
+                'parentid'=>DatatreeModel::BANK_LIST,
+            );
+            $result = apiCall(DatatreeApi::QUERY_NO_PAGING,array($map));
+            if($result['status']){
+                $this->assign("bank_list",$result['info']);
+            }
+
+
+            $this->display();
+        }else{
+            $account = I('post.withdrawAccount','');
+            $bank_name = I('post.bank_name','');
+            $money = I('post.money',0,'floatval');
+            if($money > 0 && floatval($distributor['money']) >= $money){
+
+                $extra = array(
+                    'account'=>$account,
+                    'bank_name'=>$bank_name,
+                );
+
+                $notes = "用户申请提现".$money.'元到';
+                $entity = array(
+                    'uid'=>$distributor['uid'],
+                    'defray'=>$money,
+                    'income'=>0,
+                    'left_money'=>$distributor['money']-$money,
+                    'frozen_money'=>0,
+                    'create_time'=>time(),
+                    'notes'=>$notes,
+                    'dtree_type'=>FinAccountBalanceHisModel::TYPE_WITHDRAW_OF_DISTRIBUTOR,
+                    'imgurl'=>'',
+                    'status'=>FinAccountBalanceHisModel::STATUS_WAIT_CHECK,
+                    'extra'=> json_encode($extra),
+                );
+
+                $result = apiCall(FinAccountBalanceHisApi::ADD,array($entity));
+
+                if($result['status']){
+
+                    $his_id = $result['info'];
+
+                    $api = new DistributorMoney();
+                    $result = $api->withdrawMoney($distributor['uid'],$money);
+                    if(!$result['status']){
+                        $result = apiCall(FinAccountBalanceHisApi::SAVE_BY_ID,array($his_id,array('status'=>FinAccountBalanceHisModel::STATUS_DENY)));
+
+                        ifFailedLogRecord($result,__FILE__.__LINE__);
+                    }
+
+                    $this->success("申请成功，请等待平台审核!");
+                }else{
+                    $this->error($result['info']);
+                }
+
+            }else{
+                $this->error("提现金额不合法!");
+            }
+
+        }
+    }
+    /**
+     * 我的提现
+     * @author 老胖子-何必都 <hebiduhebi@126.com>
+     */
+    public function myWithdraw(){
+
+        $userInfo = $this->getUserInfo();
+        $map = array(
+            'uid'=>$userInfo['id'],
+        );
+
+        $result = apiCall(DistributorCfgApi::GET_INFO,array($map));
+
+        if($result['status']){
+            $this->assign("distributor",$result['info']);
+        }
+
+        //提现纪录
+        $map = array(
+            'uid'=>$userInfo['id'],
+            'dtree_type'=>FinAccountBalanceHisModel::TYPE_WITHDRAW,
+        );
+
+        $order = " create_time desc ";
+        $page = array('curpage'=>I('get.p',0),'size'=>10);
+        $result = apiCall(VFinAccountBalanceHisApi::QUERY,array($map,$page,$order));
+
+        if($result['status']){
+            $list = $result['info']['list'];
+
+            foreach($list as &$vo){
+                $vo['_account'] = json_decode($vo['extra'],JSON_OBJECT_AS_ARRAY);
+            }
+
+            $this->assign("show",$result['info']['show']);
+            $this->assign("list",$list);
+        }
+
+
+
+
+        $this->display();
+
+    }
+
+
+    /**
+     * 我的收益
+     */
     public function myProfit(){
         $userInfo = $this->getUserInfo();
         $map = array(
@@ -51,7 +242,14 @@ class DistributorController extends AdminController {
             $list = $result['info']['list'];
 
             foreach($list as &$vo){
-//                $vo['_ditributor'] = ;
+
+                $map = array(
+                    'uid'=>$vo['uid'],
+                );
+                $result = apiCall(MemberApi::GET_INFO,array($map));
+                if($result['status']){
+                    $vo['_distributor'] = $result['info'];
+                }
             }
 
             $this->assign("show",$result['info']['show']);

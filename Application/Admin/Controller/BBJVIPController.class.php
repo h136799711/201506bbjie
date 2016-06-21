@@ -6,12 +6,15 @@
 // | Copyright (c) 2013-2016, http://www.itboye.com. All Rights Reserved.
 // |-----------------------------------------------------------------------------------
 namespace Admin\Controller;
+use Admin\Api\AuthRuleApi;
 use Admin\Api\DatatreeApi;
+use Admin\Api\MemberApi;
 use Admin\Model\MessageModel;
 use Admin\Model\MsgboxModel;
 use Common\Api\AccountApi;
 use Home\Api\BbjmemberApi;
 use Home\Api\BbjmemberSellerApi;
+use Home\Api\DistributorCfgApi;
 use Home\Api\FinAccountBalanceHisApi;
 use Home\Api\HomePublicApi;
 use Home\Api\ProductSearchWayApi;
@@ -32,6 +35,9 @@ use Home\Model\TaskHisModel;
 use Home\Model\TaskLogModel;
 use Home\Model\TaskModel;
 use Money\Logic\MessageLogic;
+use Ucenter\Api\AuthGroupAccessApi;
+use Ucenter\Model\AuthGroupModel;
+use Uclient\Api\UserApi;
 
 class BBJVIPController extends AdminController{
     /**
@@ -56,7 +62,7 @@ class BBJVIPController extends AdminController{
             $map['uid'] = $uid;
             $param['uid'] = $uid;
         }
-
+        $map['dtree_type'] = array('neq',FinAccountBalanceHisModel::TYPE_WITHDRAW_OF_DISTRIBUTOR);
         $order = "create_time desc";
 
         $result = apiCall(VFinAccountBalanceHisApi::QUERY,array($map,$page,$order,$param));
@@ -474,11 +480,41 @@ class BBJVIPController extends AdminController{
      * @author 老胖子-何必都 <hebiduhebi@126.com>
      */
 	public function view_user(){
-		$map=array('uid'=>I('get.id',0));
+		$map = array('uid'=>I('get.id',0));
 
         $uid = I('get.id',0);
 
+        $result = apiCall(AuthGroupAccessApi::QUERY_GROUP_INFO,array($map['uid']));
+
+        if($result['status']){
+            $list = $result['info'];
+
+            foreach($list as $vo){
+                if($vo['group_id'] == AuthGroupModel::DISTRIBUTOR_GROUP_ID){
+
+                    $result = apiCall(DistributorCfgApi::GET_INFO,array($map));
+                    $cfg = $result['info'];
+                    $result = apiCall(MemberApi::GET_INFO,array($map));
+                    $member = $result['info'];
+                    $map = array('id'=>$uid);
+                    $result = apiCall(UserApi::GET_INFO,array($uid));
+                    $user = $result['info'];
+
+                    $user_info = array_merge($cfg,$member,$user);
+                    if($result['status']){
+                        $this->assign("user_info",$user_info);
+                        $this->display("distributor_info");
+                        return;
+                    }
+
+
+                }
+            }
+        }
+
         $result = apiCall(AccountApi::GET_INFO,array($uid));
+
+
 
         $this->assign("user_info",$result['info']);
         $this->display();

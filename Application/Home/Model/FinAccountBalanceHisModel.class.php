@@ -45,6 +45,11 @@ class FinAccountBalanceHisModel extends \Think\Model{
     const TYPE_WITHDRAW = 87;
 
     /**
+     * 经销商提现
+     */
+    const TYPE_WITHDRAW_OF_DISTRIBUTOR = 142;
+
+    /**
      * 充值
      */
     const TYPE_RECHARGE = 88;
@@ -73,6 +78,10 @@ class FinAccountBalanceHisModel extends \Think\Model{
      * 等待审核
      */
     const STATUS_WAIT_CHECK = "2";
+    /**
+     * 审核驳回
+     */
+    const STATUS_DENY = "3";
 
     /**
      * 审核成功
