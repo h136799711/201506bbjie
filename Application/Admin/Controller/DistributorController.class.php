@@ -36,7 +36,9 @@ class DistributorController extends AdminController {
         $id = $this->_param('id',0);
         if((IS_POST || IS_AJAX ) && $id > 0){
 
+
             $type = $this->_param('type','fail');
+
             if($type == 'fail'){
                 $result = apiCall(FinAccountBalanceHisApi::SAVE_BY_ID,array($id,array('status'=>FinAccountBalanceHisModel::STATUS_DENY)));
             }else if($type == 'pass'){

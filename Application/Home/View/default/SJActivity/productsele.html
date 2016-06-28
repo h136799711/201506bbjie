@@ -176,6 +176,12 @@
                                                         <if condition="$vo['status'] eq 3">
                                                             <a tooltip="更新" class="btn btn-mini" href="{:U('Home/SJActivity/edit_search',array('id'=>$vo['id']))}">重新更新</a>
                                                         </if>
+
+                                                        <div>
+                                                        <a class="ajax-get confirm am-btn-danger btn-mini" href="{:U('Home/SJActivity/deleteSele',array('id'=>$vo['id']))}">
+                                                            删除
+                                                        </a></div>
+
 													</td>
 												</tr>
 

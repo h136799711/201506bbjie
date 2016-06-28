@@ -1172,7 +1172,7 @@ class SJActivityController extends SjController {
         }else if($type == 'stop'){
             $map['status'] = 0;
         }else if($type == 'all'){
-            $map['status'] = array('neq','0');
+            $map['status'] = array('not in',array('0','-1'));
         }
 
 		$page = array('curpage' => I('get.p', 0), 'size' => 10);
@@ -1795,5 +1795,23 @@ class SJActivityController extends SjController {
 
     }
 
+
+    /**
+     * 删除搜索方式
+     */
+    public function deleteSele(){
+        $id = I('get.id',0);
+        $map = array(
+            'id'=>$id,
+        );
+        $result = apiCall(ProductSearchWayApi::PRETEND_DELETE,array($map));
+
+        if($result['status']){
+            $this->success("删除成功!");
+        }else{
+            $this->error("删除失败,".$result['info']);
+        }
+
+    }
 
 }

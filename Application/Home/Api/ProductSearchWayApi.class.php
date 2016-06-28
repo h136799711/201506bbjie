@@ -19,6 +19,8 @@ class ProductSearchWayApi extends Api{
     const DELETE = 'Home/ProductSearchWay/delete';
     const GET_INFO = 'Home/ProductSearchWay/getInfo';
 
+    const PRETEND_DELETE = "Home/ProductSearchWay/pretendDelete";
+
 	protected function _init(){
 		$this->model = new ProductSearchWayModel();
 	}
